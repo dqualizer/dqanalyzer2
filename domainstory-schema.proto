@@ -1,0 +1,76 @@
+syntax = "proto3";
+
+option java_multiple_files = true;
+option java_package = "com.dqualizer.domain.protos";
+option java_outer_classname = "DomainProtos";
+
+message Domain {
+    string domainName = 1;
+    string domainDescription = 2;
+    message BoundedContext {
+        string contextName = 1;
+        string contextDescription = 2;
+
+        message Aggregate {
+            string name = 1;
+            message Entity {
+                string entityName = 1;
+                string iconSVG = 2;
+                EntityType entityType = 3;
+                message ValueObject {
+                    string valueObjectName = 1;
+                    EntityType entityType = 2;
+                }
+                repeated ValueObject valueObjects = 4;
+            }
+            repeated Entity entities = 2;
+        } 
+
+        message Repository {
+            string repositoryName = 1;
+            RepositoryType repositoryType = 2;
+            Aggregate.Entity entity = 3;
+        }
+
+        message Service {
+            string serviceName = 1;
+            string serviceDescription = 2;
+            string iconSVG = 3;
+            message Activity {
+                string activityName = 1;
+                string activityDescription = 2;
+            }
+            repeated Activity activities = 4;
+        }
+
+        message DomainEvent {
+            string eventName = 1;
+            EventType eventType = 2;
+        }
+    }
+
+    
+} 
+
+enum EntityType {
+    ACTOR = 0;
+    WORK_OBJECT = 1;
+}
+
+enum ValueObjectType {
+    NUMBER = 0;
+    STRING = 1;
+    DATE = 2;
+}
+
+enum RepositoryType {
+    DATABASE = 0;
+    AKTENSCHRANK = 1;
+}
+
+enum EventType {
+    STANDARD = 0;
+    KEY = 1;
+    UNIMPORTANT = 2;
+
+}
