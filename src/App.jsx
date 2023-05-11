@@ -27,7 +27,6 @@ function App() {
   let initialEgdes = [];
   let systemWorkObjectEdges = createSystemWorkobjectEdges(systemNodes, workObjectNodes)
   let workObjectActorEdges = createWorkobjectActorEdges();
-  console.log(systemWorkObjectEdges);
   initialNodes = initialNodes.concat(systemNodes, actorNodes, workObjectNodes);
   initialEgdes = initialEgdes.concat(systemWorkObjectEdges, workObjectActorEdges);
 
@@ -86,10 +85,20 @@ function App() {
   const [edges, setEdges, onEdgesChange] = useEdgesState(layoutedEdges);
 
 
+
   const onDragOver = useCallback((event) => {
     event.preventDefault();
     event.dataTransfer.dropEffect = 'move';
   }, []);
+
+
+
+  // const onEdgeClick = (event, selectedEdge) => {
+  //   selectedEdge.animated = true;
+  //   setEdges((edges) => {
+  //     edges.push(selectedEdge);
+  //   });
+  // }
 
   const onDrop = useCallback(
     (event) => {

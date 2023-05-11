@@ -32,13 +32,13 @@
                     "activity_id": "id3",
                     "name": "Auftrag lesen",
                     "operation_id": "readAuftrag",
-                    "initiator": 1,
+                    "initiator": 2,
                     "workObject": "Auftrag",
                     "action": "ließt",
                     "type": "method",
                     "parameter": [],
                     "endpoint": {
-                        "field": "/auftrag/{auftragsnummer}",
+                        "field": "/pay/ticket/{ticketId}/",
                         "operation": "GET",
                         "path_variables": {
                             "auftragsnummer": "auftrag/auftragsnummern/angelegt.json"

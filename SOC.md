@@ -21,4 +21,6 @@
 ## Funktion
  - Ein Tool, welches es dem Benutzer ermöglicht, Laufzeitqualitätsanalysen durchzuführen und dabei die ubiquitäre Sprache zu verwenden 
  - Zeigt das Mapping grafisch an (sieht aus wie eine Domainstory)
+
+ 
  

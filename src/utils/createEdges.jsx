@@ -5,7 +5,6 @@ import * as mapping from '../werkstatt.json';
 export const createSystemWorkobjectEdges = (systemNodes, workObjectNodes) => {
     let serviceWorkObjectEdges = [];
     mapping.systems.forEach((system) => {
-        console.log(system.activities.length)
         system.activities.forEach((activity) => {
             const newEdge = {
                 id: `system_work_object_${activity.activity_id}`,
@@ -30,7 +29,6 @@ export const createSystemWorkobjectEdges = (systemNodes, workObjectNodes) => {
 export const createWorkobjectActorEdges = (systemNodes, workObjectNodes) => {
     let workObjectActorEdges = [];
     mapping.systems.forEach((system) => {
-        console.log(system.activities.length)
         system.activities.forEach((activity) => {
             const newEdge = {
                 id: `work_object_actor_${activity.activity_id}`,
