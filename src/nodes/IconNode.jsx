@@ -10,22 +10,13 @@ const handleStyle = { left: 10 };
 
 export default function IconNode(props) {
 
-    const [openInput, setOpenInput] = useState(true);
-    const [name, setName] = useState("");
     const reactFlowInstance = useReactFlow();
-
-    const handleInputChange = (value) => {
-        setName(value)
-    }
-    const handleEnterPress = (value) => {
-        setOpenInput(false)
-    }
 
     const handleDeleteNode = () => {
         reactFlowInstance.deleteElements({ nodes: [reactFlowInstance.getNode(props.id)] })
     }
 
-
+    // The Node which is created, when creating Nodes with the node-type: "iconNode"
     return (
         <>
             <Handle type={props.data.handleType} position={props.data.handlePosition} isConnectable={props.isConnectable} />

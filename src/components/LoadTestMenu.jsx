@@ -1,47 +1,14 @@
 import React, { useEffect, useState } from 'react'
 import { useEdges, useOnSelectionChange, useReactFlow } from 'reactflow';
-
+import * as loadtestSpecs from '../data/loadtest-specs.json';
 
 export default function LoadTestMenu(props) {
 
-    const stimuluses = [
-        {
-            name: 'LOAD PEAK',
-            designParameters: [
-                {
-                    name: "Highest Load",
-                    values: ["High", "Very High", "Extremly High"]
-                },
-                {
-                    name: "Time to Highest load",
-                    values: ["Slow", "Fast", "Very Fast"]
-                },
-            ],
-        },
-        {
-            name: "Load Increase",
-            designParameters: [
-                {
-                    name: "Type of Increase",
-                    values: ["Linear", "Quadratic", "Cubic"]
-                }
-            ]
-        }, {
-            name: 'Constant Load',
-            designParameters: [
-                {
-                    name: "Base Load",
-                    values: ["Low", "Medium", "High"]
-                }
-            ]
-        }];
+    // Getting Loadtest Definition Parameters from the Json
+    const stimuluses = loadtestSpecs.stimuluses;
+    const responseMeasures = loadtestSpecs.responseMeasures;
+    const metrics = loadtestSpecs.metrics;
 
-    const responseMeasures = [{
-        name: "Response times",
-        values: ["Satisfied", "Tolerated", "Frustrated"]
-    }];
-
-    const metrics = ["Response Times", "90th Percentile", "95th Percentile"];
 
     const [selectedActivity, setSelectedActivity] = useState(props.selectedEdge);
     const [stimulus, setStimulus] = useState(stimuluses[0]);

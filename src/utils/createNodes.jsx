@@ -1,5 +1,5 @@
 import { getNodePositionWithOrigin, useReactFlow } from 'reactflow';
-import * as mapping from '../werkstatt.json';
+import * as mapping from '../data/werkstatt.json';
 
 let actorNodes = [];
 let systemNodes = [];
@@ -8,13 +8,20 @@ let workObjectNodes = [];
 export const createActors = () => {
     actorNodes = [];
     const type = "iconNode";
+    // Icon from the Icon-Set of Egon.io
     const icon = "Person";
+
+    // Position is later set by dagre.js 
     let position = {
         x: 0,
         y: 0
 
     }
+
+    // Get all actors from the mapping
     mapping.actors.forEach((actor) => {
+
+        // Create Node with target-handle
         const newNode = {
             id: `actor_${actor.actor_id}`,
             type,
@@ -24,12 +31,13 @@ export const createActors = () => {
             data: { label: `${actor.actor_name}`, icon: icon, handlePosition: "right", handleType: "target" }
         }
         actorNodes.push(newNode);
-        position.y += 200;
+
     });
 
     return actorNodes;
 }
 
+// Getting Systems
 export const createSystems = () => {
     systemNodes = [];
     const type = "iconNode";
@@ -55,14 +63,14 @@ export const createSystems = () => {
     return systemNodes;
 }
 
-export const createWorkobjects = (flowInstance) => {
+
+// Getting Workobjects of Activitys
+export const createWorkobjects = () => {
     workObjectNodes = [];
     const type = "iconNode";
     const icon = "Document";
 
     mapping.systems.forEach((mappingSystem) => {
-        const numberActivities = mappingSystem.activities.length;
-        const positionCorrespondingSystemNode = systemNodes.find((system) => system.system_id == mappingSystem.system_id);
 
         let position = {
             x: 100,
