@@ -50,7 +50,7 @@
     ],
     "responseMeasures": [
         {
-            "name": "Response times",
+            "name": "Response time",
             "values": [
                 "Satisfied",
                 "Tolerated",
@@ -59,7 +59,7 @@
         }
     ],
     "metrics": [
-        "Response Times",
+        "Response Time",
         "90th Percentile",
         "95th Percentile"
     ]
