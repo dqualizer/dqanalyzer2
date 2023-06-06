@@ -268,7 +268,7 @@ export default function LoadTestMenu(props) {
 								</label>
 								<div className="btn-group">
 									{responseMeasure.values.map((value) => {
-										return <input type="radio" value={value} onClick={handleResponseMeasureChange} name={responseMeasure.name} data-title={value} className="btn" />
+										return <input type="radio" value={value.name} onClick={handleResponseMeasureChange} name={responseMeasure.name} data-title={value.name + ' (' + value.value + ')'} className="btn" />
 									})}
 								</div>
 							</div>
@@ -286,7 +286,7 @@ export default function LoadTestMenu(props) {
 									</label>
 									<div className="btn-group">
 										{parameter.values.map((value) => {
-											return <input type="radio" value={value} onClick={handleDesignParameterChange} name={parameter.name} data-title={value} className="btn" />
+											return <input type="radio" value={value.name} onClick={handleDesignParameterChange} name={parameter.name} data-title={value.name + ' (' + value.value + ')'} className="btn" />
 										})}
 									</div>
 								</div>
@@ -305,7 +305,7 @@ export default function LoadTestMenu(props) {
 										<select name="" id="" className="select select-bordered w-full max-w-xs">
 											{parameter.values.map((value) => {
 												return (
-													<option value={value}>{value}</option>
+													<option value={value.name}>{value.name + ' (' + value.value + ')'}</option>
 												)
 											})}
 										</select>
@@ -324,7 +324,7 @@ export default function LoadTestMenu(props) {
 											</label>
 											<div className="btn-group">
 												{parameter.values.map((value) => {
-													return <input type="radio" name={parameter.name} data-title={value} className="btn" />
+													return <input type="radio" name={parameter.name} data-title={value.name + ' (' + value.value + ')'} className="btn" />
 												})}
 											</div>
 										</div>
