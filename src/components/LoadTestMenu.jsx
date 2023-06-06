@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { useEdges, useOnSelectionChange, useReactFlow } from 'reactflow';
 import * as loadtestSpecs from '../data/loadtest-specs.json';
 import * as mapping from '../data/werkstatt.json';
+import { Tooltip } from 'react-tooltip'
 
 export default function LoadTestMenu(props) {
 
@@ -244,8 +245,12 @@ export default function LoadTestMenu(props) {
 				</div>
 				<div className="actvity-container">
 					<label className="label">
-						<span className="label-text">Stimulus</span>
+						<span className="label-text">
+							Stimulus
+							<span className="ml-1 font-normal text-sm" data-tooltip-id="stimulus-tooltip" data-tooltip-place="right" data-tooltip-content='The stimulus specifies how the load should look like. For instance, a "Load peak" will lead to a massive spike in simulated users accessing the application in a secure environment whereas a "Load Increase" may lead to a slow in crease in users accessing the application.'>&#9432;</span>
+						</span>
 					</label>
+					<Tooltip id="stimulus-tooltip" style={{ maxWidth: '256px' }} />
 					<select value={stimulus.name} onChange={handleStimulusChange} id="" className="select select-bordered w-full max-w-xs">
 						{stimuluses.map((stimulus) => {
 							return <option value={stimulus.name} key={stimulus.name}>{stimulus.name}</option>
@@ -254,12 +259,20 @@ export default function LoadTestMenu(props) {
 				</div>
 				<div className="actvity-container">
 					<label className="label">
-						<span className="label-text">Accuracy</span>
+						<span className="label-text">
+							Accuracy
+							<span className="ml-1 font-normal text-sm" data-tooltip-id="accuracy-tooltip" data-tooltip-place="right" data-tooltip-content='The accuracy defines how long the test will be executed. The higher the accuracy is, the longer the test will be executed. By default, a 100% accuracy is set to a test duration of 1 week. An accuracy of 1% relates to approximately 1 hour. An accuracy value of 0% is not possible. We advise to use at least 60% accuracy to receive meaningful results. With a value of 60% the test will run approximately 60 hours, i.e., two and a half days.'>&#9432;</span>
+						</span>
 					</label>
+					<Tooltip id="accuracy-tooltip" style={{ maxWidth: '256px' }} />
 					<input type="range" value={accuracy} onChange={handleAccuracyChange} name="" id="" className="range range-primary" />
 				</div>
 				<div className="actvity-container">
-					<h4>Response Measure</h4>
+					<h4>
+						Response Measure
+						<span className="ml-1 font-normal text-sm" data-tooltip-id="response-measure-tooltip" data-tooltip-place="right" data-tooltip-content='The response measure declares a hypothesis that you wish to be fulfilled. For instance, a hypothesis that declares the response times to be satisfied means that during the test, your application has to respond with a satisfiable response window.'>&#9432;</span>
+					</h4>
+					<Tooltip id="response-measure-tooltip" style={{ maxWidth: '256px' }} />
 					{responseMeasures.map((responseMeasure) => {
 						return (
 							<div>
@@ -268,25 +281,47 @@ export default function LoadTestMenu(props) {
 								</label>
 								<div className="btn-group">
 									{responseMeasure.values.map((value) => {
-										return <input type="radio" value={value.name} onClick={handleResponseMeasureChange} name={responseMeasure.name} data-title={value.name + ' (' + value.value + ')'} className="btn" />
+										return (
+											<React.Fragment>
+												<input type="radio" value={value.name} onClick={handleResponseMeasureChange} name={responseMeasure.name} data-title={value.name} className="btn" data-tooltip-id={value.name + '-' + value.value} data-tooltip-content={'Value: ' + value.value} />
+												<Tooltip id={value.name + '-' + value.value} />
+											</React.Fragment>
+										)
 									})}
 								</div>
 							</div>
 						)
 					})}
 				</div>
-				<h3>Load Design</h3>
+				<h3>
+					Load Design
+					<span className="ml-1 font-normal text-sm" data-tooltip-id="response-measure-tooltip" data-tooltip-place="right" data-tooltip-content='The Load Design allows you to further design the simulated load depending on the selected stimulus. For instance, if you design a "Load Peak" stimulus, you will need to specify the final peak to be achieved and how long it takes to reach it.'>&#9432;</span>
+				</h3>
+				<Tooltip id="response-measure-tooltip" style={{ maxWidth: '256px' }} />
 				{stimulus.name == "LOAD PEAK" ?
 					<div className="actvity-container">
 						{designParameters.map((parameter) => {
 							return (
 								<div>
 									<label className="label">
-										<span className="label-text">{parameter.name}</span>
+										<span className="label-text">
+											{parameter.name}
+											{
+												parameter.name === 'Highest Load' && <span className="ml-1 font-normal text-sm" data-tooltip-id="response-measure-tooltip" data-tooltip-place="right" data-tooltip-content='The highest load defines how many users you simulate at most, therefor, the higher you select this field, the more users your test will simulate.'>&#9432;</span>
+											}
+											{
+												parameter.name === 'Time to Highest load' && <span className="ml-1 font-normal text-sm" data-tooltip-id="response-measure-tooltip" data-tooltip-place="right" data-tooltip-content='The time to highest load defines the gradient to the peak load.'>&#9432;</span>
+											}
+										</span>
 									</label>
 									<div className="btn-group">
 										{parameter.values.map((value) => {
-											return <input type="radio" value={value.name} onClick={handleDesignParameterChange} name={parameter.name} data-title={value.name + ' (' + value.value + ')'} className="btn" />
+											return (
+												<React.Fragment>
+													<input type="radio" value={value.name} onClick={handleDesignParameterChange} name={parameter.name} data-title={value.name} className="btn" data-tooltip-id={value.name + '-' + value.value} data-tooltip-content={'Value: ' + value.value} />
+													<Tooltip id={value.name + '-' + value.value} />
+												</React.Fragment>
+											)
 										})}
 									</div>
 								</div>
@@ -300,12 +335,17 @@ export default function LoadTestMenu(props) {
 								return (
 									<div>
 										<label className="label">
-											<span className="label-text">{parameter.name}</span>
+											<span className="label-text">
+												{parameter.name}
+												{
+													parameter.name === 'Type of Increase' && <span className="ml-1 font-normal text-sm" data-tooltip-id="response-measure-tooltip" data-tooltip-place="right" data-tooltip-content='The type of increase defines how the graph of the load looks like according to mathematical functions.'>&#9432;</span>
+												}
+											</span>
 										</label>
 										<select name="" id="" className="select select-bordered w-full max-w-xs">
 											{parameter.values.map((value) => {
 												return (
-													<option value={value.name}>{value.name + ' (' + value.value + ')'}</option>
+													<option value={value.name}>{value.name + ' (Value: ' + value.value + ')'}</option>
 												)
 											})}
 										</select>
@@ -320,11 +360,21 @@ export default function LoadTestMenu(props) {
 									return (
 										<div>
 											<label className="label">
-												<span className="label-text">{parameter.name}</span>
+												<span className="label-text">
+													{parameter.name}
+													{
+														parameter.name === 'Base Load' && <span className="ml-1 font-normal text-sm" data-tooltip-id="response-measure-tooltip" data-tooltip-place="right" data-tooltip-content='The base load is a number of simulated users that will be hold consistently for the duration of the test.'>&#9432;</span>
+													}
+												</span>
 											</label>
 											<div className="btn-group">
 												{parameter.values.map((value) => {
-													return <input type="radio" name={parameter.name} data-title={value.name + ' (' + value.value + ')'} className="btn" />
+													return (
+														<React.Fragment>
+															<input type="radio" name={parameter.name} data-title={value.name} className="btn" data-tooltip-id={value.name + '-' + value.value} data-tooltip-content={'Value: ' + value.value} />
+															<Tooltip id={value.name + '-' + value.value} />
+														</React.Fragment>
+													)
 												})}
 											</div>
 										</div>
@@ -334,7 +384,11 @@ export default function LoadTestMenu(props) {
 							: null
 				}
 				<h3>Metrics</h3>
-				<p>The Metrics to include into the Load Test</p>
+				<p>
+					The Metrics to include into the Load Test
+					<span className="ml-1 font-normal text-sm" data-tooltip-place="right" data-tooltip-id="metrics-tooltip" data-tooltip-content='You may check one or multiple of these fields to tell the system which metrics you would like to include in the final analysis results.'>&#9432;</span>
+				</p>
+				<Tooltip id="metrics-tooltip" style={{ maxWidth: '256px' }} />
 				<div className="activity-container">
 					{metrics.map((metric, index) => {
 						return (
@@ -364,129 +418,4 @@ export default function LoadTestMenu(props) {
 		</>
 	)
 
-	/* return (
-			<>
-					<div className="menu-container">
-							<h3>Loadtest Specification</h3>
-							< div className="actvity-container" >
-									<p>Activity</p>
-									<select value={selectedActivity.name} onChange={handleSelectionChange} id="">
-											{uniqueActivitys.map((edge) => {
-													return <option value={edge.name} key={edge.id}>{edge.name}</option>
-											})}
-									</select>
-							</div >
-							< div className="actvity-container" >
-									<p>Stimulus</p>
-									<select value={stimulus.name} onChange={handleStimulusChange} id="">
-											{stimuluses.map((stimulus) => {
-													return <option value={stimulus.name} key={stimulus.name}>{stimulus.name}</option>
-											})}
-									</select>
-							</div >
-							< div className="actvity-container" >
-									<p>Accuracy</p>
-									<div className="slidecontainer">
-											<input type="range" value={accuracy} onChange={handleAccuracyChange} name="" id="" />
-									</div>
-							</div >
-							< div className="actvity-container" >
-									<p>Response Measure</p>
-									{responseMeasures.map((responseMeasure) => {
-											return (
-													<div>
-															<p>{responseMeasure.name}</p>
-															<div className="button-group">
-																	{responseMeasure.values.map((value) => {
-																			return <button value={value} onClick={handleResponseMeasureChange}>{value}</button>
-																	})}
-															</div>
-													</div>
-											)
-									})}
-							</div >
-							<hr />
-							<h3>Load Design</h3>
-							{stimulus.name == "LOAD PEAK" ?
-									< div className="actvity-container" >
-											{designParameters.map((parameter) => {
-													return (
-															<div>
-																	<p>{parameter.name}</p>
-																	<div id={parameter.name} className="button-group">
-																			{parameter.values.map((value) => {
-																					return <button value={value} onClick={handleDesignParameterChange}>{value}</button>
-																			})}
-																	</div>
-															</div>
-													)
-											})}
-									</div >
-									: stimulus.name == "Load Increase" ?
-											<div className="activity-container">
-
-													{designParameters.map((parameter) => {
-															return (
-																	<div>
-																			<p>{parameter.name}</p>
-																			<select name="" id="">
-																					{parame1ter.values.map((value) => {
-																							return (
-																									<option value={value}>{value}</option>
-																							)
-
-																					})}
-																			</select>
-																	</div>
-															)
-													})}
-
-											</div>
-											: stimulus.name == "Constant Load" ?
-													< div className="actvity-container" >
-															{designParameters.map((parameter) => {
-																	return (
-																			<div>
-																					<p>{parameter.name}</p>
-																					<div className="button-group">
-																							{parameter.values.map((value) => {
-																									return <button>{value}</button>
-																							})}
-																					</div>
-																			</div>
-																	)
-															})}
-													</div >
-													: null
-							}
-							<hr />
-							<h3>Metrics</h3>
-							<p>The Metrics to include into the Load Test</p>
-
-							<div className="activity-container">
-									{metrics.map((metric, index) => {
-											return (
-													<div>
-															<span>{metric}</span>
-															<input type="checkbox"
-																	key={index}
-																	value={metric}
-																	checked={includedMetrics.includes(metric)}
-																	onChange={handleMetricsChange}
-																	name=""
-																	id="" />
-													</div>
-											)
-									})}
-							</div>
-
-							<hr />
-							<button onClick={submitLoadtest}>
-									Execute
-							</button>
-
-					</div >
-
-			</>
-	) */
 }
