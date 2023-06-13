@@ -1,10 +1,8 @@
 import { MarkerType } from 'reactflow';
-import * as mapping from '../data/werkstatt.json';
 
-
-export const createSystemWorkobjectEdges = () => {
+export const createSystemWorkobjectEdges = (domain) => {
     let serviceWorkObjectEdges = [];
-    mapping.systems.forEach((system) => {
+    domain.systems.forEach((system) => {
         system.activities.forEach((activity) => {
             const newEdge = {
                 id: `system_work_object_${activity.activity_id}`,
@@ -26,9 +24,9 @@ export const createSystemWorkobjectEdges = () => {
     return serviceWorkObjectEdges;
 }
 
-export const createWorkobjectActorEdges = () => {
+export const createWorkobjectActorEdges = (domain) => {
     let workObjectActorEdges = [];
-    mapping.systems.forEach((system) => {
+    domain.systems.forEach((system) => {
         system.activities.forEach((activity) => {
             const newEdge = {
                 id: `work_object_actor_${activity.activity_id}`,
