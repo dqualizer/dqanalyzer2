@@ -3,8 +3,7 @@ import Icon from '../nodes/nodeComponents/Icon';
 import LoadTestMenu from './LoadTestMenu';
 import { useEdges, useOnSelectionChange, useReactFlow, useStore } from 'reactflow';
 import { MarkerType } from 'reactflow';
-
-
+import '../language/icon/icons.css';
 
 export default function Sidebar(props) {
 
