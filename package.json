@@ -17,9 +17,8 @@
     "react-dom": "^18.2.0",
     "react-router-dom": "^6.12.1",
     "reactflow": "^11.7.0",
-    "sort-by": "^1.2.0"
-    "react-tooltip": "^5.13.1",
-    "reactflow": "^11.7.0"
+    "sort-by": "^1.2.0",
+    "react-tooltip": "^5.13.1"
   },
   "devDependencies": {
     "@tailwindcss/typography": "^0.5.9",
