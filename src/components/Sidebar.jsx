@@ -1,6 +1,9 @@
 import React, { useState } from 'react'
 import Icon from '../nodes/nodeComponents/Icon';
 import LoadTestMenu from './LoadTestMenu';
+import RqaExplorer from './RqaExplorer';
+import '../language/icon/icons.css'
+import EqualizerIcon from '@mui/icons-material/Equalizer';
 import { useEdges, useOnSelectionChange, useReactFlow, useStore } from 'reactflow';
 
 
@@ -8,6 +11,7 @@ export default function Sidebar(props) {
 
     const [edgeSelected, setEgdeSelected] = useState(false);
     const [selectedEdge, setSelectedEdge] = useState(null);
+    const [rqaExplorerShow, setRqaExplorerShow] = useState();
     const reactFlowInstance = useReactFlow();
 
     const selectionChange = useOnSelectionChange({
@@ -51,14 +55,22 @@ export default function Sidebar(props) {
         }
     });
 
+    const onRqaExplorerClick = () => {
+        setRqaExplorerShow((prevState) => !prevState);
+    }
+
     return (
         <div className="sidebar">
             <div className='taskbar-container'>
+                <button onClick={onRqaExplorerClick}><div><EqualizerIcon /></div></button>
                 <button><div className="icon-domain-story-loadtest"></div></button>
                 <button><div className="icon-domain-story-monitoring"></div></button>
                 <button><div className="icon-domain-story-chaosexperiment"></div></button>
+
+
             </div>
             {selectedEdge ? <LoadTestMenu selectedEdge={selectedEdge} edges={props.edges} /> : null}
+            {rqaExplorerShow ? <RqaExplorer /> : null}
         </div>
 
 

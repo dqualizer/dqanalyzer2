@@ -4,11 +4,41 @@ import * as loadtestSpecs from '../data/loadtest-specs.json';
 
 export default function LoadTestMenu(props) {
 
+	// Resize States
+	const [isResizing, setIsResizing] = useState(false);
+	const [sidebarWidth, setSidebarWidth] = useState(1000); // Initial width of the sidebar
+
+	const handleMouseDown = () => {
+		setIsResizing(true);
+	};
+
+	const handleMouseUp = () => {
+		setIsResizing(false);
+	};
+
+	const handleMouseMove = (event) => {
+		if (isResizing) {
+			const newWidth = event.clientX;
+			setSidebarWidth(newWidth);
+		}
+	};
+
+	useEffect(() => {
+		console.log("isResizing")
+		document.addEventListener('mousemove', handleMouseMove);
+		document.addEventListener('mouseup', handleMouseUp);
+
+		return () => {
+			document.removeEventListener('mousemove', handleMouseMove);
+			document.removeEventListener('mouseup', handleMouseUp);
+		};
+	}, [isResizing]);
+
+
 	// Getting Loadtest Definition Parameters from the Json
 	const stimuluses = loadtestSpecs.stimuluses;
 	const responseMeasures = loadtestSpecs.responseMeasures;
 	const metrics = loadtestSpecs.metrics;
-
 
 	const [selectedActivity, setSelectedActivity] = useState(props.selectedEdge);
 	const [stimulus, setStimulus] = useState(stimuluses[0]);
@@ -81,6 +111,7 @@ export default function LoadTestMenu(props) {
 	}
 
 
+
 	useEffect(() => {
 		console.log(props.selectedEdge);
 		setSelectedActivity(props.selectedEdge);
@@ -88,7 +119,7 @@ export default function LoadTestMenu(props) {
 
 	return (
 		<>
-			<div className="menu-container prose overflow-scroll">
+			<div className="menu-container prose overflow-scroll" style={{ width: `${sidebarWidth}px`, cursor: isResizing ? 'col-resize' : 'default', }} >
 				<h3>Loadtest Specification</h3>
 				<div className="actvity-container">
 					<label className="label">
@@ -219,6 +250,15 @@ export default function LoadTestMenu(props) {
 				</button>
 
 			</div >
+			<div className='hover:cursor-col-resize'
+				style={{
+					width: '5px',
+					height: '100%',
+					// backgroundColor: isResizing ? 'red' : 'transparent', // Change the color of the border when resizing
+					// cursor: isResizing ? 'col-resize' : 'default',
+				}}
+				onMouseDown={handleMouseDown}
+			/>
 
 		</>
 	)

@@ -4,8 +4,7 @@ import viteLogo from '/vite.svg'
 import './App.css'
 import 'reactflow/dist/style.css'
 import { Background, Controls, ReactFlow, ReactFlowProvider, useNodesState, useEdgesState, addEdge, MarkerType } from 'reactflow'
-import Taskbar from './components/Taskbar'
-import NamePanel from './components/NamePanel'
+
 import Sidebar from './components/Sidebar'
 import IconNode from './nodes/IconNode'
 import { createActors, createSystems, createWorkobjects } from './utils/createNodes'
@@ -51,8 +50,7 @@ function App() {
             connectionLineType="straight"
             nodeTypes={nodeTypes}
           >
-            {/* <Taskbar /> */}
-            {/* <NamePanel /> */}
+
             <Background />
             <Controls />
           </ReactFlow>
