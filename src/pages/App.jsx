@@ -1,25 +1,25 @@
-import React, { useState, useRef, useCallback, useMemo } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import React, { useState, useRef, useMemo } from 'react'
 import 'reactflow/dist/style.css'
 import { Background, Controls, ReactFlow, ReactFlowProvider, useNodesState, useEdgesState, addEdge, MarkerType } from 'reactflow'
-import Taskbar from './components/Taskbar'
-import NamePanel from './components/NamePanel'
-import Sidebar from './components/Sidebar'
-import IconNode from './nodes/IconNode'
-import { createActors, createSystems, createWorkobjects } from './utils/createNodes'
+import Sidebar from '../components/Sidebar'
+import IconNode from '../nodes/IconNode'
+import { createInitialElements } from '../utils/createInitialElements'
+import { getLayoutedElements } from '../utils/layoutElements'
+import { useLoaderData } from 'react-router-dom'
 
-import { createSystemWorkobjectEdges, createWorkobjectActorEdges } from './utils/createEdges'
-import { createInitialElements } from './utils/createInitialElements'
-import { getLayoutedElements } from './utils/layoutElements'
+import { getDomain } from './Home'
 
-
+export async function loader({ params }) {
+  const domain = await getDomain(params.domainId);
+  return { domain };
+}
 
 function App() {
 
+  const { domain } = useLoaderData();
+
   // create the initial nodes and edges from the mapping
-  const [initialNodes, initialEgdes] = createInitialElements();
+  const [initialNodes, initialEgdes] = createInitialElements(domain);
 
   // Add the custom node-type IconNode
   const nodeTypes = useMemo(() => ({ iconNode: IconNode }), []);
@@ -51,8 +51,6 @@ function App() {
             connectionLineType="straight"
             nodeTypes={nodeTypes}
           >
-            {/* <Taskbar /> */}
-            {/* <NamePanel /> */}
             <Background />
             <Controls />
           </ReactFlow>
