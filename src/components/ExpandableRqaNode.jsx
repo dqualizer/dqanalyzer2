@@ -2,7 +2,8 @@ import React from 'react'
 import KeyboardArrowRightIcon from '@mui/icons-material/KeyboardArrowRight';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import { useState, useRef } from 'react'
-export default function ExpandableRqaNode({ paramName, data, expandable = true, expandFunction, expanded, level, rqa }) {
+import axios from 'axios';
+export default function ExpandableRqaNode({ paramName, data, expandable = true, expandFunction, expanded, level, setInputOpen, setRqas }) {
 
     const [value, setValue] = useState(data);
     const [isEditing, setIsEditing] = useState(data ? false : true);
@@ -22,7 +23,6 @@ export default function ExpandableRqaNode({ paramName, data, expandable = true, 
 
 
     const handleClick = () => {
-
         if (data && expandFunction)
             expandFunction((prevState) => !prevState)
     }
@@ -37,7 +37,20 @@ export default function ExpandableRqaNode({ paramName, data, expandable = true, 
             console.log('Enter key was pressed');
             inputRef.current.blur(); // Unfocus the input field
             setIsEditing(false)
-            rqa.name = value;
+            axios.post(`https://64917f002f2c7ee6c2c85311.mockapi.io/api/v1/rqas/`, {
+                name: value,
+                context: "",
+                environment: "",
+                runtime_quality_analysis: {
+                    loadtests: [],
+                    resilience: [],
+                    monitoring: []
+                }
+            }).then((response => {
+                setInputOpen(false);
+                setRqas(prevState => [...prevState, response.data]);
+            }));
+
 
         }
     }

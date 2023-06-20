@@ -3,6 +3,8 @@ import AddIcon from '@mui/icons-material/Add';
 import RqaNode from './RqaNode';
 
 import ExpandableRqaNode from './ExpandableRqaNode';
+import { createRqa, getRqas, loader } from '../functions/network/rqa';
+import axios from 'axios';
 
 const emptyRQA = {
     name: "",
@@ -17,45 +19,11 @@ const emptyRQA = {
 }
 
 export default function RqaExplorer() {
-    let initRqas = [{
-        name: "Loadtest Analysis",
-        context: "Werkstattauftrag",
-        environment: "TEST",
-        runtime_quality_analysis: {
-            loadtests: [{
-                name: "Single Activity Loadtest",
-                artifact: {
-                    object: 'id1',
-                    activity: "id3"
-                },
-                description: "Auftrag lesen",
-                stimulus: {
-                    load_profile: "LOAD_PEAK",
-                    accuracy: "57",
-                    highest_load: "HIGH",
-                    time_to_highest_load: "FAST"
-
-                },
-                parametrization: {
-                    path_variables: { auftragsnummer: "auftrag/auftragsnummern/angelegt.json" }
-                },
-                response_measure: {
-                    response_time: "TOLERATED"
-                },
-                result_metrics: [
-                    "Response Time",
-                    "90th Percentile"
-                ]
-            }],
-            resilience: [],
-            monitoring: [],
-        }
-    }]
 
     // Resize States
     const [isResizing, setIsResizing] = useState(false);
     const [sidebarWidth, setSidebarWidth] = useState(300); // Initial width of the sidebar
-    const [rqas, setRquas] = useState(initRqas)
+    const [inputOpen, setInputOpen] = useState(false);
 
     const handleMouseDown = () => {
         setIsResizing(true);
@@ -73,7 +41,7 @@ export default function RqaExplorer() {
     };
 
     const handleAddClick = () => {
-        setRquas([...rqas, emptyRQA])
+        setInputOpen(true);
     }
 
 
@@ -98,7 +66,7 @@ export default function RqaExplorer() {
                     <button onClick={handleAddClick}><AddIcon /></button>
                 </div>
 
-                <RqaNode data={rqas} />
+                <RqaNode inputOpen={inputOpen} setInputOpen={setInputOpen} />
 
 
             </div >

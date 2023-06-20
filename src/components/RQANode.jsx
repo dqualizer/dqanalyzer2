@@ -1,10 +1,19 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import ExpandableRqaNode from './ExpandableRqaNode';
 import { useState } from 'react';
-export default function RQANode(params) {
-    const rqas = params.data;
+import axios from 'axios';
+export default function RQANode({ inputOpen, setInputOpen }) {
+
+    const [rqas, setRqas] = useState([])
 
     const [menuState, setMenuState] = useState({});
+
+    useEffect(() => {
+        axios.get(`https://64917f002f2c7ee6c2c85311.mockapi.io/api/v1/rqas`).then((response) => {
+            setRqas(response.data);
+        })
+    }, []);
+
 
     const onExpandClick = (menu) => {
         setMenuState((prevState) => ({
@@ -18,7 +27,7 @@ export default function RQANode(params) {
         <>
             {rqas.map((rqa) => {
                 return <>
-                    <ExpandableRqaNode key={rqa.name} data={rqa.name} rqa={rqa} expandFunction={() => onExpandClick(rqa.name)} expanded={menuState.rqa} level={1} />
+                    <ExpandableRqaNode key={rqa.name} data={rqa.name} rqa={rqa} expandFunction={() => onExpandClick(rqa.name)} expanded={menuState[rqa.name]} level={1} />
                     {menuState[rqa.name] && Object.keys(rqa.runtime_quality_analysis).map((keyName, i) => {
                         if (keyName == "loadtests") {
                             return (
@@ -98,6 +107,8 @@ export default function RQANode(params) {
                     }
                     )}
 
+
+
                 </>
             })}
             {
@@ -105,7 +116,7 @@ export default function RQANode(params) {
             }
 
 
-
+            {inputOpen && <ExpandableRqaNode level={1} setRqas={setRqas} setMenuState={setMenuState} setInputOpen={setInputOpen} />}
 
         </>
     )
