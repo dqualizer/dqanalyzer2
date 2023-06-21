@@ -1,66 +1,111 @@
 {
-    "stimuluses": [
-        {
-            "name": "LOAD PEAK",
-            "designParameters": [
-                {
-                    "name": "Highest Load",
-                    "values": [
-                        "High",
-                        "Very High",
-                        "Extremly High"
-                    ]
-                },
-                {
-                    "name": "Time to Highest load",
-                    "values": [
-                        "Slow",
-                        "Fast",
-                        "Very Fast"
-                    ]
-                }
-            ]
-        },
-        {
-            "name": "Load Increase",
-            "designParameters": [
-                {
-                    "name": "Type of Increase",
-                    "values": [
-                        "Linear",
-                        "Quadratic",
-                        "Cubic"
-                    ]
-                }
-            ]
-        },
-        {
-            "name": "Constant Load",
-            "designParameters": [
-                {
-                    "name": "Base Load",
-                    "values": [
-                        "Low",
-                        "Medium",
-                        "High"
-                    ]
-                }
-            ]
-        }
-    ],
-    "responseMeasures": [
-        {
-            "name": "Response times",
-            "values": [
-                "Satisfied",
-                "Tolerated",
-                "Frustrated"
-            ]
-        }
-    ],
-    "metrics": [
-        "Response Times",
-        "90th Percentile",
-        "95th Percentile"
-    ]
+	"stimuluses": [
+		{
+			"name": "LOAD PEAK",
+			"designParameters": [
+				{
+					"name": "Highest Load",
+					"values": [
+						{
+							"name": "High",
+							"value": 10
+						},
+						{
+							"name": "Very High",
+							"value": 15
+						},
+						{
+							"name": "Extremly High",
+							"value": 30
+						}
+					]
+				},
+				{
+					"name": "Time to Highest load",
+					"values": [
+						{
+							"name": "Slow",
+							"value": "20s"
+						},
+						{
+							"name": "Fast",
+							"value": "15s"
+						},
+						{
+							"name": "Very Fast",
+							"value": "10s"
+						}
+					]
+				}
+			]
+		},
+		{
+			"name": "Load Increase",
+			"designParameters": [
+				{
+					"name": "Type of Increase",
+					"values": [
+						{
+							"name": "Linear",
+							"value": 1
+						},
+						{
+							"name": "Quadratic",
+							"value": 2
+						},
+						{
+							"name": "Cubic",
+							"value": 3
+						}
+					]
+				}
+			]
+		},
+		{
+			"name": "Constant Load",
+			"designParameters": [
+				{
+					"name": "Base Load",
+					"values": [
+						{
+							"name": "Low",
+							"value": 10
+						},
+						{
+							"name": "Medium",
+							"value": 20
+						},
+						{
+							"name": "High",
+							"value": 30
+						}
+					]
+				}
+			]
+		}
+	],
+	"responseMeasures": [
+		{
+			"name": "Response time",
+			"values": [
+				{
+					"name": "Satisfied",
+					"value": 1200
+				},
+				{
+					"name": "Tolerated",
+					"value": 2400
+				},
+				{
+					"name": "Frustrated",
+					"value": 4800
+				}
+			]
+		}
+	],
+	"metrics": [
+		"Response Time",
+		"90th Percentile",
+		"95th Percentile"
+	]
 }

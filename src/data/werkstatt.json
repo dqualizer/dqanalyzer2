@@ -1,6 +1,7 @@
 {
+    "domainId": "1",
     "version": 1.0,
-    "context": "werkstattauftrag",
+    "context": "Werkstattauftrag",
     "server_info": [
         {
             "host": "http://127.0.0.1:9000",
