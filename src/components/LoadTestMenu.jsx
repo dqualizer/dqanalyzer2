@@ -50,9 +50,9 @@ export default function LoadTestMenu(props) {
 			resilience: [],
 			loadtests: [
 				{
-					artifact: { object: props.selectedEdge.system, activity: props.selectedEdge.activity },
-					description: props.selectedEdge.name,
-					parametrization: props.selectedEdge.parametrization,
+					artifact: { object: props.selectedEdge?.system, activity: props.selectedEdge?.activity },
+					description: props.selectedEdge?.name,
+					parametrization: props.selectedEdge?.parametrization,
 					response_measure: {},
 					result_metrics: [],
 					stimulus: {
@@ -123,9 +123,9 @@ export default function LoadTestMenu(props) {
 
 
 		// Only works with one loadtest
-		rqaCopy.runtime_quality_analysis.loadtests[0].artifact.object = props.selectedEdge.system;
-		rqaCopy.runtime_quality_analysis.loadtests[0].artifact.activity = props.selectedEdge.activity;
-		rqaCopy.runtime_quality_analysis.loadtests[0].description = props.selectedEdge.name;
+		rqaCopy.runtime_quality_analysis.loadtests[0].artifact.object = props.selectedEdge?.system;
+		rqaCopy.runtime_quality_analysis.loadtests[0].artifact.activity = props.selectedEdge?.activity;
+		rqaCopy.runtime_quality_analysis.loadtests[0].description = props.selectedEdge?.name;
 		console.log(rqaCopy.runtime_quality_analysis.loadtests[0]);
 
 		setRqa(rqaCopy);
@@ -256,21 +256,22 @@ export default function LoadTestMenu(props) {
 	useEffect(() => {
 		setSelectedActivity(props.selectedEdge);
 		let rqaCopy = rqa;
-		rqaCopy.runtime_quality_analysis.loadtests[0].artifact = { object: props.selectedEdge.system, activity: props.selectedEdge.activity }
-		rqaCopy.runtime_quality_analysis.loadtests[0].description = props.selectedEdge.name
+		rqaCopy.runtime_quality_analysis.loadtests[0].artifact = { object: props.selectedEdge?.system, activity: props.selectedEdge?.activity }
+		rqaCopy.runtime_quality_analysis.loadtests[0].description = props.selectedEdge?.name
 		setRqa(rqaCopy);
 	}, [props.selectedEdge]);
 
 
 	return (
 		<>
-			<div className="p-4 prose overflow-scroll" style={{ width: `${sidebarWidth}px`, cursor: isResizing ? 'col-resize' : 'default', }} >
+
+			<div className="p-4 prose overflow-scroll h-full" style={{ width: `${sidebarWidth}px`, cursor: isResizing ? 'col-resize' : 'default', }} >
 				<h3>Loadtest Specification</h3>
 				<div className="actvity-container">
 					<label className="label">
 						<span className="label-text">Activity</span>
 					</label>
-					<select value={selectedActivity.name} onChange={handleSelectionChange} id="" className="select select-bordered w-full max-w-xs">
+					<select value={selectedActivity?.name} onChange={handleSelectionChange} id="" className="select select-bordered w-full max-w-xs">
 						{uniqueActivitys.map((edge) => {
 							return <option value={edge.name} key={edge.id}>{edge.name}</option>
 						})}
