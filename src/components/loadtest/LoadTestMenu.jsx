@@ -1,15 +1,24 @@
 import React, { useEffect, useState } from 'react'
 import { useEdges, useOnSelectionChange, useReactFlow } from 'reactflow';
-import * as loadtestSpecs from '../data/loadtest-specs.json';
-import ResizeBar from './ResizeBar';
-import * as mapping from '../data/werkstatt.json';
+import * as loadtestSpecs from '../../data/loadtest-specs.json';
+import ResizeBar from '../ResizeBar';
+import * as mapping from '../../data/werkstatt.json';
 import { Tooltip } from 'react-tooltip'
+import DropdownLeft from '../DropdownLeft';
+import axios from 'axios';
 
 export default function LoadTestMenu(props) {
 
 	// Resize States
 	const [isResizing, setIsResizing] = useState(false);
 	const [sidebarWidth, setSidebarWidth] = useState(1000); // Initial width of the sidebar
+	const [rqas, setRqas] = useState();
+
+	useEffect(() => {
+		axios.get(`https://64917f002f2c7ee6c2c85311.mockapi.io/api/v1/rqas`).then((response) => {
+			setRqas(response.data);
+		})
+	}, []);
 
 	const handleMouseDown = () => {
 		setIsResizing(true);
@@ -27,7 +36,6 @@ export default function LoadTestMenu(props) {
 	};
 
 	useEffect(() => {
-		console.log("isResizing")
 		document.addEventListener('mousemove', handleMouseMove);
 		document.addEventListener('mouseup', handleMouseUp);
 
@@ -281,7 +289,7 @@ export default function LoadTestMenu(props) {
 					<label className="label">
 						<span className="label-text">
 							Stimulus
-							<span className="ml-1 font-normal text-sm" data-tooltip-id="stimulus-tooltip" data-tooltip-place="right" data-tooltip-content='The stimulus specifies how the load should look like. For instance, a "Load peak" will lead to a massive spike in simulated users accessing the application in a secure environment whereas a "Load Increase" may lead to a slow in crease in users accessing the application.'>&#9432;</span>
+							<span className="ml-1 font-normal text-sm" data-tooltip-id="stimulus-tooltip" data-tooltip-place="right" data-tooltip-content=''>&#9432;</span>
 						</span>
 					</label>
 					<Tooltip id="stimulus-tooltip" style={{ maxWidth: '256px' }} />
@@ -295,38 +303,13 @@ export default function LoadTestMenu(props) {
 					<label className="label">
 						<span className="label-text">
 							Accuracy
-							<span className="ml-1 font-normal text-sm" data-tooltip-id="accuracy-tooltip" data-tooltip-place="right" data-tooltip-content='The accuracy defines how long the test will be executed. The higher the accuracy is, the longer the test will be executed. By default, a 100% accuracy is set to a test duration of 1 week. An accuracy of 1% relates to approximately 1 hour. An accuracy value of 0% is not possible. We advise to use at least 60% accuracy to receive meaningful results. With a value of 60% the test will run approximately 60 hours, i.e., two and a half days.'>&#9432;</span>
+							<span className="ml-1 font-normal text-sm" data-tooltip-id="accuracy-tooltip" data-tooltip-place="right" data-tooltip-content=''>&#9432;</span>
 						</span>
 					</label>
 					<Tooltip id="accuracy-tooltip" style={{ maxWidth: '256px' }} />
 					<input type="range" value={accuracy} onChange={handleAccuracyChange} name="" id="" className="range range-primary" />
 				</div>
-				<div className="actvity-container">
-					<h4>
-						Response Measure
-						<span className="ml-1 font-normal text-sm" data-tooltip-id="response-measure-tooltip" data-tooltip-place="right" data-tooltip-content='The response measure declares a hypothesis that you wish to be fulfilled. For instance, a hypothesis that declares the response times to be satisfied means that during the test, your application has to respond with a satisfiable response window.'>&#9432;</span>
-					</h4>
-					<Tooltip id="response-measure-tooltip" style={{ maxWidth: '256px' }} />
-					{responseMeasures.map((responseMeasure) => {
-						return (
-							<div>
-								<label className="label">
-									<span className="label-text">{responseMeasure.name}</span>
-								</label>
-								<div className="btn-group">
-									{responseMeasure.values.map((value) => {
-										return (
-											<React.Fragment>
-												<input type="radio" value={value.name} onClick={handleResponseMeasureChange} name={responseMeasure.name} data-title={value.name} className="btn" data-tooltip-id={value.name + '-' + value.value} data-tooltip-content={'Value: ' + value.value} />
-												<Tooltip id={value.name + '-' + value.value} />
-											</React.Fragment>
-										)
-									})}
-								</div>
-							</div>
-						)
-					})}
-				</div>
+
 				<h3>
 					Load Design
 					<span className="ml-1 font-normal text-sm" data-tooltip-id="response-measure-tooltip" data-tooltip-place="right" data-tooltip-content='The Load Design allows you to further design the simulated load depending on the selected stimulus. For instance, if you design a "Load Peak" stimulus, you will need to specify the final peak to be achieved and how long it takes to reach it.'>&#9432;</span>
@@ -443,9 +426,7 @@ export default function LoadTestMenu(props) {
 					})}
 				</div>
 
-				<button onClick={submitLoadtest} className="btn btn-primary">
-					Execute
-				</button>
+				<DropdownLeft rqas={rqas} loadtest={loadtest} />
 
 			</div >
 			<ResizeBar setIsResizing={setIsResizing} setSidebarWidth={setSidebarWidth} />

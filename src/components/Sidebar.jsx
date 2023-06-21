@@ -1,6 +1,4 @@
 import React, { useRef, useState, useEffect } from 'react'
-import Icon from '../nodes/nodeComponents/Icon';
-import LoadTestMenu from './LoadTestMenu';
 import RqaExplorer from './rqa_explorer/RqaExplorer';
 import '../language/icon/icons.css'
 import EqualizerIcon from '@mui/icons-material/Equalizer';
@@ -8,6 +6,7 @@ import { useEdges, useOnSelectionChange, useReactFlow, useStore } from 'reactflo
 import { MarkerType } from 'reactflow';
 import '../language/icon/icons.css';
 import ViewportChangeLogger from '../utils/hideComponentOnViewportClick';
+import LoadtestSpecifier from './loadtest/LoadtestSpecifier';
 
 export default function Sidebar(props) {
 
@@ -92,7 +91,7 @@ export default function Sidebar(props) {
 
 
             </div>
-            {selectedEdge || loadTestShow ? <div ref={loadtestRef}> <LoadTestMenu selectedEdge={selectedEdge} edges={props.edges} /> </div> : null}
+            {loadTestShow ? <div ref={loadtestRef}> <LoadtestSpecifier selectedEdge={selectedEdge} edges={props.edges} /> </div> : null}
             {rqaExplorerShow ? <RqaExplorer /> : null}
         </div>
 

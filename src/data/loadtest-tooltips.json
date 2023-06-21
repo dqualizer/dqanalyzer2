@@ -1,0 +1,5 @@
+{
+    "stimulus": "The stimulus specifies how the load should look like. For instance, a \"Load peak\" will lead to a massive spike in simulated users accessing the application in a secure environment whereas a \"Load Increase\" may lead to a slow in crease in users accessing the application.",
+    "accuracy": "The accuracy defines how long the test will be executed. The higher the accuracy is, the longer the test will be executed. By default, a 100% accuracy is set to a test duration of 1 week. An accuracy of 1% relates to approximately 1 hour. An accuracy value of 0% is not possible. We advise to use at least 60% accuracy to receive meaningful results. With a value of 60% the test will run approximately 60 hours, i.e., two and a half days.",
+    "response_measure": "The response measure declares a hypothesis that you wish to be fulfilled. For instance, a hypothesis that declares the response times to be satisfied means that during the test, your application has to respond with a satisfiable response window."
+}
