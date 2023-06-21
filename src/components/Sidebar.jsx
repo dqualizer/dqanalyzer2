@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useRef, useState, useEffect } from 'react'
 import Icon from '../nodes/nodeComponents/Icon';
 import LoadTestMenu from './LoadTestMenu';
 import RqaExplorer from './rqa_explorer/RqaExplorer';
@@ -7,13 +7,18 @@ import EqualizerIcon from '@mui/icons-material/Equalizer';
 import { useEdges, useOnSelectionChange, useReactFlow, useStore } from 'reactflow';
 import { MarkerType } from 'reactflow';
 import '../language/icon/icons.css';
+import ViewportChangeLogger from '../utils/hideComponentOnViewportClick';
 
 export default function Sidebar(props) {
 
     const [edgeSelected, setEgdeSelected] = useState(false);
     const [selectedEdge, setSelectedEdge] = useState(null);
     const [rqaExplorerShow, setRqaExplorerShow] = useState();
+    const [loadTestShow, setLoadTestShow] = useState();
     const reactFlowInstance = useReactFlow();
+    const loadtestRef = useRef(null);
+
+    ViewportChangeLogger(loadtestRef, setLoadTestShow);
 
     const selectionChange = useOnSelectionChange({
         onChange: ({ edges }) => {
@@ -67,21 +72,27 @@ export default function Sidebar(props) {
         }
     });
 
+
+
     const onRqaExplorerClick = () => {
         setRqaExplorerShow((prevState) => !prevState);
+    }
+
+    const onLoadtestClick = () => {
+        setLoadTestShow((prevState) => !prevState);
     }
 
     return (
         <div className="sidebar">
             <div className='taskbar-container'>
                 <button onClick={onRqaExplorerClick}><div><EqualizerIcon /></div></button>
-                <button><div className="icon-domain-story-loadtest"></div></button>
+                <button onClick={onLoadtestClick}><div className="icon-domain-story-loadtest"></div></button>
                 <button><div className="icon-domain-story-monitoring"></div></button>
                 <button><div className="icon-domain-story-chaosexperiment"></div></button>
 
 
             </div>
-            {selectedEdge ? <LoadTestMenu selectedEdge={selectedEdge} edges={props.edges} /> : null}
+            {selectedEdge || loadTestShow ? <div ref={loadtestRef}> <LoadTestMenu selectedEdge={selectedEdge} edges={props.edges} /> </div> : null}
             {rqaExplorerShow ? <RqaExplorer /> : null}
         </div>
 
