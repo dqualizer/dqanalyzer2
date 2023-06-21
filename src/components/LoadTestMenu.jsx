@@ -1,10 +1,42 @@
 import React, { useEffect, useState } from 'react'
 import { useEdges, useOnSelectionChange, useReactFlow } from 'reactflow';
 import * as loadtestSpecs from '../data/loadtest-specs.json';
+import ResizeBar from './ResizeBar';
 import * as mapping from '../data/werkstatt.json';
 import { Tooltip } from 'react-tooltip'
 
 export default function LoadTestMenu(props) {
+
+	// Resize States
+	const [isResizing, setIsResizing] = useState(false);
+	const [sidebarWidth, setSidebarWidth] = useState(1000); // Initial width of the sidebar
+
+	const handleMouseDown = () => {
+		setIsResizing(true);
+	};
+
+	const handleMouseUp = () => {
+		setIsResizing(false);
+	};
+
+	const handleMouseMove = (event) => {
+		if (isResizing) {
+			const newWidth = event.clientX;
+			setSidebarWidth(newWidth);
+		}
+	};
+
+	useEffect(() => {
+		console.log("isResizing")
+		document.addEventListener('mousemove', handleMouseMove);
+		document.addEventListener('mouseup', handleMouseUp);
+
+		return () => {
+			document.removeEventListener('mousemove', handleMouseMove);
+			document.removeEventListener('mouseup', handleMouseUp);
+		};
+	}, [isResizing]);
+
 
 	// Getting Loadtest Definition Parameters from the Json
 	const stimuluses = loadtestSpecs.stimuluses;
@@ -220,6 +252,7 @@ export default function LoadTestMenu(props) {
 	}
 
 
+
 	useEffect(() => {
 		setSelectedActivity(props.selectedEdge);
 		let rqaCopy = rqa;
@@ -231,7 +264,7 @@ export default function LoadTestMenu(props) {
 
 	return (
 		<>
-			<div className="menu-container prose overflow-scroll">
+			<div className="p-4 prose overflow-scroll" style={{ width: `${sidebarWidth}px`, cursor: isResizing ? 'col-resize' : 'default', }} >
 				<h3>Loadtest Specification</h3>
 				<div className="actvity-container">
 					<label className="label">
@@ -414,6 +447,7 @@ export default function LoadTestMenu(props) {
 				</button>
 
 			</div >
+			<ResizeBar setIsResizing={setIsResizing} setSidebarWidth={setSidebarWidth} />
 
 		</>
 	)
