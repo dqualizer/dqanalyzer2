@@ -1,8 +1,8 @@
 import React, { useEffect } from 'react'
-import ExpandableRqaNode from './ExpandableRqaNode';
+import ExpandableRqaNode from './Node';
 import { useState } from 'react';
 import axios from 'axios';
-export default function RQANode({ inputOpen, setInputOpen }) {
+export default function RQATree({ inputOpen, setInputOpen }) {
 
     const [rqas, setRqas] = useState([])
 

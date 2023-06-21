@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { useEdges, useOnSelectionChange, useReactFlow } from 'reactflow';
 import * as loadtestSpecs from '../data/loadtest-specs.json';
+import ResizeBar from './ResizeBar';
 
 export default function LoadTestMenu(props) {
 
@@ -119,7 +120,7 @@ export default function LoadTestMenu(props) {
 
 	return (
 		<>
-			<div className="menu-container prose overflow-scroll" style={{ width: `${sidebarWidth}px`, cursor: isResizing ? 'col-resize' : 'default', }} >
+			<div className="p-4 prose overflow-scroll" style={{ width: `${sidebarWidth}px`, cursor: isResizing ? 'col-resize' : 'default', }} >
 				<h3>Loadtest Specification</h3>
 				<div className="actvity-container">
 					<label className="label">
@@ -250,15 +251,7 @@ export default function LoadTestMenu(props) {
 				</button>
 
 			</div >
-			<div className='hover:cursor-col-resize'
-				style={{
-					width: '5px',
-					height: '100%',
-					// backgroundColor: isResizing ? 'red' : 'transparent', // Change the color of the border when resizing
-					// cursor: isResizing ? 'col-resize' : 'default',
-				}}
-				onMouseDown={handleMouseDown}
-			/>
+			<ResizeBar setIsResizing={setIsResizing} setSidebarWidth={setSidebarWidth} />
 
 		</>
 	)

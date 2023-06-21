@@ -15,12 +15,11 @@ export default function NamePanel() {
     }
 
     const onClickName = () => {
-        console.log("Clcked")
         setChangeFieldOpen(prevHidden => !prevHidden)
     }
 
     return (
-        <Panel position="top-left">
+        <Panel position="top-right">
             <h3 onClick={onClickName}>{name}</h3>
             <p>{description}</p>
             {

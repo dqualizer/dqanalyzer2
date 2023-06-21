@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import Icon from '../nodes/nodeComponents/Icon';
 import LoadTestMenu from './LoadTestMenu';
-import RqaExplorer from './RqaExplorer';
+import RqaExplorer from './rqa_explorer/RqaExplorer';
 import '../language/icon/icons.css'
 import EqualizerIcon from '@mui/icons-material/Equalizer';
 import { useEdges, useOnSelectionChange, useReactFlow, useStore } from 'reactflow';

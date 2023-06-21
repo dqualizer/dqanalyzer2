@@ -60,7 +60,7 @@ export default function ExpandableRqaNode({ paramName, data, expandable = true, 
         <>
             <div className={`flex items-center hover:bg-slate-500 hover:cursor-pointer w-50 ${spacingVariants[level]} py-2 `} onClick={handleClick}>
                 {!expandable ? null : expanded ? <KeyboardArrowDownIcon fontSize="small" /> : <KeyboardArrowRightIcon fontSize='small' />}
-                {level == 1 && isEditing ? <input ref={inputRef} type="text" className="input input-bordered input-info w-full max-w-xs" onKeyDown={handleSave} onBlur={handleSave} onChange={handleChangeValue} value={value} /> : <span>{paramName && <b>{paramName}:</b>} {value}</span>}
+                {level == 1 && isEditing ? <input ref={inputRef} type="text" autoFocus className="input input-bordered input-info w-full max-w-xs" onKeyDown={handleSave} onBlur={handleSave} onChange={handleChangeValue} value={value} /> : <span>{paramName && <b>{paramName}:</b>} {value}</span>}
 
             </div>
 
