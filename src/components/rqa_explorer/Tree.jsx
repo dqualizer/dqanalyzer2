@@ -21,7 +21,18 @@ export default function RQATree({ inputOpen, setInputOpen }) {
             [menu]: !prevState[menu]
         }));
 
-        console.log(menuState)
+    }
+
+    const handleOnExecute = async (rqa) => {
+        // delete rqa["name"];
+        // delete rqa["id"];
+        // rqa.runtime_quality_analysis.loadtests.forEach((loadtest) => {
+        //     delete loadtest["name"];
+        // });
+        // console.log(rqa);
+        await axios.post(`http://localhost:8070/api/rqa`, rqa).then((response) => {
+            console.log(response);
+        })
     }
     return (
         <>
@@ -37,7 +48,7 @@ export default function RQATree({ inputOpen, setInputOpen }) {
                                         return (
                                             <>
                                                 <ExpandableRqaNode data={loadtest.name} level={3} expandFunction={() => onExpandClick(loadtest.name)} expanded={menuState[loadtest.name]} />
-                                                {menuState[loadtest.name] && <ExpandableRqaNode paramName="Acitivity" data={loadtest.description} expandable={false} level={5} expanded={menuState[loadtest.name]} />}
+                                                {menuState[loadtest.name] && <ExpandableRqaNode paramName="Activity" data={loadtest.name} expandable={false} level={5} expanded={menuState[loadtest.name]} />}
                                                 {menuState[loadtest.name] && Object.keys(loadtest).map((keyName, i) => {
                                                     if (typeof loadtest[keyName] === "string" && keyName != "name")
                                                         return <ExpandableRqaNode paramName={keyName} data={loadtest[keyName]} level={5} expandable={false} expanded={menuState[keyName]} />
@@ -104,9 +115,12 @@ export default function RQATree({ inputOpen, setInputOpen }) {
                             )
                         }
 
+
                     }
+
                     )}
 
+                    {menuState[rqa.name] && <button className="btn btn-sm btn-wide btn-primary" onClick={() => handleOnExecute(rqa)}>Execute</button>}
 
 
                 </>
@@ -117,7 +131,6 @@ export default function RQATree({ inputOpen, setInputOpen }) {
 
 
             {inputOpen && <ExpandableRqaNode level={1} setRqas={setRqas} setMenuState={setMenuState} setInputOpen={setInputOpen} />}
-
         </>
     )
 }

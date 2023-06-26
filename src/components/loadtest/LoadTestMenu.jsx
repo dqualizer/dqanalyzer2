@@ -426,7 +426,7 @@ export default function LoadTestMenu(props) {
 					})}
 				</div>
 
-				<DropdownLeft rqas={rqas} loadtest={loadtest} />
+				<DropdownLeft rqas={rqas} inputs={inputs} />
 
 			</div >
 			<ResizeBar setIsResizing={setIsResizing} setSidebarWidth={setSidebarWidth} />

@@ -30,12 +30,6 @@ export default function SpecSelect({ spec, setInputs, inputs, data, tooltip, con
         setValue(e.target.value);
         console.log(e.target)
 
-        if (spec = "Activity") {
-            edges.forEach(edge => {
-                edge,
-            })
-        }
-
         if (spec == "Stimulus") {
             setInputs((prevState) => ({
                 ...prevState,

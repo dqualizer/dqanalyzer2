@@ -2,11 +2,13 @@ import React, { useRef, useState, useEffect } from 'react'
 import RqaExplorer from './rqa_explorer/RqaExplorer';
 import '../language/icon/icons.css'
 import EqualizerIcon from '@mui/icons-material/Equalizer';
+import PlaylistPlayIcon from '@mui/icons-material/PlaylistPlay';
 import { useEdges, useOnSelectionChange, useReactFlow, useStore } from 'reactflow';
 import { MarkerType } from 'reactflow';
 import '../language/icon/icons.css';
 import ViewportChangeLogger from '../utils/hideComponentOnViewportClick';
 import LoadtestSpecifier from './loadtest/LoadtestSpecifier';
+
 
 export default function Sidebar(props) {
 
@@ -14,6 +16,7 @@ export default function Sidebar(props) {
     const [selectedEdge, setSelectedEdge] = useState(null);
     const [rqaExplorerShow, setRqaExplorerShow] = useState();
     const [loadTestShow, setLoadTestShow] = useState();
+    const [rqaPlayShow, setRqaPlayShow] = useState(false);
     const reactFlowInstance = useReactFlow();
     const loadtestRef = useRef(null);
 
@@ -81,6 +84,8 @@ export default function Sidebar(props) {
         setLoadTestShow((prevState) => !prevState);
     }
 
+
+
     return (
         <div className="sidebar">
             <div className='taskbar-container'>
@@ -90,9 +95,11 @@ export default function Sidebar(props) {
                 <button><div className="icon-domain-story-chaosexperiment"></div></button>
 
 
+
             </div>
-            {loadTestShow ? <div ref={loadtestRef}> <LoadtestSpecifier selectedEdge={selectedEdge} edges={props.edges} /> </div> : null}
+            {loadTestShow && <div ref={loadtestRef}> <LoadtestSpecifier selectedEdge={selectedEdge} edges={props.edges} /> </div>}
             {rqaExplorerShow ? <RqaExplorer /> : null}
+
         </div>
 
 

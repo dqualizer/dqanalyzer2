@@ -86,7 +86,7 @@
 	],
 	"responseMeasures": [
 		{
-			"name": "Response time",
+			"name": "Response Time",
 			"values": [
 				{
 					"name": "Satisfied",
