@@ -2,14 +2,18 @@ import React, { useState, useEffect } from 'react'
 import * as tooltips from '../../data/loadtest-tooltips.json';
 import { Tooltip } from 'react-tooltip';
 import { toSnakeCase } from '../../utils/formatting';
-import { useEdges } from 'reactflow';
+import { useEdges, useOnSelectionChange, useReactFlow, useStore, MarkerType } from 'reactflow';
+
 
 export default function SpecSelect({ spec, setInputs, inputs, data, tooltip, context }) {
 
     const [value, setValue] = useState();
+    const reactFlowInstance = useReactFlow();
+
+
 
     const edges = useEdges();
-    console.log(edges);
+
 
     const arr = data ? data : [];
 
@@ -26,6 +30,44 @@ export default function SpecSelect({ spec, setInputs, inputs, data, tooltip, con
     }, [inputs])
 
     const handleSelectionChange = (e) => {
+
+        if (spec == "Activity") {
+            let relatedEdgesArray = edges.filter((edge) => edge.name == edges[0].name);
+            let unrelatedEdgesArray = edges.filter((edge) => edge.name != edges[0].name);
+            console.log(relatedEdgesArray);
+
+
+            let newEdgeArray = []
+
+            unrelatedEdgesArray.forEach((edge) => {
+                edge.selected = false;
+                edge.animated = false;
+                edge.style = {}
+                edge.markerStart = {
+                    type: MarkerType.ArrowClosed,
+                    width: 20,
+                    height: 20,
+                }
+            })
+
+            relatedEdgesArray.forEach((edge) => {
+                edge.selected = true;
+                edge.animated = true;
+                edge.style = {
+                    stroke: '#570FF2'
+                }
+                edge.markerStart = {
+                    type: MarkerType.ArrowClosed,
+                    width: 20,
+                    height: 20,
+                    color: '#570FF2'
+                }
+            })
+
+            newEdgeArray = newEdgeArray.concat(unrelatedEdgesArray, relatedEdgesArray);
+            reactFlowInstance.setEdges(newEdgeArray);
+
+        }
 
         setValue(e.target.value);
         console.log(e.target)
