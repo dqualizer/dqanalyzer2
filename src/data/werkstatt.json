@@ -39,14 +39,35 @@
                     "type": "method",
                     "parameter": [],
                     "endpoint": {
-                        "field": "/pay/ticket/{ticketId}/",
+                        "field": "/auftrag/{auftragsnummer}",
                         "operation": "GET",
-                        "path_variables": {
-                            "auftragsnummer": "auftrag/auftragsnummern/angelegt.json"
-                        },
-                        "url_parameter": {},
-                        "request_parameter": {},
-                        "payload": {},
+                        "path_variables": [
+                            {
+                                "name": "auftragsnummer",
+                                "szenarios": [
+                                    {
+                                        "name": "Valide Auftragsnummern",
+                                        "path": "auftrag/auftragsnummern/angelegt.json"
+                                    },
+                                    {
+                                        "name": "InValide Auftragsnummern",
+                                        "path": "auftrag/auftragsnummern/nicht_angelegt.json"
+                                    }
+                                ]
+                            },
+                            {
+                                "name": "customer",
+                                "szenarios": [
+                                    {
+                                        "name": "Valide Customer",
+                                        "path": "auftrag/auftragsnummern/angelegt.json"
+                                    }
+                                ]
+                            }
+                        ],
+                        "url_parameter": [],
+                        "request_parameter": [],
+                        "payload": [],
                         "responses": [
                             {
                                 "expected_code": 200,
@@ -69,16 +90,48 @@
                     "endpoint": {
                         "field": "/auftrag/new",
                         "operation": "POST",
-                        "path_variables": {},
-                        "url_parameter": {},
-                        "request_parameter": {
-                            "headers": "auftrag/allgemein/headers.json",
-                            "authorization": "auftrag/allgemein/authorization.json"
-                        },
-                        "payload": {
-                            "auftraggeber_2022": "auftrag/auftraggeber/2022/auftraggeber.json",
-                            "auftraggeber_2023": "auftrag/auftraggeber/2023/auftraggeber.json"
-                        },
+                        "path_variables": [],
+                        "url_parameter": [],
+                        "request_parameter": [
+                            {
+                                "name": "headers",
+                                "szenarios": [
+                                    {
+                                        "name": "valid headers",
+                                        "path": "auftrag/allgemein/headers.json"
+                                    }
+                                ]
+                            },
+                            {
+                                "name": "authorization",
+                                "szenarios": [
+                                    {
+                                        "name": "valid authorization",
+                                        "path": "auftrag/allgemein/authorization.json"
+                                    }
+                                ]
+                            }
+                        ],
+                        "payload": [
+                            {
+                                "name": "auftraggeber",
+                                "szenarios": [
+                                    {
+                                        "name": "auftraggeber_2022",
+                                        "path": "auftrag/auftraggeber/2022/auftraggeber.json"
+                                    }
+                                ]
+                            },
+                            {
+                                "name": "auftraggeber",
+                                "szenarios": [
+                                    {
+                                        "name": "auftraggeber_2023",
+                                        "path": "auftrag/auftraggeber/2023/auftraggeber.json"
+                                    }
+                                ]
+                            }
+                        ],
                         "responses": [
                             {
                                 "expected_code": 201,
@@ -101,16 +154,40 @@
                     "endpoint": {
                         "field": "/auftrag/{auftragsnummer}",
                         "operation": "PUT",
-                        "path_variables": {
-                            "auftragsnummer": "auftrag/auftragsnummern/angelegt.json"
-                        },
-                        "url_parameter": {},
-                        "request_parameter": {
-                            "headers": "auftrag/allgemein/headers.json"
-                        },
-                        "payload": {
-                            "auftragsstatus": "auftrag/auftragsstatus/auftragsstatus.json"
-                        },
+                        "path_variables": [
+                            {
+                                "name": "auftragsnummer",
+                                "scenarios": [
+                                    {
+                                        "name": "Valide Auftragsnummern",
+                                        "path": "auftrag/auftragsnummern/angelegt.json"
+                                    }
+                                ]
+                            }
+                        ],
+                        "url_parameter": [],
+                        "request_parameter": [
+                            {
+                                "name": "headers",
+                                "szenarios": [
+                                    {
+                                        "name": "valid headers",
+                                        "path": "auftrag/allgemein/headers.json"
+                                    }
+                                ]
+                            }
+                        ],
+                        "payload": [
+                            {
+                                "name": "auftragsstatus",
+                                "szenarios": [
+                                    {
+                                        "name": "Mixed Status",
+                                        "path": "auftrag/auftragsstatus/auftragsstatus.json"
+                                    }
+                                ]
+                            }
+                        ],
                         "responses": [
                             {
                                 "expected_code": 200,
