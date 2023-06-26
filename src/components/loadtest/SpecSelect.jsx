@@ -2,17 +2,21 @@ import React, { useState, useEffect } from 'react'
 import * as tooltips from '../../data/loadtest-tooltips.json';
 import { Tooltip } from 'react-tooltip';
 import { toSnakeCase } from '../../utils/formatting';
+import { useEdges } from 'reactflow';
 
-export default function SpecSelect({ spec, setInputs, inputs, data, tooltip }) {
+export default function SpecSelect({ spec, setInputs, inputs, data, tooltip, context }) {
 
     const [value, setValue] = useState();
 
+    const edges = useEdges();
+    console.log(edges);
+
     const arr = data ? data : [];
+
 
     arr.forEach(item => {
         const regex = /_id$/;
         const id_key = Object.keys(item).find(key => regex.test(key));
-        console.log(id_key);
         item.render_id = item[id_key]
 
     });
@@ -24,15 +28,36 @@ export default function SpecSelect({ spec, setInputs, inputs, data, tooltip }) {
     const handleSelectionChange = (e) => {
 
         setValue(e.target.value);
+        console.log(e.target)
 
-        setInputs((prevState) => ({
-            ...prevState,
-            [spec]: e.target.value
-        }));
+        if (spec = "Activity") {
+            edges.forEach(edge => {
+                edge,
+            })
+        }
+
+        if (spec == "Stimulus") {
+            setInputs((prevState) => ({
+                ...prevState,
+                ["Load Design"]: {}
+            }));
+        }
+        if (!context) {
+            setInputs((prevState) => ({
+                ...prevState,
+                [spec]: e.target.value
+            }));
+        }
+        else {
+            setInputs((prevState) => ({
+                ...prevState,
+                [context]: ({ ...prevState[context], [e.target.name]: e.target.value })
+            }))
+        }
+
 
     }
 
-    console.log(arr)
 
     return (
         <div className="actvity-container">
@@ -44,10 +69,10 @@ export default function SpecSelect({ spec, setInputs, inputs, data, tooltip }) {
                 <Tooltip id={toSnakeCase(spec)} style={{ maxWidth: '256px' }} />
 
             </label>
-            <select value={value} onChange={handleSelectionChange} className="select select-bordered w-full max-w-xs">
-                <option value="">Select...</option>
+            <select value={value} name={spec} onChange={handleSelectionChange} className="select select-bordered w-full max-w-xs">
+                <option key="empty" value="">Select...</option>
                 {arr.map((item) => {
-                    return <option value={item.render_id} key={item.render_id}>{item.name}</option>
+                    return <option value={item.render_id ? item.render_id : item.path} key={item.id}>{item.name}</option>
                 })}
             </select>
         </div>
