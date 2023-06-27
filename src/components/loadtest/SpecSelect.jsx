@@ -32,9 +32,9 @@ export default function SpecSelect({ spec, setInputs, inputs, data, tooltip, con
     const handleSelectionChange = (e) => {
 
         if (spec == "Activity") {
-            let relatedEdgesArray = edges.filter((edge) => edge.name == edges[0].name);
-            let unrelatedEdgesArray = edges.filter((edge) => edge.name != edges[0].name);
-            console.log(relatedEdgesArray);
+            let relatedEdgesArray = edges.filter((edge) => edge.activity == e.target.value);
+            let unrelatedEdgesArray = edges.filter((edge) => edge.activity != e.target.value);
+
 
 
             let newEdgeArray = []
@@ -70,7 +70,7 @@ export default function SpecSelect({ spec, setInputs, inputs, data, tooltip, con
         }
 
         setValue(e.target.value);
-        console.log(e.target)
+        console.log(e.target.value);
 
         if (spec == "Stimulus") {
             setInputs((prevState) => ({
