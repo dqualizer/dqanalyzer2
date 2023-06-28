@@ -7,7 +7,7 @@ import SpecButtons from './SpecButtons';
 import * as loadtestSpecs from '../../data/loadtest-specs.json';
 import DropdownLeft from '../DropdownLeft';
 import SpecCheckbox from './SpecCheckbox';
-import { toSnakeCase } from '../../utils/formatting';
+import { changePropValueCasing, toSnakeCase } from '../../utils/formatting';
 
 export default function LoadtestSpecifier({ selectedEdge }) {
 
@@ -146,7 +146,9 @@ export default function LoadtestSpecifier({ selectedEdge }) {
 
     const composeLoadtest = () => {
 
-        const stimulus = {
+        
+
+        let stimulus = {
             load_profile: inputs.Stimulus
         }
 
@@ -154,14 +156,20 @@ export default function LoadtestSpecifier({ selectedEdge }) {
             const formattedProperty = toSnakeCase(property);
             stimulus[formattedProperty] = inputs["Load Design"][property];
         }
-        //path_variables_key = endpoint?.path_variables?.find(path => path.path == inputs["Path Variables"])
+
+        stimulus = changePropValueCasing(stimulus, "snake_upper");
+        let path_variables = changePropValueCasing(inputs.path_variables, "snake_upper");
+        let request_parameter = changePropValueCasing(inputs.request_parameter, "snake_upper");
+
+
         let parametrization = {
-            ...(inputs.hasOwnProperty('path_variables') && { path_variables: { ...inputs.path_variables } }),
-            ...(inputs.hasOwnProperty('request_parameter') && { ...inputs.request_parameter })
+            ...(inputs.hasOwnProperty('path_variables') && { path_variables: { ...path_variables } }),
+            ...(inputs.hasOwnProperty('request_parameter') && { ...request_parameter })
         };
 
         let system = domain.systems.find(system => system.system_id == inputs.System);
         let activity = system.activities.find(activity => activity.activity_id == inputs.Activity);
+        let response_measure = changePropValueCasing(inputs["Response Measures"], "snake_upper");
 
 
 
@@ -173,9 +181,7 @@ export default function LoadtestSpecifier({ selectedEdge }) {
             },
             stimulus,
             parametrization,
-            response_measure: {
-                response_time: inputs["Response Measures"]["Response Time"]
-            },
+            response_measure: response_measure,
             result_metrics: inputs["Result Metrics"]
         }
 
@@ -195,7 +201,7 @@ export default function LoadtestSpecifier({ selectedEdge }) {
             {(endpoint?.path_variables || endpoint?.request_parameter) && <h4>Szenario</h4>}
             {endpoint?.path_variables.length > 0 &&
                 endpoint?.path_variables.map(variable => {
-                    return <SpecSelect spec={variable.name} context={"path_variables"} data={variable.szenarios} inputs={inputs} setInputs={setInputs} />
+                    return <SpecSelect spec={variable.name} context={"path_variables"} data={variable.szenarios} inputs={inputs} setInputs={setInputs} key={variable.name} />
                 })
             }
             {endpoint?.request_parameter.length > 0 &&
