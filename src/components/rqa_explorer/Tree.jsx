@@ -24,13 +24,15 @@ export default function RQATree({ inputOpen, setInputOpen }) {
     }
 
     const handleOnExecute = async (rqa) => {
-        // delete rqa["name"];
-        // delete rqa["id"];
-        // rqa.runtime_quality_analysis.loadtests.forEach((loadtest) => {
-        //     delete loadtest["name"];
-        // });
-        // console.log(rqa);
-        await axios.post(`http://localhost:8070/api/rqa`, rqa).then((response) => {
+        let rqaToSend = rqa;
+        delete rqaToSend["name"];
+        delete rqaToSend["id"];
+        rqaToSend.runtime_quality_analysis.loadtests.forEach((loadtest) => {
+            delete loadtest["name"];
+
+        });
+
+        await axios.post(`http://localhost:8070/api/rqa`, rqaToSend).then((response) => {
             console.log(response);
         })
     }

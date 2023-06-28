@@ -32,17 +32,17 @@ export default function ExpandableRqaNode({ paramName, data, expandable = true, 
     const handleChangeValue = (e) => {
         setValue(e.target.value)
     }
+    const fetchDomain = async () => {
+        await axios.get(`https://64917f002f2c7ee6c2c85311.mockapi.io/api/v1/domain/1`).then((response) => {
+            setDomain(response.data);
+        })
+    }
 
     // Get Domain
     useEffect(() => {
-        const fetchData = async () => {
-            await axios.get(`https://64917f002f2c7ee6c2c85311.mockapi.io/api/v1/domain/1`).then((response) => {
-                setDomain(response.data);
-            })
+        if (isEditing) {
+            fetchDomain();
         }
-
-        fetchData();
-
     }, []);
 
 

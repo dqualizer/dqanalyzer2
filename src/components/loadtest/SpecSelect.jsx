@@ -107,8 +107,8 @@ export default function SpecSelect({ spec, setInputs, inputs, data, tooltip, con
             </label>
             <select value={value} name={spec} onChange={handleSelectionChange} className="select select-bordered w-full max-w-xs">
                 <option key="empty" value="">Select...</option>
-                {arr.map((item) => {
-                    return <option value={item.render_id ? item.render_id : item.path} key={item.id}>{item.name}</option>
+                {arr.map((item, key) => {
+                    return <option value={item.render_id ? item.render_id : item.path} key={key}>{item.name}</option>
                 })}
             </select>
         </div>
