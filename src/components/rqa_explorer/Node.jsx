@@ -3,6 +3,8 @@ import KeyboardArrowRightIcon from '@mui/icons-material/KeyboardArrowRight';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import PlayArrowIcon from '@mui/icons-material/PlayArrow';
 import { useState, useEffect, useRef } from 'react'
+import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { createRqa } from '../../queries/rqa';
 import axios from 'axios';
 export default function ExpandableRqaNode({ paramName, data, expandable = true, expandFunction, expanded, level, setInputOpen, setRqas }) {
 
@@ -10,6 +12,7 @@ export default function ExpandableRqaNode({ paramName, data, expandable = true, 
     const [isEditing, setIsEditing] = useState(data ? false : true);
     const [domain, setDomain] = useState();
     const inputRef = useRef();
+    const queryClient = useQueryClient();
 
     const spacingVariants = {
         0: "px-0",
@@ -45,34 +48,30 @@ export default function ExpandableRqaNode({ paramName, data, expandable = true, 
         }
     }, []);
 
+    const rqaMutation = useMutation({
+        useMutation: ["rqas"],
+        mutationFn: createRqa,
+        onSuccess: data => {
+            //queryClient.setQueryData(["rqas", data.id], data);
+            queryClient.invalidateQueries(["rqas"]);
+        }
+    })
+
 
     const handleSave = async (event) => {
 
         if (event.key === 'Enter') {
-            // Perform the desired action when "Enter" is pressed
             inputRef.current.blur(); // Unfocus the input field
-            setIsEditing(false)
-            await axios.post(`https://64917f002f2c7ee6c2c85311.mockapi.io/api/v1/rqas/`, {
-                name: value,
-                context: domain.context,
-                environment: domain.server_info[0].environment,
-                runtime_quality_analysis: {
-                    loadtests: [],
-                    resilience: [],
-                    monitoring: []
-                }
-            }).then((response => {
-                setInputOpen(false);
-                setRqas(prevState => [...prevState, response.data]);
-            }));
-
-
+            setIsEditing(false);
+            rqaMutation.mutate({ name: value, environment: "DEV" });
         }
     }
 
     const sendRqa = async () => {
         console.log()
     }
+
+    console.log(data)
 
 
     return (

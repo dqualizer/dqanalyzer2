@@ -41,28 +41,39 @@ export function changePropValueCasing(obj, casing) {
     return newObj;
 }
 
-function convertKeysToSnakeCase(obj) {
+export function toHumanCasing(str) {
+    const words = str.split('_');
+    const capitalizedWords = words.map(word => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase());
+    return capitalizedWords.join(' ');
+}
+
+export function changeCasing(obj, changeKeys, changeValues) {
     if (typeof obj !== 'object' || obj === null) {
-        return obj;
+        return obj; // Return as is if obj is not an object or null
     }
 
-    if (Array.isArray(obj)) {
-        return obj.map(convertKeysToSnakeCase);
-    }
+    const result = Array.isArray(obj) ? [] : {};
 
-    const snakeCaseObj = {};
-
-    for (const key in obj) {
+    for (let key in obj) {
         if (Object.prototype.hasOwnProperty.call(obj, key)) {
-            const snakeCaseKey = key.replace(/([A-Z])/g, '_$1').toLowerCase();
-            snakeCaseObj[snakeCaseKey] = convertKeysToSnakeCase(obj[key]);
+            const value = obj[key];
+            let newKey;
+            if (changeKeys)
+                newKey = toHumanCasing(key);
+            else
+                newKey = key
+
+            let newValue;
+
+            if (typeof value === 'object') {
+                newValue = changeCasing(value); // Recursively change casing for nested objects
+            } else {
+                newValue = toHumanCasing(String(value));
+            }
+
+            result[newKey] = newValue;
         }
     }
 
-    return snakeCaseObj;
+    return result;
 }
-
-
-
-
-

@@ -157,7 +157,7 @@
                         "path_variables": [
                             {
                                 "name": "auftragsnummer",
-                                "scenarios": [
+                                "szenarios": [
                                     {
                                         "name": "Valide Auftragsnummern",
                                         "path": "auftrag/auftragsnummern/angelegt.json"
