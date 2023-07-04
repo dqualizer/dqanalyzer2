@@ -108,11 +108,11 @@ export default function Sidebar({ domain, loadtestSpecs }) {
       </div>
       {loadTestShow && (
         <div ref={loadtestRef}>
-          {" "}
           <LoadtestSpecifier
             domain={domain}
             loadtestSpecs={loadtestSpecs}
-          />{" "}
+            selectedEdge={selectedEdge}
+          />
         </div>
       )}
       {rqaExplorerShow ? (

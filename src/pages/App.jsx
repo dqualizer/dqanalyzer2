@@ -10,7 +10,6 @@ import {
   addEdge,
   MarkerType,
 } from "reactflow";
-import loadtestSpecs from "../data/loadtest-specs.json";
 import Sidebar from "../components/Sidebar";
 import IconNode from "../nodes/IconNode";
 import { createInitialElements } from "../utils/createInitialElements";
@@ -63,12 +62,7 @@ function App() {
             <Controls />
           </ReactFlow>
         </div>
-        <Sidebar
-          nodes={nodes}
-          edges={edges}
-          domain={domain}
-          loadtestSpecs={loadtestSpecs}
-        />
+        <Sidebar nodes={nodes} edges={edges} />
       </ReactFlowProvider>
     </div>
   );
