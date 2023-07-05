@@ -22,7 +22,6 @@ export default function RqaInputField({ setInputOpen }) {
   const createRqaMutation = useMutation({
     mutationFn: createRqa,
     onSuccess: (data) => {
-      //queryClient.setQueryData(["rqas", data.id], data);
       queryClient.invalidateQueries(["rqas"]);
       setValue("");
       setInputOpen(false);
