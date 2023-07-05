@@ -1,5 +1,5 @@
 import React from "react";
-import { toSnakeCase } from "../../../utils/formatting";
+import { toSnakeCase } from "../../utils/formatting";
 
 export default function LoadtestSlider({ label, value, onChange }) {
   return (

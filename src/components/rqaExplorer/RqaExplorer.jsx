@@ -1,12 +1,10 @@
 import React, { useState, useEffect } from "react";
-
-import RqaTree from "./Tree";
-import RqaExplorerHeader from "./Header";
+import RqaHeader from "./RqaHeader";
 import ResizeBar from "../ResizeBar";
-import { useMutation, useQuery } from "@tanstack/react-query";
-import { createRqa, getAllRqas } from "../../queries/rqa";
-import Explorer from "../testing/Explorer";
-import RqaInputField from "./RqaInputField";
+import { useQuery } from "@tanstack/react-query";
+import { getAllRqas } from "../../queries/rqa";
+import Explorer from "./Explorer";
+import RqaInput from "./RqaInput";
 
 export default function RqaExplorer({ loadtestSpecifier }) {
   const rqaQuery = useQuery({
@@ -18,23 +16,22 @@ export default function RqaExplorer({ loadtestSpecifier }) {
   const [isResizing, setIsResizing] = useState(false);
   const [sidebarWidth, setSidebarWidth] = useState(300); // Initial width of the sidebar
 
-  // Pressing the + pens an input field.
+  // Pressing the + opens an input field.
   const [inputOpen, setInputOpen] = useState(false);
 
   const handleAddClick = () => {
-    console.log("click");
     setInputOpen(true);
   };
 
   return (
     <>
       <div className="py-4 px-4 bg-slate-200">
-        <RqaExplorerHeader handleAddClick={handleAddClick} />
+        <RqaHeader handleAddClick={handleAddClick} />
         {rqaQuery.status == "success" &&
           rqaQuery.data.map((rqa) => (
             <Explorer data={rqa} loadtestSpecifier={loadtestSpecifier} />
           ))}
-        {inputOpen && <RqaInputField setInputOpen={setInputOpen} />}
+        {inputOpen && <RqaInput setInputOpen={setInputOpen} />}
       </div>
       <ResizeBar
         setSidebarWidth={setSidebarWidth}

@@ -1,6 +1,6 @@
 import React from "react";
 import { useState } from "react";
-import { changeCasing } from "../../utils/formatting";
+import { changeCasing } from "../../../utils/formatting";
 
 export default function Parametrization({ data }) {
   const [expand, setExpand] = useState(false);

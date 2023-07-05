@@ -1,12 +1,12 @@
 import React from "react";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { deleteLoadtest, deleteRqa } from "../../queries/rqa";
+import { deleteLoadtest } from "../../../queries/rqa";
 import DeleteIcon from "@mui/icons-material/Delete";
-export default function DeleteRqa({ data, parentMenuRef, action }) {
+export default function DeleteButton({ data, parentMenuRef, rqaId }) {
   const queryClient = useQueryClient();
 
   const deleteLoadtestMutation = useMutation({
-    mutationFn: deleteRqa,
+    mutationFn: deleteLoadtest,
     onSuccess: (data) => {
       //queryClient.setQueryData(["rqas", data.id], data);
       queryClient.invalidateQueries(["rqas"]);
@@ -17,7 +17,8 @@ export default function DeleteRqa({ data, parentMenuRef, action }) {
   const handleDelete = (e) => {
     e.preventDefault();
     deleteLoadtestMutation.mutate({
-      rqaId: data.id,
+      rqaId: rqaId,
+      loadtestName: data.name,
     });
   };
 

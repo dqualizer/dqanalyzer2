@@ -1,9 +1,9 @@
 import React from "react";
 import { useRef } from "react";
-import RqaDefinition from "./RqaDefinition";
-import DeleteRqa from "./DeleteRqa";
+import RqaDefinition from "./rqaTree/RqaDefinition";
+import DeleteRqa from "./Buttons/DeleteRqa";
 import { deleteRqa } from "../../queries/rqa";
-import RqaInputField from "../rqa_explorer/RqaInputField";
+import RqaInput from "./RqaInput";
 export default function Explorer({ data, loadtestSpecifier }) {
   const detailsRef = useRef();
   return (

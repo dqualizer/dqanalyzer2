@@ -1,5 +1,5 @@
 import React, { useRef, useState, useEffect } from "react";
-import RqaExplorer from "./rqa_explorer/RqaExplorer";
+import RqaExplorer from "./rqaExplorer/RqaExplorer";
 import "../language/icon/icons.css";
 import EqualizerIcon from "@mui/icons-material/Equalizer";
 import PlaylistPlayIcon from "@mui/icons-material/PlaylistPlay";
@@ -12,7 +12,7 @@ import {
 import { MarkerType } from "reactflow";
 import "../language/icon/icons.css";
 import ViewportChangeLogger from "../utils/hideComponentOnViewportClick";
-import LoadtestSpecifier from "../components/testing/loadtest/LoadtestSpecifier";
+import LoadtestSpecifier from "./loadtest/LoadtestSpecifier";
 
 export default function Sidebar({ domain, loadtestSpecs, rqas }) {
   const [edgeSelected, setEgdeSelected] = useState(false);

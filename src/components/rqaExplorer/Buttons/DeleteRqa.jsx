@@ -1,20 +1,12 @@
 import React from "react";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { deleteLoadtest } from "../../queries/rqa";
-
-import EditIcon from "@mui/icons-material/Edit";
-export default function EditLoadtest({
-  data,
-  parentMenuRef,
-  rqaId,
-  loadtestSpecifier,
-}) {
+import { deleteLoadtest, deleteRqa } from "../../../queries/rqa";
+import DeleteIcon from "@mui/icons-material/Delete";
+export default function DeleteRqa({ data, parentMenuRef, action }) {
   const queryClient = useQueryClient();
 
-  console.log(data);
-
   const deleteLoadtestMutation = useMutation({
-    mutationFn: deleteLoadtest,
+    mutationFn: deleteRqa,
     onSuccess: (data) => {
       //queryClient.setQueryData(["rqas", data.id], data);
       queryClient.invalidateQueries(["rqas"]);
@@ -23,13 +15,15 @@ export default function EditLoadtest({
   });
 
   const handleDelete = (e) => {
-    console.log(loadtestSpecifier);
-    loadtestSpecifier(true);
+    e.preventDefault();
+    deleteLoadtestMutation.mutate({
+      rqaId: data.id,
+    });
   };
 
   return (
     <button className="btn btn-xs w-fit btn-ghost" onClick={handleDelete}>
-      <EditIcon color="default" />
+      <DeleteIcon color="error" />
     </button>
   );
 }

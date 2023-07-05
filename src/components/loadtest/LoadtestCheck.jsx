@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { toSnakeCase } from "../../../utils/formatting";
+import { toSnakeCase } from "../../utils/formatting";
 export default function LoadtestCheck({ option, inputs, onChange }) {
   return (
     <div key={option.id} className="form-control w-full">

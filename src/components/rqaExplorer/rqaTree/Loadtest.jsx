@@ -4,9 +4,9 @@ import Parametrization from "./Parametrization";
 import ResponseMeasures from "./ResponseMeasures";
 import ResultMetrics from "./ResultMetrics";
 
-import DeleteButton from "./DeleteLoadtest";
-import { deleteLoadtest } from "../../queries/rqa";
-import DeleteLoadtest from "./DeleteLoadtest";
+import DeleteButton from "../Buttons/DeleteLoadtest";
+import { deleteLoadtest } from "../../../queries/rqa";
+import DeleteLoadtest from "../Buttons/DeleteLoadtest";
 import EditLoadtest from "./EditLoadtest";
 export default function Loadtest({
   data,

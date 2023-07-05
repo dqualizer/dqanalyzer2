@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { toHumanCasing } from "../../utils/formatting";
+import { toHumanCasing } from "../../../utils/formatting";
 
 export default function ResultMetrics({ data }) {
   const [expand, setExpand] = useState(false);
