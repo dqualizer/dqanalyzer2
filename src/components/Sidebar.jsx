@@ -14,7 +14,7 @@ import "../language/icon/icons.css";
 import ViewportChangeLogger from "../utils/hideComponentOnViewportClick";
 import LoadtestSpecifier from "../components/testing/loadtest/LoadtestSpecifier";
 
-export default function Sidebar({ domain, loadtestSpecs }) {
+export default function Sidebar({ domain, loadtestSpecs, rqas }) {
   const [edgeSelected, setEgdeSelected] = useState(false);
   const [selectedEdge, setSelectedEdge] = useState(null);
   const [rqaExplorerShow, setRqaExplorerShow] = useState();
@@ -112,6 +112,7 @@ export default function Sidebar({ domain, loadtestSpecs }) {
             domain={domain}
             loadtestSpecs={loadtestSpecs}
             selectedEdge={selectedEdge}
+            rqas={rqas}
           />
         </div>
       )}

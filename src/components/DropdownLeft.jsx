@@ -1,6 +1,7 @@
 import React from "react";
 
 export default function DropdownLeft({ rqas, action }) {
+  console.log(rqas);
   return (
     <div className="dropdown dropdown-right">
       <label tabIndex={0} className="btn m-1">

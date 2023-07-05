@@ -31,6 +31,8 @@ export async function getDomains(query) {
 export async function getDomain(id) {
     await fakeNetwork(`domain:${id}`);
     let domains = await localforage.getItem("domains");
+    console.log(domains);
+    console.log(id);
     let domain = domains.find(domain => domain.domainId === id);
     return domain ?? null;
 }
