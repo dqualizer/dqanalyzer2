@@ -2,38 +2,47 @@
 	"stimuluses": [
 		{
 			"name": "Load Peak",
-			"id": "1",
+			"id": "LOAD_PEAK",
+			"supported": 1,
 			"designParameters": [
 				{
 					"name": "Highest Load",
+					"id": "HIGHEST_LOAD",
 					"values": [
 						{
 							"name": "High",
+							"id": "HIGH",
 							"value": 10
 						},
 						{
 							"name": "Very High",
+							"id": "VERY_HIGH",
 							"value": 15
 						},
 						{
 							"name": "Extremly High",
+							"id": "EXTREMLY_HIGH",
 							"value": 30
 						}
 					]
 				},
 				{
 					"name": "Time to Highest load",
+					"id": "TIME_TO_HIGHEST_LOAD",
 					"values": [
 						{
 							"name": "Slow",
+							"id": "SLOW",
 							"value": "20s"
 						},
 						{
 							"name": "Fast",
+							"id": "FAST",
 							"value": "15s"
 						},
 						{
 							"name": "Very Fast",
+							"id": "VERY_FAST",
 							"value": "10s"
 						}
 					]
@@ -42,21 +51,26 @@
 		},
 		{
 			"name": "Load Increase",
-			"id": 2,
+			"id": "LOAD_INCREASE",
+			"supported": false,
 			"designParameters": [
 				{
 					"name": "Type of Increase",
+					"id": "TYPE_OF_INCREASE",
 					"values": [
 						{
 							"name": "Linear",
+							"id": "LINEAR",
 							"value": 1
 						},
 						{
 							"name": "Quadratic",
+							"id": "QUADRATIC",
 							"value": 2
 						},
 						{
 							"name": "Cubic",
+							"id": "CUBIC",
 							"value": 3
 						}
 					]
@@ -65,21 +79,26 @@
 		},
 		{
 			"name": "Constant Load",
-			"id": 3,
+			"id": "CONSTANT LOAD",
+			"supported": false,
 			"designParameters": [
 				{
 					"name": "Base Load",
+					"id": "BASE_LOAD",
 					"values": [
 						{
 							"name": "Low",
+							"id": "LOW",
 							"value": 10
 						},
 						{
 							"name": "Medium",
+							"id": "MEDIUM",
 							"value": 20
 						},
 						{
 							"name": "High",
+							"id": "HIGH",
 							"value": 30
 						}
 					]
@@ -90,17 +109,21 @@
 	"responseMeasures": [
 		{
 			"name": "Response Time",
+			"id": "RESPONSE_TIME",
 			"values": [
 				{
 					"name": "Satisfied",
+					"id": "SATISFIED",
 					"value": 1200
 				},
 				{
 					"name": "Tolerated",
+					"id": "TOLERATED",
 					"value": 2400
 				},
 				{
 					"name": "Frustrated",
+					"id": "FRUSTRATED",
 					"value": 4800
 				}
 			]
@@ -108,15 +131,16 @@
 	],
 	"metrics": [
 		{
-			"id": 1,
-			"label":"Response Time" 
+			"label":"Response Time",
+			"id": "RESPONSE_TIME" 
+
 		},
 		{
-			"id": 2,
+			"id": "NINETIETHPERCENTILE",
 			"label":"90th Percentile" 
 		},
 		{
-			"id": 3,
+			"id": "NINETYFITHPERCENTILE",
 			"label":"95th Percentile" 
 		}
 	]

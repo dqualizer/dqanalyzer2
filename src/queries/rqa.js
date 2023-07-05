@@ -24,6 +24,7 @@ export const deleteLoadtest = (deleteLoadtestPath) => {
     return axios.delete(`${backend}/rqa-definition/${deleteLoadtestPath.rqaId}/loadtest/${deleteLoadtestPath.loadtestName}`).then(res => res.data);
 }
 
-export const addLoadtestToRqa = ({ rqaId, loadtest }) => {
-    return axios.put(`${backend}/rqa-definition/${rqaId}/loadtest`, loadtest).then(res => res.data);
+export const addLoadtestToRqa = ({ rqaId, inputs }) => {
+    console.log(inputs);
+    return axios.put(`${backend}/rqa-definition/${rqaId}/loadtest`, inputs).then(res => res.data);
 } 

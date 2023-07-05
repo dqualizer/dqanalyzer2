@@ -20,16 +20,19 @@ import { getDomain } from "./Home";
 import { AppLoaderProps } from "../interfaces/AppLoaderProps";
 import { ReactJSXIntrinsicAttributes } from "@emotion/react/types/jsx-namespace";
 import { string } from "prop-types";
+import loadtestSpecs from '../data/loadtest-specs.json'
+import { useQuery } from "@tanstack/react-query";
+import {getAllRqas} from '../queries/rqa'
 
-export async function loader({domainId}: {domainId: String}) {
-  const domain = await getDomain(domainId);
+export async function loader({params}: {params: any}) {
+  const domain = await getDomain(params.domainId);
   return { domain };
 }
 
 function App() {
-  
-  const domain = useLoaderData() as any
 
+  const {domain} = useLoaderData() as any;
+  
   // create the initial nodes and edges from the mapping
   const [initialNodes, initialEgdes] = createInitialElements(domain);
 
@@ -47,6 +50,11 @@ function App() {
   const reactFlowWrapper = useRef(null);
   const [nodes, setNodes, onNodesChange] = useNodesState(layoutedNodes);
   const [edges, setEdges, onEdgesChange] = useEdgesState(layoutedEdges);
+
+  const rqaQuery = useQuery({
+    queryKey: ["rqas"],
+    queryFn: getAllRqas,
+  });
 
   return (
     <div className="root" style={{ height: "100%" }}>
@@ -66,7 +74,7 @@ function App() {
             <Controls />
           </ReactFlow>
         </div>
-        <Sidebar nodes={nodes} edges={edges} />
+        <Sidebar nodes={nodes} edges={edges} domain={domain} loadtestSpecs={loadtestSpecs} rqas={rqaQuery.data}/>
       </ReactFlowProvider>
     </div>
   );
