@@ -14,17 +14,21 @@ import Sidebar from "../components/Sidebar";
 import IconNode from "../nodes/IconNode";
 import { createInitialElements } from "../utils/createInitialElements";
 import { getLayoutedElements } from "../utils/layoutElements";
-import { useLoaderData } from "react-router-dom";
+import { RouteObject, useLoaderData } from "react-router-dom";
 
 import { getDomain } from "./Home";
+import { AppLoaderProps } from "../interfaces/AppLoaderProps";
+import { ReactJSXIntrinsicAttributes } from "@emotion/react/types/jsx-namespace";
+import { string } from "prop-types";
 
-export async function loader({ params }) {
-  const domain = await getDomain(params.domainId);
+export async function loader({domainId}: {domainId: String}) {
+  const domain = await getDomain(domainId);
   return { domain };
 }
 
 function App() {
-  const { domain } = useLoaderData();
+  
+  const domain = useLoaderData() as any
 
   // create the initial nodes and edges from the mapping
   const [initialNodes, initialEgdes] = createInitialElements(domain);
