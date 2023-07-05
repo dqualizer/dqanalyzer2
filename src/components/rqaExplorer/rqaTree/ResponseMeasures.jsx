@@ -1,27 +1,23 @@
 import React, { useState } from "react";
-import { changeCasing } from "../../utils/formatting";
+import { changeCasing } from "../../../utils/formatting";
 
-export default function Stimulus({ data }) {
+export default function ResponseMeasures({ data }) {
   const [expand, setExpand] = useState(false);
-
-  console.log(data);
-
-  const formattedData = changeCasing(data, true, true);
+  let formattedData = changeCasing(data, true, true);
   console.log(formattedData);
-
   return (
     <details>
       <summary>
-        <span>Stimulus</span>
+        <span onClick={() => setExpand(true)}>Response Measures</span>
       </summary>
       <ul>
         {Object.keys(formattedData).map((key, i) => {
           return (
-            <li key={i}>
+            <div>
               <span>
                 {key}: {formattedData[key]}
               </span>
-            </li>
+            </div>
           );
         })}
       </ul>

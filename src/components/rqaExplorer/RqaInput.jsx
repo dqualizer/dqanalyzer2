@@ -4,7 +4,7 @@ import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import { useRef } from "react";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { createRqa } from "../../queries/rqa";
-export default function RqaInputField({ setInputOpen }) {
+export default function RqaInput({ setInputOpen }) {
   const [value, setValue] = useState();
   const queryClient = useQueryClient();
 
