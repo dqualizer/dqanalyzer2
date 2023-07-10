@@ -1,32 +1,35 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
-import App from "./pages/App";
+import App, { damLoader } from "./pages/App";
 import "./index.css";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
-import Root, { loader as homeLoader } from "./pages/Home";
-import { loader as analyzerLoader } from "./pages/App";
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import Home from "./pages/Home";
+import {
+  QueryClient,
+  QueryClientProvider,
+  useQuery,
+} from "@tanstack/react-query";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import Testing from "./pages/Testing";
+import { getDomainById } from "./queries/dam.js";
+
+const queryClient = new QueryClient();
 
 const router = createBrowserRouter([
   {
     path: "/",
-    element: <Root />,
-    loader: homeLoader,
+    element: <Home />,
   },
   {
-    path: "/analyzer/:domainId",
+    path: "/analyzer/:damId",
     element: <App />,
-    loader: analyzerLoader,
+    loader: damLoader,
   },
   {
     path: "/testing/",
     element: <Testing />,
   },
 ]);
-
-const queryClient = new QueryClient();
 
 ReactDOM.createRoot(document.getElementById("root")!).render(
   <React.StrictMode>
