@@ -4,6 +4,9 @@ import LoadTestMenu from './LoadTestMenu';
 import RqaExplorer from './rqa_explorer/RqaExplorer';
 import '../language/icon/icons.css'
 import EqualizerIcon from '@mui/icons-material/Equalizer';
+import ContentPasteSearchIcon from '@mui/icons-material/ContentPasteSearch';
+import CloudQueueIcon from '@mui/icons-material/CloudQueue';
+import CloudOffIcon from '@mui/icons-material/CloudOff';
 import { useEdges, useOnSelectionChange, useReactFlow, useStore } from 'reactflow';
 import { MarkerType } from 'reactflow';
 import '../language/icon/icons.css';
@@ -13,6 +16,8 @@ export default function Sidebar(props) {
 
     const [edgeSelected, setEgdeSelected] = useState(false);
     const [selectedEdge, setSelectedEdge] = useState(null);
+    const [scnenarioMode, setScenarioMode] = useState(true);
+    const [scenarioTestShow, setScenarioTestShow] = useState();
     const [rqaExplorerShow, setRqaExplorerShow] = useState();
     const [loadTestShow, setLoadTestShow] = useState();
     const reactFlowInstance = useReactFlow();
@@ -72,7 +77,13 @@ export default function Sidebar(props) {
         }
     });
 
+    const onChangeScenarioClick = () => {
+        setScenarioMode((prevState) => !prevState);
+    }
 
+    const onScenarioTestClick = () => {
+        setScenarioTestShow((prevState) => !prevState);
+    }
 
     const onRqaExplorerClick = () => {
         setRqaExplorerShow((prevState) => !prevState);
@@ -82,20 +93,31 @@ export default function Sidebar(props) {
         setLoadTestShow((prevState) => !prevState);
     }
 
-    return (
-        <div className="sidebar">
-            <div className='taskbar-container'>
-                <button onClick={onRqaExplorerClick}><div><EqualizerIcon /></div></button>
-                <button onClick={onLoadtestClick}><div className="icon-domain-story-loadtest"></div></button>
-                <button><div className="icon-domain-story-monitoring"></div></button>
-                <button><div className="icon-domain-story-chaosexperiment"></div></button>
-
-
+    if (scnenarioMode) {
+        return (
+            <div className="sidebar">
+                <div className="taskbar-container">
+                    <button className="change-mode" onClick={onChangeScenarioClick}><div><CloudQueueIcon/></div></button>
+                    <button onClick={onScenarioTestClick}><div><ContentPasteSearchIcon/></div></button>
+                </div>
             </div>
-            {selectedEdge || loadTestShow ? <div ref={loadtestRef}> <LoadTestMenu selectedEdge={selectedEdge} edges={props.edges} /> </div> : null}
-            {rqaExplorerShow ? <RqaExplorer /> : null}
-        </div>
+        )
+    }
+    else {
+        return (
+            <div className="sidebar">
+                <div className="taskbar-container">
+                    <button className="change-mode" onClick={onChangeScenarioClick}><div><CloudOffIcon/></div></button>
+                    <button onClick={onRqaExplorerClick}><div><EqualizerIcon/></div></button>
+                    <button onClick={onLoadtestClick}><div className="icon-domain-story-loadtest"></div></button>
+                    <button><div className="icon-domain-story-monitoring"></div></button>
+                    <button><div className="icon-domain-story-chaosexperiment"></div></button>
 
 
-    )
+                </div>
+                {selectedEdge || loadTestShow ? <div ref={loadtestRef}> <LoadTestMenu selectedEdge={selectedEdge} edges={props.edges} /> </div> : null}
+                {rqaExplorerShow ? <RqaExplorer /> : null}
+            </div>
+        )
+    }
 }
