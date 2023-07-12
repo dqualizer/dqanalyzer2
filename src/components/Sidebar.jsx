@@ -77,8 +77,13 @@ export default function Sidebar(props) {
         }
     });
 
-    const onChangeScenarioClick = () => {
+    const onChangeModeClick = () => {
         setScenarioMode((prevState) => !prevState);
+
+        /* Hide all possible windows when changing the mode */
+        setScenarioTestShow(false);
+        setRqaExplorerShow(false);
+        setLoadTestShow(false);
     }
 
     const onScenarioTestClick = () => {
@@ -97,7 +102,7 @@ export default function Sidebar(props) {
         return (
             <div className="sidebar">
                 <div className="taskbar-container">
-                    <button className="change-mode" onClick={onChangeScenarioClick}><div><CloudQueueIcon/></div></button>
+                    <button className="change-mode" onClick={onChangeModeClick}><div><CloudQueueIcon/></div></button>
                     <button onClick={onScenarioTestClick}><div><ContentPasteSearchIcon/></div></button>
                 </div>
             </div>
@@ -107,7 +112,7 @@ export default function Sidebar(props) {
         return (
             <div className="sidebar">
                 <div className="taskbar-container">
-                    <button className="change-mode" onClick={onChangeScenarioClick}><div><CloudOffIcon/></div></button>
+                    <button className="change-mode" onClick={onChangeModeClick}><div><CloudOffIcon/></div></button>
                     <button onClick={onRqaExplorerClick}><div><EqualizerIcon/></div></button>
                     <button onClick={onLoadtestClick}><div className="icon-domain-story-loadtest"></div></button>
                     <button><div className="icon-domain-story-monitoring"></div></button>
