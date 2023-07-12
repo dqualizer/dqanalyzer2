@@ -137,5 +137,7 @@ body,
 }
 
 .root .taskbar-container .change-mode {
-	/*TODO: Icon oben anordnen	*/
+	/*Icon oben anordnen*/
+	position: absolute;
+	top: 0px;
 }
