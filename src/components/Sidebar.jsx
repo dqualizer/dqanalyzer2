@@ -1,5 +1,7 @@
 import React, { useRef, useState, useEffect } from 'react'
 import Icon from '../nodes/nodeComponents/Icon';
+import ScenarioTestMenu from './ScenarioTestMenu';
+import ScenarioExplorer from './scenario_explorer/ScenarioExplorer';
 import LoadTestMenu from './LoadTestMenu';
 import RqaExplorer from './rqa_explorer/RqaExplorer';
 import '../language/icon/icons.css'
@@ -17,6 +19,7 @@ export default function Sidebar(props) {
     const [edgeSelected, setEgdeSelected] = useState(false);
     const [selectedEdge, setSelectedEdge] = useState(null);
     const [scnenarioMode, setScenarioMode] = useState(true);
+    const [scenarioExplorerShow, setScenarioExplorerShow] = useState();
     const [scenarioTestShow, setScenarioTestShow] = useState();
     const [rqaExplorerShow, setRqaExplorerShow] = useState();
     const [loadTestShow, setLoadTestShow] = useState();
@@ -81,9 +84,14 @@ export default function Sidebar(props) {
         setScenarioMode((prevState) => !prevState);
 
         /* Hide all possible windows when changing the mode */
+        setScenarioExplorerShow(false);
         setScenarioTestShow(false);
         setRqaExplorerShow(false);
         setLoadTestShow(false);
+    }
+
+    const onScenarioExplorerClick = () => {
+        setScenarioExplorerShow((prevState) => !prevState);
     }
 
     const onScenarioTestClick = () => {
@@ -103,8 +111,11 @@ export default function Sidebar(props) {
             <div className="sidebar">
                 <div className="taskbar-container">
                     <button className="change-mode" onClick={onChangeModeClick}><div><CloudQueueIcon/></div></button>
+                    <button onClick={onScenarioExplorerClick}><div><EqualizerIcon/></div></button>
                     <button onClick={onScenarioTestClick}><div><ContentPasteSearchIcon/></div></button>
                 </div>
+                {scenarioExplorerShow ? <ScenarioExplorer/> : null}
+                {scenarioTestShow ? <div ref={loadtestRef}> <ScenarioTestMenu selectedEdge={selectedEdge} edges={props.edges} /> </div> : null}
             </div>
         )
     }
@@ -117,8 +128,6 @@ export default function Sidebar(props) {
                     <button onClick={onLoadtestClick}><div className="icon-domain-story-loadtest"></div></button>
                     <button><div className="icon-domain-story-monitoring"></div></button>
                     <button><div className="icon-domain-story-chaosexperiment"></div></button>
-
-
                 </div>
                 {selectedEdge || loadTestShow ? <div ref={loadtestRef}> <LoadTestMenu selectedEdge={selectedEdge} edges={props.edges} /> </div> : null}
                 {rqaExplorerShow ? <RqaExplorer /> : null}
