@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { useEdges, useOnSelectionChange, useReactFlow } from 'reactflow';
-import * as loadtestSpecs from '../data/loadtest-specs.json';
+import * as scenarioSpecs from '../data/scenariotest-specs.json';
 import ResizeBar from './ResizeBar';
 import * as mapping from '../data/werkstatt.json';
 import { Tooltip } from 'react-tooltip'
@@ -39,9 +39,9 @@ export default function ScenarioTestMenu(props) {
 
 
     // Getting Scenario Test Definition Parameters from the Json
-    const stimuluses = loadtestSpecs.stimuluses;
-    const responseMeasures = loadtestSpecs.responseMeasures;
-    const metrics = loadtestSpecs.metrics;
+    const stimuluses = scenarioSpecs.stimuluses;
+    const responseMeasures = scenarioSpecs.responseMeasures;
+    const metrics = scenarioSpecs.metrics;
 
     let initRQADefiniton = {
         context: mapping.context,
