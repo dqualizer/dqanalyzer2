@@ -1,111 +1,110 @@
 {
-    "stimuluses": [
+  "rqs": [
+    {
+      "name": "Load Peak",
+      "designParameters": [
         {
-            "name": "LOAD PEAK",
-            "designParameters": [
-                {
-                    "name": "Highest Load",
-                    "values": [
-                        {
-                            "name": "High",
-                            "value": 10
-                        },
-                        {
-                            "name": "Very High",
-                            "value": 15
-                        },
-                        {
-                            "name": "Extremly High",
-                            "value": 30
-                        }
-                    ]
-                },
-                {
-                    "name": "Time to Highest load",
-                    "values": [
-                        {
-                            "name": "Slow",
-                            "value": "20s"
-                        },
-                        {
-                            "name": "Fast",
-                            "value": "15s"
-                        },
-                        {
-                            "name": "Very Fast",
-                            "value": "10s"
-                        }
-                    ]
-                }
-            ]
+          "name": "Highest Load",
+          "values": [
+            {
+              "name": "High",
+              "value": 10
+            },
+            {
+              "name": "Very High",
+              "value": 15
+            },
+            {
+              "name": "Extremly High",
+              "value": 30
+            }
+          ]
         },
         {
-            "name": "Load Increase",
-            "designParameters": [
-                {
-                    "name": "Type of Increase",
-                    "values": [
-                        {
-                            "name": "Linear",
-                            "value": 1
-                        },
-                        {
-                            "name": "Quadratic",
-                            "value": 2
-                        },
-                        {
-                            "name": "Cubic",
-                            "value": 3
-                        }
-                    ]
-                }
-            ]
-        },
-        {
-            "name": "Constant Load",
-            "designParameters": [
-                {
-                    "name": "Base Load",
-                    "values": [
-                        {
-                            "name": "Low",
-                            "value": 10
-                        },
-                        {
-                            "name": "Medium",
-                            "value": 20
-                        },
-                        {
-                            "name": "High",
-                            "value": 30
-                        }
-                    ]
-                }
-            ]
+          "name": "Time to Highest load",
+          "values": [
+            {
+              "name": "Slow",
+              "value": "20s"
+            },
+            {
+              "name": "Fast",
+              "value": "15s"
+            },
+            {
+              "name": "Very Fast",
+              "value": "10s"
+            }
+          ]
         }
-    ],
-    "responseMeasures": [
+      ]
+    },
+    {
+      "name": "Load Increase",
+      "designParameters": [
         {
-            "name": "Response time",
-            "values": [
-                {
-                    "name": "Satisfied",
-                    "value": 1200
-                },
-                {
-                    "name": "Tolerated",
-                    "value": 2400
-                },
-                {
-                    "name": "Frustrated",
-                    "value": 4800
-                }
-            ]
+          "name": "Type of Increase",
+          "values": [
+            {
+              "name": "Linear",
+              "value": 1
+            },
+            {
+              "name": "Quadratic",
+              "value": 2
+            },
+            {
+              "name": "Cubic",
+              "value": 3
+            }
+          ]
         }
+      ]
+    },
+    {
+      "name": "Constant Load",
+      "designParameters": [
+        {
+          "name": "Base Load",
+          "values": [
+            {
+              "name": "Low",
+              "value": 10
+            },
+            {
+              "name": "Medium",
+              "value": 20
+            },
+            {
+              "name": "High",
+              "value": 30
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "settings": {
+    "enviroment": [
+      "Productive",
+      "Test"
     ],
-    "metrics": [
-        "Response Time",
-        "90th Percentile",
-        "95th Percentile"
+    "timeSlot": [
+      {
+        "representation": "00:00 - 00:00",
+        "startTime": 0.00,
+        "endTime": 0.00
+      },
+      {
+        "representation": "08:00 - 16:00",
+        "startTime": 8.00,
+        "endTime": 16.00
+      },
+      {
+        "representation": "16:00 - 08:00",
+        "startTime": 16.00,
+        "endTime": 18.00
+      }
     ]
+  }
 }
