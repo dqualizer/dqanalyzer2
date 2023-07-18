@@ -10,8 +10,11 @@ import {
   useQuery,
 } from "@tanstack/react-query";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
-import Testing from "./pages/Testing";
+import DqEdit from "./pages/DqEdit";
 import { getDomainById } from "./queries/dam.js";
+import Domains from "./pages/Domains";
+import Contexts from "./pages/Contexts";
+import { Link } from "react-router-dom";
 
 const queryClient = new QueryClient();
 
@@ -26,8 +29,48 @@ const router = createBrowserRouter([
     loader: damLoader,
   },
   {
-    path: "/testing/",
-    element: <Testing />,
+    path: "/dqedit/",
+    element: <DqEdit />,
+    handle: {
+      crumb: () => (
+        <Link
+          to="/dqedit/"
+          className="ml-1 text-sm font-medium text-gray-700 hover:text-blue-600 md:ml-2 dark:text-gray-400 dark:hover:text-white"
+        >
+          dqEdit
+        </Link>
+      ),
+    },
+    children: [
+      {
+        path: "/dqedit/domains",
+        element: <Domains />,
+        handle: {
+          crumb: () => (
+            <Link
+              to="/dqedit/domains"
+              className="ml-1 text-sm font-medium text-gray-700 hover:text-blue-600 md:ml-2 dark:text-gray-400 dark:hover:text-white"
+            >
+              Domains
+            </Link>
+          ),
+        },
+      },
+      {
+        path: "/dqedit/contexts",
+        element: <Contexts />,
+        handle: {
+          crumb: () => (
+            <Link
+              to="/dqedit/contexts"
+              className="ml-1 text-sm font-medium text-gray-700 hover:text-blue-600 md:ml-2 dark:text-gray-400 dark:hover:text-white"
+            >
+              Contexts
+            </Link>
+          ),
+        },
+      },
+    ],
   },
 ]);
 

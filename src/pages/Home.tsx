@@ -12,11 +12,11 @@ export default function Home() {
   });
 
   return (
-    <div class="flex items-center justify-center h-screen flex-col">
-      <div class="text-center">
+    <div className="flex items-center justify-center h-screen flex-col">
+      <div className="text-center">
         <img src={dqLogo} alt="" srcset="" class="mx-auto mb-4 w-1/2" />
-        <p class="font-bold text-2xl">Welcome to dqAnalyzer 1.0!</p>
-        <p class="text-xl">First of all: Choose your Demo-Domain.</p>
+        <p className="font-bold text-2xl">Welcome to dqAnalyzer 1.0!</p>
+        <p className="text-xl">First of all: Choose your Demo-Domain.</p>
       </div>
       <div className="flex gap-4 mt-5">
         {damsQuery.data?.length ? (
