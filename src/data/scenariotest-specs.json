@@ -200,6 +200,42 @@
       }
     ]
   },
+  "metrics": [
+    {
+      "name": "Throughput",
+      "values": [
+        {
+          "name": "Slow",
+          "value": 1200
+        },
+        {
+          "name": "Normal",
+          "value": 2400
+        },
+        {
+          "name": "Fast",
+          "value": 3600
+        }
+      ]
+    },
+    {
+      "name": "Response Time",
+      "values": [
+        {
+          "name": "Slow",
+          "value": 1200
+        },
+        {
+          "name": "Normal",
+          "value": 2400
+        },
+        {
+          "name": "Fast",
+          "value": 3600
+        }
+      ]
+    }
+  ],
   "settings": {
     "enviroment": [
       "Productive",
@@ -220,42 +256,6 @@
         "representation": "16:00 - 08:00",
         "startTime": 16.00,
         "endTime": 18.00
-      }
-    ],
-    "metrics": [
-      {
-        "name": "Throughput",
-        "values": [
-          {
-            "name": "Slow",
-            "value": 1200
-          },
-          {
-            "name": "Normal",
-            "value": 2400
-          },
-          {
-            "name": "Fast",
-            "value": 3600
-          }
-        ]
-      },
-      {
-        "name": "Response Time",
-        "values": [
-          {
-            "name": "Slow",
-            "value": 1200
-          },
-          {
-            "name": "Normal",
-            "value": 2400
-          },
-          {
-            "name": "Fast",
-            "value": 3600
-          }
-        ]
       }
     ]
   }

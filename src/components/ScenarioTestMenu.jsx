@@ -40,7 +40,7 @@ export default function ScenarioTestMenu(props) {
 
     // Getting Scenario Test Definition Parameters from the Json
     const allRqs = scenarioSpecs.rqs;
-    const responseMeasures = scenarioSpecs.responseMeasures;
+    const metrics = scenarioSpecs.metrics;
     const settings = scenarioSpecs.settings;
 
     let initRQADefiniton = {
@@ -433,7 +433,7 @@ export default function ScenarioTestMenu(props) {
                     </p>
                     <Tooltip id="metrics-tooltip" style={{maxWidth: '256px'}}/>
                     <div className="activity-container">
-                        {settings.metrics.map((metric) => {
+                        {metrics.map((metric) => {
                             return (
                                 <div>
                                     <label className="label">
