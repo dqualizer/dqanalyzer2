@@ -60,7 +60,7 @@ export default function ScenarioTestMenu(props) {
                     response_measure: {},
                     result_metrics: [],
                     stimulus: {
-                        load_profile: allRqs[0].name.toUpperCase().replace(/\s+/g, '_'),
+                        load_profile: allRqs.loadDesign[0].name.toUpperCase().replace(/\s+/g, '_'),
                         accuracy: 0
                     }
                 }
@@ -70,9 +70,9 @@ export default function ScenarioTestMenu(props) {
 
 
     const [selectedActivity, setSelectedActivity] = useState(props.selectedEdge);
-    const [rqs, setRqs] = useState(allRqs[0]);
+    const [rqs, setRqs] = useState({loadDesign: allRqs.loadDesign, resilienceDesign: allRqs.resilienceDesign});
     const [accuracy, setAccuracy] = useState(0);
-    const [designParameters, setDesignParameters] = useState(allRqs[0].designParameters);
+    const [designParameters, setDesignParameters] = useState(allRqs.loadDesign[0].designParameters);
     // Later there could be more than one response measure...
     const [responseMeasure, setResponseMeasure] = useState([]);
 
@@ -138,13 +138,13 @@ export default function ScenarioTestMenu(props) {
     }
 
     const handleStimulusChange = (e) => {
-        const newRqs = allRqs.find((rqs) => rqs.name == e.target.value);
+        const newRqs = allRqs.loadDesign.find((rqs) => rqs.name == e.target.value);
         let rqaCopy = rqa;
-        rqaCopy.runtime_quality_analysis.loadtests[0].rqs.load_profile = e.target.value.toUpperCase().replace(/\s+/g, '_');
+        rqaCopy.runtime_quality_analysis.loadtests[0].stimulus = e.target.value.toUpperCase().replace(/\s+/g, '_');
         console.log(newRqs);
-        setRqs(newRqs);
-        setDesignParameters(newRqs.designParameters);
-        setRqa(rqaCopy);
+        //setRqs(newRqs);
+        //setDesignParameters(newRqs.designParameters);
+        //setRqa(rqaCopy);
     }
 
     const handleAccuracyChange = (e) => {
@@ -171,9 +171,9 @@ export default function ScenarioTestMenu(props) {
         const parameter_name = e.target.parentNode.id.toLowerCase().replace(/\s+/g, '_');
         const value = e.target.value.toUpperCase().replace(/\s+/g, '_');
         let rqaCopy = rqa;
-        rqaCopy.runtime_quality_analysis.loadtests[0].rqs[parameter_name] = value;
+        rqaCopy.runtime_quality_analysis.loadtests[0].rqs.loadDesign[parameter_name] = value;
         setRqa(rqaCopy);
-        //setStimulusParameters([...stimulusParameters], parameter)
+        setStimulusParameters([...stimulusParameters], parameter)
     }
 
     const handleResponseMeasureChange = (event) => {
@@ -295,12 +295,12 @@ export default function ScenarioTestMenu(props) {
                 </div>
                 {/*<div className="actvity-container">*/}
                 {/*    <label className="label">*/}
-				{/*		<span className="label-text">*/}
-				{/*			Scenario*/}
-				{/*			<span className="ml-1 font-normal text-sm" data-tooltip-id="stimulus-tooltip"*/}
+                {/*		<span className="label-text">*/}
+                {/*			Scenario*/}
+                {/*			<span className="ml-1 font-normal text-sm" data-tooltip-id="stimulus-tooltip"*/}
                 {/*                  data-tooltip-place="right"*/}
                 {/*                  data-tooltip-content='The stimulus specifies how the load should look like. For instance, a "Load peak" will lead to a massive spike in simulated users accessing the application in a secure environment whereas a "Load Increase" may lead to a slow in crease in users accessing the application.'>&#9432;</span>*/}
-				{/*		</span>*/}
+                {/*		</span>*/}
                 {/*    </label>*/}
                 {/*    <Tooltip id="stimulus-tooltip" style={{maxWidth: '256px'}}/>*/}
                 {/*    <select value={rqs} onChange={handleRqsChange} id=""*/}
@@ -316,52 +316,54 @@ export default function ScenarioTestMenu(props) {
                         <label className="label">
                             <h3>
                                 Load Design
-                                <span className="ml-1 font-normal text-sm" data-tooltip-id="response-measure-tooltip" data-tooltip-place="right" data-tooltip-content='The Load Design allows you to further design the simulated load depending on the selected stimulus. For instance, if you design a "Load Peak" stimulus, you will need to specify the final peak to be achieved and how long it takes to reach it.'>&#9432;</span>
+                                <span className="ml-1 font-normal text-sm" data-tooltip-id="response-measure-tooltip"
+                                      data-tooltip-place="right"
+                                      data-tooltip-content='The Load Design allows you to further design the simulated load depending on the selected stimulus. For instance, if you design a "Load Peak" stimulus, you will need to specify the final peak to be achieved and how long it takes to reach it.'>&#9432;</span>
                             </h3>
-                            <Tooltip id="response-measure-tooltip" style={{ maxWidth: '256px' }} />
+                            <Tooltip id="response-measure-tooltip" style={{maxWidth: '256px'}}/>
                         </label>
-                        {/*<select value={rqs.name} onChange={handleStimulusChange} id="" className="select select-bordered w-full max-w-xs">*/}
-                        {/*    /!*{rqs.loadDesign.map((stimulus) => {*!/*/}
-                        {/*    /!*    return <option value={stimulus.name} key={stimulus.name}>{stimulus.name}</option>*!/*/}
-                        {/*    /!*})}*!/*/}
-                        {/*</select>*/}
-                        <select id="" className="select select-bordered w-full max-w-xs">
-                            <option value={0}>None</option>
-                            <option value={1}>Load Peak</option>
-                            <option value={2}>Load Increase</option>
-                            <option value={3}>Constant Load</option>
+                        <select value={rqs.loadDesign} onChange={handleStimulusChange} id=""
+                                className="select select-bordered w-full max-w-xs">
+                            {rqs.loadDesign.map((loadVariant) => {
+                                return <option value={loadVariant.name}
+                                               key={loadVariant.name}>{loadVariant.name}</option>
+                            })}
                         </select>
+                        {/*TODO: Add Tooltip for each element*/}
                         <div className="actvity-container">
-                            <div>
-                                <label className="label">
-                                    <span className="label-text">
-                                        Highest Load
-                                        <span className="ml-1 font-normal text-sm" data-tooltip-id="response-measure-tooltip" data-tooltip-place="right" data-tooltip-content='The highest load defines how many users you simulate at most, therefor, the higher you select this field, the more users your test will simulate.'>&#9432;</span>
-                                    </span>
-                                </label>
-                                <div className="btn-group">
-                                    <input type="radio" value={10} onClick={handleDesignParameterChange} name={1} data-title="High" className="btn" data-tooltip-id={1} data-tooltip-content={'Value: ' + 10} />
-                                    <Tooltip id={1} />
-                                    <input type="radio" value={15} onClick={handleDesignParameterChange} name={2} data-title="Very High" className="btn" data-tooltip-id={2} data-tooltip-content={'Value: ' + 15} />
-                                    <Tooltip id={2} />
-                                    <input type="radio" value={20} onClick={handleDesignParameterChange} name={3} data-title="Extremly High" className="btn" data-tooltip-id={3} data-tooltip-content={'Value: ' + 20} />
-                                    <Tooltip id={3} />
-                                </div>
-                                <label className="label">
-                                    <span className="label-text">
-                                        Time to Highest Load
-                                        <span className="ml-1 font-normal text-sm" data-tooltip-id="response-measure-tooltip" data-tooltip-place="right" data-tooltip-content='The highest load defines how many users you simulate at most, therefor, the higher you select this field, the more users your test will simulate.'>&#9432;</span>
-                                    </span>
-                                </label>
-                                <div className="btn-group">
-                                    <input type="radio" value={10} onClick={handleDesignParameterChange} name={1} data-title="Slow" className="btn" data-tooltip-id={1} data-tooltip-content={'Value: ' + 10} />
-                                    <Tooltip id={1} />
-                                    <input type="radio" value={15} onClick={handleDesignParameterChange} name={2} data-title="Fast" className="btn" data-tooltip-id={2} data-tooltip-content={'Value: ' + 15} />
-                                    <Tooltip id={2} />
-                                    <input type="radio" value={20} onClick={handleDesignParameterChange} name={3} data-title="Very Fast" className="btn" data-tooltip-id={3} data-tooltip-content={'Value: ' + 20} />
-                                    <Tooltip id={3} />
-                                </div>
-                            </div>
+                            {rqs.loadDesign.map((loadDesign) => {
+                                return (
+                                    <div>
+                                        {/*TODO: The designparams should only be visible for the right loadDesign*/}
+                                        {loadDesign.designParameters != null && loadDesign.designParameters.map((parameter) => {
+                                            return (
+                                                <React.Fragment>
+                                                    <label className="label">
+										                <span className="label-text">
+                                                            {parameter.name}
+                                                        </span>
+                                                    </label>
+                                                    <div className="btn-group">
+                                                        {parameter.values.map((value) => {
+                                                            return (
+                                                                <React.Fragment>
+                                                                    <input type="radio" value={value.name}
+                                                                           onClick={handleDesignParameterChange}
+                                                                           name={parameter.name} data-title={value.name}
+                                                                           className="btn"
+                                                                           data-tooltip-id={value.name + '-' + value.value}
+                                                                           data-tooltip-content={'Value: ' + value.value}/>
+                                                                    <Tooltip id={value.name + '-' + value.value}/>
+                                                                </React.Fragment>
+                                                            )
+                                                        })}
+                                                    </div>
+                                                </React.Fragment>
+                                            )
+                                        })}
+                                    </div>
+                                )
+                            })}
                         </div>
                     </div>
 
@@ -369,63 +371,54 @@ export default function ScenarioTestMenu(props) {
                         <label className="label">
                             <h3>
                                 Resilience Design
-                                <span className="ml-1 font-normal text-sm" data-tooltip-id="response-measure-tooltip" data-tooltip-place="right" data-tooltip-content='The Load Design allows you to further design the simulated load depending on the selected stimulus. For instance, if you design a "Load Peak" stimulus, you will need to specify the final peak to be achieved and how long it takes to reach it.'>&#9432;</span>
+                                <span className="ml-1 font-normal text-sm" data-tooltip-id="response-measure-tooltip"
+                                      data-tooltip-place="right"
+                                      data-tooltip-content='The Load Design allows you to further design the simulated load depending on the selected stimulus. For instance, if you design a "Load Peak" stimulus, you will need to specify the final peak to be achieved and how long it takes to reach it.'>&#9432;</span>
                             </h3>
-                            <Tooltip id="response-measure-tooltip" style={{ maxWidth: '256px' }} />
+                            <Tooltip id="response-measure-tooltip" style={{maxWidth: '256px'}}/>
                         </label>
-                        <select id="" className="select select-bordered w-full max-w-xs">
-                            <option value={0}>None</option>
-                            <option value={1}>Failed Request</option>
-                            <option value={2}>Late Response</option>
-                            <option value={3}>Unavailable</option>
+                        <select value={rqs.resilienceDesign} onChange={handleStimulusChange} id=""
+                                className="select select-bordered w-full max-w-xs">
+                            {rqs.resilienceDesign.map((resilienceVariant) => {
+                                return <option value={resilienceVariant.name}
+                                               key={resilienceVariant.name}>{resilienceVariant.name}</option>
+                            })}
                         </select>
+                        {/*TODO: Add Tooltip for each element*/}
                         <div className="actvity-container">
-                            <div>
-                                <label className="label">
-                                    <span className="label-text">
-                                        Error Rates
-                                        <span className="ml-1 font-normal text-sm" data-tooltip-id="response-measure-tooltip" data-tooltip-place="right" data-tooltip-content='The highest load defines how many users you simulate at most, therefor, the higher you select this field, the more users your test will simulate.'>&#9432;</span>
-                                    </span>
-                                </label>
-                                <div className="btn-group">
-                                    <input type="radio" value={10} onClick={handleDesignParameterChange} name={1} data-title="None" className="btn" data-tooltip-id={1} data-tooltip-content={'Value: ' + 10} />
-                                    <Tooltip id={1} />
-                                    <input type="radio" value={15} onClick={handleDesignParameterChange} name={2} data-title="Low" className="btn" data-tooltip-id={2} data-tooltip-content={'Value: ' + 15} />
-                                    <Tooltip id={2} />
-                                    <input type="radio" value={20} onClick={handleDesignParameterChange} name={3} data-title="Medium" className="btn" data-tooltip-id={3} data-tooltip-content={'Value: ' + 20} />
-                                    <Tooltip id={3} />
-                                    <input type="radio" value={25} onClick={handleDesignParameterChange} name={4} data-title="High" className="btn" data-tooltip-id={4} data-tooltip-content={'Value: ' + 25} />
-                                    <Tooltip id={4} />
-                                </div>
-                                <label className="label">
-                                    <span className="label-text">
-                                        Time to Highest Load
-                                        <span className="ml-1 font-normal text-sm" data-tooltip-id="response-measure-tooltip" data-tooltip-place="right" data-tooltip-content='The highest load defines how many users you simulate at most, therefor, the higher you select this field, the more users your test will simulate.'>&#9432;</span>
-                                    </span>
-                                </label>
-                                <div className="btn-group">
-                                    <input type="radio" value={10} onClick={handleDesignParameterChange} name={1} data-title="Slow" className="btn" data-tooltip-id={1} data-tooltip-content={'Value: ' + 10} />
-                                    <Tooltip id={1} />
-                                    <input type="radio" value={15} onClick={handleDesignParameterChange} name={2} data-title="Fast" className="btn" data-tooltip-id={2} data-tooltip-content={'Value: ' + 15} />
-                                    <Tooltip id={2} />
-                                    <input type="radio" value={20} onClick={handleDesignParameterChange} name={3} data-title="Very Fast" className="btn" data-tooltip-id={3} data-tooltip-content={'Value: ' + 20} />
-                                    <Tooltip id={3} />
-                                </div>
-                                <label className="label">
-                                    <span className="label-text">
-                                        How often do you want the stimulus to occur?
-                                        <span className="ml-1 font-normal text-sm" data-tooltip-id="response-measure-tooltip" data-tooltip-place="right" data-tooltip-content='The highest load defines how many users you simulate at most, therefor, the higher you select this field, the more users your test will simulate.'>&#9432;</span>
-                                    </span>
-                                </label>
-                                <div className="btn-group">
-                                    <input type="radio" value={10} onClick={handleDesignParameterChange} name={1} data-title="One" className="btn" data-tooltip-id={1} data-tooltip-content={'Value: ' + 10} />
-                                    <Tooltip id={1} />
-                                    <input type="radio" value={15} onClick={handleDesignParameterChange} name={2} data-title="More than once" className="btn" data-tooltip-id={2} data-tooltip-content={'Value: ' + 15} />
-                                    <Tooltip id={2} />
-                                    <input type="radio" value={20} onClick={handleDesignParameterChange} name={3} data-title="Randomly" className="btn" data-tooltip-id={3} data-tooltip-content={'Value: ' + 20} />
-                                    <Tooltip id={3} />
-                                </div>
-                            </div>
+                            {rqs.resilienceDesign.map((resilienceDesign) => {
+                                return (
+                                    <div>
+                                        {/*TODO: The designparams should only be visible for the right resilienceDesign*/}
+                                        {resilienceDesign.designParameters != null && resilienceDesign.designParameters.map((parameter) => {
+                                            return (
+                                                <React.Fragment>
+                                                    <label className="label">
+										                <span className="label-text">
+                                                            {parameter.name}
+                                                        </span>
+                                                    </label>
+                                                    <div className="btn-group">
+                                                        {parameter.values.map((value) => {
+                                                            return (
+                                                                <React.Fragment>
+                                                                    <input type="radio" value={value.name}
+                                                                           onClick={handleDesignParameterChange}
+                                                                           name={parameter.name} data-title={value.name}
+                                                                           className="btn"
+                                                                           data-tooltip-id={value.name + '-' + value.value}
+                                                                           data-tooltip-content={'Value: ' + value.value}/>
+                                                                    <Tooltip id={value.name + '-' + value.value}/>
+                                                                </React.Fragment>
+                                                            )
+                                                        })}
+                                                    </div>
+                                                </React.Fragment>
+                                            )
+                                        })}
+                                    </div>
+                                )
+                            })}
                         </div>
                     </div>
                 </div>
@@ -434,9 +427,11 @@ export default function ScenarioTestMenu(props) {
                     <h3>Metrics</h3>
                     <p>
                         The Metrics to include into the Scenario Test
-                        <span className="ml-1 font-normal text-sm" data-tooltip-place="right" data-tooltip-id="metrics-tooltip" data-tooltip-content='You may check one or multiple of these fields to tell the system which metrics you would like to include in the final analysis results.'>&#9432;</span>
+                        <span className="ml-1 font-normal text-sm" data-tooltip-place="right"
+                              data-tooltip-id="metrics-tooltip"
+                              data-tooltip-content='You may check one or multiple of these fields to tell the system which metrics you would like to include in the final analysis results.'>&#9432;</span>
                     </p>
-                    <Tooltip id="metrics-tooltip" style={{ maxWidth: '256px' }} />
+                    <Tooltip id="metrics-tooltip" style={{maxWidth: '256px'}}/>
                     <div className="activity-container">
                         {settings.metrics.map((metric) => {
                             return (
@@ -448,8 +443,13 @@ export default function ScenarioTestMenu(props) {
                                         {metric.values.map((value) => {
                                             return (
                                                 <React.Fragment>
-                                                    <input type="radio" value={value.name} onClick={handleResponseMeasureChange} name={responseMeasure.name} data-title={value.name} className="btn" data-tooltip-id={value.name + '-' + value.value} data-tooltip-content={'Value: ' + value.value} />
-                                                    <Tooltip id={value.name + '-' + value.value} />
+                                                    <input type="radio" value={value.name}
+                                                           onClick={handleResponseMeasureChange}
+                                                           name={responseMeasure.name} data-title={value.name}
+                                                           className="btn"
+                                                           data-tooltip-id={value.name + '-' + value.value}
+                                                           data-tooltip-content={'Value: ' + value.value}/>
+                                                    <Tooltip id={value.name + '-' + value.value}/>
                                                 </React.Fragment>
                                             )
                                         })}
