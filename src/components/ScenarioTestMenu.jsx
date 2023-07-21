@@ -43,39 +43,79 @@ export default function ScenarioTestMenu(props) {
     const metrics = scenarioSpecs.metrics;
     const settings = scenarioSpecs.settings;
 
+    // [
+    //     {
+    //         artifact: {object: props.selectedEdge?.system, activity: props.selectedEdge?.activity},
+    //         description: props.selectedEdge?.name,
+    //         load_design: {
+    //             load_variant: null,
+    //             design_parameters: null
+    //         },
+    //         resilience_design: {
+    //             load_variant: null,
+    //             design_parameters: null
+    //         },
+    //         response_measure: {}
+    //     }
+    // ],
+
     let initRQADefiniton = {
         context: mapping.context,
         environment: mapping.server_info[0].environment,
         runtime_quality_analysis: {
-            // scenariotests: [ {
-            //
-            // }]
+            artifacts: [],
+            settings: {
+                accuracy: 0,
+                environment: settings.enviroment[0],
+                timeSlot: null
+            }
 
-            resilience: [],
-            loadtests: [
-                {
-                    artifact: {object: props.selectedEdge?.system, activity: props.selectedEdge?.activity},
-                    description: props.selectedEdge?.name,
-                    parametrization: props.selectedEdge?.parametrization,
-                    response_measure: {},
-                    result_metrics: [],
-                    stimulus: {
-                        load_profile: allRqs.loadDesign[0].name.toUpperCase().replace(/\s+/g, '_'),
-                        accuracy: 0
-                    }
-                }
-            ]
+            // resilience: [],
+            // loadtests: [
+            //     {
+            //         artifact: {object: props.selectedEdge?.system, activity: props.selectedEdge?.activity},
+            //         description: props.selectedEdge?.name,
+            //         parametrization: props.selectedEdge?.parametrization,
+            //         response_measure: {},
+            //         result_metrics: [],
+            //         stimulus: {
+            //             load_profile: allRqs.loadDesign[0].name.toUpperCase().replace(/\s+/g, '_'),
+            //             accuracy: 0
+            //         }
+            //     }
+            // ]
         }
     }
 
+    // initialize the artifacts key with the activities in the domain
+    props.edges.forEach((edge) => {
+        if(edge.activity !== undefined) {
+            initRQADefiniton.runtime_quality_analysis.artifacts.push({
+                artifact: {object: edge.system, activity: edge.activity},
+                description: edge.name,
+                load_design: {
+                    load_variant: null,
+                    design_parameters: null
+                },
+                resilience_design: {
+                    load_variant: null,
+                    design_parameters: null
+                },
+                response_measures: {}
+            });
+        }
+    });
 
-    const [selectedActivity, setSelectedActivity] = useState(props.selectedEdge);
-    const [rqs, setRqs] = useState({loadDesign: allRqs.loadDesign, resilienceDesign: allRqs.resilienceDesign});
-    const [accuracy, setAccuracy] = useState(0);
-    const [designParameters, setDesignParameters] = useState(allRqs.loadDesign[0].designParameters);
+    const [selectedActivity, setSelectedActivity] = useState(0);
+    const [loadDesign, setLoadDesign] = useState(allRqs.loadDesign[0]);
+    const [loadDesignParameters, setLoadDesignParameters] = useState(null);    //null
+    const [resilienceDesign, setResilienceDesign] = useState(allRqs.resilienceDesign[0]);
+    //const [resilienceDesignParameters, setResilienceDesignParameters] = useState(allRqs.resilienceDesign[0].designParameters);    //null
     // Later there could be more than one response measure...
-    const [responseMeasure, setResponseMeasure] = useState([]);
-
+    const [responseMeasure, setResponseMeasure] = useState({});
+    const [accuracy, setAccuracy] = useState(0);
+    const [enviroment, setEnviroment] = useState(settings.enviroment[0]);
+    const [timeSlot, setTimeSlot] = useState(null);
 
     // state-based RQA-definition
     const [rqa, setRqa] = useState(initRQADefiniton);
@@ -93,14 +133,9 @@ export default function ScenarioTestMenu(props) {
 
     const handleSelectionChange = (e) => {
 
+        // updates reactFlowInstance
         let relatedEdgesArray = reactFlowInstance.getEdges().filter((edge) => edge.name == e.target.value);
         let unrelatedEdgesArray = reactFlowInstance.getEdges().filter((edge) => edge.name != e.target.value);
-
-        let rqaArtifact;
-
-        // const regexId = /^system_(\w+)$/;
-        // const idMatch = regexId.exec(edgeToService.source);
-        // const serviceId = idMatch ? idMatch[1] : null;
 
         unrelatedEdgesArray.forEach((edge) => {
             edge.selected = false;
@@ -114,23 +149,41 @@ export default function ScenarioTestMenu(props) {
 
         // add the unselected version od the edge
         reactFlowInstance.setEdges(newEdgesArray);
-        setSelectedActivity(e.target.value);
-        let rqaCopy = rqa;
 
+        //let rqaCopy = rqa;
+
+        // update the view for the selected edge
+        //let newSelectedActivity = rqa.runtime_quality_analysis.artifacts.findIndex((artifact) => artifact.description === e.target.value);
+        setSelectedActivity(e.target.value);
 
         // Only works with one loadtest
-        rqaCopy.runtime_quality_analysis.loadtests[0].artifact.object = props.selectedEdge?.system;
-        rqaCopy.runtime_quality_analysis.loadtests[0].artifact.activity = props.selectedEdge?.activity;
-        rqaCopy.runtime_quality_analysis.loadtests[0].description = props.selectedEdge?.name;
-        console.log(rqaCopy.runtime_quality_analysis.loadtests[0]);
+        // rqaCopy.runtime_quality_analysis.loadtests.artifacts[selectedActivity].artifact.object = props.selectedEdge?.system;
+        // rqaCopy.runtime_quality_analysis.loadtests.artifacts[selectedActivity].artifact.activity = props.selectedEdge?.activity;
+        // rqaCopy.runtime_quality_analysis.loadtests.artifacts[selectedActivity].description = props.selectedEdge?.name;
+        //  console.log(selectedActivity);
+        // setSelectedActivity(e.target.value);
+        // console.log(rqa.runtime_quality_analysis.artifacts.indexOf(e.target));
+        //console.log(rqaCopy.runtime_quality_analysis.artifacts[selectedActivity]);
+        //
+        // setRqa(rqaCopy);
+    }
 
-        setRqa(rqaCopy);
+    const handleLoadDesignChange = (e) => {
+        // const newRqa = ;
+        let a = selectedActivity;
+        let selectedActivity = rqa.runtime_quality_analysis.artifacts[selectedActivity];
+        //let loadDesign = selectedActivity.load_design.design_parameters;
+        //let newSelectedActivity = rqa.runtime_quality_analysis.artifacts[numberOfSelectedActivity].load_design.findIndex((artifact) => artifact.load_design.load_variant === e.target.value);
+        console.log(loadDesign);
+        setLoadDesign(e.target.value);
+        console.log("Change Load funktioniert");
+        console.log("Activity: " + selectedActivity);
     }
 
     const handleRqsChange = (e) => {
-        const newRqs = allRqs.find((rqs) => rqs.name == e.target.value);
+        const newRqs = allRqs.find((rqs) => rqs.name === e.target.value);
         let rqaCopy = rqa;
-        rqaCopy.runtime_quality_analysis.loadtests[0].rqs.load_profile = e.target.value.toUpperCase().replace(/\s+/g, '_');
+        //rqaCopy.runtime_quality_analysis.loadtests[0].rqs.load_profile = e.target.value.toUpperCase().replace(/\s+/g, '_');
         console.log(newRqs);
         setRqs(newRqs);
         setDesignParameters(newRqs.designParameters);
@@ -140,7 +193,7 @@ export default function ScenarioTestMenu(props) {
     const handleStimulusChange = (e) => {
         const newRqs = allRqs.loadDesign.find((rqs) => rqs.name == e.target.value);
         let rqaCopy = rqa;
-        rqaCopy.runtime_quality_analysis.loadtests[0].stimulus = e.target.value.toUpperCase().replace(/\s+/g, '_');
+        //rqaCopy.runtime_quality_analysis.loadtests[0].stimulus = e.target.value.toUpperCase().replace(/\s+/g, '_');
         console.log(newRqs);
         //setRqs(newRqs);
         //setDesignParameters(newRqs.designParameters);
@@ -150,7 +203,7 @@ export default function ScenarioTestMenu(props) {
     const handleAccuracyChange = (e) => {
         setAccuracy(e.target.value);
         let rqaCopy = rqa;
-        rqaCopy.runtime_quality_analysis.loadtests[0].rqs.accuracy = e.target.value;
+        //rqaCopy.runtime_quality_analysis.loadtests[0].rqs.accuracy = e.target.value;
         console.log(accuracy);
     }
 
@@ -160,10 +213,10 @@ export default function ScenarioTestMenu(props) {
         let rqaCopy = rqa;
         if (isChecked) {
             setIncludedMetrics([...includedMetrics, value]);
-            rqaCopy.runtime_quality_analysis.loadtests[0].result_metrics.push(value);
+            //rqaCopy.runtime_quality_analysis.loadtests[0].result_metrics.push(value);
         } else {
             setIncludedMetrics(includedMetrics.filter(item => item !== value));
-            rqaCopy.runtime_quality_analysis.loadtests[0].result_metrics.filter((metric) => metric !== value);
+            //rqaCopy.runtime_quality_analysis.loadtests[0].result_metrics.filter((metric) => metric !== value);
         }
     }
 
@@ -171,7 +224,7 @@ export default function ScenarioTestMenu(props) {
         const parameter_name = e.target.parentNode.id.toLowerCase().replace(/\s+/g, '_');
         const value = e.target.value.toUpperCase().replace(/\s+/g, '_');
         let rqaCopy = rqa;
-        rqaCopy.runtime_quality_analysis.loadtests[0].rqs.loadDesign[parameter_name] = value;
+        //rqaCopy.runtime_quality_analysis.loadtests[0].rqs.loadDesign[parameter_name] = value;
         setRqa(rqaCopy);
         setStimulusParameters([...stimulusParameters], parameter)
     }
@@ -189,7 +242,7 @@ export default function ScenarioTestMenu(props) {
         if (index === -1) {
             // If an object with the measurename does not exist, add a new object to the responseMeasure array
             setResponseMeasure([...responseMeasure, {value, measureName}]);
-            rqaCopy.runtime_quality_analysis.loadtests[0].response_measure[measureNameRqaFormatted] = value;
+            //rqaCopy.runtime_quality_analysis.loadtests[0].response_measure[measureNameRqaFormatted] = value;
             setRqa(rqaCopy);
 
         } else {
@@ -197,7 +250,7 @@ export default function ScenarioTestMenu(props) {
             const updatedResponseMeasure = [...responseMeasure];
             updatedResponseMeasure[index].value = value;
             setResponseMeasure(updatedResponseMeasure);
-            rqaCopy.runtime_quality_analysis.loadtests[0].response_measure[measureNameRqaFormatted] = value;
+            //rqaCopy.runtime_quality_analysis.loadtests[0].response_measure[measureNameRqaFormatted] = value;
             setRqa(rqaCopy);
 
         }
@@ -264,21 +317,24 @@ export default function ScenarioTestMenu(props) {
     const addScenarioTest = (event) => {
         let a = 100;    //Test command
         //submitScenariotest();
+        console.log("Current RQA:");
+        console.log(rqa);
+        console.log(props);
     }
 
-    useEffect(() => {
-        setSelectedActivity(props.selectedEdge);
-        let rqaCopy = rqa;
-        rqaCopy.runtime_quality_analysis.loadtests[0].artifact = {
-            object: props.selectedEdge?.system,
-            activity: props.selectedEdge?.activity
-        }
-        rqaCopy.runtime_quality_analysis.loadtests[0].description = props.selectedEdge?.name
-        setRqa(rqaCopy);
-    }, [props.selectedEdge]);
+    // useEffect(() => {
+    //     setSelectedActivity(props.selectedEdge);
+    //     let rqaCopy = rqa;
+    //     // rqaCopy.runtime_quality_analysis.loadtests[0].artifact = {
+    //     //     object: props.selectedEdge?.system,
+    //     //     activity: props.selectedEdge?.activity
+    //     // }
+    //     // rqaCopy.runtime_quality_analysis.loadtests[0].description = props.selectedEdge?.name
+    //     setRqa(rqaCopy);
+    // }, [props.selectedEdge]);
 
     return (
-        <>
+        <React.Fragment>
             <div className="p-4 prose overflow-scroll h-full"
                  style={{width: `${sidebarWidth}px`, cursor: isResizing ? 'col-resize' : 'default',}}>
                 <h3>Scenario Test Specification</h3>
@@ -286,7 +342,7 @@ export default function ScenarioTestMenu(props) {
                     <label className="label">
                         <span className="label-text">Activity</span>
                     </label>
-                    <select value={selectedActivity?.name} onChange={handleSelectionChange} id=""
+                    <select value={selectedActivity} onChange={handleSelectionChange} id=""
                             className="select select-bordered w-full max-w-xs">
                         {uniqueActivitys.map((edge) => {
                             return <option value={edge.name} key={edge.id}>{edge.name}</option>
@@ -322,16 +378,16 @@ export default function ScenarioTestMenu(props) {
                             </h3>
                             <Tooltip id="response-measure-tooltip" style={{maxWidth: '256px'}}/>
                         </label>
-                        <select value={rqs.loadDesign} onChange={handleStimulusChange} id=""
+                        <select value={loadDesign.name} onChange={handleLoadDesignChange} id=""
                                 className="select select-bordered w-full max-w-xs">
-                            {rqs.loadDesign.map((loadVariant) => {
+                            {allRqs.loadDesign.map((loadVariant) => {
                                 return <option value={loadVariant.name}
                                                key={loadVariant.name}>{loadVariant.name}</option>
                             })}
                         </select>
                         {/*TODO: Add Tooltip for each element*/}
                         <div className="actvity-container">
-                            {rqs.loadDesign.map((loadDesign) => {
+                            {allRqs.loadDesign.map((loadDesign) => {
                                 return (
                                     <div>
                                         {/*TODO: The designparams should only be visible for the right loadDesign*/}
@@ -377,16 +433,16 @@ export default function ScenarioTestMenu(props) {
                             </h3>
                             <Tooltip id="response-measure-tooltip" style={{maxWidth: '256px'}}/>
                         </label>
-                        <select value={rqs.resilienceDesign} onChange={handleStimulusChange} id=""
+                        <select value={resilienceDesign} onChange={handleStimulusChange} id=""
                                 className="select select-bordered w-full max-w-xs">
-                            {rqs.resilienceDesign.map((resilienceVariant) => {
+                            {allRqs.resilienceDesign.map((resilienceVariant) => {
                                 return <option value={resilienceVariant.name}
                                                key={resilienceVariant.name}>{resilienceVariant.name}</option>
                             })}
                         </select>
                         {/*TODO: Add Tooltip for each element*/}
                         <div className="actvity-container">
-                            {rqs.resilienceDesign.map((resilienceDesign) => {
+                            {allRqs.resilienceDesign.map((resilienceDesign) => {
                                 return (
                                     <div>
                                         {/*TODO: The designparams should only be visible for the right resilienceDesign*/}
@@ -526,7 +582,7 @@ export default function ScenarioTestMenu(props) {
 
             </div>
             <ResizeBar setIsResizing={setIsResizing} setSidebarWidth={setSidebarWidth}/>
-        </>
+        </React.Fragment>
     )
 
 }
