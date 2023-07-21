@@ -169,15 +169,8 @@ export default function ScenarioTestMenu(props) {
     }
 
     const handleLoadDesignChange = (e) => {
-        // const newRqa = ;
-        let a = selectedActivity;
-        let selectedActivity = rqa.runtime_quality_analysis.artifacts[selectedActivity];
-        //let loadDesign = selectedActivity.load_design.design_parameters;
-        //let newSelectedActivity = rqa.runtime_quality_analysis.artifacts[numberOfSelectedActivity].load_design.findIndex((artifact) => artifact.load_design.load_variant === e.target.value);
-        console.log(loadDesign);
-        setLoadDesign(e.target.value);
-        console.log("Change Load funktioniert");
-        console.log("Activity: " + selectedActivity);
+        let loadVariant = allRqs.loadDesign.find((loadVariant) => loadVariant.name === e.target.value);
+        setLoadDesign(loadVariant);
     }
 
     const handleRqsChange = (e) => {
@@ -385,39 +378,31 @@ export default function ScenarioTestMenu(props) {
                                                key={loadVariant.name}>{loadVariant.name}</option>
                             })}
                         </select>
-                        {/*TODO: Add Tooltip for each element*/}
                         <div className="actvity-container">
-                            {allRqs.loadDesign.map((loadDesign) => {
+                            {loadDesign.designParameters != null && loadDesign.designParameters.map((parameter) => {
                                 return (
-                                    <div>
-                                        {/*TODO: The designparams should only be visible for the right loadDesign*/}
-                                        {loadDesign.designParameters != null && loadDesign.designParameters.map((parameter) => {
-                                            return (
-                                                <React.Fragment>
-                                                    <label className="label">
-										                <span className="label-text">
-                                                            {parameter.name}
-                                                        </span>
-                                                    </label>
-                                                    <div className="btn-group">
-                                                        {parameter.values.map((value) => {
-                                                            return (
-                                                                <React.Fragment>
-                                                                    <input type="radio" value={value.name}
-                                                                           onClick={handleDesignParameterChange}
-                                                                           name={parameter.name} data-title={value.name}
-                                                                           className="btn"
-                                                                           data-tooltip-id={value.name + '-' + value.value}
-                                                                           data-tooltip-content={'Value: ' + value.value}/>
-                                                                    <Tooltip id={value.name + '-' + value.value}/>
-                                                                </React.Fragment>
-                                                            )
-                                                        })}
-                                                    </div>
-                                                </React.Fragment>
-                                            )
-                                        })}
-                                    </div>
+                                    <React.Fragment>
+                                        <label className="label">
+                                            <span className="label-text">
+                                                {parameter.name}
+                                            </span>
+                                        </label>
+                                        <div className="btn-group">
+                                            {parameter.values.map((value) => {
+                                                return (
+                                                    <React.Fragment>
+                                                        <input type="radio" value={value.name}
+                                                               onClick={handleDesignParameterChange}
+                                                               name={parameter.name} data-title={value.name}
+                                                               className="btn"
+                                                               data-tooltip-id={value.name + '-' + value.value}
+                                                               data-tooltip-content={'Value: ' + value.value}/>
+                                                        <Tooltip id={value.name + '-' + value.value}/>
+                                                    </React.Fragment>
+                                                )
+                                            })}
+                                        </div>
+                                    </React.Fragment>
                                 )
                             })}
                         </div>
@@ -426,6 +411,7 @@ export default function ScenarioTestMenu(props) {
                     <div className="actvity-container">
                         <label className="label">
                             <h3>
+                                {loadDesign.name === undefined ? 'true' : 'false'}
                                 Resilience Design
                                 <span className="ml-1 font-normal text-sm" data-tooltip-id="response-measure-tooltip"
                                       data-tooltip-place="right"
