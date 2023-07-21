@@ -315,11 +315,20 @@ export default function ScenarioTestMenu(props) {
     }
 
     const addScenarioTest = (event) => {
-        let a = 100;    //Test command
+        let a = selectedActivity;
+        let copyRqa = deepCopy(rqa);
+        let copyActivity = deepCopy(rqa.runtime_quality_analysis.artifacts[selectedActivity]);
+        copyActivity.load_design.load_variant = loadDesign.name;
+        copyActivity.load_design.design_parameters = loadDesign.designParameters;
+        copyRqa.runtime_quality_analysis.artifacts[selectedActivity] = copyActivity;
+        // copyActivity
+        // copyRqa.runtime_quality_analysis.
+
+        //Test command
         //submitScenariotest();
         console.log("Current RQA:");
-        console.log(rqa);
-        console.log(props);
+        console.log(copyRqa);
+        setRqa(copyRqa);
     }
 
     // useEffect(() => {
@@ -442,35 +451,12 @@ export default function ScenarioTestMenu(props) {
                                     }
                                 </React.Fragment>)
                         })}
-                        {/*{loadDesign.designParameters != null && loadDesign.designParameters.map((parameter, index) => {*/}
-                        {/*    return (<React.Fragment>*/}
-                        {/*        <label className="label">*/}
-                        {/*                    <span className="label-text">*/}
-                        {/*                        {parameter.name}*/}
-                        {/*                    </span>*/}
-                        {/*        </label>*/}
-                        {/*        <div className="btn-group">*/}
-                        {/*            {parameter.values.map((value) => {*/}
-                        {/*                return (<React.Fragment>*/}
-                        {/*                    <input type="radio" value={value}*/}
-                        {/*                           onClick={() => handleLoadDesignParameterChange(value, index)}*/}
-                        {/*                           name={parameter.name} data-title={value.name}*/}
-                        {/*                           className="btn"*/}
-                        {/*                           data-tooltip-id={value.name + '-' + value.value}*/}
-                        {/*                           data-tooltip-content={'Value: ' + value.value}/>*/}
-                        {/*                    <Tooltip id={value.name + '-' + value.value}/>*/}
-                        {/*                </React.Fragment>)*/}
-                        {/*            })}*/}
-                        {/*        </div>*/}
-                        {/*    </React.Fragment>)*/}
-                        {/*})}*/}
                     </div>
                 </div>
 
                 <div className="actvity-container">
                     <label className="label">
                         <h3>
-                            {loadDesign.name === undefined ? 'true' : 'false'}
                             Resilience Design
                             <span className="ml-1 font-normal text-sm" data-tooltip-id="response-measure-tooltip"
                                   data-tooltip-place="right"
