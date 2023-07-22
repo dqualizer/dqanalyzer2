@@ -43,22 +43,6 @@ export default function ScenarioTestMenu(props) {
     const metrics = scenarioSpecs.metrics;
     const settings = scenarioSpecs.settings;
 
-    // [
-    //     {
-    //         artifact: {object: props.selectedEdge?.system, activity: props.selectedEdge?.activity},
-    //         description: props.selectedEdge?.name,
-    //         load_design: {
-    //             load_variant: null,
-    //             design_parameters: null
-    //         },
-    //         resilience_design: {
-    //             load_variant: null,
-    //             design_parameters: null
-    //         },
-    //         response_measure: {}
-    //     }
-    // ],
-
     let initRQADefiniton = {
         context: mapping.context,
         environment: mapping.server_info[0].environment,
@@ -67,21 +51,6 @@ export default function ScenarioTestMenu(props) {
             settings: {
                 accuracy: 0, environment: settings.enviroment[0], timeSlot: null
             }
-
-            // resilience: [],
-            // loadtests: [
-            //     {
-            //         artifact: {object: props.selectedEdge?.system, activity: props.selectedEdge?.activity},
-            //         description: props.selectedEdge?.name,
-            //         parametrization: props.selectedEdge?.parametrization,
-            //         response_measure: {},
-            //         result_metrics: [],
-            //         stimulus: {
-            //             load_profile: allRqs.loadDesign[0].name.toUpperCase().replace(/\s+/g, '_'),
-            //             accuracy: 0
-            //         }
-            //     }
-            // ]
         }
     }
 
@@ -107,8 +76,6 @@ export default function ScenarioTestMenu(props) {
     const [selectedActivity, setSelectedActivity] = useState(0);
     const [loadDesign, setLoadDesign] = useState(allRqs.loadDesign[0]);
     const [resilienceDesign, setResilienceDesign] = useState(allRqs.resilienceDesign[0]);
-    //const [resilienceDesignParameters, setResilienceDesignParameters] = useState(allRqs.resilienceDesign[0].designParameters);    //null
-    // Later there could be more than one response measure...
     const [responseMeasures, setResponseMeasures] = useState([]);
     const [accuracy, setAccuracy] = useState(0);
     const [enviroment, setEnviroment] = useState(settings.enviroment[0]);
@@ -127,7 +94,6 @@ export default function ScenarioTestMenu(props) {
 
     const handleSelectionChange = (e) => {
 
-        // updates reactFlowInstance
         let relatedEdgesArray = reactFlowInstance.getEdges().filter((edge) => edge.name == e.target.value);
         let unrelatedEdgesArray = reactFlowInstance.getEdges().filter((edge) => edge.name != e.target.value);
 
@@ -141,25 +107,12 @@ export default function ScenarioTestMenu(props) {
 
         let newEdgesArray = relatedEdgesArray.concat(unrelatedEdgesArray);
 
-        // add the unselected version od the edge
+        // updates reactFlowInstance
         reactFlowInstance.setEdges(newEdgesArray);
-
-        //let rqaCopy = rqa;
 
         // update the view for the selected edge
         let newSelectedActivity = rqa.runtime_quality_analysis.artifacts.findIndex((artifact) => artifact.description === e.target.value);
         setSelectedActivity(newSelectedActivity);
-
-        // Only works with one loadtest
-        // rqaCopy.runtime_quality_analysis.loadtests.artifacts[selectedActivity].artifact.object = props.selectedEdge?.system;
-        // rqaCopy.runtime_quality_analysis.loadtests.artifacts[selectedActivity].artifact.activity = props.selectedEdge?.activity;
-        // rqaCopy.runtime_quality_analysis.loadtests.artifacts[selectedActivity].description = props.selectedEdge?.name;
-        //  console.log(selectedActivity);
-        // setSelectedActivity(e.target.value);
-        // console.log(rqa.runtime_quality_analysis.artifacts.indexOf(e.target));
-        //console.log(rqaCopy.runtime_quality_analysis.artifacts[selectedActivity]);
-        //
-        // setRqa(rqaCopy);
     }
 
     const handleLoadDesignChange = (e) => {
@@ -174,17 +127,11 @@ export default function ScenarioTestMenu(props) {
     }
 
     const handleLoadDesignParameterChange = (value, index) => {
-        //let entity = object;
-        //let index = loadDesign.designParameters.findIndex;
         let copyDesignParameter = deepCopy(loadDesign.designParameters[index]);
         copyDesignParameter.value = value;
         let newLoadDesign = deepCopy(loadDesign);
 
         newLoadDesign.designParameters[index] = copyDesignParameter;
-        // (((parameter) => parameter.name === object.name));
-        // ((parameter) => parameter.name === object.name);
-        // let values = loadDesign.designParameters[index].values;
-        //setLoadDesignParameters((oldParameters) => oldParameters.push(newDesignParameter));
         setLoadDesign(newLoadDesign);
     }
 
@@ -200,57 +147,16 @@ export default function ScenarioTestMenu(props) {
     }
 
     const handleResilienceDesignParameterChange = (value, index) => {
-        //let entity = object;
-        //let index = loadDesign.designParameters.findIndex;
         let copyResilienceParameter = deepCopy(resilienceDesign.designParameters[index]);
         copyResilienceParameter.value = value;
         let newResilienceDesign = deepCopy(resilienceDesign);
 
         newResilienceDesign.designParameters[index] = copyResilienceParameter;
-        // (((parameter) => parameter.name === object.name));
-        // ((parameter) => parameter.name === object.name);
-        // let values = loadDesign.designParameters[index].values;
-        //setLoadDesignParameters((oldParameters) => oldParameters.push(newDesignParameter));
         setResilienceDesign(newResilienceDesign);
     }
 
-    // const handleRqsChange = (e) => {
-    //     const newRqs = allRqs.find((rqs) => rqs.name === e.target.value);
-    //     let rqaCopy = rqa;
-    //     //rqaCopy.runtime_quality_analysis.loadtests[0].rqs.load_profile = e.target.value.toUpperCase().replace(/\s+/g, '_');
-    //     console.log(newRqs);
-    //     setRqs(newRqs);
-    //     setDesignParameters(newRqs.designParameters);
-    //     setRqa(rqaCopy);
-    // }
-
-    // const handleStimulusChange = (e) => {
-    //     const newRqs = allRqs.loadDesign.find((rqs) => rqs.name == e.target.value);
-    //     let rqaCopy = rqa;
-    //     //rqaCopy.runtime_quality_analysis.loadtests[0].stimulus = e.target.value.toUpperCase().replace(/\s+/g, '_');
-    //     console.log(newRqs);
-    //     //setRqs(newRqs);
-    //     //setDesignParameters(newRqs.designParameters);
-    //     //setRqa(rqaCopy);
-    // }
-
     const handleResponseParameterChange = (parameterName, parameterValue) => {
-        // const value = e.target.value;
-        // const isChecked = e.target.checked;
-        // let rqaCopy = rqa;
-        // if (isChecked) {
-        //     setIncludedMetrics([...includedMetrics, value]);
-        //     //rqaCopy.runtime_quality_analysis.loadtests[0].result_metrics.push(value);
-        // } else {
-        //     setIncludedMetrics(includedMetrics.filter(item => item !== value));
-        //     //rqaCopy.runtime_quality_analysis.loadtests[0].result_metrics.filter((metric) => metric !== value);
-        // }
-
-        // let copyParameter = deepCopy(resilienceDesign.designParameters[index]);
-        // copyResilienceParameter.value = value;
-        // let newResilienceDesi = deepCopy(resilienceDesign);
         let newResponseMeasures = deepCopy(responseMeasures);
-        // newResponseMeasures.forEach((metric) => console.log(metric.name === parameterName));
         let metricIndex = newResponseMeasures.findIndex((metric) => metric.name === parameterName)
         if (metricIndex === -1) {
             let newMetric = {name: parameterName, value: parameterValue};
@@ -260,58 +166,11 @@ export default function ScenarioTestMenu(props) {
             newResponseMeasures[metricIndex].value = parameterValue;
         }
         setResponseMeasures(newResponseMeasures);
-        // newResilienceDesign.designParameters[index] = copyResilienceParameter;
-        // // (((parameter) => parameter.name === object.name));
-        // // ((parameter) => parameter.name === object.name);
-        // // let values = loadDesign.designParameters[index].values;
-        // //setLoadDesignParameters((oldParameters) => oldParameters.push(newDesignParameter));
-        // setResilienceDesign(newResilienceDesign);
     }
 
     const handleAccuracyChange = (e) => {
         console.log(e.target.value);
         setAccuracy(e.target.value);
-        // let rqaCopy = rqa;
-        // //rqaCopy.runtime_quality_analysis.loadtests[0].rqs.accuracy = e.target.value;
-        // console.log(accuracy);
-    }
-
-    const handleDesignParameterChange = (e) => {
-        const parameter_name = e.target.parentNode.id.toLowerCase().replace(/\s+/g, '_');
-        const value = e.target.value.toUpperCase().replace(/\s+/g, '_');
-        let rqaCopy = rqa;
-        //rqaCopy.runtime_quality_analysis.loadtests[0].rqs.loadDesign[parameter_name] = value;
-        setRqa(rqaCopy);
-        setStimulusParameters([...stimulusParameters], parameter)
-    }
-
-    const handleResponseMeasureChange = (event) => {
-        const measureName = event.target.parentNode.parentNode.firstChild.innerText;
-        const value = event.target.value.toUpperCase();
-        let rqaCopy = rqa;
-
-        // Check if an object with the measurename already exists in the responseMeasures-State
-        const index = responseMeasures.findIndex((obj) => obj.measureName === measureName);
-
-        let measureNameRqaFormatted = measureName.toLowerCase().replace(/\s+/g, '_');
-
-        if (index === -1) {
-            // If an object with the measurename does not exist, add a new object to the responseMeasures array
-            setResponseMeasures([...responseMeasures, {value, measureName}]);
-            //rqaCopy.runtime_quality_analysis.loadtests[0].response_measure[measureNameRqaFormatted] = value;
-            setRqa(rqaCopy);
-
-        } else {
-            // If an object with the measurename already exists, update its value property
-            const updatedResponseMeasure = [...responseMeasures];
-            updatedResponseMeasure[index].value = value;
-            setResponseMeasures(updatedResponseMeasure);
-            //rqaCopy.runtime_quality_analysis.loadtests[0].response_measure[measureNameRqaFormatted] = value;
-            setRqa(rqaCopy);
-
-        }
-        console.log(responseMeasures)
-
     }
 
     const handleEnviromentChange = (e) => {
@@ -332,53 +191,6 @@ export default function ScenarioTestMenu(props) {
         setTimeSlot(newTimeSlot);
     }
 
-    const submitScenariotest = () => {
-
-        const selectedEdges = reactFlowInstance.getEdges().filter((edge) => edge.selected == true);
-        const regex = /^system_/; // matches strings that start with "system_"
-
-        //only works with one Service in path...
-        const edgeToService = selectedEdges.find((edge) => regex.test(edge.source));
-
-        const regexId = /^system_(\w+)$/;
-        const idMatch = regexId.exec(edgeToService.source);
-        const serviceId = idMatch ? idMatch[1] : null;
-
-        let includedMetricsFormatted = [];
-        includedMetrics.forEach((metric) => {
-            let formattedMetric = metric.toUpperCase().replace(/\s+/g, '_');
-            includedMetricsFormatted.push(formattedMetric);
-        });
-
-        //TODO: Validate, if all the Settings are set.
-
-        //First server_info of the mapping is hardcoded
-        // Only the response_measure "response_time" is used for now. RQA-Definition Schema should be changed in dqTranslator
-        // const rqaDefinition = {
-        //     context: mapping.context,
-        //     environment: mapping.server_info[0].environment,
-        //     runtime_quality_analysis: {
-        //         resilience: [],
-        //         loadtests: [
-        //             {
-        //                 artifact: {
-        //                     object: serviceId,
-        //                     activity: selectedActivity.mappingId
-        //                 },
-        //                 description: selectedActivity.name,
-        //                 parametrization: selectedActivity.parametrization,
-        //                 response_measure: { response_time: responseMeasures[0].value },
-        //                 result_metrics: includedMetricsFormatted
-
-        //             }
-        //         ]
-        //     }
-        // }
-
-        console.log("Current RQA:");
-        console.log(rqa);
-    }
-
     const addScenarioTest = (event) => {
         let a = selectedActivity;
         let copyRqa = deepCopy(rqa);
@@ -396,8 +208,6 @@ export default function ScenarioTestMenu(props) {
         copyRqa.runtime_quality_analysis.settings.accuracy = accuracy;
         copyRqa.runtime_quality_analysis.settings.environment = enviroment;
         copyRqa.runtime_quality_analysis.settings.timeSlot = timeSlot;
-        // copyActivity
-        // copyRqa.runtime_quality_analysis.
 
         //Test command
         //submitScenariotest();
@@ -418,6 +228,9 @@ export default function ScenarioTestMenu(props) {
     //     setRqa(rqaCopy);
     // }, [props.selectedEdge]);
 
+    /*
+        Produces a copy of the input object to detach the operations from its original
+     */
     const deepCopy = (obj) => {
         if (obj === null || typeof obj !== 'object') {
             return obj;
@@ -456,23 +269,6 @@ export default function ScenarioTestMenu(props) {
                     })}
                 </select>
             </div>
-            {/*<div className="actvity-container">*/}
-            {/*    <label className="label">*/}
-            {/*		<span className="label-text">*/}
-            {/*			Scenario*/}
-            {/*			<span className="ml-1 font-normal text-sm" data-tooltip-id="stimulus-tooltip"*/}
-            {/*                  data-tooltip-place="right"*/}
-            {/*                  data-tooltip-content='The stimulus specifies how the load should look like. For instance, a "Load peak" will lead to a massive spike in simulated users accessing the application in a secure environment whereas a "Load Increase" may lead to a slow in crease in users accessing the application.'>&#9432;</span>*/}
-            {/*		</span>*/}
-            {/*    </label>*/}
-            {/*    <Tooltip id="stimulus-tooltip" style={{maxWidth: '256px'}}/>*/}
-            {/*    <select value={rqs} onChange={handleRqsChange} id=""*/}
-            {/*            className="select select-bordered w-full max-w-xs">*/}
-            {/*        {allRqs.map((rqs) => {*/}
-            {/*            return <option value={rqs.name} key={rqs.name}>{rqs.name}</option>*/}
-            {/*        })}*/}
-            {/*    </select>*/}
-            {/*</div>*/}
 
             <div className="actvity-container">
                 <div className="actvity-container">
