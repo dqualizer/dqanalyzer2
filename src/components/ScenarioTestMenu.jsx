@@ -1,9 +1,10 @@
-import React, {useEffect, useState} from 'react'
+import React, {useEffect, useState} from 'react';
 import {useEdges, useOnSelectionChange, useReactFlow} from 'reactflow';
 import * as scenarioSpecs from '../data/scenariotest-specs.json';
 import ResizeBar from './ResizeBar';
 import * as mapping from '../data/werkstatt.json';
-import {Tooltip} from 'react-tooltip'
+import {Tooltip} from 'react-tooltip';
+import axios from 'axios';
 
 export default function ScenarioTestMenu(props) {
 
@@ -189,28 +190,26 @@ export default function ScenarioTestMenu(props) {
     }
 
     const addScenarioTest = (event) => {
-        let a = selectedActivity;
-        let copyRqa = deepCopy(rqa);
         let copyActivity = deepCopy(rqa.runtime_quality_analysis.artifacts[selectedActivity]);
-        let settings = {}
 
         copyActivity.load_design.load_variant = loadDesign.name;
         copyActivity.load_design.design_parameters = loadDesign.designParameters;
         copyActivity.resilience_design.resilience_variant = resilienceDesign.name;
         copyActivity.resilience_design.design_parameters = resilienceDesign.designParameters;
         copyActivity.response_measures = responseMeasures;
-        copyRqa.runtime_quality_analysis.artifacts[selectedActivity] = copyActivity;
+        rqa.runtime_quality_analysis.artifacts[selectedActivity] = copyActivity;
 
         // set the settings config
-        copyRqa.runtime_quality_analysis.settings.accuracy = accuracy;
-        copyRqa.runtime_quality_analysis.settings.environment = enviroment;
-        copyRqa.runtime_quality_analysis.settings.timeSlot = timeSlot;
+        rqa.runtime_quality_analysis.settings.accuracy = accuracy;
+        rqa.runtime_quality_analysis.settings.environment = enviroment;
+        rqa.runtime_quality_analysis.settings.timeSlot = timeSlot;
 
-        //Test command
-        //submitScenariotest();
-        console.log("Current RQA:");
-        console.log(copyRqa);
-        setRqa(copyRqa);
+        // post the RQA to the axios api
+        axios.post(`https://64917f002f2c7ee6c2c85311.mockapi.io/api/v1/rqas`, rqa);
+
+        // close the Scenario Test Window and open the Scenario Explorer
+        props.setScenarioTestShow(false);
+        props.setScenarioExplorerShow(true);
     }
 
     //TODO: What does useEffect do here?

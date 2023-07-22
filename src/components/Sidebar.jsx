@@ -115,7 +115,7 @@ export default function Sidebar(props) {
                     <button onClick={onScenarioTestClick}><div><ContentPasteSearchIcon/></div></button>
                 </div>
                 {scenarioExplorerShow ? <ScenarioExplorer/> : null}
-                {scenarioTestShow ? <div ref={loadtestRef}> <ScenarioTestMenu selectedEdge={selectedEdge} edges={props.edges} /> </div> : null}
+                {scenarioTestShow ? <div ref={loadtestRef}> <ScenarioTestMenu selectedEdge={selectedEdge} edges={props.edges} setScenarioExplorerShow={setScenarioExplorerShow} setScenarioTestShow={setScenarioTestShow}/> </div> : null}
             </div>
         )
     }
