@@ -60,8 +60,11 @@ export default function ScenarioTestMenu(props) {
     // ],
 
     let initRQADefiniton = {
-        context: mapping.context, environment: mapping.server_info[0].environment, runtime_quality_analysis: {
-            artifacts: [], settings: {
+        context: mapping.context,
+        environment: mapping.server_info[0].environment,
+        runtime_quality_analysis: {
+            artifacts: [],
+            settings: {
                 accuracy: 0, environment: settings.enviroment[0], timeSlot: null
             }
 
@@ -87,21 +90,26 @@ export default function ScenarioTestMenu(props) {
         if (edge.activity !== undefined) {
             initRQADefiniton.runtime_quality_analysis.artifacts.push({
                 artifact: {object: edge.system, activity: edge.activity}, description: edge.name, load_design: {
-                    load_variant: null, design_parameters: null
-                }, resilience_design: {
-                    load_variant: null, design_parameters: null
-                }, response_measures: {}
+                    load_variant: null,
+                    design_parameters: null
+                },
+                resilience_design: {
+                    resilience_variant: null,
+                    design_parameters: null
+                },
+                response_measures: []
             });
         }
     });
 
+
+
     const [selectedActivity, setSelectedActivity] = useState(0);
     const [loadDesign, setLoadDesign] = useState(allRqs.loadDesign[0]);
-    const [loadDesignParameters, setLoadDesignParameters] = useState([]);    //null
     const [resilienceDesign, setResilienceDesign] = useState(allRqs.resilienceDesign[0]);
     //const [resilienceDesignParameters, setResilienceDesignParameters] = useState(allRqs.resilienceDesign[0].designParameters);    //null
     // Later there could be more than one response measure...
-    const [responseMeasure, setResponseMeasure] = useState({});
+    const [responseMeasures, setResponseMeasures] = useState([]);
     const [accuracy, setAccuracy] = useState(0);
     const [enviroment, setEnviroment] = useState(settings.enviroment[0]);
     const [timeSlot, setTimeSlot] = useState(null);
@@ -139,8 +147,8 @@ export default function ScenarioTestMenu(props) {
         //let rqaCopy = rqa;
 
         // update the view for the selected edge
-        //let newSelectedActivity = rqa.runtime_quality_analysis.artifacts.findIndex((artifact) => artifact.description === e.target.value);
-        setSelectedActivity(e.target.value);
+        let newSelectedActivity = rqa.runtime_quality_analysis.artifacts.findIndex((artifact) => artifact.description === e.target.value);
+        setSelectedActivity(newSelectedActivity);
 
         // Only works with one loadtest
         // rqaCopy.runtime_quality_analysis.loadtests.artifacts[selectedActivity].artifact.object = props.selectedEdge?.system;
@@ -155,7 +163,7 @@ export default function ScenarioTestMenu(props) {
     }
 
     const handleLoadDesignChange = (e) => {
-        let loadVariant = allRqs.loadDesign.find((loadVariant) => loadVariant.name === e.target.value);
+        let loadVariant = allRqs.loadDesign.find((variant) => variant.name === e.target.value);
         let copyLoadVariant = deepCopy(loadVariant);
 
         copyLoadVariant.designParameters.forEach((parameter) => {
@@ -180,44 +188,92 @@ export default function ScenarioTestMenu(props) {
         setLoadDesign(newLoadDesign);
     }
 
-    const handleRqsChange = (e) => {
-        const newRqs = allRqs.find((rqs) => rqs.name === e.target.value);
-        let rqaCopy = rqa;
-        //rqaCopy.runtime_quality_analysis.loadtests[0].rqs.load_profile = e.target.value.toUpperCase().replace(/\s+/g, '_');
-        console.log(newRqs);
-        setRqs(newRqs);
-        setDesignParameters(newRqs.designParameters);
-        setRqa(rqaCopy);
+    const handleResilienceDesignChange = (e) => {
+        let resilienceVariant = allRqs.resilienceDesign.find((variant) => variant.name === e.target.value);
+        let copyResilienceVariant = deepCopy(resilienceVariant);
+
+        copyResilienceVariant.designParameters.forEach((parameter) => {
+            delete parameter.values;
+            parameter.value = null;
+        });
+        setResilienceDesign(copyResilienceVariant);
     }
 
-    const handleStimulusChange = (e) => {
-        const newRqs = allRqs.loadDesign.find((rqs) => rqs.name == e.target.value);
-        let rqaCopy = rqa;
-        //rqaCopy.runtime_quality_analysis.loadtests[0].stimulus = e.target.value.toUpperCase().replace(/\s+/g, '_');
-        console.log(newRqs);
-        //setRqs(newRqs);
-        //setDesignParameters(newRqs.designParameters);
-        //setRqa(rqaCopy);
+    const handleResilienceDesignParameterChange = (value, index) => {
+        //let entity = object;
+        //let index = loadDesign.designParameters.findIndex;
+        let copyResilienceParameter = deepCopy(resilienceDesign.designParameters[index]);
+        copyResilienceParameter.value = value;
+        let newResilienceDesign = deepCopy(resilienceDesign);
+
+        newResilienceDesign.designParameters[index] = copyResilienceParameter;
+        // (((parameter) => parameter.name === object.name));
+        // ((parameter) => parameter.name === object.name);
+        // let values = loadDesign.designParameters[index].values;
+        //setLoadDesignParameters((oldParameters) => oldParameters.push(newDesignParameter));
+        setResilienceDesign(newResilienceDesign);
+    }
+
+    // const handleRqsChange = (e) => {
+    //     const newRqs = allRqs.find((rqs) => rqs.name === e.target.value);
+    //     let rqaCopy = rqa;
+    //     //rqaCopy.runtime_quality_analysis.loadtests[0].rqs.load_profile = e.target.value.toUpperCase().replace(/\s+/g, '_');
+    //     console.log(newRqs);
+    //     setRqs(newRqs);
+    //     setDesignParameters(newRqs.designParameters);
+    //     setRqa(rqaCopy);
+    // }
+
+    // const handleStimulusChange = (e) => {
+    //     const newRqs = allRqs.loadDesign.find((rqs) => rqs.name == e.target.value);
+    //     let rqaCopy = rqa;
+    //     //rqaCopy.runtime_quality_analysis.loadtests[0].stimulus = e.target.value.toUpperCase().replace(/\s+/g, '_');
+    //     console.log(newRqs);
+    //     //setRqs(newRqs);
+    //     //setDesignParameters(newRqs.designParameters);
+    //     //setRqa(rqaCopy);
+    // }
+
+    const handleResponseParameterChange = (parameterName, parameterValue) => {
+        // const value = e.target.value;
+        // const isChecked = e.target.checked;
+        // let rqaCopy = rqa;
+        // if (isChecked) {
+        //     setIncludedMetrics([...includedMetrics, value]);
+        //     //rqaCopy.runtime_quality_analysis.loadtests[0].result_metrics.push(value);
+        // } else {
+        //     setIncludedMetrics(includedMetrics.filter(item => item !== value));
+        //     //rqaCopy.runtime_quality_analysis.loadtests[0].result_metrics.filter((metric) => metric !== value);
+        // }
+
+        // let copyParameter = deepCopy(resilienceDesign.designParameters[index]);
+        // copyResilienceParameter.value = value;
+        // let newResilienceDesi = deepCopy(resilienceDesign);
+        let newResponseMeasures = deepCopy(responseMeasures);
+        // newResponseMeasures.forEach((metric) => console.log(metric.name === parameterName));
+        let metricIndex = newResponseMeasures.findIndex((metric) => metric.name === parameterName)
+        if (metricIndex === -1) {
+            let newMetric = {name: parameterName, value: parameterValue};
+            newResponseMeasures.push(newMetric);
+        }
+        else {
+            newResponseMeasures[metricIndex].value = parameterValue;
+        }
+        setResponseMeasures(newResponseMeasures);
+        // newResilienceDesign.designParameters[index] = copyResilienceParameter;
+        // // (((parameter) => parameter.name === object.name));
+        // // ((parameter) => parameter.name === object.name);
+        // // let values = loadDesign.designParameters[index].values;
+        // //setLoadDesignParameters((oldParameters) => oldParameters.push(newDesignParameter));
+        // setResilienceDesign(newResilienceDesign);
     }
 
     const handleAccuracyChange = (e) => {
+        console.log(e.target.value);
         setAccuracy(e.target.value);
-        let rqaCopy = rqa;
-        //rqaCopy.runtime_quality_analysis.loadtests[0].rqs.accuracy = e.target.value;
-        console.log(accuracy);
-    }
-
-    const handleMetricsChange = (e) => {
-        const value = e.target.value;
-        const isChecked = e.target.checked;
-        let rqaCopy = rqa;
-        if (isChecked) {
-            setIncludedMetrics([...includedMetrics, value]);
-            //rqaCopy.runtime_quality_analysis.loadtests[0].result_metrics.push(value);
-        } else {
-            setIncludedMetrics(includedMetrics.filter(item => item !== value));
-            //rqaCopy.runtime_quality_analysis.loadtests[0].result_metrics.filter((metric) => metric !== value);
-        }
+        // let rqaCopy = rqa;
+        // //rqaCopy.runtime_quality_analysis.loadtests[0].rqs.accuracy = e.target.value;
+        // console.log(accuracy);
     }
 
     const handleDesignParameterChange = (e) => {
@@ -234,37 +290,46 @@ export default function ScenarioTestMenu(props) {
         const value = event.target.value.toUpperCase();
         let rqaCopy = rqa;
 
-        // Check if an object with the measurename already exists in the responseMeasure-State
-        const index = responseMeasure.findIndex((obj) => obj.measureName === measureName);
+        // Check if an object with the measurename already exists in the responseMeasures-State
+        const index = responseMeasures.findIndex((obj) => obj.measureName === measureName);
 
         let measureNameRqaFormatted = measureName.toLowerCase().replace(/\s+/g, '_');
 
         if (index === -1) {
-            // If an object with the measurename does not exist, add a new object to the responseMeasure array
-            setResponseMeasure([...responseMeasure, {value, measureName}]);
+            // If an object with the measurename does not exist, add a new object to the responseMeasures array
+            setResponseMeasures([...responseMeasures, {value, measureName}]);
             //rqaCopy.runtime_quality_analysis.loadtests[0].response_measure[measureNameRqaFormatted] = value;
             setRqa(rqaCopy);
 
         } else {
             // If an object with the measurename already exists, update its value property
-            const updatedResponseMeasure = [...responseMeasure];
+            const updatedResponseMeasure = [...responseMeasures];
             updatedResponseMeasure[index].value = value;
-            setResponseMeasure(updatedResponseMeasure);
+            setResponseMeasures(updatedResponseMeasure);
             //rqaCopy.runtime_quality_analysis.loadtests[0].response_measure[measureNameRqaFormatted] = value;
             setRqa(rqaCopy);
 
         }
-        console.log(responseMeasure)
+        console.log(responseMeasures)
 
     }
 
-    const handleEnviromentChange = (event) => {
+    const handleEnviromentChange = (e) => {
         console.log("Env has changed.");
+        let newEnviroment = e.target.value;
 
+        if(newEnviroment === 'Test') {
+            setTimeSlot(settings.timeSlot[0]);
+        }
+        else {
+            setTimeSlot(null);
+        }
+        setEnviroment(newEnviroment);
     }
 
-    const handleTimeSlotChange = (event) => {
-        console.log("Time slot has changed.");
+    const handleTimeSlotChange = (e) => {
+        let newTimeSlot = settings.timeSlot.find((time) => time.representation === e.target.value);
+        setTimeSlot(newTimeSlot);
     }
 
     const submitScenariotest = () => {
@@ -302,7 +367,7 @@ export default function ScenarioTestMenu(props) {
         //                 },
         //                 description: selectedActivity.name,
         //                 parametrization: selectedActivity.parametrization,
-        //                 response_measure: { response_time: responseMeasure[0].value },
+        //                 response_measure: { response_time: responseMeasures[0].value },
         //                 result_metrics: includedMetricsFormatted
 
         //             }
@@ -318,9 +383,19 @@ export default function ScenarioTestMenu(props) {
         let a = selectedActivity;
         let copyRqa = deepCopy(rqa);
         let copyActivity = deepCopy(rqa.runtime_quality_analysis.artifacts[selectedActivity]);
+        let settings = {}
+
         copyActivity.load_design.load_variant = loadDesign.name;
         copyActivity.load_design.design_parameters = loadDesign.designParameters;
+        copyActivity.resilience_design.resilience_variant = resilienceDesign.name;
+        copyActivity.resilience_design.design_parameters = resilienceDesign.designParameters;
+        copyActivity.response_measures = responseMeasures;
         copyRqa.runtime_quality_analysis.artifacts[selectedActivity] = copyActivity;
+
+        // set the settings config
+        copyRqa.runtime_quality_analysis.settings.accuracy = accuracy;
+        copyRqa.runtime_quality_analysis.settings.environment = enviroment;
+        copyRqa.runtime_quality_analysis.settings.timeSlot = timeSlot;
         // copyActivity
         // copyRqa.runtime_quality_analysis.
 
@@ -331,6 +406,7 @@ export default function ScenarioTestMenu(props) {
         setRqa(copyRqa);
     }
 
+    //TODO: What does useEffect do here?
     // useEffect(() => {
     //     setSelectedActivity(props.selectedEdge);
     //     let rqaCopy = rqa;
@@ -373,7 +449,7 @@ export default function ScenarioTestMenu(props) {
                 <label className="label">
                     <span className="label-text">Activity</span>
                 </label>
-                <select value={selectedActivity} onChange={handleSelectionChange} id=""
+                <select value={selectedActivity.name} onChange={handleSelectionChange} id=""
                         className="select select-bordered w-full max-w-xs">
                     {uniqueActivitys.map((edge) => {
                         return <option value={edge.name} key={edge.id}>{edge.name}</option>
@@ -464,7 +540,7 @@ export default function ScenarioTestMenu(props) {
                         </h3>
                         <Tooltip id="response-measure-tooltip" style={{maxWidth: '256px'}}/>
                     </label>
-                    <select value={resilienceDesign} onChange={handleStimulusChange} id=""
+                    <select value={resilienceDesign.name} onChange={handleResilienceDesignChange} id=""
                             className="select select-bordered w-full max-w-xs">
                         {allRqs.resilienceDesign.map((resilienceVariant) => {
                             return <option value={resilienceVariant.name}
@@ -473,32 +549,39 @@ export default function ScenarioTestMenu(props) {
                     </select>
                     {/*TODO: Add Tooltip for each element*/}
                     <div className="actvity-container">
-                        {allRqs.resilienceDesign.map((resilienceDesign) => {
-                            return (<div>
-                                {/*TODO: The designparams should only be visible for the right resilienceDesign*/}
-                                {resilienceDesign.designParameters != null && resilienceDesign.designParameters.map((parameter) => {
-                                    return (<React.Fragment>
-                                        <label className="label">
-										                <span className="label-text">
-                                                            {parameter.name}
-                                                        </span>
-                                        </label>
-                                        <div className="btn-group">
-                                            {parameter.values.map((value) => {
-                                                return (<React.Fragment>
-                                                    <input type="radio" value={value.name}
-                                                           onClick={handleDesignParameterChange}
-                                                           name={parameter.name} data-title={value.name}
-                                                           className="btn"
-                                                           data-tooltip-id={value.name + '-' + value.value}
-                                                           data-tooltip-content={'Value: ' + value.value}/>
-                                                    <Tooltip id={value.name + '-' + value.value}/>
-                                                </React.Fragment>)
-                                            })}
-                                        </div>
-                                    </React.Fragment>)
-                                })}
-                            </div>)
+                        {allRqs.resilienceDesign.map((resilienceVariant) => {
+                            return (
+                                <React.Fragment>
+                                    {resilienceVariant.name === resilienceDesign.name ? resilienceVariant.designParameters != null && resilienceVariant.designParameters.map((parameter, index) => {
+                                        return (
+                                            <React.Fragment>
+                                                <label className="label">
+                                                    <span className="label-text">
+                                                        {parameter.name}
+                                                    </span>
+                                                </label>
+                                                <div className="btn-group">
+                                                    {parameter.values != null && parameter.values.map((value) => {
+                                                        return (
+                                                            <React.Fragment>
+                                                                <input type="radio" value={value}
+                                                                       onClick={() => handleResilienceDesignParameterChange(value, index)}
+                                                                       name={parameter.name}
+                                                                       data-title={value.name}
+                                                                       className="btn"
+                                                                       data-tooltip-id={value.name + '-' + value.value}
+                                                                       data-tooltip-content={'Value: ' + value.value}/>
+                                                                <Tooltip
+                                                                    id={value.name + '-' + value.value}/>
+                                                            </React.Fragment>
+                                                        )
+                                                    })}
+                                                </div>
+                                            </React.Fragment>
+                                        )
+                                    }) : null
+                                    }
+                                </React.Fragment>)
                         })}
                     </div>
                 </div>
@@ -522,9 +605,9 @@ export default function ScenarioTestMenu(props) {
                             <div className="btn-group">
                                 {metric.values.map((value) => {
                                     return (<React.Fragment>
-                                        <input type="radio" value={value.name}
-                                               onClick={handleResponseMeasureChange}
-                                               name={responseMeasure.name} data-title={value.name}
+                                        <input type="radio" value={value}
+                                               onClick={() => handleResponseParameterChange(metric.name, value)}
+                                               name={metric.name} data-title={value.name}
                                                className="btn"
                                                data-tooltip-id={value.name + '-' + value.value}
                                                data-tooltip-content={'Value: ' + value.value}/>
@@ -570,7 +653,7 @@ export default function ScenarioTestMenu(props) {
                             </span>
                     </label>
                     <Tooltip id="enviroment-tooltip" style={{maxWidth: '256px'}}/>
-                    <select value={settings.enviroment} onChange={handleEnviromentChange} id=""
+                    <select value={enviroment} onChange={handleEnviromentChange} id=""
                             className="select select-bordered w-full max-w-xs">
                         {settings.enviroment.map((enviroment) => {
                             return <option value={enviroment} key={enviroment}>{enviroment}</option>
@@ -578,23 +661,25 @@ export default function ScenarioTestMenu(props) {
                     </select>
                 </div>
 
-                <div className="actvity-container">
-                    <label className="label">
+                {enviroment === 'Test' ?
+                    <div className="actvity-container">
+                        <label className="label">
                             <span className="label-text">
                                 Time Slot
                                 <span className="ml-1 font-normal text-sm" data-tooltip-id="stimulus-tooltip"
                                       data-tooltip-place="right"
                                       data-tooltip-content='The stimulus specifies how the load should look like. For instance, a "Load peak" will lead to a massive spike in simulated users accessing the application in a secure environment whereas a "Load Increase" may lead to a slow in crease in users accessing the application.'>&#9432;</span>
                             </span>
-                    </label>
-                    <Tooltip id="timeslot-tooltip" style={{maxWidth: '256px'}}/>
-                    <select value={settings.timeSlot} onChange={handleTimeSlotChange} id=""
-                            className="select select-bordered w-full max-w-xs">
-                        {settings.timeSlot.map((timeSlot) => {
-                            return <option value={timeSlot} key={timeSlot}>{timeSlot.representation}</option>
-                        })}
-                    </select>
-                </div>
+                        </label>
+                        <Tooltip id="timeslot-tooltip" style={{maxWidth: '256px'}}/>
+                        <select value={timeSlot.representation} onChange={handleTimeSlotChange} id=""
+                                className="select select-bordered w-full max-w-xs">
+                            {settings.timeSlot.map((timeSlot) => {
+                                return <option value={timeSlot.representation} key={timeSlot.representation}>{timeSlot.representation}</option>
+                            })}
+                        </select>
+                    </div>
+                : null}
             </div>
 
             <button onClick={addScenarioTest} className="btn btn-primary">
