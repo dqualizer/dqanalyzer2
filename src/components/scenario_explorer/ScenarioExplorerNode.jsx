@@ -42,9 +42,10 @@ export default function ExpandableScenarioNode({ paramName, data, expandable = t
                 context: "",
                 environment: "",
                 runtime_quality_analysis: {
-                    loadtests: [],
-                    resilience: [],
-                    monitoring: []
+                    artifacts: [],
+                    settings: {
+                        accuracy: 0, environment: null, timeSlot: null
+                    }
                 }
             }).then((response => {
                 setInputOpen(false);
