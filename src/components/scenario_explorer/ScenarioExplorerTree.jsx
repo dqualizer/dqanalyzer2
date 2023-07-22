@@ -14,7 +14,6 @@ export default function ScenarioTree({ inputOpen, setInputOpen }) {
         })
     }, []);
 
-
     const onExpandClick = (menu) => {
         setMenuState((prevState) => ({
             ...prevState,
