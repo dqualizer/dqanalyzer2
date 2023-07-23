@@ -4,7 +4,7 @@ import ScenarioExplorerTree from './ScenarioExplorerTree';
 import ScenarioExplorerHeader from './ScenarioExplorerHeader';
 import ResizeBar from '../ResizeBar';
 
-export default function ScenarioExplorer() {
+export default function ScenarioExplorer(props) {
 
     // Resize States
     const [isResizing, setIsResizing] = useState(false);
@@ -21,7 +21,7 @@ export default function ScenarioExplorer() {
         <>
             <div className="py-4 px-4 prose overflow-scroll" style={{ width: `${sidebarWidth}px`, cursor: isResizing ? 'col-resize' : 'default', }}>
                 <ScenarioExplorerHeader handleAddClick={handleAddClick} />
-                <ScenarioExplorerTree inputOpen={inputOpen} setInputOpen={setInputOpen} />
+                <ScenarioExplorerTree inputOpen={inputOpen} setInputOpen={setInputOpen} onEditScenarioTestClick={props.onEditScenarioTestClick}/>
             </div >
             <ResizeBar setSidebarWidth={setSidebarWidth} setIsResizing={setIsResizing} isResizing={isResizing} />
         </>

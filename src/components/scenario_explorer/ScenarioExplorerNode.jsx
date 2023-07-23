@@ -21,10 +21,8 @@ export default function ExpandableScenarioNode({ paramName, data, expandable = t
 
     }
 
-
     const handleClick = () => {
-        if (data && expandFunction)
-            expandFunction((prevState) => !prevState)
+        expandFunction();
     }
 
     const handleChangeValue = (e) => {
