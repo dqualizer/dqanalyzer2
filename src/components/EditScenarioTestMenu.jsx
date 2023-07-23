@@ -81,9 +81,12 @@ export default function EditScenarioTestMenu(props) {
         // updates reactFlowInstance
         reactFlowInstance.setEdges(newEdgesArray);
 
+        console.log(e.target.value);
         // update the view for the selected edge
         let newSelectedActivity = rqa.runtime_quality_analysis.artifacts.findIndex((artifact) => artifact.description === e.target.value);
         setSelectedActivity(newSelectedActivity);
+        console.log(rqa.runtime_quality_analysis.artifacts[newSelectedActivity].load_design);
+        setLoadDesign(rqa.runtime_quality_analysis.artifacts[newSelectedActivity].load_design);
     }
 
     const handleLoadDesignChange = (e) => {
@@ -176,7 +179,7 @@ export default function EditScenarioTestMenu(props) {
         rqa.runtime_quality_analysis.settings.timeSlot = timeSlot;
 
         // post the RQA to the axios api
-        axios.put(`https://64bbef8f7b33a35a4446d353.mockapi.io/dqualizer/scenarios/v1/scenarios`, rqa);
+        axios.put(`https://64bbef8f7b33a35a4446d353.mockapi.io/dqualizer/scenarios/v1/scenarios/` + rqa.id, rqa);
 
         // close the Scenario Test Window and open the Scenario Explorer
         props.setScenarioTestShow(false);
@@ -229,10 +232,10 @@ export default function EditScenarioTestMenu(props) {
                     <label className="label">
                         <span className="label-text">Activity</span>
                     </label>
-                    <select value={selectedActivity} onChange={handleSelectionChange} id=""
+                    <select value={selectedActivity.name} onChange={handleSelectionChange} id=""
                             className="select select-bordered w-full max-w-xs">
-                        {uniqueActivitys.map((edge, index) => {
-                            return <option value={index} key={edge.id}>{edge.name}</option>
+                        {uniqueActivitys.map((edge) => {
+                            return <option value={edge.name} key={edge.id}>{edge.name}</option>
                         })}
                     </select>
                 </div>
@@ -304,7 +307,8 @@ export default function EditScenarioTestMenu(props) {
                             </h3>
                             <Tooltip id="response-measure-tooltip" style={{maxWidth: '256px'}}/>
                         </label>
-                        <select value={resilienceDesign.resilience_variant} onChange={handleResilienceDesignChange} id=""
+                        <select value={resilienceDesign.resilience_variant} onChange={handleResilienceDesignChange}
+                                id=""
                                 className="select select-bordered w-full max-w-xs">
                             {allRqs.resilienceDesign.map((resilienceVariant) => {
                                 return <option value={resilienceVariant.name}
@@ -368,7 +372,7 @@ export default function EditScenarioTestMenu(props) {
                                     <span className="label-text">{metric.name}</span>
                                 </label>
                                 <div className="btn-group">
-                                    {metric.values.map((value) => {
+                                    {metric !== null & metric.values.map((value) => {
                                         return (<>
                                             <input type="radio" value={value}
                                                    onClick={() => handleResponseParameterChange(metric.name, value)}
@@ -376,7 +380,7 @@ export default function EditScenarioTestMenu(props) {
                                                    className="btn"
                                                    data-tooltip-id={value.name + '-' + value.value}
                                                    data-tooltip-content={'Value: ' + value.value}
-                                                   checked={responseMeasures.find((m) => m.name === metric.name).value.name === value.name}/>
+                                                   checked={responseMeasures.find((m) => m.name === metric.name)?.value.name === value.name}/>
                                             <Tooltip id={value.name + '-' + value.value}/>
                                         </>)
                                     })}
