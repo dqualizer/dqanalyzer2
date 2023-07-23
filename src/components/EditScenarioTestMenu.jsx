@@ -6,7 +6,7 @@ import * as mapping from '../data/werkstatt.json';
 import {Tooltip} from 'react-tooltip';
 import axios from 'axios';
 
-export default function ScenarioTestMenu(props) {
+export default function EditScenarioTestMenu(props) {
 
     // Resize States
     const [isResizing, setIsResizing] = useState(false);
@@ -44,45 +44,16 @@ export default function ScenarioTestMenu(props) {
     const metrics = scenarioSpecs.metrics;
     const settings = scenarioSpecs.settings;
 
-    let initRQADefiniton = {
-        context: mapping.context,
-        environment: mapping.server_info[0].environment,
-        runtime_quality_analysis: {
-            artifacts: [],
-            settings: {
-                accuracy: 0, environment: settings.enviroment[0], timeSlot: null
-            }
-        }
-    }
-
-    // initialize the artifacts key with the activities in the domain
-    props.edges.forEach((edge) => {
-        if (edge.activity !== undefined) {
-            initRQADefiniton.runtime_quality_analysis.artifacts.push({
-                artifact: {object: edge.system, activity: edge.activity}, description: edge.name, load_design: {
-                    load_variant: null,
-                    design_parameters: null
-                },
-                resilience_design: {
-                    resilience_variant: null,
-                    design_parameters: null
-                },
-                response_measures: []
-            });
-        }
-    });
-
-
     const [selectedActivity, setSelectedActivity] = useState(0);
-    const [loadDesign, setLoadDesign] = useState(allRqs.loadDesign[0]);
-    const [resilienceDesign, setResilienceDesign] = useState(allRqs.resilienceDesign[0]);
-    const [responseMeasures, setResponseMeasures] = useState([]);
-    const [accuracy, setAccuracy] = useState(0);
-    const [enviroment, setEnviroment] = useState(settings.enviroment[0]);
-    const [timeSlot, setTimeSlot] = useState(null);
+    const [loadDesign, setLoadDesign] = useState(props.rqa.runtime_quality_analysis.artifacts[0].load_design);
+    const [resilienceDesign, setResilienceDesign] = useState(props.rqa.runtime_quality_analysis.artifacts[0].resilience_design);
+    const [responseMeasures, setResponseMeasures] = useState(props.rqa.runtime_quality_analysis.artifacts[0].response_measures);
+    const [accuracy, setAccuracy] = useState(props.rqa.runtime_quality_analysis.settings.accuracy);
+    const [enviroment, setEnviroment] = useState(props.rqa.runtime_quality_analysis.settings.environment);
+    const [timeSlot, setTimeSlot] = useState(props.rqa.runtime_quality_analysis.settings.timeSlot);
 
     // state-based RQA-definition
-    const [rqa, setRqa] = useState(initRQADefiniton);
+    const [rqa, setRqa] = useState(props.rqa);
 
     const [includedMetrics, setIncludedMetrics] = useState(["response_time"]);
 
@@ -189,7 +160,7 @@ export default function ScenarioTestMenu(props) {
         setTimeSlot(newTimeSlot);
     }
 
-    const addScenarioTest = (event) => {
+    const editScenarioTest = (event) => {
         let copyActivity = deepCopy(rqa.runtime_quality_analysis.artifacts[selectedActivity]);
 
         copyActivity.load_design.load_variant = loadDesign.name;
@@ -205,11 +176,10 @@ export default function ScenarioTestMenu(props) {
         rqa.runtime_quality_analysis.settings.timeSlot = timeSlot;
 
         // post the RQA to the axios api
-        axios.post(`https://64bbef8f7b33a35a4446d353.mockapi.io/dqualizer/scenarios/v1/scenarios`, rqa);
+        axios.put(`https://64bbef8f7b33a35a4446d353.mockapi.io/dqualizer/scenarios/v1/scenarios`, rqa);
 
         // close the Scenario Test Window and open the Scenario Explorer
         props.setScenarioTestShow(false);
-        props.setScenarioExplorerShow(true);
     }
 
     //TODO: What does useEffect do here?
@@ -259,10 +229,10 @@ export default function ScenarioTestMenu(props) {
                     <label className="label">
                         <span className="label-text">Activity</span>
                     </label>
-                    <select value={selectedActivity.name} onChange={handleSelectionChange} id=""
+                    <select value={selectedActivity} onChange={handleSelectionChange} id=""
                             className="select select-bordered w-full max-w-xs">
-                        {uniqueActivitys.map((edge) => {
-                            return <option value={edge.name} key={edge.id}>{edge.name}</option>
+                        {uniqueActivitys.map((edge, index) => {
+                            return <option value={index} key={edge.id}>{edge.name}</option>
                         })}
                     </select>
                 </div>
@@ -278,7 +248,7 @@ export default function ScenarioTestMenu(props) {
                             </h3>
                             <Tooltip id="response-measure-tooltip" style={{maxWidth: '256px'}}/>
                         </label>
-                        <select value={loadDesign.name} onChange={handleLoadDesignChange} id=""
+                        <select value={loadDesign.load_variant} onChange={handleLoadDesignChange} id=""
                                 className="select select-bordered w-full max-w-xs">
                             {allRqs.loadDesign.map((loadVariant) => {
                                 return <option value={loadVariant.name}
@@ -289,7 +259,7 @@ export default function ScenarioTestMenu(props) {
                             {allRqs.loadDesign.map((loadVariant) => {
                                 return (
                                     <>
-                                        {loadVariant.name === loadDesign.name ? loadVariant.designParameters != null && loadVariant.designParameters.map((parameter, index) => {
+                                        {loadVariant.name === loadDesign.load_variant ? loadVariant.designParameters != null && loadVariant.designParameters.map((parameter, index) => {
                                             return (
                                                 <>
                                                     <label className="label">
@@ -307,7 +277,8 @@ export default function ScenarioTestMenu(props) {
                                                                            data-title={value.name}
                                                                            className="btn"
                                                                            data-tooltip-id={value.name + '-' + value.value}
-                                                                           data-tooltip-content={'Value: ' + value.value}/>
+                                                                           data-tooltip-content={'Value: ' + value.value}
+                                                                           checked={loadDesign.design_parameters[index].value.name === value.name}/>
                                                                     <Tooltip
                                                                         id={value.name + '-' + value.value}/>
                                                                 </>
@@ -333,7 +304,7 @@ export default function ScenarioTestMenu(props) {
                             </h3>
                             <Tooltip id="response-measure-tooltip" style={{maxWidth: '256px'}}/>
                         </label>
-                        <select value={resilienceDesign.name} onChange={handleResilienceDesignChange} id=""
+                        <select value={resilienceDesign.resilience_variant} onChange={handleResilienceDesignChange} id=""
                                 className="select select-bordered w-full max-w-xs">
                             {allRqs.resilienceDesign.map((resilienceVariant) => {
                                 return <option value={resilienceVariant.name}
@@ -345,7 +316,7 @@ export default function ScenarioTestMenu(props) {
                             {allRqs.resilienceDesign.map((resilienceVariant) => {
                                 return (
                                     <>
-                                        {resilienceVariant.name === resilienceDesign.name ? resilienceVariant.designParameters != null && resilienceVariant.designParameters.map((parameter, index) => {
+                                        {resilienceVariant.name === resilienceDesign.resilience_variant ? resilienceVariant.designParameters != null && resilienceVariant.designParameters.map((parameter, index) => {
                                             return (
                                                 <>
                                                     <label className="label">
@@ -363,7 +334,8 @@ export default function ScenarioTestMenu(props) {
                                                                            data-title={value.name}
                                                                            className="btn"
                                                                            data-tooltip-id={value.name + '-' + value.value}
-                                                                           data-tooltip-content={'Value: ' + value.value}/>
+                                                                           data-tooltip-content={'Value: ' + value.value}
+                                                                           checked={resilienceDesign.design_parameters[index].value.name === value.name}/>
                                                                     <Tooltip
                                                                         id={value.name + '-' + value.value}/>
                                                                 </>
@@ -403,7 +375,8 @@ export default function ScenarioTestMenu(props) {
                                                    name={metric.name} data-title={value.name}
                                                    className="btn"
                                                    data-tooltip-id={value.name + '-' + value.value}
-                                                   data-tooltip-content={'Value: ' + value.value}/>
+                                                   data-tooltip-content={'Value: ' + value.value}
+                                                   checked={responseMeasures.find((m) => m.name === metric.name).value.name === value.name}/>
                                             <Tooltip id={value.name + '-' + value.value}/>
                                         </>)
                                     })}
@@ -476,12 +449,12 @@ export default function ScenarioTestMenu(props) {
                         : null}
                 </div>
 
-                <button onClick={addScenarioTest} className="btn btn-primary">
-                    Add Test
+                <button onClick={editScenarioTest} className="btn btn-primary">
+                    Update Test
                 </button>
 
             </div>
             <ResizeBar setIsResizing={setIsResizing} setSidebarWidth={setSidebarWidth}/>
-        </>)
-
+        </>
+    )
 }

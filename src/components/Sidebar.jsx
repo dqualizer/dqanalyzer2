@@ -13,6 +13,7 @@ import { useEdges, useOnSelectionChange, useReactFlow, useStore } from 'reactflo
 import { MarkerType } from 'reactflow';
 import '../language/icon/icons.css';
 import ViewportChangeLogger from '../utils/hideComponentOnViewportClick';
+import EditScenarioTestMenu from "./EditScenarioTestMenu.jsx";
 
 export default function Sidebar(props) {
 
@@ -21,10 +22,12 @@ export default function Sidebar(props) {
     const [scnenarioMode, setScenarioMode] = useState(true);
     const [scenarioExplorerShow, setScenarioExplorerShow] = useState();
     const [scenarioTestShow, setScenarioTestShow] = useState();
+    const [editScenarioTestShow, setEditScenarioTestShow] = useState(false);
     const [rqaExplorerShow, setRqaExplorerShow] = useState();
     const [loadTestShow, setLoadTestShow] = useState();
     const reactFlowInstance = useReactFlow();
     const loadtestRef = useRef(null);
+    const [editRqa, setEditRqa] = useState(null);
 
     ViewportChangeLogger(loadtestRef, setLoadTestShow);
 
@@ -106,6 +109,11 @@ export default function Sidebar(props) {
         setLoadTestShow((prevState) => !prevState);
     }
 
+    const onEditScenarioTestClick = (rqa) => {
+        setEditRqa(rqa);
+        setEditScenarioTestShow((prevState) => !prevState);
+    }
+
     if (scnenarioMode) {
         return (
             <div className="sidebar">
@@ -114,8 +122,9 @@ export default function Sidebar(props) {
                     <button onClick={onScenarioExplorerClick}><div><EqualizerIcon/></div></button>
                     <button onClick={onScenarioTestClick}><div><ContentPasteSearchIcon/></div></button>
                 </div>
-                {scenarioExplorerShow ? <ScenarioExplorer/> : null}
-                {scenarioTestShow ? <div ref={loadtestRef}> <ScenarioTestMenu selectedEdge={selectedEdge} edges={props.edges} setScenarioExplorerShow={setScenarioExplorerShow} setScenarioTestShow={setScenarioTestShow}/> </div> : null}
+                {scenarioExplorerShow ? <ScenarioExplorer selectedEdge={selectedEdge} edges={props.edges} onEditScenarioTestClick={onEditScenarioTestClick}/> : null}
+                {scenarioTestShow ? <div> <ScenarioTestMenu selectedEdge={selectedEdge} edges={props.edges} setScenarioExplorerShow={setScenarioExplorerShow} setScenarioTestShow={setScenarioTestShow}/> </div> : null}
+                {editScenarioTestShow ? <div> <EditScenarioTestMenu edges={props.edges} rqa={editRqa} setScenarioExplorerShow={setScenarioExplorerShow} setScenarioTestShow={setScenarioTestShow}/> </div> : null}
             </div>
         )
     }
