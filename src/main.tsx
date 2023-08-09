@@ -1,5 +1,6 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
+import ReactTooltip from "react-tooltip";
 import App, { damLoader } from "./pages/App";
 import "./index.css";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
@@ -15,6 +16,10 @@ import { getDomainById } from "./queries/dam.js";
 import Domains from "./pages/Domains";
 import Contexts from "./pages/Contexts";
 import { Link } from "react-router-dom";
+import NewDomain from "./pages/NewDomain";
+import CreateBlankDomain from "./pages/CreateBlankDomain";
+import DomainDetails, { domainLoader } from "./pages/DomainDetails";
+import NewContext from "./pages/NewContext";
 
 const queryClient = new QueryClient();
 
@@ -57,8 +62,51 @@ const router = createBrowserRouter([
         },
       },
       {
-        path: "/dqedit/contexts",
-        element: <Contexts />,
+        path: "/dqedit/domains/:domainName",
+        element: <DomainDetails />,
+        handle: {
+          crumb: () => (
+            <Link
+              to="/dqedit/domains/:domainName"
+              className="ml-1 text-sm font-medium text-gray-700 hover:text-blue-600 md:ml-2 dark:text-gray-400 dark:hover:text-white"
+            >
+              Domains
+            </Link>
+          ),
+        },
+        loader: domainLoader,
+      },
+      {
+        path: "/dqedit/domains/new",
+        element: <NewDomain />,
+        handle: {
+          crumb: () => (
+            <Link
+              to="/dqedit/domains/new"
+              className="ml-1 text-sm font-medium text-gray-700 hover:text-blue-600 md:ml-2 dark:text-gray-400 dark:hover:text-white"
+            >
+              New Domain
+            </Link>
+          ),
+        },
+      },
+      {
+        path: "/dqedit/domains/new/blank_domain",
+        element: <CreateBlankDomain />,
+        handle: {
+          crumb: () => (
+            <Link
+              to="/dqedit/domains/new/blank_domain"
+              className="ml-1 text-sm font-medium text-gray-700 hover:text-blue-600 md:ml-2 dark:text-gray-400 dark:hover:text-white"
+            >
+              Create Blank Domain
+            </Link>
+          ),
+        },
+      },
+      {
+        path: "/dqedit/domains/:domainName/contexts/new",
+        element: <NewContext />,
         handle: {
           crumb: () => (
             <Link

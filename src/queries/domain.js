@@ -7,6 +7,10 @@ export const getAllDomains = () => {
     return axios.get(`${backend}/`).then(res => res.data);
 }
 
+export const getDomainByName = (domainName) => {
+    return axios.get(`${backend}/${domainName}`)
+}
+
 export const deleteDomainByName = (name) => {
     return axios.delete(`${backend}/${name}`).then(res => res.data);
 }
@@ -14,4 +18,9 @@ export const deleteDomainByName = (name) => {
 export const deleteSubdomainByName = ({ parent, domain }) => {
     console.log(parent)
     return axios.delete(`${backend}/${parent}/${domain}`).then(res => res.data);
+}
+
+export const createDomain = (name) => {
+    console.log(name)
+    return axios.post(`${backend}/${name}`).then(res => res.data);
 }

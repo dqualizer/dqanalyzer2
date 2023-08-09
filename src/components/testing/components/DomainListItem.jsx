@@ -1,7 +1,8 @@
 import React, { useState } from "react";
 import { FaLayerGroup } from "react-icons/fa";
 import { FaTrash } from "react-icons/fa";
-import { RxDropdownMenu } from "react-icons/rx";
+import { FaEllipsisVertical } from "react-icons/fa6";
+import { Tooltip } from "react-tooltip";
 import { BiRightArrow, BiDownArrow } from "react-icons/bi";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import {
@@ -47,8 +48,19 @@ export default function DomainListItem({ domain, isSubdomain, parent }) {
             <span>{domain.name}</span>
           </div>
           <div className="flex items-center gap-4">
-            <FaTrash onClick={() => handleDelete(parent?.name, domain.name)} />
-            <RxDropdownMenu />
+            <FaTrash
+              className="hover:cursor-pointer"
+              onClick={() => handleDelete(parent?.name, domain.name)}
+              data-tooltip-content="Delete"
+              data-tooltip-id="delete-tooltip"
+            />
+            <FaEllipsisVertical
+              className="hover:cursor-pointer"
+              data-tooltip-content="Options"
+              data-tooltip-id="options-tooltip"
+            />
+            <Tooltip id="delete-tooltip" />
+            <Tooltip id="options-tooltip" />
           </div>
         </div>
       </li>
