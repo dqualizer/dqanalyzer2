@@ -21,7 +21,7 @@ export const createActors = (actors) => {
   actors.forEach((actor) => {
     // Create Node with target-handle
     const newNode = {
-      id: `actor_${actor.id}`,
+      id: `actor_${actor.actor_name}`,
       type,
       position: {
         ...position,
