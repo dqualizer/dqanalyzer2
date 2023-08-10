@@ -24,3 +24,7 @@ export const createDomain = (name) => {
     console.log(name)
     return axios.post(`${backend}/${name}`).then(res => res.data);
 }
+
+export const createContext = (domain, subdomain, context) => {
+    return axios.post(`${backend}/${domain}/${subdomain}/${context}`)
+}
