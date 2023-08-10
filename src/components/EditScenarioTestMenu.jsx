@@ -55,8 +55,6 @@ export default function EditScenarioTestMenu(props) {
     // state-based RQA-definition
     const [rqa, setRqa] = useState(props.rqa);
 
-    const [includedMetrics, setIncludedMetrics] = useState(["response_time"]);
-
     const reactFlowInstance = useReactFlow();
 
     const uniqueActivitys = props.edges.filter((obj, index, self) => {
@@ -81,12 +79,14 @@ export default function EditScenarioTestMenu(props) {
         // updates reactFlowInstance
         reactFlowInstance.setEdges(newEdgesArray);
 
-        console.log(e.target.value);
         // update the view for the selected edge
         let newSelectedActivity = rqa.runtime_quality_analysis.artifacts.findIndex((artifact) => artifact.description === e.target.value);
         setSelectedActivity(newSelectedActivity);
-        console.log(rqa.runtime_quality_analysis.artifacts[newSelectedActivity].load_design);
         setLoadDesign(rqa.runtime_quality_analysis.artifacts[newSelectedActivity].load_design);
+        setResilienceDesign(rqa.runtime_quality_analysis.artifacts[newSelectedActivity].resilience_design);
+        setResponseMeasures(rqa.runtime_quality_analysis.artifacts[newSelectedActivity].response_measures);
+
+        createScenarios();
     }
 
     const handleLoadDesignChange = (e) => {
@@ -96,7 +96,16 @@ export default function EditScenarioTestMenu(props) {
         copyLoadVariant.designParameters.forEach((parameter) => {
             delete parameter.values;
             parameter.value = null;
+            console.log(rqa.runtime_quality_analysis.artifacts[selectedActivity].load_design.design_parameters !== null);
+            if(rqa.runtime_quality_analysis.artifacts[selectedActivity].load_design.design_parameters !== null) {
+                rqa.runtime_quality_analysis.artifacts[selectedActivity].load_design.design_parameters.forEach((fillParameter) => {
+                    if(parameter.name === fillParameter.name) {
+                        parameter.value = fillParameter.value;
+                    }
+                });
+            }
         });
+
         setLoadDesign(copyLoadVariant);
     }
 
@@ -142,7 +151,6 @@ export default function EditScenarioTestMenu(props) {
     }
 
     const handleAccuracyChange = (e) => {
-        console.log(e.target.value);
         setAccuracy(e.target.value);
     }
 
@@ -372,7 +380,7 @@ export default function EditScenarioTestMenu(props) {
                                     <span className="label-text">{metric.name}</span>
                                 </label>
                                 <div className="btn-group">
-                                    {metric !== null & metric.values.map((value) => {
+                                    {metric.values.map((value) => {
                                         return (<>
                                             <input type="radio" value={value}
                                                    onClick={() => handleResponseParameterChange(metric.name, value)}
