@@ -20,8 +20,6 @@ export default function LoadtestSpecifier({
     activity: "",
     load_profile: "",
     accuracy: 0,
-    highest_load: "",
-    time_to_highest_load: "",
     path_variables: [],
     response_time: "",
     result_metrics: [],
@@ -69,6 +67,10 @@ export default function LoadtestSpecifier({
   // Show only the Activities for the selected System
   const getActivities = () => {
     if (inputs.system) {
+      console.log(
+        domain?.systems?.find((system) => system.system_id == inputs.system)
+          ?.activities
+      );
       return domain?.systems?.find(
         (system) => system.system_id == inputs.system
       )?.activities;

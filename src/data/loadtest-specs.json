@@ -52,7 +52,7 @@
 		{
 			"name": "Load Increase",
 			"id": "LOAD_INCREASE",
-			"supported": false,
+			"supported": 1,
 			"designParameters": [
 				{
 					"name": "Type of Increase",
@@ -80,7 +80,7 @@
 		{
 			"name": "Constant Load",
 			"id": "CONSTANT LOAD",
-			"supported": false,
+			"supported": 1,
 			"designParameters": [
 				{
 					"name": "Base Load",
