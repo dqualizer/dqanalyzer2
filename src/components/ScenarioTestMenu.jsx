@@ -60,11 +60,11 @@ export default function ScenarioTestMenu(props) {
         if (edge.activity !== undefined) {
             initRQADefiniton.runtime_quality_analysis.artifacts.push({
                 artifact: {object: edge.system, activity: edge.activity}, description: edge.name, load_design: {
-                    load_variant: null,
+                    load_variant: 'None',
                     design_parameters: null
                 },
                 resilience_design: {
-                    resilience_variant: null,
+                    resilience_variant: 'None',
                     design_parameters: null
                 },
                 response_measures: []
@@ -168,7 +168,6 @@ export default function ScenarioTestMenu(props) {
     }
 
     const handleAccuracyChange = (e) => {
-        console.log(e.target.value);
         setAccuracy(e.target.value);
     }
 
