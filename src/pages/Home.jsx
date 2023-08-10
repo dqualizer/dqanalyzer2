@@ -3,7 +3,7 @@ import dqLogo from '../assets/dqualizer_logo.png';
 import React from 'react'
 import { Link, useLoaderData } from 'react-router-dom';
 
-import werkstatt from '../data/werkstatt.json';
+import werkstatt from '../data/werkstatt-en.json';
 
 import localforage from "localforage";
 import { matchSorter } from "match-sorter";
@@ -71,15 +71,15 @@ export default function Home() {
     const { domains } = useLoaderData();
 
     return (
-        <div class="flex items-center justify-center h-screen flex-col">
-            <div class="text-center">
-                <img src={dqLogo} alt="" srcset="" class="mx-auto mb-4 w-1/2" />
-                <p class="font-bold text-2xl">Welcome to dqAnalyzer 1.0!</p>
-                <p class="text-xl">First of all: Choose your Demo-Domain.</p>
+        <div className="flex items-center justify-center h-screen flex-col">
+            <div className="text-center">
+                <img src={dqLogo} alt="" srcSet="" className="mx-auto mb-4 w-1/2" />
+                <p className="font-bold text-2xl">Welcome to dqAnalyzer 1.0!</p>
+                <p className="text-xl">First of all: Choose your Demo-Domain.</p>
             </div>
             <div className='flex gap-4 mt-5'>
                 {domains.length ? (domains.map((domain) => (
-                    <Link to={`/analyzer/${domain.domainId}`}>
+                    <Link key={domain} to={`/analyzer/${domain.domainId}`}>
                         <div className="w-60 h-60 border-2 border-cyan-400 relative hover:scale-110">
                             <img
                                 src="http://localhost:5173/werkstatt.png"
