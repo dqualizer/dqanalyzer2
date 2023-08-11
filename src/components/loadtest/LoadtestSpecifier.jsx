@@ -20,8 +20,8 @@ export default function LoadtestSpecifier({
     activity: "",
     load_profile: "",
     accuracy: 0,
-    path_variables: [],
     response_time: "",
+    designParameters: {},
     result_metrics: [],
   });
 
@@ -34,6 +34,8 @@ export default function LoadtestSpecifier({
     const name = event.target.name;
     const value = event.target.value;
     setInputs((values) => ({ ...values, [name]: value }));
+    if (name == "load_profile")
+      setInputs((values) => ({ ...values, designParameters: {} }));
   };
 
   const handleResultMetricsChange = (optionId, isChecked) => {
@@ -52,6 +54,19 @@ export default function LoadtestSpecifier({
     }
   };
 
+  const handleDesignParameterChange = (event) => {
+    const actualName = event.target.name.split("designParameter_")[1];
+    const value = event.target.value;
+    setInputs((prev) => ({
+      ...prev,
+      designParameters: {
+        ...prev.designParameters,
+        [actualName]: value,
+      },
+    }));
+  };
+
+  // Path Variables not implemented yet!
   const handlePathVariableChange = (event) => {
     const name = event.target.name;
     const value = event.target.value;
@@ -67,13 +82,8 @@ export default function LoadtestSpecifier({
   // Show only the Activities for the selected System
   const getActivities = () => {
     if (inputs.system) {
-      console.log(
-        domain?.systems?.find((system) => system.system_id == inputs.system)
-          ?.activities
-      );
-      return domain?.systems?.find(
-        (system) => system.system_id == inputs.system
-      )?.activities;
+      return domain?.systems?.find((system) => system.id == inputs.system)
+        ?.activities;
     }
     return [];
   };
@@ -90,33 +100,36 @@ export default function LoadtestSpecifier({
     return [];
   };
 
-  const getEndpoint = useEffect(() => {
-    if (inputs.activity) {
-      setEndpoint(
-        domain.systems
-          .find((system) => system.system_id == inputs.system)
-          .activities.find(
-            (activity) => activity.activity_id == inputs.activity
-          ).endpoint
-      );
-    }
-  }, [inputs.activity]);
+  // NOT IN USE - ENDPOINT WILL NOT BE INCLUDED IN DOMAIN SCHEMA
+  // const getEndpoint = useEffect(() => {
+  //   if (inputs.activity) {
+  //     setEndpoint(
+  //       domain.systems
+  //         .find((system) => system.name == inputs.system)
+  //         .activities.find(
+  //           (activity) => activity.activity_id == inputs.activity
+  //         ).endpoint
+  //     );
+  //   }
+  // }, [inputs.activity]);
+
+  // NOT PART OF Q3 -- Not in use
 
   // Before we can initialize the path_variables, we have to know the endpoint
   // Without it we don´t know the keys
-  const setParametrization = useEffect(() => {
-    if (endpoint) {
-      let path_variables = [];
-      endpoint.path_variables.forEach((path_variable) => {
-        path_variables.push({ key: path_variable.name, value: "" });
-      });
-      console.log(path_variables);
-      setInputs((values) => ({
-        ...values,
-        path_variables: path_variables,
-      }));
-    }
-  }, [endpoint]);
+  // const setParametrization = useEffect(() => {
+  //   if (endpoint) {
+  //     let path_variables = [];
+  //     endpoint.path_variables.forEach((path_variable) => {
+  //       path_variables.push({ key: path_variable.name, value: "" });
+  //     });
+  //     console.log(path_variables);
+  //     setInputs((values) => ({
+  //       ...values,
+  //       path_variables: path_variables,
+  //     }));
+  //   }
+  // }, [endpoint]);
 
   // Change System and Actvitivity, when selecte Eddge changes
   useEffect(() => {
@@ -129,9 +142,9 @@ export default function LoadtestSpecifier({
 
   const getSystemAndActivityBasedOnSelectedEdge = async () => {
     if (selectedEdge) {
-      console.log("selectedEdge");
+      console.log(selectedEdge);
       let system = domain.systems.find(
-        (system) => system.system_id == selectedEdge.system
+        (system) => system.id == selectedEdge.system
       );
       let activity = system.activities.find(
         (activity) => activity.activity_id == selectedEdge.mappingId
@@ -173,7 +186,6 @@ export default function LoadtestSpecifier({
   }, [inputs]);
 
   const addToRqa = (rqaId) => {
-    console.log(rqaId);
     rqaMutation.mutate({ rqaId, inputs: inputs });
   };
 
@@ -185,6 +197,8 @@ export default function LoadtestSpecifier({
     },
   });
 
+  console.log(domain.systems);
+
   return (
     <div className="p-4 prose h-full overflow-auto bg-slate-200 ">
       <h3>Loadtest Specification</h3>
@@ -195,7 +209,7 @@ export default function LoadtestSpecifier({
         value={inputs.system}
         options={domain.systems}
         optionName={"name"}
-        optionValue={"system_id"}
+        optionValue={"id"}
       />
       <LoadtestSelect
         label={"Activity"}
@@ -203,7 +217,7 @@ export default function LoadtestSpecifier({
         value={inputs.activity}
         options={getActivities()}
         optionName={"name"}
-        optionValue={"activity_id"}
+        optionValue={"id"}
       />
       <div className="divider " />
       <h3>Load Design</h3>
@@ -220,11 +234,12 @@ export default function LoadtestSpecifier({
           return (
             <LoadtestRadios
               label={designParameter.name}
-              onChange={handleChange}
+              onChange={handleDesignParameterChange}
               value={inputs.load_profile}
               options={designParameter.values}
               optionName={designParameter.id}
               optionValue={"id"}
+              propType={"designParameter"}
             />
           );
         })
@@ -265,7 +280,8 @@ export default function LoadtestSpecifier({
         );
       })}
 
-      {endpoint && (
+      {/* Tryed to implement Parametrization. Not Part of Q3 */}
+      {/* {endpoint && (
         <div>
           <h3>Parametrization Details</h3>
           {endpoint.path_variables && (
@@ -292,7 +308,7 @@ export default function LoadtestSpecifier({
             </div>
           )}
         </div>
-      )}
+      )} */}
       {showAdd && <DropdownLeft rqas={rqas} action={addToRqa} />}
     </div>
   );

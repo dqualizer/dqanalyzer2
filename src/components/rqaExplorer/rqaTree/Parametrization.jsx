@@ -33,7 +33,8 @@ export default function Parametrization({ data }) {
                   <span>{param}</span>
                 </summary>
                 <ul>
-                  {formattedData[param].map((object) => {
+                  <li>Not Implemented yet!!</li>
+                  {/* {formattedData[param]?.map((object) => {
                     return (
                       <li>
                         <span>
@@ -41,7 +42,7 @@ export default function Parametrization({ data }) {
                         </span>
                       </li>
                     );
-                  })}
+                  })} */}
                 </ul>
               </details>
             </li>

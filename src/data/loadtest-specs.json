@@ -136,11 +136,11 @@
 
 		},
 		{
-			"id": "NINETIETHPERCENTILE",
+			"id": "NINETY_PERCENTILE",
 			"label":"90th Percentile" 
 		},
 		{
-			"id": "NINETYFITHPERCENTILE",
+			"id": "NINETY_FIVE_PERCENTILEx",
 			"label":"95th Percentile" 
 		}
 	]
