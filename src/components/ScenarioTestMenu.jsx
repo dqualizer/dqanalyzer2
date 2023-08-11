@@ -2,7 +2,7 @@ import React, {useEffect, useState} from 'react';
 import {useEdges, useOnSelectionChange, useReactFlow} from 'reactflow';
 import * as scenarioSpecs from '../data/scenariotest-specs.json';
 import ResizeBar from './ResizeBar';
-import * as mapping from '../data/werkstatt.json';
+import * as mapping from '../data/werkstatt-en.json';
 import {Tooltip} from 'react-tooltip';
 import axios from 'axios';
 
@@ -72,7 +72,6 @@ export default function ScenarioTestMenu(props) {
         }
     });
 
-
     const [selectedActivity, setSelectedActivity] = useState(0);
     const [loadDesign, setLoadDesign] = useState(allRqs.loadDesign[0]);
     const [resilienceDesign, setResilienceDesign] = useState(allRqs.resilienceDesign[0]);
@@ -80,11 +79,215 @@ export default function ScenarioTestMenu(props) {
     const [accuracy, setAccuracy] = useState(0);
     const [enviroment, setEnviroment] = useState(settings.enviroment[0]);
     const [timeSlot, setTimeSlot] = useState(null);
+    const [scenarios, setScenarios] = useState([]);
 
     // state-based RQA-definition
     const [rqa, setRqa] = useState(initRQADefiniton);
 
-    const [includedMetrics, setIncludedMetrics] = useState(["response_time"]);
+    const [allMetrics, setAllMetrics] = useState([{
+        metric: "maximum_response_time",
+        description_begin: "What is the maximum time it may take for ",
+        description_end: null,
+        insert_to: true
+    },
+        {
+            metric: "minimum_throughput",
+            description_begin: "How often do at least ",
+            description_end: null,
+            insert_to: false
+        }]);
+
+    const load = [
+        {
+            "name": "Load Peak",
+            "description": "[intensity] and [time] load peak",
+            "designParameters": [
+                {
+                    "name": "Highest Load",
+                    "values": [
+                        {
+                            "name": "High",
+                            "value": 10
+                        },
+                        {
+                            "name": "Very High",
+                            "value": 15
+                        },
+                        {
+                            "name": "Extremly High",
+                            "value": 30
+                        }
+                    ]
+                },
+                {
+                    "name": "Time to Highest load",
+                    "values": [
+                        {
+                            "name": "Slow",
+                            "value": "20s"
+                        },
+                        {
+                            "name": "Fast",
+                            "value": "15s"
+                        },
+                        {
+                            "name": "Very Fast",
+                            "value": "10s"
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "name": "Load Increase",
+            "designParameters": [
+                {
+                    "name": "Type of Increase",
+                    "values": [
+                        {
+                            "name": "Linear",
+                            "value": 1
+                        },
+                        {
+                            "name": "Quadratic",
+                            "value": 2
+                        },
+                        {
+                            "name": "Cubic",
+                            "value": 3
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "name": "Constant Load",
+            "designParameters": [
+                {
+                    "name": "Base Load",
+                    "values": [
+                        {
+                            "name": "Low",
+                            "value": 10
+                        },
+                        {
+                            "name": "Medium",
+                            "value": 20
+                        },
+                        {
+                            "name": "High",
+                            "value": 30
+                        }
+                    ]
+                }
+            ]
+        }
+    ];
+    const resilience = [{
+        "name": "Failed Request",
+        "designParameters": [
+            {
+                "name": "Error Rate",
+                "values": [
+                    {
+                        "name": "None",
+                        "value": 10
+                    },
+                    {
+                        "name": "Low",
+                        "value": 20
+                    },
+                    {
+                        "name": "Medium",
+                        "value": 30
+                    },
+                    {
+                        "name": "High",
+                        "value": 30
+                    }
+                ]
+            },
+            {
+                "name": "How often does the stimulus occur?",
+                "values": [
+                    {
+                        "name": "Once",
+                        "value": 10
+                    },
+                    {
+                        "name": "More than once",
+                        "value": 20
+                    },
+                    {
+                        "name": "Frustrated",
+                        "value": 30
+                    }
+                ]
+            }
+        ]
+    },
+        {
+            "name": "Late Response",
+            "designParameters": [
+                {
+                    "name": "How often does the stimulus occur?",
+                    "values": [
+                        {
+                            "name": "Once",
+                            "value": 10
+                        },
+                        {
+                            "name": "More than once",
+                            "value": 20
+                        },
+                        {
+                            "name": "Frustrated",
+                            "value": 30
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "name": "Unavailable",
+            "designParameters": [
+                {
+                    "name": "Recovery Time",
+                    "values": [
+                        {
+                            "name": "Satisfied",
+                            "value": 10
+                        },
+                        {
+                            "name": "Tolerated",
+                            "value": 20
+                        },
+                        {
+                            "name": "Frustrated",
+                            "value": 30
+                        }
+                    ]
+                },
+                {
+                    "name": "How often does the stimulus occur?",
+                    "values": [
+                        {
+                            "name": "Once",
+                            "value": 10
+                        },
+                        {
+                            "name": "More than once",
+                            "value": 20
+                        },
+                        {
+                            "name": "Frustrated",
+                            "value": 30
+                        }
+                    ]
+                }
+            ]
+        }
+    ];
 
     const reactFlowInstance = useReactFlow();
 
@@ -112,6 +315,7 @@ export default function ScenarioTestMenu(props) {
 
         // update the view for the selected edge
         let newSelectedActivity = rqa.runtime_quality_analysis.artifacts.findIndex((artifact) => artifact.description === e.target.value);
+        generateScenarios(newSelectedActivity);
         setSelectedActivity(newSelectedActivity);
     }
 
@@ -126,13 +330,8 @@ export default function ScenarioTestMenu(props) {
         setLoadDesign(copyLoadVariant);
     }
 
-    const handleLoadDesignParameterChange = (value, index) => {
-        let copyDesignParameter = deepCopy(loadDesign.designParameters[index]);
-        copyDesignParameter.value = value;
-        let newLoadDesign = deepCopy(loadDesign);
-
-        newLoadDesign.designParameters[index] = copyDesignParameter;
-        setLoadDesign(newLoadDesign);
+    const handleScenarioChange = (e) => {
+        console.log(e);
     }
 
     const handleResilienceDesignChange = (e) => {
@@ -172,7 +371,6 @@ export default function ScenarioTestMenu(props) {
     }
 
     const handleEnviromentChange = (e) => {
-        console.log("Env has changed.");
         let newEnviroment = e.target.value;
 
         if (newEnviroment === 'Test') {
@@ -181,6 +379,15 @@ export default function ScenarioTestMenu(props) {
             setTimeSlot(null);
         }
         setEnviroment(newEnviroment);
+    }
+
+    const handleLoadDesignParameterChange = (value, index) => {
+        let copyDesignParameter = deepCopy(loadDesign.designParameters[index]);
+        copyDesignParameter.value = value;
+        let newLoadDesign = deepCopy(loadDesign);
+
+        newLoadDesign.designParameters[index] = copyDesignParameter;
+        setLoadDesign(newLoadDesign);
     }
 
     const handleTimeSlotChange = (e) => {
@@ -215,11 +422,11 @@ export default function ScenarioTestMenu(props) {
     // useEffect(() => {
     //     setSelectedActivity(props.selectedEdge);
     //     let rqaCopy = rqa;
-    //     // rqaCopy.runtime_quality_analysis.loadtests[0].artifact = {
-    //     //     object: props.selectedEdge?.system,
-    //     //     activity: props.selectedEdge?.activity
-    //     // }
-    //     // rqaCopy.runtime_quality_analysis.loadtests[0].description = props.selectedEdge?.name
+    //     rqaCopy.runtime_quality_analysis.loadtests[0].artifact = {
+    //         object: props.selectedEdge?.system,
+    //         activity: props.selectedEdge?.activity
+    //     }
+    //     rqaCopy.runtime_quality_analysis.loadtests[0].description = props.selectedEdge?.name
     //     setRqa(rqaCopy);
     // }, [props.selectedEdge]);
 
@@ -248,6 +455,152 @@ export default function ScenarioTestMenu(props) {
 
         return copiedObject;
     };
+
+    const generateScenarios = (activity) => {
+        // console.log(rqa.runtime_quality_analysis.artifacts[selectedActivity]);
+        // console.log(props.nodes);
+        // console.log(props.edges);
+
+        let activityDescription = rqa.runtime_quality_analysis.artifacts[activity].description;
+        let allActiveEdges = props.edges.filter((edge) => edge.name === activityDescription);
+        let allElements = findAllElements(allActiveEdges);
+        let wordArray = buildWordArray(allElements);
+        let generatedSentences = generateSentences(wordArray);
+        console.log(generatedSentences);
+        setScenarios(generatedSentences);
+    }
+
+    useEffect(() => {
+        generateScenarios(selectedActivity);
+    }, [scenarios.length === 0]);
+
+    const findAllElements = (edges) => {
+        const allElements = [];
+        let currentSource = null;
+
+        //finding the first element
+        for (const edge of edges) {
+            const source = edge.source;
+            let isFirstElement = true;
+
+            for (const otherEdge of edges) {
+                const otherSource = otherEdge.source;
+                const otherTarget = otherEdge.target;
+
+                if (source !== otherSource && source === otherTarget) {
+                    isFirstElement = false;
+                    break;
+                }
+            }
+
+            if (isFirstElement) {
+                currentSource = source;
+                break;
+            }
+        }
+
+        while (currentSource !== null) {
+            let found = false;
+
+            for (const edge of edges) {
+                const source = edge.source;
+                const target = edge.target;
+
+                if (currentSource === source) {
+                    found = true;
+                    const node = props.nodes.find((n) => n.id === currentSource);
+                    allElements.push(node);
+                    allElements.push(edge);
+                    currentSource = target;
+                    break;
+                }
+            }
+
+            if (!found) {
+                break;
+            }
+        }
+
+        //finding the last element
+        for (const edge of edges) {
+            const target = edge.target;
+
+            if (currentSource === target) {
+                const node = props.nodes.find((n) => n.id === target);
+                allElements.push(node);
+            }
+        }
+
+        return allElements.reverse();
+    }
+
+    const buildWordArray = (allElements) => {
+        let sentenceArray = [];
+        for (const element of allElements) {
+            // if element is not an edge
+            if (element.data !== undefined) {
+                let typeString = null;
+                if (element.data.icon === "Document") {
+                    typeString = "Work Object";
+                } else {
+                    typeString = element.data.icon;
+                }
+                let wordObject = {name: element.data.label.toLowerCase(), type: typeString};
+                sentenceArray.push(wordObject);
+            }
+            // else element is an edge
+            else {
+                let name = element.label.endsWith("s") ? element.label.slice(0, -1) : element.label;
+                let wordObject = {name: name.toLowerCase(), type: "Activity"};
+                sentenceArray.push(wordObject);
+            }
+        }
+        return sentenceArray;
+    }
+
+    const generateSentences = (wordArray) => {
+        let sentenceArray = [];
+        for (const metric of allMetrics) {
+            let sentence = "";
+            if (metric.description_begin !== null) {
+                sentence += metric.description_begin;
+            }
+            for (let wordIndex = 0; wordIndex < wordArray.length; wordIndex++) {
+                if (wordIndex === 0) {
+                    sentence += wordArray[wordIndex].name + "s";
+                    if (metric.insert_to) {
+                        sentence += " to";
+                    }
+                } else if (wordIndex === wordArray.length - 1) {
+                    sentence += " the " + wordArray[wordIndex].name;
+                } else if (wordArray[wordIndex].type === "Work Object") {
+                    if (wordArray[wordIndex].name.endsWith("s")) {
+                        sentence += " their " + wordArray[wordIndex].name + "es";
+                    } else {
+                        sentence += " their " + wordArray[wordIndex].name + "s";
+                    }
+                } else {
+                    sentence += " " + wordArray[wordIndex].name;
+                }
+            }
+            // TODO: Exchange implementation of randomDesign
+            let randomDesign = 0;
+            if (randomDesign === 0) {
+                let designDescription = load[0].description;
+                sentence = sentence.replace("[intensity]", "extremly high");
+                sentence = sentence.replace("[time]", "slow");
+                sentence += " under " + designDescription;
+            }
+
+            if (metric.description_end !== null) {
+                sentence += metric.description_end + "?";
+            } else {
+                sentence += "?";
+            }
+            sentenceArray.push(sentence)
+        }
+        return sentenceArray;
+    }
 
     return (
         <>
@@ -473,6 +826,24 @@ export default function ScenarioTestMenu(props) {
                             </select>
                         </div>
                         : null}
+                </div>
+
+                <div className="actvity-container">
+                    <label className="label">
+                            <span className="label-text">
+                                Scenario
+                                <span className="ml-1 font-normal text-sm" data-tooltip-id="stimulus-tooltip"
+                                      data-tooltip-place="right"
+                                      data-tooltip-content='The environment is the system on which the scenario test is executed. Warning: If the test is executed on the production environment, system failures may occur.'>&#9432;</span>
+                            </span>
+                    </label>
+                    <Tooltip id="enviroment-tooltip" style={{maxWidth: '256px'}}/>
+                    <select value={scenarios} onChange={handleScenarioChange} id=""
+                            className="select select-bordered w-full max-w-xs">
+                        {scenarios.map((scenario) => {
+                            return <option value={scenario} key={scenario}>{scenario}</option>
+                        })}
+                    </select>
                 </div>
 
                 <button onClick={addScenarioTest} className="btn btn-primary">
