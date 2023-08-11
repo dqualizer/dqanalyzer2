@@ -123,7 +123,7 @@ export default function Sidebar(props) {
                     <button onClick={onScenarioTestClick}><div><ContentPasteSearchIcon/></div></button>
                 </div>
                 {scenarioExplorerShow ? <ScenarioExplorer selectedEdge={selectedEdge} edges={props.edges} onEditScenarioTestClick={onEditScenarioTestClick}/> : null}
-                {scenarioTestShow ? <div> <ScenarioTestMenu selectedEdge={selectedEdge} edges={props.edges} setScenarioExplorerShow={setScenarioExplorerShow} setScenarioTestShow={setScenarioTestShow}/> </div> : null}
+                {scenarioTestShow ? <div> <ScenarioTestMenu selectedEdge={selectedEdge} nodes={props.nodes} edges={props.edges} setScenarioExplorerShow={setScenarioExplorerShow} setScenarioTestShow={setScenarioTestShow}/> </div> : null}
                 {editScenarioTestShow ? <div> <EditScenarioTestMenu edges={props.edges} rqa={editRqa} setScenarioExplorerShow={setScenarioExplorerShow} setScenarioTestShow={setScenarioTestShow}/> </div> : null}
             </div>
         )
