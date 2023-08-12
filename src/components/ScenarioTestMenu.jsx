@@ -73,6 +73,7 @@ export default function ScenarioTestMenu(props) {
     });
 
     const [selectedActivity, setSelectedActivity] = useState(0);
+    const [mode, setMode] = useState(null);
     const [loadDesign, setLoadDesign] = useState(allRqs.loadDesign[0]);
     const [resilienceDesign, setResilienceDesign] = useState(allRqs.resilienceDesign[0]);
     const [responseMeasures, setResponseMeasures] = useState([]);
@@ -83,6 +84,8 @@ export default function ScenarioTestMenu(props) {
 
     // state-based RQA-definition
     const [rqa, setRqa] = useState(initRQADefiniton);
+
+    const allModes = [{name: "What if", description: ""}, {name: "Monitoring", description: ""}];
 
     const [allMetrics, setAllMetrics] = useState([{
         metric: "maximum_response_time",
@@ -325,8 +328,9 @@ export default function ScenarioTestMenu(props) {
 
         // update the view for the selected edge
         let newSelectedActivity = rqa.runtime_quality_analysis.artifacts.findIndex((artifact) => artifact.description === e.target.value);
-        generateScenarios(newSelectedActivity);
         setSelectedActivity(newSelectedActivity);
+        setMode(null);
+        setScenarios([]);
     }
 
     const handleLoadDesignChange = (e) => {
@@ -340,8 +344,15 @@ export default function ScenarioTestMenu(props) {
         setLoadDesign(copyLoadVariant);
     }
 
+    const handleModeChange = (e) => {
+        let mode = e.target.value;
+        console.log(e.target.value);
+        generateScenarios(mode);
+        setMode(mode);
+    }
+
     const handleScenarioChange = (e) => {
-        console.log(e);
+        console.log(e.target.value);
     }
 
     const handleResilienceDesignChange = (e) => {
@@ -466,23 +477,19 @@ export default function ScenarioTestMenu(props) {
         return copiedObject;
     };
 
-    const generateScenarios = (activity) => {
+    const generateScenarios = (mode) => {
         // console.log(rqa.runtime_quality_analysis.artifacts[selectedActivity]);
         // console.log(props.nodes);
         // console.log(props.edges);
 
-        let activityDescription = rqa.runtime_quality_analysis.artifacts[activity].description;
+        let activityDescription = rqa.runtime_quality_analysis.artifacts[selectedActivity].description;
         let allActiveEdges = props.edges.filter((edge) => edge.name === activityDescription);
         let allElements = findAllElements(allActiveEdges);
         let wordArray = buildWordArray(allElements);
-        let generatedSentences = generateSentences(wordArray);
+        let generatedSentences = generateSentences(wordArray, mode);
         console.log(generatedSentences);
         setScenarios(generatedSentences);
     }
-
-    useEffect(() => {
-        generateScenarios(selectedActivity);
-    }, [scenarios.length === 0]);
 
     const findAllElements = (edges) => {
         const allElements = [];
@@ -568,7 +575,7 @@ export default function ScenarioTestMenu(props) {
         return sentenceArray;
     }
 
-    const generateSentences = (wordArray) => {
+    const generateSentences = (wordArray, mode) => {
         let sentenceArray = [];
         for (const metric of allMetrics) {
             let sentence = "";
@@ -593,35 +600,37 @@ export default function ScenarioTestMenu(props) {
                     sentence += " " + wordArray[wordIndex].name;
                 }
             }
-            let randomDesign = Math.round(Math.random());
-            let designDescription = null
-            // 1 = Load
-            if (randomDesign === 1) {
-                let numberLoadCategories = load.length;
-                let randomLoadCategory = Math.floor(Math.random() * numberLoadCategories);
-                designDescription = load[randomLoadCategory].description;
-                for (let parameter in load[randomLoadCategory].designParameters) {
-                    let numberOfParamValues = load[randomLoadCategory].designParameters[parameter].values.length;
-                    let randomValue = Math.floor(Math.random() * numberOfParamValues);
-                    let valuePlaceHolder = load[randomLoadCategory].designParameters[parameter].placeholder;
-                    let valueDescription = load[randomLoadCategory].designParameters[parameter].values[randomValue].name.toLowerCase();
-                    designDescription = designDescription.replace(valuePlaceHolder, valueDescription);
+            if (mode === "What if") {
+                let randomDesign = Math.round(Math.random());
+                let designDescription = null
+                // 1 = Load
+                if (randomDesign === 1) {
+                    let numberLoadCategories = load.length;
+                    let randomLoadCategory = Math.floor(Math.random() * numberLoadCategories);
+                    designDescription = load[randomLoadCategory].description;
+                    for (let parameter in load[randomLoadCategory].designParameters) {
+                        let numberOfParamValues = load[randomLoadCategory].designParameters[parameter].values.length;
+                        let randomValue = Math.floor(Math.random() * numberOfParamValues);
+                        let valuePlaceHolder = load[randomLoadCategory].designParameters[parameter].placeholder;
+                        let valueDescription = load[randomLoadCategory].designParameters[parameter].values[randomValue].name.toLowerCase();
+                        designDescription = designDescription.replace(valuePlaceHolder, valueDescription);
+                    }
                 }
-            }
-            // 0 = Resilience
-            else {
-                let numberResilienceCategories = resilience.length;
-                let randomResilienceCategory = Math.floor(Math.random() * numberResilienceCategories);
-                designDescription = resilience[randomResilienceCategory].description;
-                for (let parameter in resilience[randomResilienceCategory].designParameters) {
-                    let numberOfParamValues = resilience[randomResilienceCategory].designParameters[parameter].values.length;
-                    let randomValue = Math.floor(Math.random() * numberOfParamValues);
-                    let valuePlaceHolder = resilience[randomResilienceCategory].designParameters[parameter].placeholder;
-                    let valueDescription = resilience[randomResilienceCategory].designParameters[parameter].values[randomValue].name.toLowerCase();
-                    designDescription = designDescription.replace(valuePlaceHolder, valueDescription);
+                // 0 = Resilience
+                else {
+                    let numberResilienceCategories = resilience.length;
+                    let randomResilienceCategory = Math.floor(Math.random() * numberResilienceCategories);
+                    designDescription = resilience[randomResilienceCategory].description;
+                    for (let parameter in resilience[randomResilienceCategory].designParameters) {
+                        let numberOfParamValues = resilience[randomResilienceCategory].designParameters[parameter].values.length;
+                        let randomValue = Math.floor(Math.random() * numberOfParamValues);
+                        let valuePlaceHolder = resilience[randomResilienceCategory].designParameters[parameter].placeholder;
+                        let valueDescription = resilience[randomResilienceCategory].designParameters[parameter].values[randomValue].name.toLowerCase();
+                        designDescription = designDescription.replace(valuePlaceHolder, valueDescription);
+                    }
                 }
+                sentence += " under " + designDescription;
             }
-            sentence += " under " + designDescription;
 
             if (metric.description_end !== null) {
                 sentence += metric.description_end + "?";
@@ -648,6 +657,29 @@ export default function ScenarioTestMenu(props) {
                             return <option value={edge.name} key={edge.id}>{edge.name}</option>
                         })}
                     </select>
+                </div>
+
+                <div className="activity-container">
+                    <label className="label">
+                        <span className="label-text">Choose Mode</span>
+                    </label>
+                        <div className="btn-group">
+                            {allModes.map(((mode) => {
+                                    return (
+                                        <>
+                                            <input type="radio" value={mode.name}
+                                                   onClick={handleModeChange}
+                                                   name="Mode"
+                                                   data-title={mode.name}
+                                                   className="btn"
+                                                   id={mode.name + '-' + mode.description}
+                                                   data-tooltip-content={mode.description}/>
+                                            <Tooltip
+                                                id={mode.name + '-' + mode.description}/>
+                                        </>
+                                    )
+                                }))}
+                    </div>
                 </div>
 
                 <div className="actvity-container">
@@ -705,159 +737,160 @@ export default function ScenarioTestMenu(props) {
                             })}
                         </div>
                     </div>
-
-                    <div className="actvity-container">
-                        <label className="label">
-                            <h3>
-                                Resilience Design
-                                <span className="ml-1 font-normal text-sm" data-tooltip-id="response-measure-tooltip"
-                                      data-tooltip-place="right"
-                                      data-tooltip-content='The Load Design allows you to further design the simulated load depending on the selected stimulus. For instance, if you design a "Load Peak" stimulus, you will need to specify the final peak to be achieved and how long it takes to reach it.'>&#9432;</span>
-                            </h3>
-                            <Tooltip id="response-measure-tooltip" style={{maxWidth: '256px'}}/>
-                        </label>
-                        <select value={resilienceDesign.name} onChange={handleResilienceDesignChange} id=""
-                                className="select select-bordered w-full max-w-xs">
-                            {allRqs.resilienceDesign.map((resilienceVariant) => {
-                                return <option value={resilienceVariant.name}
-                                               key={resilienceVariant.name}>{resilienceVariant.name}</option>
-                            })}
-                        </select>
-                        {/*TODO: Add Tooltip for each element*/}
-                        <div className="actvity-container">
-                            {allRqs.resilienceDesign.map((resilienceVariant) => {
-                                return (
-                                    <>
-                                        {resilienceVariant.name === resilienceDesign.name ? resilienceVariant.designParameters != null && resilienceVariant.designParameters.map((parameter, index) => {
-                                            return (
-                                                <>
-                                                    <label className="label">
-                                                    <span className="label-text">
-                                                        {parameter.name}
-                                                    </span>
-                                                    </label>
-                                                    <div className="btn-group">
-                                                        {parameter.values != null && parameter.values.map((value) => {
-                                                            return (
-                                                                <>
-                                                                    <input type="radio" value={value}
-                                                                           onClick={() => handleResilienceDesignParameterChange(value, index)}
-                                                                           name={parameter.name}
-                                                                           data-title={value.name}
-                                                                           className="btn"
-                                                                           data-tooltip-id={value.name + '-' + value.value}
-                                                                           data-tooltip-content={'Value: ' + value.value}/>
-                                                                    <Tooltip
-                                                                        id={value.name + '-' + value.value}/>
-                                                                </>
-                                                            )
-                                                        })}
-                                                    </div>
-                                                </>
-                                            )
-                                        }) : null
-                                        }
-                                    </>)
-                            })}
-                        </div>
-                    </div>
                 </div>
 
-                <div className="activity-container">
-                    <h3>Metrics</h3>
-                    <p>
-                        The Metrics to include into the Scenario Test
-                        <span className="ml-1 font-normal text-sm" data-tooltip-place="right"
-                              data-tooltip-id="metrics-tooltip"
-                              data-tooltip-content='You may check one or multiple of these fields to tell the system which metrics you would like to include in the final analysis results.'>&#9432;</span>
-                    </p>
-                    <Tooltip id="metrics-tooltip" style={{maxWidth: '256px'}}/>
-                    <div className="activity-container">
-                        {metrics.map((metric) => {
-                            return (<div>
-                                <label className="label">
-                                    <span className="label-text">{metric.name}</span>
-                                </label>
-                                <div className="btn-group">
-                                    {metric.values.map((value) => {
-                                        return (<>
-                                            <input type="radio" value={value}
-                                                   onClick={() => handleResponseParameterChange(metric.name, value)}
-                                                   name={metric.name} data-title={value.name}
-                                                   className="btn"
-                                                   data-tooltip-id={value.name + '-' + value.value}
-                                                   data-tooltip-content={'Value: ' + value.value}/>
-                                            <Tooltip id={value.name + '-' + value.value}/>
-                                        </>)
-                                    })}
-                                </div>
-                            </div>)
-                        })}
-                    </div>
-                </div>
+                {/*    <div className="actvity-container">*/}
+                {/*        <label className="label">*/}
+                {/*            <h3>*/}
+                {/*                Resilience Design*/}
+                {/*                <span className="ml-1 font-normal text-sm" data-tooltip-id="response-measure-tooltip"*/}
+                {/*                      data-tooltip-place="right"*/}
+                {/*                      data-tooltip-content='The Load Design allows you to further design the simulated load depending on the selected stimulus. For instance, if you design a "Load Peak" stimulus, you will need to specify the final peak to be achieved and how long it takes to reach it.'>&#9432;</span>*/}
+                {/*            </h3>*/}
+                {/*            <Tooltip id="response-measure-tooltip" style={{maxWidth: '256px'}}/>*/}
+                {/*        </label>*/}
+                {/*        <select value={resilienceDesign.name} onChange={handleResilienceDesignChange} id=""*/}
+                {/*                className="select select-bordered w-full max-w-xs">*/}
+                {/*            {allRqs.resilienceDesign.map((resilienceVariant) => {*/}
+                {/*                return <option value={resilienceVariant.name}*/}
+                {/*                               key={resilienceVariant.name}>{resilienceVariant.name}</option>*/}
+                {/*            })}*/}
+                {/*        </select>*/}
+                {/*        /!*TODO: Add Tooltip for each element*!/*/}
+                {/*        <div className="actvity-container">*/}
+                {/*            {allRqs.resilienceDesign.map((resilienceVariant) => {*/}
+                {/*                return (*/}
+                {/*                    <>*/}
+                {/*                        {resilienceVariant.name === resilienceDesign.name ? resilienceVariant.designParameters != null && resilienceVariant.designParameters.map((parameter, index) => {*/}
+                {/*                            return (*/}
+                {/*                                <>*/}
+                {/*                                    <label className="label">*/}
+                {/*                                    <span className="label-text">*/}
+                {/*                                        {parameter.name}*/}
+                {/*                                    </span>*/}
+                {/*                                    </label>*/}
+                {/*                                    <div className="btn-group">*/}
+                {/*                                        {parameter.values != null && parameter.values.map((value) => {*/}
+                {/*                                            return (*/}
+                {/*                                                <>*/}
+                {/*                                                    <input type="radio" value={value}*/}
+                {/*                                                           onClick={() => handleResilienceDesignParameterChange(value, index)}*/}
+                {/*                                                           name={parameter.name}*/}
+                {/*                                                           data-title={value.name}*/}
+                {/*                                                           className="btn"*/}
+                {/*                                                           data-tooltip-id={value.name + '-' + value.value}*/}
+                {/*                                                           data-tooltip-content={'Value: ' + value.value}/>*/}
+                {/*                                                    <Tooltip*/}
+                {/*                                                        id={value.name + '-' + value.value}/>*/}
+                {/*                                                </>*/}
+                {/*                                            )*/}
+                {/*                                        })}*/}
+                {/*                                    </div>*/}
+                {/*                                </>*/}
+                {/*                            )*/}
+                {/*                        }) : null*/}
+                {/*                        }*/}
+                {/*                    </>)*/}
+                {/*            })}*/}
+                {/*        </div>*/}
+                {/*    </div>*/}
+                {/*</div>*/}
 
-                <div className="activity-container">
-                    <h3>Settings</h3>
-                    <p>
-                        The Settings to include into the Scenario Test
-                        <span className="ml-1 font-normal text-sm" data-tooltip-place="right"
-                              data-tooltip-id="metrics-tooltip"
-                              data-tooltip-content='You may check one or multiple of these fields to tell the system which metrics you would like to include in the final analysis results.'>&#9432;</span>
-                    </p>
+                {/*<div className="activity-container">*/}
+                {/*    <h3>Metrics</h3>*/}
+                {/*    <p>*/}
+                {/*        The Metrics to include into the Scenario Test*/}
+                {/*        <span className="ml-1 font-normal text-sm" data-tooltip-place="right"*/}
+                {/*              data-tooltip-id="metrics-tooltip"*/}
+                {/*              data-tooltip-content='You may check one or multiple of these fields to tell the system which metrics you would like to include in the final analysis results.'>&#9432;</span>*/}
+                {/*    </p>*/}
+                {/*    <Tooltip id="metrics-tooltip" style={{maxWidth: '256px'}}/>*/}
+                {/*    <div className="activity-container">*/}
+                {/*        {metrics.map((metric) => {*/}
+                {/*            return (<div>*/}
+                {/*                <label className="label">*/}
+                {/*                    <span className="label-text">{metric.name}</span>*/}
+                {/*                </label>*/}
+                {/*                <div className="btn-group">*/}
+                {/*                    {metric.values.map((value) => {*/}
+                {/*                        return (<>*/}
+                {/*                            <input type="radio" value={value}*/}
+                {/*                                   onClick={() => handleResponseParameterChange(metric.name, value)}*/}
+                {/*                                   name={metric.name} data-title={value.name}*/}
+                {/*                                   className="btn"*/}
+                {/*                                   data-tooltip-id={value.name + '-' + value.value}*/}
+                {/*                                   data-tooltip-content={'Value: ' + value.value}/>*/}
+                {/*                            <Tooltip id={value.name + '-' + value.value}/>*/}
+                {/*                        </>)*/}
+                {/*                    })}*/}
+                {/*                </div>*/}
+                {/*            </div>)*/}
+                {/*        })}*/}
+                {/*    </div>*/}
+                {/*</div>*/}
 
-                    <div className="actvity-container">
-                        <label className="label">
-                            <span className="label-text">
-                                Accuracy
-                                <span className="ml-1 font-normal text-sm" data-tooltip-id="accuracy-tooltip"
-                                      data-tooltip-place="right"
-                                      data-tooltip-content='The accuracy defines how long the test will be executed. The higher the accuracy is, the longer the test will be executed. By default, a 100% accuracy is set to a test duration of 1 week. An accuracy of 1% relates to approximately 1 hour. An accuracy value of 0% is not possible. We advise to use at least 60% accuracy to receive meaningful results. With a value of 60% the test will run approximately 60 hours, i.e., two and a half days.'>&#9432;</span>
-                            </span>
-                        </label>
-                        <Tooltip id="accuracy-tooltip" style={{maxWidth: '256px'}}/>
-                        <input type="range" value={accuracy} onChange={handleAccuracyChange} name="" id=""
-                               className="range range-primary"/>
-                    </div>
+                {/*<div className="activity-container">*/}
+                {/*    <h3>Settings</h3>*/}
+                {/*    <p>*/}
+                {/*        The Settings to include into the Scenario Test*/}
+                {/*        <span className="ml-1 font-normal text-sm" data-tooltip-place="right"*/}
+                {/*              data-tooltip-id="metrics-tooltip"*/}
+                {/*              data-tooltip-content='You may check one or multiple of these fields to tell the system which metrics you would like to include in the final analysis results.'>&#9432;</span>*/}
+                {/*    </p>*/}
 
-                    <div className="actvity-container">
-                        <label className="label">
-                            <span className="label-text">
-                                Enviroment
-                                <span className="ml-1 font-normal text-sm" data-tooltip-id="stimulus-tooltip"
-                                      data-tooltip-place="right"
-                                      data-tooltip-content='The environment is the system on which the scenario test is executed. Warning: If the test is executed on the production environment, system failures may occur.'>&#9432;</span>
-                            </span>
-                        </label>
-                        <Tooltip id="enviroment-tooltip" style={{maxWidth: '256px'}}/>
-                        <select value={enviroment} onChange={handleEnviromentChange} id=""
-                                className="select select-bordered w-full max-w-xs">
-                            {settings.enviroment.map((enviroment) => {
-                                return <option value={enviroment} key={enviroment}>{enviroment}</option>
-                            })}
-                        </select>
-                    </div>
+                {/*    <div className="actvity-container">*/}
+                {/*        <label className="label">*/}
+                {/*            <span className="label-text">*/}
+                {/*                Accuracy*/}
+                {/*                <span className="ml-1 font-normal text-sm" data-tooltip-id="accuracy-tooltip"*/}
+                {/*                      data-tooltip-place="right"*/}
+                {/*                      data-tooltip-content='The accuracy defines how long the test will be executed. The higher the accuracy is, the longer the test will be executed. By default, a 100% accuracy is set to a test duration of 1 week. An accuracy of 1% relates to approximately 1 hour. An accuracy value of 0% is not possible. We advise to use at least 60% accuracy to receive meaningful results. With a value of 60% the test will run approximately 60 hours, i.e., two and a half days.'>&#9432;</span>*/}
+                {/*            </span>*/}
+                {/*        </label>*/}
+                {/*        <Tooltip id="accuracy-tooltip" style={{maxWidth: '256px'}}/>*/}
+                {/*        <input type="range" value={accuracy} onChange={handleAccuracyChange} name="" id=""*/}
+                {/*               className="range range-primary"/>*/}
+                {/*    </div>*/}
 
-                    {enviroment === 'Test' ?
-                        <div className="actvity-container">
-                            <label className="label">
-                            <span className="label-text">
-                                Time Slot
-                                <span className="ml-1 font-normal text-sm" data-tooltip-id="stimulus-tooltip"
-                                      data-tooltip-place="right"
-                                      data-tooltip-content='The stimulus specifies how the load should look like. For instance, a "Load peak" will lead to a massive spike in simulated users accessing the application in a secure environment whereas a "Load Increase" may lead to a slow in crease in users accessing the application.'>&#9432;</span>
-                            </span>
-                            </label>
-                            <Tooltip id="timeslot-tooltip" style={{maxWidth: '256px'}}/>
-                            <select value={timeSlot.representation} onChange={handleTimeSlotChange} id=""
-                                    className="select select-bordered w-full max-w-xs">
-                                {settings.timeSlot.map((timeSlot) => {
-                                    return <option value={timeSlot.representation}
-                                                   key={timeSlot.representation}>{timeSlot.representation}</option>
-                                })}
-                            </select>
-                        </div>
-                        : null}
-                </div>
+                {/*    <div className="actvity-container">*/}
+                {/*        <label className="label">*/}
+                {/*            <span className="label-text">*/}
+                {/*                Enviroment*/}
+                {/*                <span className="ml-1 font-normal text-sm" data-tooltip-id="stimulus-tooltip"*/}
+                {/*                      data-tooltip-place="right"*/}
+                {/*                      data-tooltip-content='The environment is the system on which the scenario test is executed. Warning: If the test is executed on the production environment, system failures may occur.'>&#9432;</span>*/}
+                {/*            </span>*/}
+                {/*        </label>*/}
+                {/*        <Tooltip id="enviroment-tooltip" style={{maxWidth: '256px'}}/>*/}
+                {/*        <select value={enviroment} onChange={handleEnviromentChange} id=""*/}
+                {/*                className="select select-bordered w-full max-w-xs">*/}
+                {/*            {settings.enviroment.map((enviroment) => {*/}
+                {/*                return <option value={enviroment} key={enviroment}>{enviroment}</option>*/}
+                {/*            })}*/}
+                {/*        </select>*/}
+                {/*    </div>*/}
+
+                {/*    {enviroment === 'Test' ?*/}
+                {/*        <div className="actvity-container">*/}
+                {/*            <label className="label">*/}
+                {/*            <span className="label-text">*/}
+                {/*                Time Slot*/}
+                {/*                <span className="ml-1 font-normal text-sm" data-tooltip-id="stimulus-tooltip"*/}
+                {/*                      data-tooltip-place="right"*/}
+                {/*                      data-tooltip-content='The stimulus specifies how the load should look like. For instance, a "Load peak" will lead to a massive spike in simulated users accessing the application in a secure environment whereas a "Load Increase" may lead to a slow in crease in users accessing the application.'>&#9432;</span>*/}
+                {/*            </span>*/}
+                {/*            </label>*/}
+                {/*            <Tooltip id="timeslot-tooltip" style={{maxWidth: '256px'}}/>*/}
+                {/*            <select value={timeSlot.representation} onChange={handleTimeSlotChange} id=""*/}
+                {/*                    className="select select-bordered w-full max-w-xs">*/}
+                {/*                {settings.timeSlot.map((timeSlot) => {*/}
+                {/*                    return <option value={timeSlot.representation}*/}
+                {/*                                   key={timeSlot.representation}>{timeSlot.representation}</option>*/}
+                {/*                })}*/}
+                {/*            </select>*/}
+                {/*        </div>*/}
+                {/*        : null}*/}
+                {/*</div>*/}
 
                 <div className="actvity-container">
                     <label className="label">
@@ -869,7 +902,7 @@ export default function ScenarioTestMenu(props) {
                             </span>
                     </label>
                     <Tooltip id="enviroment-tooltip" style={{maxWidth: '256px'}}/>
-                    <select value={scenarios} onChange={handleScenarioChange} id=""
+                    <select value={scenarios} onChange={handleModeChange} id=""
                             className="select select-bordered w-full max-w-xs">
                         {scenarios.map((scenario) => {
                             return <option value={scenario} key={scenario}>{scenario}</option>
