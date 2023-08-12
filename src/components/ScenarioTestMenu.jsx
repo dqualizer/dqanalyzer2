@@ -104,6 +104,7 @@ export default function ScenarioTestMenu(props) {
             "designParameters": [
                 {
                     "name": "Highest Load",
+                    "placeholder": "[intensity]",
                     "values": [
                         {
                             "name": "High",
@@ -121,6 +122,7 @@ export default function ScenarioTestMenu(props) {
                 },
                 {
                     "name": "Time to Highest load",
+                    "placeholder": "[time]",
                     "values": [
                         {
                             "name": "Slow",
@@ -140,9 +142,11 @@ export default function ScenarioTestMenu(props) {
         },
         {
             "name": "Load Increase",
+            "description": "[velocity] load increase",
             "designParameters": [
                 {
                     "name": "Type of Increase",
+                    "placeholder": "[velocity]",
                     "values": [
                         {
                             "name": "Linear",
@@ -162,9 +166,11 @@ export default function ScenarioTestMenu(props) {
         },
         {
             "name": "Constant Load",
+            "description": "[base load] constant load",
             "designParameters": [
                 {
                     "name": "Base Load",
+                    "placeholder": "[base load]",
                     "values": [
                         {
                             "name": "Low",
@@ -185,14 +191,12 @@ export default function ScenarioTestMenu(props) {
     ];
     const resilience = [{
         "name": "Failed Request",
+        "description": "[error_rate] and [frequency] failed request",
         "designParameters": [
             {
                 "name": "Error Rate",
+                "placeholder": "[error_rate]",
                 "values": [
-                    {
-                        "name": "None",
-                        "value": 10
-                    },
                     {
                         "name": "Low",
                         "value": 20
@@ -209,6 +213,7 @@ export default function ScenarioTestMenu(props) {
             },
             {
                 "name": "How often does the stimulus occur?",
+                "placeholder": "[frequency]",
                 "values": [
                     {
                         "name": "Once",
@@ -228,9 +233,11 @@ export default function ScenarioTestMenu(props) {
     },
         {
             "name": "Late Response",
+            "description": "[frequency] late responses",
             "designParameters": [
                 {
                     "name": "How often does the stimulus occur?",
+                    "placeholder": "[frequency]",
                     "values": [
                         {
                             "name": "Once",
@@ -250,9 +257,11 @@ export default function ScenarioTestMenu(props) {
         },
         {
             "name": "Unavailable",
+            "description": "[recovery time] and [frequency] unavailable",
             "designParameters": [
                 {
                     "name": "Recovery Time",
+                    "placeholder": "[recovery time]",
                     "values": [
                         {
                             "name": "Satisfied",
@@ -270,6 +279,7 @@ export default function ScenarioTestMenu(props) {
                 },
                 {
                     "name": "How often does the stimulus occur?",
+                    "placeholder": "[frequency]",
                     "values": [
                         {
                             "name": "Once",
@@ -583,14 +593,35 @@ export default function ScenarioTestMenu(props) {
                     sentence += " " + wordArray[wordIndex].name;
                 }
             }
-            // TODO: Exchange implementation of randomDesign
-            let randomDesign = 0;
-            if (randomDesign === 0) {
-                let designDescription = load[0].description;
-                sentence = sentence.replace("[intensity]", "extremly high");
-                sentence = sentence.replace("[time]", "slow");
-                sentence += " under " + designDescription;
+            let randomDesign = Math.round(Math.random());
+            let designDescription = null
+            // 1 = Load
+            if (randomDesign === 1) {
+                let numberLoadCategories = load.length;
+                let randomLoadCategory = Math.floor(Math.random() * numberLoadCategories);
+                designDescription = load[randomLoadCategory].description;
+                for (let parameter in load[randomLoadCategory].designParameters) {
+                    let numberOfParamValues = load[randomLoadCategory].designParameters[parameter].values.length;
+                    let randomValue = Math.floor(Math.random() * numberOfParamValues);
+                    let valuePlaceHolder = load[randomLoadCategory].designParameters[parameter].placeholder;
+                    let valueDescription = load[randomLoadCategory].designParameters[parameter].values[randomValue].name.toLowerCase();
+                    designDescription = designDescription.replace(valuePlaceHolder, valueDescription);
+                }
             }
+            // 0 = Resilience
+            else {
+                let numberResilienceCategories = resilience.length;
+                let randomResilienceCategory = Math.floor(Math.random() * numberResilienceCategories);
+                designDescription = resilience[randomResilienceCategory].description;
+                for (let parameter in resilience[randomResilienceCategory].designParameters) {
+                    let numberOfParamValues = resilience[randomResilienceCategory].designParameters[parameter].values.length;
+                    let randomValue = Math.floor(Math.random() * numberOfParamValues);
+                    let valuePlaceHolder = resilience[randomResilienceCategory].designParameters[parameter].placeholder;
+                    let valueDescription = resilience[randomResilienceCategory].designParameters[parameter].values[randomValue].name.toLowerCase();
+                    designDescription = designDescription.replace(valuePlaceHolder, valueDescription);
+                }
+            }
+            sentence += " under " + designDescription;
 
             if (metric.description_end !== null) {
                 sentence += metric.description_end + "?";
