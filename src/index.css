@@ -141,3 +141,13 @@ body,
 	position: absolute;
 	top: 0px;
 }
+
+.button-group {
+	margin-top: 30px;
+	justify-content: normal;
+	display: flex;
+}
+
+.button-left {
+	margin-right: 15px;
+}
