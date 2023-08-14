@@ -1,7 +1,6 @@
 import dqLogo from "../assets/dqualizer_logo.png";
-
+import WerkstattScreenshot from "../assets/werkstatt.png";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
-
 import { Link, useLoaderData } from "react-router-dom";
 import { getAllDams } from "../queries/dam";
 
@@ -24,7 +23,7 @@ export default function Home() {
             <Link to={`/analyzer/${dam.id}`}>
               <div className="w-60 h-60 border-2 border-cyan-400 relative hover:scale-110">
                 <img
-                  src="http://localhost:5173/werkstatt.png"
+                  src={WerkstattScreenshot}
                   alt=""
                   className="w-full h-full object-cover"
                 />

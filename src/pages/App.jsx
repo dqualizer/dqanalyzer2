@@ -1,4 +1,4 @@
-import React, { useState, useRef, useMemo } from "react";
+import { useState, useRef, useMemo } from "react";
 import "reactflow/dist/style.css";
 import {
   Background,
@@ -14,12 +14,10 @@ import Sidebar from "../components/Sidebar";
 import IconNode from "../nodes/IconNode";
 import { createInitialElements } from "../utils/createInitialElements";
 import { getLayoutedElements } from "../utils/layoutElements";
-import { RouteObject, useLoaderData, useParams } from "react-router-dom";
+import { useLoaderData, useParams } from "react-router-dom";
 import { getAllRqas } from "../queries/rqa";
 import { getDamById } from "../queries/dam";
 
-import { AppLoaderProps } from "../interfaces/AppLoaderProps";
-import { ReactJSXIntrinsicAttributes } from "@emotion/react/types/jsx-namespace";
 import { string } from "prop-types";
 import loadtestSpecs from "../data/loadtest-specs.json";
 import { useQuery } from "@tanstack/react-query";
