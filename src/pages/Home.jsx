@@ -1,7 +1,5 @@
 import dqLogo from "../assets/dqualizer_logo.png";
-
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
-
 import { Link, useLoaderData } from "react-router-dom";
 import { getAllDams } from "../queries/dam";
 
