@@ -1,20 +1,14 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
-import ReactTooltip from "react-tooltip";
+
 import App, { damLoader } from "./pages/App";
 import "./index.css";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import Home from "./pages/Home";
-import {
-  QueryClient,
-  QueryClientProvider,
-  useQuery,
-} from "@tanstack/react-query";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import DqEdit from "./pages/DqEdit";
-import { getDomainById } from "./queries/dam.js";
 import Domains from "./pages/Domains";
-import Contexts from "./pages/Contexts";
 import { Link } from "react-router-dom";
 import NewDomain from "./pages/NewDomain";
 import CreateBlankDomain from "./pages/CreateBlankDomain";
@@ -122,7 +116,7 @@ const router = createBrowserRouter([
   },
 ]);
 
-ReactDOM.createRoot(document.getElementById("root")!).render(
+ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>
     <QueryClientProvider client={queryClient}>
       <RouterProvider router={router} />
