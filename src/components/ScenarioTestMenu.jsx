@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import {useEdges, useOnSelectionChange, useReactFlow} from 'reactflow';
+import {useReactFlow} from 'reactflow';
 import * as scenarioSpecs from '../data/scenariotest-specs.json';
 import ResizeBar from './ResizeBar';
 import * as mapping from '../data/werkstatt-en.json';
@@ -67,6 +67,7 @@ export default function ScenarioTestMenu(props) {
     const [loadDecision, setLoadDecision] = useState(null);
     const [resilienceDecision, setResilienceDecision] = useState(null);
     const [isActivityView, setIsActivityView] = useState(true);
+    const [filteredScenarios, setFilteredScenarios] = useState(null);
 
     // state-based RQA-definition
     const [rqa, setRqa] = useState(initRQADefiniton);
@@ -398,17 +399,24 @@ export default function ScenarioTestMenu(props) {
         setResponseMeasure(null);
     }
 
-    const handleScenarioChange = (e) => {
-        let chosenScenarioDescription = e.target.value;
-        let chosenScenario = scenarios.find((scenario) => scenario.description === chosenScenarioDescription);
-        console.log(chosenScenario);
-        setSelectedScenario(chosenScenario);
-        setLoadDesign(chosenScenario.load_design);
-        setResilienceDesign(chosenScenario.resilience_design);
+    const handleScenarioChange = (selectedScenario) => {
+        setSelectedScenario(selectedScenario);
+        setLoadDesign(selectedScenario?.load_design);
+        setResilienceDesign(selectedScenario?.resilience_design);
 
+        setFilteredScenarios(null);
         setLoadDecision(null);
         setResilienceDecision(null);
         setResponseMeasure(null);
+    }
+
+    const filterScenarios = (e) => {
+        const inputText = e.target.value;
+        let filteredScenarios = deepCopy(scenarios);
+        filteredScenarios = filteredScenarios.filter(scenario =>
+            scenario.description.toLowerCase().includes(inputText.toLowerCase())
+        );
+        setFilteredScenarios(filteredScenarios);
     }
 
     const handleLoadDecisionChange = (e) => {
@@ -480,9 +488,9 @@ export default function ScenarioTestMenu(props) {
             activity: allActivities[selectedActivity],
             mode: selectedMode,
             description: selectedScenario.description,
-            expected: responseMeasure,
-            loadDesign: loadDesign,
-            resilienceDesign: resilienceDesign
+            response_measure: responseMeasure,
+            load_design: loadDesign,
+            resilience_design: resilienceDesign
         };
 
         rqa.scenarios.push(scenario);
@@ -768,24 +776,34 @@ export default function ScenarioTestMenu(props) {
                         {selectedMode !== null ?
                             <div className="actvity-container">
                                 <label className="label">
-                                <span className="label-text">
-                                    Scenario
-                                    <span className="ml-1 font-normal text-sm" data-tooltip-id="stimulus-tooltip"
-                                          data-tooltip-place="right"
-                                          data-tooltip-content='The environment is the system on which the scenario test is executed. Warning: If the test is executed on the production environment, system failures may occur.'>&#9432;</span>
-                                </span>
+                                    <span className="label-text">
+                                        Scenario
+                                        <span className="ml-1 font-normal text-sm" data-tooltip-id="stimulus-tooltip"
+                                              data-tooltip-place="right"
+                                              data-tooltip-content='The environment is the system on which the scenario test is executed. Warning: If the test is executed on the production environment, system failures may occur.'>&#9432;</span>
+                                    </span>
                                 </label>
                                 <Tooltip id="enviroment-tooltip" style={{maxWidth: '256px'}}/>
-                                <select value={selectedScenario?.name} onChange={handleScenarioChange} id=""
-                                        className="select select-bordered w-full max-w-xs">
-                                    {scenarios.map((scenario) => {
-                                        return <option value={scenario.description}
-                                                       key={scenario.description}>{scenario.description}</option>
+                                <input type="text" id="search-input" placeholder="Search" autoComplete="off" value={selectedScenario?.name} onChange={filterScenarios} className="searchScenarioInputField"/>
+                                <div className="generated-scenarios">
+                                    {filteredScenarios?.map((scenario) => {
+                                        return (
+                                            <div className="suggestionItem" value={scenario.description}
+                                                key={scenario.description} onClick={() => handleScenarioChange(scenario)}>{scenario.description}
+                                            </div>
+                                        )
                                     })}
-                                </select>
+                                </div>
+                                <p className="selected-scenario-description">{selectedScenario?.description}</p>
+                                {/*<select value={selectedScenario?.name} onChange={handleScenarioChange} id=""*/}
+                                {/*        className="select select-bordered w-full max-w-xs">*/}
+                                {/*    {scenarios.map((scenario) => {*/}
+                                {/*        return <option value={scenario.description}*/}
+                                {/*                       key={scenario.description}>{scenario.description}</option>*/}
+                                {/*    })}*/}
+                                {/*</select>*/}
                             </div>
                         : null}
-
                         {selectedMode === "What if" && selectedScenario !== null ?
                             <div className="activity-container">
                                 <label className="label">

@@ -151,3 +151,36 @@ body,
 .button-left {
 	margin-right: 15px;
 }
+
+.searchScenarioInputField {
+	width: 400px;
+	padding: 10px;
+	font-size: 16px;
+}
+
+.generated-scenarios {
+	width: 400px;
+	max-height: 200px;
+	overflow-y: auto;
+	border: 1px solid #ccc;
+	background-color: #fff;
+	position: relative;
+}
+
+.suggestionItem {
+	padding: 5px 10px;
+	cursor: pointer;
+}
+.suggestionItem:hover {
+	background-color: #f0f0f0;
+}
+
+.selected-scenario-description {
+	margin-top: 10px;
+	padding: 10px;
+	background-color: #f0f0f0;
+	border: 1px solid #ccc;
+	border-radius: 5px;
+	width: 400px;
+	font-size: 16px;
+}
