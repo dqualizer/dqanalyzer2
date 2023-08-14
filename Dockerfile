@@ -19,7 +19,7 @@ COPY . .
 RUN npm run build
 
 FROM --platform=$BUILDPLATFORM nginx:1.22-alpine AS runtime 
-COPY --from=builder /app/dist /usr/share/nginx/html
+COPY --from=builder /app/dist/app /usr/share/nginx/html
 
 # Adding the env-File and the Shell-Script
 WORKDIR /usr/share/nginx/html
@@ -27,6 +27,10 @@ COPY ./env.sh .
 COPY .env .
 
 COPY entrypoint.sh /usr/bin/
+
+# Adding nginx-config
+COPY nginx.conf  /etc/nginx/conf.d/default.conf
+
 RUN chmod +x /usr/bin/entrypoint.sh
 
 # Add bash
