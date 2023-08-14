@@ -1,6 +1,9 @@
 import axios from "axios";
-const backend = import.meta.env.VITE_BACKEND_URL;
+export const getBackendUrl = () => {
+    return import.meta.env.DEV ? import.meta.env.VITE_BACKEND_URL : window._env_.VITE_BACKEND_URL
+}
 
+const backend = new URL('/api/v1', getBackendUrl());
 
 export const getAllDams = () => {
     return axios.get(`${backend}/dam/`)

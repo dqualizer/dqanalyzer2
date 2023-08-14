@@ -1,7 +1,8 @@
 import { AddCircleOutlineSharp } from "@mui/icons-material";
 import axios from "axios";
-const backend = import.meta.env.VITE_BACKEND_URL;
+import { getBackendUrl } from "./dam";
 
+const backend = new URL('/api/v1', getBackendUrl());
 
 export const getAllDomains = () => {
     return axios.get(`${backend}/`).then(res => res.data);

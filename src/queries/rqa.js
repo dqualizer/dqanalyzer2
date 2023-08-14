@@ -1,6 +1,7 @@
 import axios from "axios";
+import { getBackendUrl } from "./dam";
 
-const backend = import.meta.env.VITE_BACKEND_URL;
+const backend = new URL('/api/v1', getBackendUrl());
 
 export const getAllRqas = () => {
     return axios.get(`${backend}/rqa-definition`)
