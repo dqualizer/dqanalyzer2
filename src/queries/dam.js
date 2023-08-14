@@ -3,7 +3,6 @@ const backend = import.meta.env.VITE_BACKEND_URL;
 
 
 export const getAllDams = () => {
-    console.log(backend);
     return axios.get(`${backend}/dam/`)
         .then(res => res.data);
 }
