@@ -12,4 +12,4 @@ fi
 source /usr/share/nginx/html/env.sh
 
 # Start nginx
-nginx -g "daemon off;" -c "/data/conf/"
+nginx -g "daemon off;"

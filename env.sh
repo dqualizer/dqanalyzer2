@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 # Recreate config file
 rm -rf ./env-config.js
@@ -18,7 +18,8 @@ do
   fi
 
   # Read value of current variable if exists as Environment variable
-  value=$(printf '%s\n' "${!varname}")
+  value=$(eval echo \$$varname)
+
   # Otherwise use value from .env file
   [[ -z $value ]] && value=${varvalue}
 
