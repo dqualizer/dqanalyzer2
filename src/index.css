@@ -184,3 +184,19 @@ body,
 	width: 400px;
 	font-size: 16px;
 }
+
+.scenario-container {
+	display: flex;
+	flex-direction: column;
+	position: relative;
+	border: 1px solid #cccccc;
+	padding: 2px 2px 2px 2px;
+	margin-bottom: 10px;
+}
+
+.deleting-container-button {
+	position: absolute;
+	top: 5px;
+	right: 5px;
+	cursor: pointer;
+}
