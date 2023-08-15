@@ -2,20 +2,42 @@ import dqLogo from "../assets/dqualizer_logo.png";
 import WerkstattScreenshot from "../assets/werkstatt.png";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { Link, useLoaderData } from "react-router-dom";
-import { getAllDams } from "../queries/dam";
+import { getAllDams, createDam } from "../queries/dam";
+import * as werkstattdamDTO from "../data/werkstattdamDTO.json";
 
 export default function Home() {
+  const queryClient = useQueryClient();
+
   const damsQuery = useQuery({
     queryKey: ["dams"],
     queryFn: getAllDams,
   });
+
+  const createDamMutation = useMutation({
+    mutationKey: ["dams"],
+    mutationFn: createDam,
+    onSuccess: (data) => {
+      queryClient.invalidateQueries(["dams"]);
+    },
+  });
+
+  const createDomainWerkstatt = () => {
+    createDamMutation.mutate({ dam: werkstattdamDTO });
+  };
 
   return (
     <div className="flex items-center justify-center h-screen flex-col">
       <div className="text-center">
         <img src={dqLogo} alt="" srcset="" class="mx-auto mb-4 w-1/2" />
         <p className="font-bold text-2xl">Welcome to dqAnalyzer 1.0!</p>
-        <p className="text-xl">First of all: Choose your Demo-Domain.</p>
+        <p className="text-xl">
+          First of all: Choose your Demo-Domain or create it first by using
+          dqEdit.
+        </p>
+        <p>
+          Hint: You can also use the button as long there´s no dqEdit after some
+          fetching retries ;)
+        </p>
       </div>
       <div className="flex gap-4 mt-5">
         {damsQuery.data?.length ? (
@@ -33,8 +55,14 @@ export default function Home() {
               </div>
             </Link>
           ))
+        ) : damsQuery.isFetching ? (
+          <p>Trying to fetch...</p>
+        ) : damsQuery.isError ? (
+          <p>Seems like there is no connection to the backend...</p>
         ) : (
-          <h3>No Domains</h3>
+          <button className="btn btn-sm" onClick={createDomainWerkstatt}>
+            Create Domain
+          </button>
         )}
       </div>
     </div>
