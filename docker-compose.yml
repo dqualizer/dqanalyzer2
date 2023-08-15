@@ -1,0 +1,8 @@
+version: "3.9"
+services:
+  dqanalyzer-react:
+    build: .
+    ports:
+      - "9090:80"
+    environment:
+      - VITE_BACKEND_URL=http://localhost:8099
