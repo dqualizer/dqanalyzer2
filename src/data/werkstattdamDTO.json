@@ -1,0 +1,196 @@
+{
+    "version": 1,
+    "context": "werkstattauftrag",
+    "server_info": [
+     {
+      "host": "http://127.0.0.1:9000",
+      "environment": "TEST"
+     }
+    ],
+    "actors": [
+     {
+      "_id": "1",      
+      "actor_name": "Kunde"
+  
+     },
+     {
+      "_id": "2",   
+      "actor_name": "Händler"
+  
+     }
+    ],
+    "systems": [
+     {
+  
+      "name": "AuftragsPortal",
+      "operation_id": "ddd.autohaus.tacticald.design.app.werkstattauftrag.api.WerkstattauftragController",
+      "type": "service",
+      "implements": [],
+      "objects": [
+       "id2"
+      ],
+      "activities": [
+       {
+        "name": "Auftrag lesen",
+        "operation_id": "readAuftrag",
+        "initiator": "Kunde",
+        "workObject": "Auftrag",
+        "action": "ließt",
+        "type": "method",
+        "parameter": [],
+        "endpoint": {
+         "field": "/auftrag/{auftragsnummer}",
+         "operation": "GET",
+         "path_variables": [
+          {
+           "name": "auftragsnummer",
+           "szenarios": [
+            {
+             "path": "auftrag/auftragsnummern/nicht_angelegt.json"
+            }
+           ]
+          },
+          {
+           "name": "customer",
+           "szenarios": [
+            {
+             "name": "Valide Customer",
+             "path": "auftrag/auftragsnummern/angelegt.json"
+            }
+           ]
+          }
+         ],
+         "url_parameter": [],
+         "request_parameter": [],
+         "payload": [],
+         "responses": [
+          {
+           "expected_code": 200,
+           "type": "id8"
+          }
+         ]
+        }
+       },
+       {
+       
+        "name": "Auftrag erstellen",
+        "operation_id": "createAuftrag",
+        "action": "erstellt",
+        "workObject": "Auftrag",
+        "initiator": "Kunde",
+        "type": "method",
+        "parameter": [
+         "id6"
+        ],
+        "endpoint": {
+         "field": "/auftrag/new",
+         "operation": "POST",
+         "path_variables": [],
+         "url_parameter": [],
+         "request_parameter": [
+          {
+           "name": "headers",
+           "szenarios": [
+            {
+             "name": "valid headers",
+             "path": "auftrag/allgemein/headers.json"
+            }
+           ]
+          },
+          {
+           "name": "authorization",
+           "szenarios": [
+            {
+             "name": "valid authorization",
+             "path": "auftrag/allgemein/authorization.json"
+            }
+           ]
+          }
+         ],
+         "payload": [
+          {
+           "name": "auftraggeber",
+           "szenarios": [
+            {
+             "name": "auftraggeber_2022",
+             "path": "auftrag/auftraggeber/2022/auftraggeber.json"
+            }
+           ]
+          },
+          {
+           "name": "auftraggeber",
+           "szenarios": [
+            {
+             "name": "auftraggeber_2023",
+             "path": "auftrag/auftraggeber/2023/auftraggeber.json"
+            }
+           ]
+          }
+         ],
+         "responses": [
+          {
+           "expected_code": 201,
+           "type": "id8"
+          }
+         ]
+        }
+       },
+       {
+        "name": "Status verändern",
+        "operation_id": "updateStatus",
+        "workObject": "Auftragsstatus",
+        "type": "method",
+        "action": "verändert",
+        "initiator": "Händler",
+        "parameter": [
+         "id7"
+        ],
+        "endpoint": {
+         "field": "/auftrag/{auftragsnummer}",
+         "operation": "PUT",
+         "path_variables": [
+          {
+           "name": "auftragsnummer",
+           "szenarios": [
+            {
+             "name": "Valide Auftragsnummern",
+             "path": "auftrag/auftragsnummern/angelegt.json"
+            }
+           ]
+          }
+         ],
+         "url_parameter": [],
+         "request_parameter": [
+          {
+           "name": "headers",
+           "szenarios": [
+            {
+             "name": "valid headers",
+             "path": "auftrag/allgemein/headers.json"
+            }
+           ]
+          }
+         ],
+         "payload": [
+          {
+           "name": "auftragsstatus",
+           "szenarios": [
+            {
+             "name": "Mixed Status",
+             "path": "auftrag/auftragsstatus/auftragsstatus.json"
+            }
+           ]
+          }
+         ],
+         "responses": [
+          {
+           "expected_code": 200,
+           "type": "string"
+          }
+         ]
+        }
+       }
+      ]
+     }
+    ]
+   }
