@@ -10,7 +10,7 @@ export default function LoadtestSelect({
   optionValue,
 }) {
   return (
-    <div className="form-control w-full max-w-xs">
+    <div className="form-control w-full">
       <label className="label">
         <span className="label-text">{label}</span>
       </label>

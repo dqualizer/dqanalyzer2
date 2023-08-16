@@ -3,7 +3,7 @@ import { toSnakeCase } from "../../../utils/formatting";
 
 export default function LoadtestSlider({ label, value, onChange }) {
   return (
-    <div className="form-control w-full max-w-xs">
+    <div className="form-control w-full">
       <label className="label">
         <span className="label-text">{label}</span>
       </label>
