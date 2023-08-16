@@ -3,7 +3,12 @@ import LoadtestSelect from "./LoadtestSelect";
 import LoadtestSlider from "./LoadtestSlider";
 import LoadtestRadios from "./LoadtestRadios";
 import LoadtestCheck from "./LoadtestCheck";
-export default function LoadtestSpecifier({ rqas, domain, loadtestSpecs }) {
+export default function LoadtestSpecifier({
+  rqas,
+  domain,
+  loadtestSpecs,
+  selectedEdge,
+}) {
   const [inputs, setInputs] = useState({
     name: "",
     system: "",
@@ -97,6 +102,32 @@ export default function LoadtestSpecifier({ rqas, domain, loadtestSpecs }) {
       }));
     }
   }, [endpoint]);
+
+  // Change System and Actvitivity, when selecte Eddge changes
+  useEffect(() => {
+    if (domain) {
+      console.log("edge");
+      console.log(domain);
+      getSystemAndActivityBasedOnSelectedEdge();
+    }
+  }, [selectedEdge, domain]);
+
+  const getSystemAndActivityBasedOnSelectedEdge = async () => {
+    if (selectedEdge) {
+      console.log("selectedEdge");
+      let system = domain.systems.find(
+        (system) => system.system_id == selectedEdge.system
+      );
+      let activity = system.activities.find(
+        (activity) => activity.activity_id == selectedEdge.mappingId
+      );
+      setInputs((prevState) => ({
+        ...prevState,
+        System: system.system_id,
+        Activity: activity.activity_id,
+      }));
+    }
+  };
 
   return (
     <div className="p-4 prose h-full">
