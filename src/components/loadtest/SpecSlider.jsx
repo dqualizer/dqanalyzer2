@@ -3,35 +3,43 @@ import { Tooltip } from 'react-tooltip';
 import * as tooltips from '../../data/loadtest-tooltips.json';
 import { toSnakeCase } from '../../utils/formatting';
 
-export default function SpecSlider({ spec, setInputs, inputs, data, tooltip }) {
+export default function SpecSlider({ spec, context, setInputs, inputs, data, tooltip }) {
 
-    const [value, setValue] = useState();
-
-    console.log(tooltips[toSnakeCase(spec)]);
+    const [value, setValue] = useState(0);
 
     const arr = data ? data : [];
 
     arr.forEach(item => {
         const regex = /_id$/;
         const id_key = Object.keys(item).find(key => regex.test(key));
-        console.log(id_key);
         item.render_id = item[id_key]
 
     });
 
     useEffect(() => {
-        setValue(inputs[spec])
+        if (inputs["Load Design"] && Object.keys(inputs["Load Design"]).length === 0)
+            setValue(0)
     }, [inputs])
 
     const handleSliderChange = (e) => {
-        setValue(e.target.value);
-        setInputs((prevState) => ({
-            ...prevState,
-            [spec]: e.target.value
-        }));
+        if (!context) {
+            setValue(e.target.value)
+            setInputs((prevState) => ({
+                ...prevState,
+                [spec]: e.target.value
+            }));
+        }
+        else {
+            setValue(e.target.value)
+            setInputs((prevState) => ({
+                ...prevState,
+                [context]: ({ ...prevState[context], [spec]: e.target.value })
+
+            }));
+        }
+
     }
 
-    console.log(arr)
     return (
         <div className="actvity-container">
             <label className="label">
