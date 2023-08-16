@@ -40,8 +40,9 @@ export default function ScenarioTestMenu(props) {
 
 
     // Getting Scenario Test Definition Parameters from the Json
-    const allRqs = scenarioSpecs.rqs;
-    const metrics = scenarioSpecs.metrics;
+    const allLoadDesigns = scenarioSpecs.load_design;
+    const allResilienceDesigns = scenarioSpecs.resilience_design;
+    // const metrics = scenarioSpecs.metrics;
     const settings = scenarioSpecs.settings;
 
     let initRQADefiniton = {
@@ -73,17 +74,7 @@ export default function ScenarioTestMenu(props) {
     const [enviroment, setEnviroment] = useState(settings.enviroment[0]);
     const [timeSlot, setTimeSlot] = useState(null);
 
-    // const [selectedActivity, setSelectedActivity] = useState(0);
-    const [selectedMode, setSelectedMode] = useState(null);
-    const [loadDesign, setLoadDesign] = useState(allRqs.loadDesign[0]);
-    const [resilienceDesign, setResilienceDesign] = useState(allRqs.resilienceDesign[0]);
-    const [responseMeasure, setResponseMeasure] = useState([]);
-    // const [scenarios, setScenarios] = useState([]);
-    const [selectedScenario, setSelectedScenario] = useState(null);
-    const [loadDecision, setLoadDecision] = useState(null);
-    const [resilienceDecision, setResilienceDecision] = useState(null);
     const [isActivityView, setIsActivityView] = useState(true);
-    // const [filteredScenarios, setFilteredScenarios] = useState(null);
     const [isDeletingContainerDisabled, setIsDeletingContainerDisabled] = useState(true);
 
     // state-based RQA-definition
@@ -144,219 +135,6 @@ export default function ScenarioTestMenu(props) {
             ]
         }]);
 
-    const load = [
-        {
-            "name": "None",
-            "description": null,
-            "designParameters": null
-        },
-        {
-            "name": "Load Peak",
-            "description": "[intensity] and [time] load peak",
-            "designParameters": [
-                {
-                    "name": "Highest Load",
-                    "placeholder": "[intensity]",
-                    "values": [
-                        {
-                            "name": "High",
-                            "value": 10
-                        },
-                        {
-                            "name": "Very High",
-                            "value": 15
-                        },
-                        {
-                            "name": "Extremly High",
-                            "value": 30
-                        }
-                    ]
-                },
-                {
-                    "name": "Time to Highest load",
-                    "placeholder": "[time]",
-                    "values": [
-                        {
-                            "name": "Slow",
-                            "value": "20s"
-                        },
-                        {
-                            "name": "Fast",
-                            "value": "15s"
-                        },
-                        {
-                            "name": "Very Fast",
-                            "value": "10s"
-                        }
-                    ]
-                }
-            ]
-        },
-        {
-            "name": "Load Increase",
-            "description": "[velocity] load increase",
-            "designParameters": [
-                {
-                    "name": "Type of Increase",
-                    "placeholder": "[velocity]",
-                    "values": [
-                        {
-                            "name": "Linear",
-                            "value": 1
-                        },
-                        {
-                            "name": "Quadratic",
-                            "value": 2
-                        },
-                        {
-                            "name": "Cubic",
-                            "value": 3
-                        }
-                    ]
-                }
-            ]
-        },
-        {
-            "name": "Constant Load",
-            "description": "[base load] constant load",
-            "designParameters": [
-                {
-                    "name": "Base Load",
-                    "placeholder": "[base load]",
-                    "values": [
-                        {
-                            "name": "Low",
-                            "value": 10
-                        },
-                        {
-                            "name": "Medium",
-                            "value": 20
-                        },
-                        {
-                            "name": "High",
-                            "value": 30
-                        }
-                    ]
-                }
-            ]
-        }
-    ];
-    const resilience = [
-        {
-            "name": "None",
-            "description": null,
-            "designParameters": null
-        },
-        {
-            "name": "Failed Request",
-            "description": "[error_rate] and [frequency] failed request",
-            "designParameters": [
-                {
-                    "name": "Error Rate",
-                    "placeholder": "[error_rate]",
-                    "values": [
-                        {
-                            "name": "Low",
-                            "value": 20
-                        },
-                        {
-                            "name": "Medium",
-                            "value": 30
-                        },
-                        {
-                            "name": "High",
-                            "value": 30
-                        }
-                    ]
-                },
-                {
-                    "name": "How often does the stimulus occur?",
-                    "placeholder": "[frequency]",
-                    "values": [
-                        {
-                            "name": "Once",
-                            "value": 10
-                        },
-                        {
-                            "name": "More than once",
-                            "value": 20
-                        },
-                        {
-                            "name": "Frustrated",
-                            "value": 30
-                        }
-                    ]
-                }
-            ]
-        },
-        {
-            "name": "Late Response",
-            "description": "[frequency] late responses",
-            "designParameters": [
-                {
-                    "name": "How often does the stimulus occur?",
-                    "placeholder": "[frequency]",
-                    "values": [
-                        {
-                            "name": "Once",
-                            "value": 10
-                        },
-                        {
-                            "name": "More than once",
-                            "value": 20
-                        },
-                        {
-                            "name": "Frustrated",
-                            "value": 30
-                        }
-                    ]
-                }
-            ]
-        },
-        {
-            "name": "Unavailable",
-            "description": "[recovery time] and [frequency] unavailable",
-            "designParameters": [
-                {
-                    "name": "Recovery Time",
-                    "placeholder": "[recovery time]",
-                    "values": [
-                        {
-                            "name": "Satisfied",
-                            "value": 10
-                        },
-                        {
-                            "name": "Tolerated",
-                            "value": 20
-                        },
-                        {
-                            "name": "Frustrated",
-                            "value": 30
-                        }
-                    ]
-                },
-                {
-                    "name": "How often does the stimulus occur?",
-                    "placeholder": "[frequency]",
-                    "values": [
-                        {
-                            "name": "Once",
-                            "value": 10
-                        },
-                        {
-                            "name": "More than once",
-                            "value": 20
-                        },
-                        {
-                            "name": "Frustrated",
-                            "value": 30
-                        }
-                    ]
-                }
-            ]
-        }
-    ];
-
     const reactFlowInstance = useReactFlow();
 
     const uniqueActivitys = props.edges.filter((obj, index, self) => {
@@ -408,7 +186,7 @@ export default function ScenarioTestMenu(props) {
     }
 
     const handleLoadDesignChange = (event, index) => {
-        let loadVariant = allRqs.loadDesign.find((variant) => variant.name === event.target.value);
+        let loadVariant = allLoadDesigns.find((variant) => variant.name === event.target.value);
         let copyLoadVariant = deepCopy(loadVariant);
 
         copyLoadVariant.designParameters?.forEach((parameter) => {
@@ -477,7 +255,7 @@ export default function ScenarioTestMenu(props) {
     }
 
     const handleResilienceDesignChange = (event, index) => {
-        let resilienceVariant = allRqs.resilienceDesign.find((variant) => variant.name === event.target.value);
+        let resilienceVariant = allResilienceDesigns.find((variant) => variant.name === event.target.value);
         let copyResilienceVariant = deepCopy(resilienceVariant);
 
         copyResilienceVariant.designParameters?.forEach((parameter) => {
@@ -545,10 +323,14 @@ export default function ScenarioTestMenu(props) {
         let newScenario = {
             "activity": null,
             "selected_mode": null,
-            "generatedScenariosList": [],
+            "generatedScenariosList": null,
+            "filteredScenariosList": null,
             "description": null,
+            "load_decision": null,
             "load_design": null,
+            "resilience_decision": null,
             "resilience_design": null,
+            "metric": null,
             "expected": null
         };
         let newScenarioList = deepCopy(allDefinedScenarios);
@@ -732,8 +514,8 @@ export default function ScenarioTestMenu(props) {
                 description: "",
                 metric: metric.metric,
                 expected: null,
-                load_design: load[0],
-                resilience_design: resilience[0]
+                load_design: allLoadDesigns[0],
+                resilience_design: allResilienceDesigns[0]
             };
             if (metric.description_begin !== null) {
                 sentence.description += metric.description_begin;
@@ -761,40 +543,40 @@ export default function ScenarioTestMenu(props) {
                 let designDescription = null
                 // 1 = Load
                 if (randomDesign === 1) {
-                    let numberLoadCategories = load.length - 1; //Without "None"
+                    let numberLoadCategories = allLoadDesigns.length - 1; //Without "None"
                     let randomLoadCategory = Math.floor(Math.random() * numberLoadCategories) + 1;  // + 1 to avoid getting the "None" category
-                    designDescription = load[randomLoadCategory].description;
-                    sentence.load_design = deepCopy(load[randomLoadCategory]);
+                    designDescription = allLoadDesigns[randomLoadCategory].description;
+                    sentence.load_design = deepCopy(allLoadDesigns[randomLoadCategory]);
                     sentence.load_design.designParameters.forEach((parameter) => {
                         delete parameter.values;
                         parameter.value = null;
                     });
-                    for (let parameter in load[randomLoadCategory].designParameters) {
-                        let numberOfParamValues = load[randomLoadCategory].designParameters[parameter].values.length;
+                    for (let parameter in allLoadDesigns[randomLoadCategory].designParameters) {
+                        let numberOfParamValues = allLoadDesigns[randomLoadCategory].designParameters[parameter].values.length;
                         let randomValue = Math.floor(Math.random() * numberOfParamValues);
-                        let valuePlaceHolder = load[randomLoadCategory].designParameters[parameter].placeholder;
-                        let valueDescription = load[randomLoadCategory].designParameters[parameter].values[randomValue].name.toLowerCase();
+                        let valuePlaceHolder = allLoadDesigns[randomLoadCategory].designParameters[parameter].placeholder;
+                        let valueDescription = allLoadDesigns[randomLoadCategory].designParameters[parameter].values[randomValue].name.toLowerCase();
                         designDescription = designDescription.replace(valuePlaceHolder, valueDescription);
-                        sentence.load_design.designParameters[parameter].value = load[randomLoadCategory].designParameters[parameter].values[randomValue];
+                        sentence.load_design.designParameters[parameter].value = allLoadDesigns[randomLoadCategory].designParameters[parameter].values[randomValue];
                     }
                 }
                 // 0 = Resilience
                 else {
-                    let numberResilienceCategories = resilience.length - 1; //Without "None"
+                    let numberResilienceCategories = allResilienceDesigns.length - 1; //Without "None"
                     let randomResilienceCategory = Math.floor(Math.random() * numberResilienceCategories) + 1;  // + 1 to avoid getting the "None" category
-                    designDescription = resilience[randomResilienceCategory].description;
-                    sentence.resilience_design = deepCopy(resilience[randomResilienceCategory]);
+                    designDescription = allResilienceDesigns[randomResilienceCategory].description;
+                    sentence.resilience_design = deepCopy(allResilienceDesigns[randomResilienceCategory]);
                     sentence.resilience_design.designParameters.forEach((parameter) => {
                         delete parameter.values;
                         parameter.value = null;
                     });
-                    for (let parameter in resilience[randomResilienceCategory].designParameters) {
-                        let numberOfParamValues = resilience[randomResilienceCategory].designParameters[parameter].values.length;
+                    for (let parameter in allResilienceDesigns[randomResilienceCategory].designParameters) {
+                        let numberOfParamValues = allResilienceDesigns[randomResilienceCategory].designParameters[parameter].values.length;
                         let randomValue = Math.floor(Math.random() * numberOfParamValues);
-                        let valuePlaceHolder = resilience[randomResilienceCategory].designParameters[parameter].placeholder;
-                        let valueDescription = resilience[randomResilienceCategory].designParameters[parameter].values[randomValue].name.toLowerCase();
+                        let valuePlaceHolder = allResilienceDesigns[randomResilienceCategory].designParameters[parameter].placeholder;
+                        let valueDescription = allResilienceDesigns[randomResilienceCategory].designParameters[parameter].values[randomValue].name.toLowerCase();
                         designDescription = designDescription.replace(valuePlaceHolder, valueDescription);
-                        sentence.resilience_design.designParameters[parameter].value = resilience[randomResilienceCategory].designParameters[parameter].values[randomValue];
+                        sentence.resilience_design.designParameters[parameter].value = allResilienceDesigns[randomResilienceCategory].designParameters[parameter].values[randomValue];
                     }
                 }
                 sentence.description += " under " + designDescription;
@@ -847,10 +629,9 @@ export default function ScenarioTestMenu(props) {
                                                                onClick={(event) => handleModeChange(event, scenario, index)}
                                                                name="Mode"
                                                                data-title={mode.name}
-                                                               className="btn"
+                                                               className={scenario.selected_mode === mode.name? "btn btn-primary" : "btn"}
                                                                id={mode.name + '-' + mode.description}
-                                                               data-tooltip-content={mode.description}
-                                                               checked={scenario.selected_mode === mode.name}/>
+                                                               data-tooltip-content={mode.description}/>
                                                         <Tooltip
                                                             id={mode.name + '-' + mode.description}/>
                                                     </>
@@ -928,14 +709,14 @@ export default function ScenarioTestMenu(props) {
                                             <div className="actvity-container">
                                                 <select value={scenario.load_design.name} onChange={(event) => handleLoadDesignChange(event, index)} id=""
                                                         className="select select-bordered w-full max-w-xs">
-                                                    {load.map((loadVariant) => {
+                                                    {allLoadDesigns.map((loadVariant) => {
                                                         return <option value={loadVariant.name}
                                                                        key={loadVariant.name}>{loadVariant.name}</option>
                                                     })}
                                                 </select>
                                             </div>
                                             <div className="actvity-container">
-                                                {load.map((loadVariant) => {
+                                                {allLoadDesigns.map((loadVariant) => {
                                                     return (
                                                         <>
                                                             {loadVariant.name === scenario.load_design.name ? loadVariant.designParameters != null && loadVariant.designParameters.map((parameter, paramIndex) => {
@@ -1020,7 +801,7 @@ export default function ScenarioTestMenu(props) {
                                         <div className="actvity-container">
                                             <select value={scenario.resilience_design.name} onChange={(event) => handleResilienceDesignChange(event, index)} id=""
                                                     className="select select-bordered w-full max-w-xs">
-                                                {resilience.map((resilienceVariant) => {
+                                                {allResilienceDesigns.map((resilienceVariant) => {
                                                     return <option value={resilienceVariant.name}
                                                                    key={resilienceVariant.name}>{resilienceVariant.name}</option>
                                                 })}
@@ -1028,7 +809,7 @@ export default function ScenarioTestMenu(props) {
 
                                             {/*TODO: Add Tooltip for each element*/}
                                             <div className="actvity-container">
-                                                {resilience.map((resilienceVariant) => {
+                                                {allResilienceDesigns.map((resilienceVariant) => {
                                                     return (
                                                         <>
                                                             {resilienceVariant.name === scenario.resilience_design.name ? resilienceVariant.designParameters != null && resilienceVariant.designParameters.map((parameter, paramIndex) => {
@@ -1088,12 +869,11 @@ export default function ScenarioTestMenu(props) {
                                                 <>
                                                     <input type="radio" value={responseParameter.value}
                                                            onClick={() => handleResponseParameterChange(responseParameter, index)}
-                                                           name={scenario.metric}
+                                                           name={"Response Measure" + index}
                                                            data-title={responseParameter.value}
-                                                           className="btn"
+                                                           className={scenario.expected === responseParameter? "btn btn-primary" : "btn"}
                                                            data-tooltip-id={responseParameter.value}
-                                                           data-tooltip-content={"Value: " + responseParameter.value + " " + responseParameter.unit}
-                                                           checked={scenario.expected === responseParameter}/>
+                                                           data-tooltip-content={"Value: " + responseParameter.value + " " + responseParameter.unit}/>
                                                     <Tooltip
                                                         id={responseParameter.value}/>
                                                 </>
