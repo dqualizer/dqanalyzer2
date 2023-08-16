@@ -1,7 +1,8 @@
 {
 	"stimuluses": [
 		{
-			"name": "LOAD PEAK",
+			"name": "Load Peak",
+			"id": "1",
 			"designParameters": [
 				{
 					"name": "Highest Load",
@@ -41,6 +42,7 @@
 		},
 		{
 			"name": "Load Increase",
+			"id": 2,
 			"designParameters": [
 				{
 					"name": "Type of Increase",
@@ -63,6 +65,7 @@
 		},
 		{
 			"name": "Constant Load",
+			"id": 3,
 			"designParameters": [
 				{
 					"name": "Base Load",
@@ -104,8 +107,17 @@
 		}
 	],
 	"metrics": [
-		"Response Time",
-		"90th Percentile",
-		"95th Percentile"
+		{
+			"id": 1,
+			"label":"Response Time" 
+		},
+		{
+			"id": 2,
+			"label":"90th Percentile" 
+		},
+		{
+			"id": 3,
+			"label":"95th Percentile" 
+		}
 	]
 }
