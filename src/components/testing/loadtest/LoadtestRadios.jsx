@@ -10,7 +10,7 @@ export default function LoadtestRadios({
   optionValue,
 }) {
   return (
-    <div className="form-control w-full max-w-xs">
+    <div className="form-control w-full">
       <label className="label">
         <span className="label-text">{label}</span>
       </label>
@@ -23,7 +23,7 @@ export default function LoadtestRadios({
               type="radio"
               name={toSnakeCase(optionName)}
               aria-label={option.name}
-              value={option.name}
+              value={option.id}
               onChange={onChange}
             />
           );

@@ -3,24 +3,31 @@ import LoadtestSelect from "./LoadtestSelect";
 import LoadtestSlider from "./LoadtestSlider";
 import LoadtestRadios from "./LoadtestRadios";
 import LoadtestCheck from "./LoadtestCheck";
+import DropdownLeft from "../../DropdownLeft";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { addLoadtestToRqa } from "../../../queries/rqa";
 export default function LoadtestSpecifier({
   rqas,
   domain,
   loadtestSpecs,
   selectedEdge,
 }) {
+  const queryClient = useQueryClient();
+
   const [inputs, setInputs] = useState({
-    name: "",
+    name: "Test",
     system: "",
     activity: "",
     load_profile: "",
     accuracy: 0,
     highest_load: "",
     time_to_highest_load: "",
-    path_variables: {},
+    path_variables: [],
     response_time: "",
     result_metrics: [],
   });
+
+  const [showAdd, setShowAdd] = useState();
 
   // We need to extract the Endpoint from the DAM to get the Parametrization
   const [endpoint, setEndpoint] = useState();
@@ -50,10 +57,12 @@ export default function LoadtestSpecifier({
   const handlePathVariableChange = (event) => {
     const name = event.target.name;
     const value = event.target.value;
-    console.log(event.target);
+    let path_variables_copy = inputs.path_variables;
+    path_variables_copy.find((variable) => variable.key == name).value = value;
+
     setInputs((values) => ({
       ...values,
-      path_variables: { ...values.path_variables, [name]: value },
+      path_variables: path_variables_copy,
     }));
   };
 
@@ -69,9 +78,12 @@ export default function LoadtestSpecifier({
 
   const getDesignParameters = () => {
     if (inputs.load_profile) {
-      return loadtestSpecs.stimuluses.find(
+      const stimulus = loadtestSpecs.stimuluses.find(
         (stimulus) => stimulus.id == inputs.load_profile
-      ).designParameters;
+      );
+      if (!stimulus.supported) return false;
+
+      return stimulus.designParameters;
     }
     return [];
   };
@@ -92,13 +104,14 @@ export default function LoadtestSpecifier({
   // Without it we don´t know the keys
   const setParametrization = useEffect(() => {
     if (endpoint) {
-      let path_variables_copy = inputs.path_variables;
+      let path_variables = [];
       endpoint.path_variables.forEach((path_variable) => {
-        path_variables_copy[path_variable.name] = "";
+        path_variables.push({ key: path_variable.name, value: "" });
       });
+      console.log(path_variables);
       setInputs((values) => ({
         ...values,
-        path_variables: path_variables_copy,
+        path_variables: path_variables,
       }));
     }
   }, [endpoint]);
@@ -129,8 +142,49 @@ export default function LoadtestSpecifier({
     }
   };
 
+  useEffect(() => {
+    function checkProperties(obj) {
+      for (let key in obj) {
+        if (obj.hasOwnProperty(key)) {
+          const value = obj[key];
+
+          if (
+            value === null ||
+            value === undefined ||
+            value === "" ||
+            (typeof value === "object" && Object.keys(value).length === 0) ||
+            (Array.isArray(value) && value.length === 0)
+          ) {
+            console.log(key);
+            return false;
+          }
+        }
+      }
+      return true;
+    }
+
+    if (checkProperties(inputs)) {
+      setShowAdd(true);
+    } else {
+      setShowAdd(false);
+    }
+  }, [inputs]);
+
+  const addToRqa = (rqaId) => {
+    console.log(rqaId);
+    rqaMutation.mutate({ rqaId, inputs: inputs });
+  };
+
+  const rqaMutation = useMutation({
+    mutationFn: addLoadtestToRqa,
+    onSuccess: (data) => {
+      //queryClient.setQueryData(["rqas", data.id], data);
+      queryClient.invalidateQueries(["rqas"]);
+    },
+  });
+
   return (
-    <div className="p-4 prose h-full">
+    <div className="p-4 prose h-full overflow-auto bg-slate-200 ">
       <h3>Loadtest Specification</h3>
       <h4>Domain Story Item</h4>
       <LoadtestSelect
@@ -159,19 +213,22 @@ export default function LoadtestSpecifier({
         optionName={"name"}
         optionValue={"id"}
       />
-      {getDesignParameters().map((designParameter) => {
-        console.log(designParameter.name);
-        return (
-          <LoadtestRadios
-            label={designParameter.name}
-            onChange={handleChange}
-            value={inputs.load_profile}
-            options={designParameter.values}
-            optionName={designParameter.name}
-            optionValue={"value"}
-          />
-        );
-      })}
+      {getDesignParameters() ? (
+        getDesignParameters().map((designParameter) => {
+          return (
+            <LoadtestRadios
+              label={designParameter.name}
+              onChange={handleChange}
+              value={inputs.load_profile}
+              options={designParameter.values}
+              optionName={designParameter.id}
+              optionValue={"id"}
+            />
+          );
+        })
+      ) : (
+        <h4 className="text-error">This Load Profile is not supported yet!</h4>
+      )}
       <LoadtestSlider
         label={"Accuracy"}
         onChange={handleChange}
@@ -214,12 +271,16 @@ export default function LoadtestSpecifier({
               <h4>Path Variables</h4>
               {endpoint.path_variables.map((path_variable) => {
                 let variableName = path_variable.name;
-                console.log(variableName);
+                console.log();
                 return (
                   <LoadtestSelect
                     label={path_variable.name}
                     onChange={handlePathVariableChange}
-                    value={inputs.path_variables[variableName]}
+                    value={
+                      inputs.path_variables.find(
+                        (variable) => variable.key == variableName
+                      )?.value
+                    }
                     options={path_variable.szenarios}
                     optionName={"name"}
                     optionValue={"path"}
@@ -230,6 +291,7 @@ export default function LoadtestSpecifier({
           )}
         </div>
       )}
+      {showAdd && <DropdownLeft rqas={rqas} action={addToRqa} />}
     </div>
   );
 }
