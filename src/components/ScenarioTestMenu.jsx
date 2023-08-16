@@ -42,6 +42,8 @@ export default function ScenarioTestMenu(props) {
     // Getting Scenario Test Definition Parameters from the Json
     const allLoadDesigns = scenarioSpecs.load_design;
     const allResilienceDesigns = scenarioSpecs.resilience_design;
+    const allModes = scenarioSpecs.mode;
+    const allMetrics = scenarioSpecs.metrics;
     // const metrics = scenarioSpecs.metrics;
     const settings = scenarioSpecs.settings;
 
@@ -91,49 +93,6 @@ export default function ScenarioTestMenu(props) {
             });
         }
     });
-
-    const allModes = [{name: "What if", description: "Check your activity under specific conditions"}, {name: "Monitoring", description: "Monitor your activity in the context of expected behavior"}];
-
-    const [allMetrics, setAllMetrics] = useState([{
-        metric: "maximum_response_time",
-        description_begin: "What is the maximum time it may take for ",
-        description_end: null,
-        insert_to: true,
-        expected: [
-            {
-                value: 2,
-                unit: "Seconds"
-            },
-            {
-                value: 5,
-                unit: "Seconds"
-            },
-            {
-                value: 7,
-                unit: "Seconds"
-            }
-        ]
-    },
-        {
-            metric: "minimum_throughput",
-            description_begin: "How often do at least ",
-            description_end: null,
-            insert_to: false,
-            expected: [
-                {
-                    value: 1000,
-                    unit: "Requests/Day"
-                },
-                {
-                    value: 3000,
-                    unit: "Requests/Day"
-                },
-                {
-                    value: 7000,
-                    unit: "Requests/Day"
-                }
-            ]
-        }]);
 
     const reactFlowInstance = useReactFlow();
 
