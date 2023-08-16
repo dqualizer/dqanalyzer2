@@ -1,205 +1,208 @@
 {
-  "rqs": {
-    "loadDesign": [
-      {
-        "name": "None",
-        "designParameters": null
-      },
-      {
-        "name": "Load Peak",
-        "designParameters": [
-          {
-            "name": "Highest Load",
-            "values": [
-              {
-                "name": "High",
-                "value": 10
-              },
-              {
-                "name": "Very High",
-                "value": 15
-              },
-              {
-                "name": "Extremly High",
-                "value": 30
-              }
-            ]
-          },
-          {
-            "name": "Time to Highest load",
-            "values": [
-              {
-                "name": "Slow",
-                "value": "20s"
-              },
-              {
-                "name": "Fast",
-                "value": "15s"
-              },
-              {
-                "name": "Very Fast",
-                "value": "10s"
-              }
-            ]
-          }
-        ]
-      },
-      {
-        "name": "Load Increase",
-        "designParameters": [
-          {
-            "name": "Type of Increase",
-            "values": [
-              {
-                "name": "Linear",
-                "value": 1
-              },
-              {
-                "name": "Quadratic",
-                "value": 2
-              },
-              {
-                "name": "Cubic",
-                "value": 3
-              }
-            ]
-          }
-        ]
-      },
-      {
-        "name": "Constant Load",
-        "designParameters": [
-          {
-            "name": "Base Load",
-            "values": [
-              {
-                "name": "Low",
-                "value": 10
-              },
-              {
-                "name": "Medium",
-                "value": 20
-              },
-              {
-                "name": "High",
-                "value": 30
-              }
-            ]
-          }
-        ]
-      }
-    ],
-    "resilienceDesign": [
-      {
-        "name": "None",
-        "designParameters": null
-      },
-      {
-        "name": "Failed Request",
-        "designParameters": [
-          {
-            "name": "Error Rate",
-            "values": [
-              {
-                "name": "None",
-                "value": 10
-              },
-              {
-                "name": "Low",
-                "value": 20
-              },
-              {
-                "name": "Medium",
-                "value": 30
-              },
-              {
-                "name": "High",
-                "value": 30
-              }
-            ]
-          },
-          {
-            "name": "How often does the stimulus occur?",
-            "values": [
-              {
-                "name": "Once",
-                "value": 10
-              },
-              {
-                "name": "More than once",
-                "value": 20
-              },
-              {
-                "name": "Frustrated",
-                "value": 30
-              }
-            ]
-          }
-        ]
-      },
-      {
-        "name": "Late Response",
-        "designParameters": [
-          {
-            "name": "How often does the stimulus occur?",
-            "values": [
-              {
-                "name": "Once",
-                "value": 10
-              },
-              {
-                "name": "More than once",
-                "value": 20
-              },
-              {
-                "name": "Frustrated",
-                "value": 30
-              }
-            ]
-          }
-        ]
-      },
-      {
-        "name": "Unavailable",
-        "designParameters": [
-          {
-            "name": "Recovery Time",
-            "values": [
-              {
-                "name": "Satisfied",
-                "value": 10
-              },
-              {
-                "name": "Tolerated",
-                "value": 20
-              },
-              {
-                "name": "Frustrated",
-                "value": 30
-              }
-            ]
-          },
-          {
-            "name": "How often does the stimulus occur?",
-            "values": [
-              {
-                "name": "Once",
-                "value": 10
-              },
-              {
-                "name": "More than once",
-                "value": 20
-              },
-              {
-                "name": "Frustrated",
-                "value": 30
-              }
-            ]
-          }
-        ]
-      }
-    ]
-  },
+  "load_design": [
+    {
+      "name": "None",
+      "designParameters": null
+    },
+    {
+      "name": "Load Peak",
+      "designParameters": [
+        {
+          "name": "Highest Load",
+          "values": [
+            {
+              "name": "High",
+              "value": 10
+            },
+            {
+              "name": "Very High",
+              "value": 15
+            },
+            {
+              "name": "Extremly High",
+              "value": 30
+            }
+          ]
+        },
+        {
+          "name": "Time to Highest load",
+          "values": [
+            {
+              "name": "Slow",
+              "value": "20s"
+            },
+            {
+              "name": "Fast",
+              "value": "15s"
+            },
+            {
+              "name": "Very Fast",
+              "value": "10s"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Load Increase",
+      "designParameters": [
+        {
+          "name": "Type of Increase",
+          "values": [
+            {
+              "name": "Linear",
+              "value": 1
+            },
+            {
+              "name": "Quadratic",
+              "value": 2
+            },
+            {
+              "name": "Cubic",
+              "value": 3
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Constant Load",
+      "designParameters": [
+        {
+          "name": "Base Load",
+          "values": [
+            {
+              "name": "Low",
+              "value": 10
+            },
+            {
+              "name": "Medium",
+              "value": 20
+            },
+            {
+              "name": "High",
+              "value": 30
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "resilience_design": [
+    {
+      "name": "None",
+      "description": null,
+      "designParameters": null
+    },
+    {
+      "name": "Failed Request",
+      "description": "[error_rate] and [frequency] failed request",
+      "designParameters": [
+        {
+          "name": "Error Rate",
+          "placeholder": "[error_rate]",
+          "values": [
+            {
+              "name": "Low",
+              "value": 20
+            },
+            {
+              "name": "Medium",
+              "value": 30
+            },
+            {
+              "name": "High",
+              "value": 30
+            }
+          ]
+        },
+        {
+          "name": "How often does the stimulus occur?",
+          "placeholder": "[frequency]",
+          "values": [
+            {
+              "name": "Once",
+              "value": 10
+            },
+            {
+              "name": "More than once",
+              "value": 20
+            },
+            {
+              "name": "Frustrated",
+              "value": 30
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Late Response",
+      "description": "[frequency] late responses",
+      "designParameters": [
+        {
+          "name": "How often does the stimulus occur?",
+          "placeholder": "[frequency]",
+          "values": [
+            {
+              "name": "Once",
+              "value": 10
+            },
+            {
+              "name": "More than once",
+              "value": 20
+            },
+            {
+              "name": "Frustrated",
+              "value": 30
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Unavailable",
+      "description": "[recovery time] and [frequency] unavailable",
+      "designParameters": [
+        {
+          "name": "Recovery Time",
+          "placeholder": "[recovery time]",
+          "values": [
+            {
+              "name": "Satisfied",
+              "value": 10
+            },
+            {
+              "name": "Tolerated",
+              "value": 20
+            },
+            {
+              "name": "Frustrated",
+              "value": 30
+            }
+          ]
+        },
+        {
+          "name": "How often does the stimulus occur?",
+          "placeholder": "[frequency]",
+          "values": [
+            {
+              "name": "Once",
+              "value": 10
+            },
+            {
+              "name": "More than once",
+              "value": 20
+            },
+            {
+              "name": "Frustrated",
+              "value": 30
+            }
+          ]
+        }
+      ]
+    }
+  ],
   "metrics": [
     {
       "name": "Throughput",
