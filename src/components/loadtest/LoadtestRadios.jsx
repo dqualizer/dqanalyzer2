@@ -8,6 +8,7 @@ export default function LoadtestRadios({
   onChange,
   optionName,
   optionValue,
+  propType,
 }) {
   return (
     <div className="form-control w-full">
@@ -21,7 +22,11 @@ export default function LoadtestRadios({
               key={key}
               className="join-item btn"
               type="radio"
-              name={toSnakeCase(optionName)}
+              name={
+                propType
+                  ? propType + "_" + toSnakeCase(optionName)
+                  : toSnakeCase(optionName)
+              }
               aria-label={option.name}
               value={option.id}
               onChange={onChange}

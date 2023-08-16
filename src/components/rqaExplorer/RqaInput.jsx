@@ -37,7 +37,7 @@ export default function RqaInput({ setInputOpen }) {
       createRqaMutation.mutate({
         name: value,
         domain_id: 1,
-        environment: "DEV",
+        environment: "TEST",
       });
     }
   }

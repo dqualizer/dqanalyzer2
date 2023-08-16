@@ -28,7 +28,7 @@ export default function Loadtest({
       <ul>
         <li>{<Stimulus data={data.stimulus} />}</li>
         <li>{<Parametrization data={data.parametrization} />}</li>
-        <li>{<ResponseMeasures data={data.response_measures} />}</li>
+        <li>{<ResponseMeasures data={data.response_measure} />}</li>
         <li> {<ResultMetrics data={data.result_metrics} />}</li>
       </ul>
     </details>

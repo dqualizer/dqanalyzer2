@@ -51,7 +51,7 @@ export const createSystems = (systems) => {
 
   systems.forEach((system) => {
     const newNode = {
-      id: `system_${system.system_id}`,
+      id: `system_${system.id}`,
       type,
       position: {
         ...position,
@@ -83,7 +83,7 @@ export const createWorkobjects = (systems) => {
     };
     mappingSystem.activities.forEach((activity) => {
       const newNode = {
-        id: `work_object_${activity.activity_id}`,
+        id: `work_object_${activity.id}`,
         type,
         position: {
           ...position,

@@ -9,6 +9,7 @@ export default function LoadtestSelect({
   optionName,
   optionValue,
 }) {
+  if (!options) console.log(label);
   return (
     <div className="form-control w-full">
       <label className="label">
