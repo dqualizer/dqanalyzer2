@@ -44,11 +44,11 @@ export default function Sidebar({ domain, loadtestSpecs, rqas, nodes, edges }) {
         setSelectedEdge(edges[0]);
 
         let relatedEdgesArray = reactFlowInstance
-          .getEdges()
-          .filter((edge) => edge.name == edges[0].name);
+            .getEdges()
+            .filter((edge) => edge.name == edges[0].name);
         let unrelatedEdgesArray = reactFlowInstance
-          .getEdges()
-          .filter((edge) => edge.name != edges[0].name);
+            .getEdges()
+            .filter((edge) => edge.name != edges[0].name);
 
         let newEdgeArray = [];
 
@@ -77,8 +77,8 @@ export default function Sidebar({ domain, loadtestSpecs, rqas, nodes, edges }) {
         });
 
         newEdgeArray = newEdgeArray.concat(
-          unrelatedEdgesArray,
-          relatedEdgesArray
+            unrelatedEdgesArray,
+            relatedEdgesArray
         );
         reactFlowInstance.setEdges(newEdgeArray);
       } else {
@@ -94,7 +94,7 @@ export default function Sidebar({ domain, loadtestSpecs, rqas, nodes, edges }) {
   });
 
   const onChangeModeClick = () => {
-    setScenarioView((prevState) => !prevState);
+    setScenarioMode((prevState) => !prevState);
 
     // Hide all possible windows when changing the mode
     setScenarioExplorerShow(false);
