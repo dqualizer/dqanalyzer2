@@ -21,7 +21,7 @@ do
   value=$(printf '%s\n' "${!varname}")
   # Otherwise use value from .env file
   [[ -z $value ]] && value=${varvalue}
-  
+
   # Append configuration property to JS file
   echo "  $varname: \"$value\"," >> ./env-config.js
 done < .env
