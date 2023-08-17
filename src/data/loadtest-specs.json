@@ -79,7 +79,7 @@
 		},
 		{
 			"name": "Constant Load",
-			"id": "CONSTANT LOAD",
+			"id": "CONSTANT_LOAD",
 			"supported": 1,
 			"designParameters": [
 				{
@@ -140,7 +140,7 @@
 			"label":"90th Percentile" 
 		},
 		{
-			"id": "NINETY_FIVE_PERCENTILEx",
+			"id": "NINETY_FIVE_PERCENTILE",
 			"label":"95th Percentile" 
 		}
 	]
