@@ -28,7 +28,7 @@ export default function Home() {
     return (
         <div className="flex items-center justify-center h-screen flex-col">
             <div className="text-center">
-                <img src={dqLogo} alt="" srcset="" class="mx-auto mb-4 w-1/2"/>
+                <img src={dqLogo} alt="" srcSet="" className="mx-auto mb-4 w-1/2"/>
                 <p className="font-bold text-2xl">Welcome to dqAnalyzer 1.0!</p>
                 <p className="text-xl">
                     First of all: Choose your Demo-Domain or create it first by using

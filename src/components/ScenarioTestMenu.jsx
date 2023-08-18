@@ -133,18 +133,6 @@ export default function ScenarioTestMenu(props) {
         allDefinedScenariosCopy[index].generatedScenariosList = null;
         allDefinedScenariosCopy[index].filteredScenariosList = null;
         setAllDefinedScenarios(allDefinedScenariosCopy);
-        // scenario.generatedScenariosList = null;
-        // scenario.generatedScenariosList = null;
-        // scenario.generatedScenariosList = null;
-
-        // setSelectedActivity(newSelectedActivity);
-        // setSelectedMode(null);
-        // setScenarios([]);
-        //
-        // setSelectedScenario(null);
-        // setLoadDecision(null);
-        // setResilienceDecision(null);
-        // setResponseMeasure(null);
     }
 
     const handleLoadDesignChange = (event, index) => {
@@ -168,14 +156,6 @@ export default function ScenarioTestMenu(props) {
         allDefinedScenariosCopy[index].selected_mode = selectedMode;
         allDefinedScenariosCopy[index].generatedScenariosList = getScenariosForActivityAndMode(scenario.activity, selectedMode);
         setAllDefinedScenarios(allDefinedScenariosCopy);
-        //scenario.selected_mode = event.target.value;
-        //console.log(allDefinedScenarios);
-        // setSelectedMode(mode);
-        // scenario.
-        // setSelectedScenario(null);
-        // setLoadDecision(null);
-        // setResilienceDecision(null);
-        // setResponseMeasure(null);
     }
 
     const handleScenarioChange = (selectedScenario, index) => {
@@ -336,18 +316,6 @@ export default function ScenarioTestMenu(props) {
         props.setScenarioExplorerShow(true);
         props.setScenarioTestShow(false);
     }
-
-    //TODO: What does useEffect do here?
-    // useEffect(() => {
-    //     setSelectedActivity(props.selectedEdge);
-    //     let rqaCopy = rqa;
-    //     rqaCopy.runtime_quality_analysis.loadtests[0].artifact = {
-    //         object: props.selectedEdge?.system,
-    //         activity: props.selectedEdge?.activity
-    //     }
-    //     rqaCopy.runtime_quality_analysis.loadtests[0].description = props.selectedEdge?.name
-    //     setRqa(rqaCopy);
-    // }, [props.selectedEdge]);
 
     /*
         Produces a copy of the input object to detach the operations from its original
@@ -586,84 +554,10 @@ export default function ScenarioTestMenu(props) {
                 load_design: null,
                 resilience_design: null
             };
-            let scenarioDescription = fillDescriptionWithWords(metric.description, wordArray);
-            sentence.description = scenarioDescription;
+            sentence.description = fillDescriptionWithWords(metric.description, wordArray);
             scenarioArray.push(sentence);
         }
         return scenarioArray;
-        //     if (metric.description_begin !== null) {
-        //         sentence.description += metric.description_begin;
-        //     }
-        //     for (let wordIndex = 0; wordIndex < wordArray.length; wordIndex++) {
-        //         if (wordIndex === 0) {
-        //             sentence.description += wordArray[wordIndex].name + "s";
-        //             if (metric.insert_to) {
-        //                 sentence.description += " to";
-        //             }
-        //         } else if (wordIndex === wordArray.length - 1) {
-        //             sentence.description += " the " + wordArray[wordIndex].name;
-        //         } else if (wordArray[wordIndex].type === "Work Object") {
-        //             if (wordArray[wordIndex].name.endsWith("s")) {
-        //                 sentence.description += " their " + wordArray[wordIndex].name + "es";
-        //             } else {
-        //                 sentence.description += " their " + wordArray[wordIndex].name + "s";
-        //             }
-        //         } else {
-        //             sentence.description += " " + wordArray[wordIndex].name;
-        //         }
-        //     }
-        //     if (mode === "What if") {
-        //         let randomDesign = Math.round(Math.random());
-        //         let designDescription = null
-        //         // 1 = Load
-        //         if (randomDesign === 1) {
-        //             let numberLoadCategories = allLoadDesigns.length - 1; //Without "None"
-        //             let randomLoadCategory = Math.floor(Math.random() * numberLoadCategories) + 1;  // + 1 to avoid getting the "None" category
-        //             designDescription = allLoadDesigns[randomLoadCategory].description;
-        //             sentence.load_design = deepCopy(allLoadDesigns[randomLoadCategory]);
-        //             sentence.load_design.designParameters.forEach((parameter) => {
-        //                 delete parameter.values;
-        //                 parameter.value = null;
-        //             });
-        //             for (let parameter in allLoadDesigns[randomLoadCategory].designParameters) {
-        //                 let numberOfParamValues = allLoadDesigns[randomLoadCategory].designParameters[parameter].values.length;
-        //                 let randomValue = Math.floor(Math.random() * numberOfParamValues);
-        //                 let valuePlaceHolder = allLoadDesigns[randomLoadCategory].designParameters[parameter].placeholder;
-        //                 let valueDescription = allLoadDesigns[randomLoadCategory].designParameters[parameter].values[randomValue].name.toLowerCase();
-        //                 designDescription = designDescription.replace(valuePlaceHolder, valueDescription);
-        //                 sentence.load_design.designParameters[parameter].value = allLoadDesigns[randomLoadCategory].designParameters[parameter].values[randomValue];
-        //             }
-        //         }
-        //         // 0 = Resilience
-        //         else {
-        //             let numberResilienceCategories = allResilienceDesigns.length - 1; //Without "None"
-        //             let randomResilienceCategory = Math.floor(Math.random() * numberResilienceCategories) + 1;  // + 1 to avoid getting the "None" category
-        //             designDescription = allResilienceDesigns[randomResilienceCategory].description;
-        //             sentence.resilience_design = deepCopy(allResilienceDesigns[randomResilienceCategory]);
-        //             sentence.resilience_design.designParameters.forEach((parameter) => {
-        //                 delete parameter.values;
-        //                 parameter.value = null;
-        //             });
-        //             for (let parameter in allResilienceDesigns[randomResilienceCategory].designParameters) {
-        //                 let numberOfParamValues = allResilienceDesigns[randomResilienceCategory].designParameters[parameter].values.length;
-        //                 let randomValue = Math.floor(Math.random() * numberOfParamValues);
-        //                 let valuePlaceHolder = allResilienceDesigns[randomResilienceCategory].designParameters[parameter].placeholder;
-        //                 let valueDescription = allResilienceDesigns[randomResilienceCategory].designParameters[parameter].values[randomValue].name.toLowerCase();
-        //                 designDescription = designDescription.replace(valuePlaceHolder, valueDescription);
-        //                 sentence.resilience_design.designParameters[parameter].value = allResilienceDesigns[randomResilienceCategory].designParameters[parameter].values[randomValue];
-        //             }
-        //         }
-        //         sentence.description += " under " + designDescription;
-        //     }
-        //
-        //     if (metric.description_end !== null) {
-        //         sentence.description += metric.description_end + "?";
-        //     } else {
-        //         sentence.description += "?";
-        //     }
-        //     scenarioArray.push(sentence)
-        // }
-        // return scenarioArray;
     }
 
     const fillDescriptionWithWords = (description, wordArray) => {
@@ -717,42 +611,6 @@ export default function ScenarioTestMenu(props) {
         });
 
         return result;
-
-
-
-
-
-
-
-
-
-        // Regular expression to match placeholders in the format "[someText]"
-        // const placeholderRegex = /\[(.*?)\]/g;
-        //
-        // // Use the replace() method with a callback function
-        // const result = description.replace(placeholderRegex, (match, placeholder) => {
-        //
-        //     // Look at first to the singular word
-        //     let index = wordArray.findIndex(item => item.type === placeholder);
-        //     // If the placeholder is found in the array, replace with the corresponding value
-        //     if (index !== -1) {
-        //         return wordArray[index].name;
-        //     }
-        //     index = wordArray.findIndex(item => item.type + "s" === placeholder);
-        //     if (index !== -1) {
-        //         if(wordArray[index].name.endsWith("s")) {
-        //             return wordArray[index].name + "es";
-        //         }
-        //         else {
-        //             return wordArray[index].name + "s";
-        //         }
-        //     }
-        //
-        //     // If the placeholder is not found, leave it unchanged
-        //     return match;
-        // });
-        //
-        // return result;
     }
 
     return (
@@ -1146,40 +1004,6 @@ export default function ScenarioTestMenu(props) {
                             </button>
                         </div>
                     </div>}
-
-                {/*<div className="activity-container">*/}
-                {/*    <h3>Metrics</h3>*/}
-                {/*    <p>*/}
-                {/*        The Metrics to include into the Scenario Test*/}
-                {/*        <span className="ml-1 font-normal text-sm" data-tooltip-place="right"*/}
-                {/*              data-tooltip-id="metrics-tooltip"*/}
-                {/*              data-tooltip-content='You may check one or multiple of these fields to tell the system which metrics you would like to include in the final analysis results.'>&#9432;</span>*/}
-                {/*    </p>*/}
-                {/*    <Tooltip id="metrics-tooltip" style={{maxWidth: '256px'}}/>*/}
-                {/*    <div className="activity-container">*/}
-                {/*        {metrics.map((metric) => {*/}
-                {/*            return (<div>*/}
-                {/*                <label className="label">*/}
-                {/*                    <span className="label-text">{metric.name}</span>*/}
-                {/*                </label>*/}
-                {/*                <div className="btn-group">*/}
-                {/*                    {metric.values.map((value) => {*/}
-                {/*                        return (<>*/}
-                {/*                            <input type="radio" value={value}*/}
-                {/*                                   onClick={() => handleResponseParameterChange(metric.name, value)}*/}
-                {/*                                   name={metric.name} data-title={value.name}*/}
-                {/*                                   className="btn"*/}
-                {/*                                   data-tooltip-id={value.name + '-' + value.value}*/}
-                {/*                                   data-tooltip-content={'Value: ' + value.value}/>*/}
-                {/*                            <Tooltip id={value.name + '-' + value.value}/>*/}
-                {/*                        </>)*/}
-                {/*                    })}*/}
-                {/*                </div>*/}
-                {/*            </div>)*/}
-                {/*        })}*/}
-                {/*    </div>*/}
-                {/*</div>*/}
-
             </div>
             <ResizeBar setIsResizing={setIsResizing} setSidebarWidth={setSidebarWidth}/>
         </>
