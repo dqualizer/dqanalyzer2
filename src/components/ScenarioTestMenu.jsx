@@ -121,17 +121,26 @@ export default function ScenarioTestMenu(props) {
         reactFlowInstance.setEdges(newEdgesArray);
     }
 
-    const handleSelectionChange = (event, index) => {
+    const handleActivityChange = (event, index) => {
         colorActiveActivities(event);
 
         // update the view for the selected edge
         let newSelectedActivity = allActivities.find((artifact) => artifact.description === event.target.value);
+
+        // validate activity
+        let activityDescription = newSelectedActivity.description;
+        let allActiveEdges = props.edges.filter((edge) => edge.name === activityDescription);
+        let allElements = findAllElements(allActiveEdges);
+        let wordArray = buildWordArray(allElements);
+        let isValidActivity = validateActivity(wordArray);
 
         let allDefinedScenariosCopy = deepCopy(allDefinedScenarios);
         allDefinedScenariosCopy[index].activity = newSelectedActivity;
         allDefinedScenariosCopy[index].selected_mode = null;
         allDefinedScenariosCopy[index].generatedScenariosList = null;
         allDefinedScenariosCopy[index].filteredScenariosList = null;
+        allDefinedScenariosCopy[index].isValid = isValidActivity;
+
         setAllDefinedScenarios(allDefinedScenariosCopy);
     }
 
@@ -147,6 +156,7 @@ export default function ScenarioTestMenu(props) {
         // save
         let allDefinedScenariosCopy = deepCopy(allDefinedScenarios);
         allDefinedScenariosCopy[index].load_design = copyLoadVariant;
+
         setAllDefinedScenarios(allDefinedScenariosCopy);
     }
 
@@ -155,6 +165,7 @@ export default function ScenarioTestMenu(props) {
         let allDefinedScenariosCopy = deepCopy(allDefinedScenarios);
         allDefinedScenariosCopy[index].selected_mode = selectedMode;
         allDefinedScenariosCopy[index].generatedScenariosList = getScenariosForActivityAndMode(scenario.activity, selectedMode);
+
         setAllDefinedScenarios(allDefinedScenariosCopy);
     }
 
@@ -168,6 +179,7 @@ export default function ScenarioTestMenu(props) {
         allDefinedScenariosCopy[index].expected = null;
         allDefinedScenariosCopy[index].load_decision = null;
         allDefinedScenariosCopy[index].resilience_decision = null;
+
         setAllDefinedScenarios(allDefinedScenariosCopy);
     }
 
@@ -344,15 +356,11 @@ export default function ScenarioTestMenu(props) {
     };
 
     const getScenariosForActivityAndMode = (activity, mode) => {
-        if(mode === null) {
-            console.log("The Mode is null.");
-            return;
-        }
-
         let activityDescription = activity.description;
         let allActiveEdges = props.edges.filter((edge) => edge.name === activityDescription);
         let allElements = findAllElements(allActiveEdges);
         let wordArray = buildWordArray(allElements);
+
         let generatedSentences;
         if(mode === "What if") {
             generatedSentences = generateWhatIfScenarios(wordArray);
@@ -360,10 +368,12 @@ export default function ScenarioTestMenu(props) {
         else {
             generatedSentences = generateMonitoringScenarios(wordArray);
         }
+
         console.log(generatedSentences);
         return generatedSentences;
     }
 
+    //TODO: Add annotations
     const findAllElements = (edges) => {
         const allElements = [];
         let currentSource = null;
@@ -432,9 +442,15 @@ export default function ScenarioTestMenu(props) {
                 let typeString = null;
                 if (element.data.icon === "Document") {
                     typeString = "work object";
-                } else if (element.data.icon === "Person") {
+                }
+                else if (element.data.icon === "Person") {
                     typeString = "actor";
-                } else {
+                }
+                //TODO: Edit Annotation. Maybe it is not necessary
+                else if (element.data.icon === "Annotation") {
+                    typeString = "annotation";
+                }
+                else if (element.data.icon === "System") {
                     typeString = "system";
                 }
                 let wordObject = {name: element.data.label.toLowerCase(), type: typeString};
@@ -445,13 +461,84 @@ export default function ScenarioTestMenu(props) {
                 let name = element.label.endsWith("s") ? element.label.slice(0, -1) : element.label;
                 let typeString = "verb";
                 if (name === "in") {
-                    typeString = "where"
+                    typeString = "preposition"
                 }
                 let wordObject = {name: name.toLowerCase(), type: typeString};
                 sentenceArray.push(wordObject);
             }
         }
         return sentenceArray;
+    }
+
+    const validateActivity = (wordArray) => {
+        let actorNumber = 0;
+        let systemNumber = 0;
+        let workObjectNumber = 0;
+        let verbNumber = 0;
+        for (const index in wordArray) {
+            // At the beginning there is always an Actor/System. No Work Object or Activity
+            if(index === 0) {
+                if (!(!(wordArray[index].type === "Person" && wordArray[index].type === "System"))) {
+                    return false;
+                }
+            }
+            else if(index === wordArray.length - 1) {
+                switch (wordArray[index].type) {
+                    case "actor" || "work object" || "system": break;
+                    default: return false;
+                }
+            }
+
+            // Provide a Label for Every Building Block
+            if (wordArray[index].name === null || wordArray[index].name === undefined || wordArray[index].name === "") {
+                return false;
+            }
+            const searchForA = 'a';
+            const searchForThe = 'the';
+
+            const regexForA = new RegExp(`\\b${searchForA}\\b`, 'i');
+            const containsA = regexForA.test(wordArray[index].name.toLowerCase());
+
+            const regexForThe = new RegExp(`\\b${searchForThe}\\b`, 'i');
+            const containsThe = regexForThe.test(wordArray[index].name.toLowerCase());
+
+
+            // Does not contain articles like a or "the" (see LeasingNinja)
+            if (containsA || containsThe) {
+                return false;
+            }
+
+            // Each actor and work object only exists once in a sentence --> Avoid "Loopbacks" (lässt sich machen)
+            for (let previousIndex = 0; previousIndex < index; previousIndex++) {
+                if(wordArray[previousIndex].name === wordArray[index].name && wordArray[previousIndex].type === wordArray[index].type) {
+                    return false;
+                }
+            }
+
+            switch (wordArray[index].type) {
+                case "actor": actorNumber++; break;
+                case "verb": verbNumber++; break;
+                case "work object": workObjectNumber++; break;
+                case "system": systemNumber++; break;
+                case "preposition": systemNumber++; break;
+                case "annotation": break;   // Annotations doesn't matter now
+                default: return false;
+            }
+        }
+        // - [ ] Give Every Sentence its Own Work Object
+        // - [ ] Each actor only exists once
+        // - [ ] Make Work Objects explicit (wird schwierig; siehe Buch)
+        // - [ ] Use Different Icons for Actors and Work Objects (egal)
+        // - [ ] Avoid the "Request and Response" Pattern (wird schwierig)
+        // - [ ] After one (end) actor a domain story ends
+        // - [ ] If a sentence splits, the "branches" attach themselves to the main sentence.
+        // - [ ] Does not contain articles like a or "the" (see LeasingNinja)
+
+        // Every sentence contains at least one actor and one work object
+        if (actorNumber === 0 || workObjectNumber === 0) {
+            return false;
+        }
+        return true;
     }
 
     const generateScenarios = (wordArray, mode) => {
@@ -565,7 +652,7 @@ export default function ScenarioTestMenu(props) {
 
         const currentIndexMap = {}; // To keep track of current index for each placeholder name
 
-        const result = description.replace(placeholderRegex, (match, placeholder) => {
+        return description.replace(placeholderRegex, (match, placeholder) => {
             if (wordArray.some(item => item.type === placeholder)) {
                 // If currentIndexMap doesn't have an entry for this placeholder, start from 0
                 if (!currentIndexMap[placeholder]) {
@@ -577,8 +664,7 @@ export default function ScenarioTestMenu(props) {
                 const matchingItems = wordArray.filter(item => item.type === placeholder);
 
                 return matchingItems[currentIndex].name;
-            }
-            else if (wordArray.some(item => item.type + "s" === placeholder)) {
+            } else if (wordArray.some(item => item.type + "s" === placeholder)) {
                 // If currentIndexMap doesn't have an entry for this placeholder, start from 0
                 if (!currentIndexMap[placeholder]) {
                     currentIndexMap[placeholder] = 0;
@@ -590,8 +676,7 @@ export default function ScenarioTestMenu(props) {
                 let matchingItems = wordArray.filter(item => item.type + "s" === placeholder);
 
                 return pluralize(matchingItems[currentIndex].name);
-            }
-            else if (wordArray.some(item => item.type + " ing" === placeholder)) {
+            } else if (wordArray.some(item => item.type + " ing" === placeholder)) {
                 // If currentIndexMap doesn't have an entry for this placeholder, start from 0
                 if (!currentIndexMap[placeholder]) {
                     currentIndexMap[placeholder] = 0;
@@ -609,8 +694,6 @@ export default function ScenarioTestMenu(props) {
 
             return match;
         });
-
-        return result;
     }
 
     return (
@@ -630,7 +713,7 @@ export default function ScenarioTestMenu(props) {
                                         <label className="label">
                                             <span className="label-text">Activity</span>
                                         </label>
-                                        <select value={scenario.activity?.description} onChange={(event) => handleSelectionChange(event, index)} id=""
+                                        <select value={scenario.activity?.description} onChange={(event) => handleActivityChange(event, index)} id=""
                                                 className="select select-bordered w-full max-w-xs">
                                             <option selected={true} value="" disabled>
                                                 Choose an activity
@@ -641,7 +724,11 @@ export default function ScenarioTestMenu(props) {
                                         </select>
                                     </div>
 
-                                    {scenario.activity !== null ?
+                                    {scenario.activity !== null && !scenario.isValid ?
+                                        <p className="description">You cannot examine the activity {scenario.activity.description} because it is invalid.</p>
+                                    : null}
+
+                                    {scenario.activity !== null && scenario.isValid ?
                                         <div className="activity-container">
                                             <label className="label">
                                                 <span className="label-text">Choose Mode</span>
@@ -687,7 +774,7 @@ export default function ScenarioTestMenu(props) {
                                             )
                                         })}
                                     </div>
-                                    {scenario.description !== null ? <p className="selected-scenario-description">{scenario.description}</p> : null}
+                                    {scenario.description !== null ? <p className="description">{scenario.description}</p> : null}
                                 </div>
                                 : null}
 
