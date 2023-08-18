@@ -72,7 +72,8 @@ export default function ScenarioTestMenu(props) {
             "resilience_decision": null,
             "resilience_design": null,
             "metric": null,
-            "expected": null
+            "expected": null,
+            "isValid": null
         }
     ]);
     const [accuracy, setAccuracy] = useState(0);
@@ -285,7 +286,8 @@ export default function ScenarioTestMenu(props) {
             "resilience_decision": null,
             "resilience_design": null,
             "metric": null,
-            "expected": null
+            "expected": null,
+            "isValid": null
         };
         let newScenarioList = deepCopy(allDefinedScenarios);
         newScenarioList.push(newScenario);
@@ -444,7 +446,7 @@ export default function ScenarioTestMenu(props) {
                     typeString = "work object";
                 }
                 else if (element.data.icon === "Person") {
-                    typeString = "actor";
+                    typeString = "person";
                 }
                 //TODO: Edit Annotation. Maybe it is not necessary
                 else if (element.data.icon === "Annotation") {
@@ -470,74 +472,226 @@ export default function ScenarioTestMenu(props) {
         return sentenceArray;
     }
 
+    //TODO: Check with previous elements only if the element is either a person, a work object or a system. In all of them prepositions should always be in between actor/actor, actor/system
     const validateActivity = (wordArray) => {
-        let actorNumber = 0;
+        // TODO: only for test purposes
+        wordArray = {
+            "speakers": [
+                {
+                    name: "customer",
+                    type: "person"
+                },
+            ],
+            "message": [
+                {
+                    name: "tell",
+                    type: "verb",
+                },
+                {
+                    name: "wish",
+                    type: "work object",
+                },
+                {
+                    name: "for",
+                    type: "preposition",
+                },
+                {
+                    name: "car",
+                    type: "work object",
+                },
+            ],
+            "audience": [
+                {
+                    name: "to",
+                    type: "preposition",
+                },
+                {
+                    name: "sales person",
+                    type: "person",
+                },
+                {
+                    name: "and",
+                    type: "preposition",
+                },
+                {
+                    name: "sales persona",
+                    type: "system",
+                }
+            ]
+        }
+
+        let personNumber = 0;
         let systemNumber = 0;
         let workObjectNumber = 0;
         let verbNumber = 0;
-        for (const index in wordArray) {
-            // At the beginning there is always an Actor/System. No Work Object or Activity
+
+        let speakers= wordArray.speakers;
+        let message = wordArray.message;
+        let audience= wordArray.audience;
+
+        let observedElements = [];
+
+        for (let index = 0; index < speakers.length; index++) {
+            // first element should always be a person or a system
             if(index === 0) {
-                if (!(!(wordArray[index].type === "Person" && wordArray[index].type === "System"))) {
+                if (!(speakers[index].type === "person" || speakers[index].type === "system")) {
                     return false;
                 }
             }
-            else if(index === wordArray.length - 1) {
-                switch (wordArray[index].type) {
-                    case "actor" || "work object" || "system": break;
+            // last element should be a person or a system
+            if(index === speakers.length - 1) {
+                if (!(speakers[index].type === "person" || speakers[index].type === "system")) {
+                    return false;
+                }
+            }
+
+            // Provide a Label for Every Building Block
+            if (speakers[index].name === null || speakers[index].name === undefined || speakers[index].name === "") {
+                return false;
+            }
+
+            const regexForA = new RegExp(`\\ba\\b`, 'i');
+            const containsA = regexForA.test(speakers[index].name.toLowerCase());
+
+            const regexForAn = new RegExp(`\\ban\\b`, 'i');
+            const containsAn = regexForAn.test(speakers[index].name.toLowerCase());
+
+            const regexForThe = new RegExp(`\\bthe\\b`, 'i');
+            const containsThe = regexForThe.test(speakers[index].name.toLowerCase());
+
+            // Does not contain articles like "a", "an" or "the" (see LeasingNinja)
+            if (containsA || containsAn || containsThe) {
+                return false;
+            }
+
+            // Each person, system and work object only exists once in a sentence --> Avoid "Loopbacks"
+            for (const observedElement of observedElements) {
+                if(observedElement.name === speakers[index].name && observedElement.type === speakers[index].type) {
+                    return false;
+                }
+            }
+
+            switch (speakers[index].type) {
+                case "person": personNumber++; break;
+                case "system": systemNumber++; break;
+                case "preposition": break;
+                case "annotation": break;   // Annotations doesn't matter now
+                default: return false;
+            }
+            observedElements.push(speakers[index]);
+        }
+
+        for (let index = 0; index < message.length; index++) {
+            // first element should always be a verb
+            if(index === 0) {
+                if (!(message[index].type === "verb")) {
+                    return false;
+                }
+            }
+            // last element should be a work object
+            if(index === message.length - 1) {
+                switch (message[index].type) {
+                    case "work object": break;
                     default: return false;
                 }
             }
 
             // Provide a Label for Every Building Block
-            if (wordArray[index].name === null || wordArray[index].name === undefined || wordArray[index].name === "") {
+            if (message[index].name === null || message[index].name === undefined || message[index].name === "") {
                 return false;
             }
-            const searchForA = 'a';
-            const searchForThe = 'the';
 
-            const regexForA = new RegExp(`\\b${searchForA}\\b`, 'i');
-            const containsA = regexForA.test(wordArray[index].name.toLowerCase());
+            const regexForA = new RegExp(`\\ba\\b`, 'i');
+            const containsA = regexForA.test(message[index].name.toLowerCase());
 
-            const regexForThe = new RegExp(`\\b${searchForThe}\\b`, 'i');
-            const containsThe = regexForThe.test(wordArray[index].name.toLowerCase());
+            const regexForAn = new RegExp(`\\ban\\b`, 'i');
+            const containsAn = regexForAn.test(message[index].name.toLowerCase());
 
+            const regexForThe = new RegExp(`\\bthe\\b`, 'i');
+            const containsThe = regexForThe.test(message[index].name.toLowerCase());
+
+            // Does not contain articles like "a", "an" or "the" (see LeasingNinja)
+            if (containsA || containsAn || containsThe) {
+                return false;
+            }
 
             // Does not contain articles like a or "the" (see LeasingNinja)
             if (containsA || containsThe) {
                 return false;
             }
 
-            // Each actor and work object only exists once in a sentence --> Avoid "Loopbacks" (lässt sich machen)
-            for (let previousIndex = 0; previousIndex < index; previousIndex++) {
-                if(wordArray[previousIndex].name === wordArray[index].name && wordArray[previousIndex].type === wordArray[index].type) {
+            // Each actor and work object only exists once in a sentence --> Avoid "Loopbacks"
+            for (const observedElement of observedElements) {
+                if(observedElement.name === message[index].name && observedElement.type === message[index].type) {
                     return false;
                 }
             }
 
-            switch (wordArray[index].type) {
-                case "actor": actorNumber++; break;
+            switch (message[index].type) {
                 case "verb": verbNumber++; break;
                 case "work object": workObjectNumber++; break;
+                case "preposition": break;
+                case "annotation": break;   // Annotations doesn't matter now
+                default: return false;
+            }
+            observedElements.push(message[index]);
+        }
+
+        for (let index = 0; index < audience.length; index++) {
+            // first element should always be a verb
+            if(index === 0) {
+                if (audience[index].type !== "preposition") {
+                    return false;
+                }
+            }
+            // last element should be a person or a system
+            if(index === audience.length - 1) {
+                if (!(audience[index].type === "person" || audience[index].type === "system")) {
+                    return false;
+                }
+            }
+
+            // Provide a Label for Every Building Block
+            if (audience[index].name === null || audience[index].name === undefined || audience[index].name === "") {
+                return false;
+            }
+
+            const regexForA = new RegExp(`\\ba\\b`, 'i');
+            const containsA = regexForA.test(audience[index].name.toLowerCase());
+
+            const regexForAn = new RegExp(`\\ban\\b`, 'i');
+            const containsAn = regexForAn.test(audience[index].name.toLowerCase());
+
+            const regexForThe = new RegExp(`\\bthe\\b`, 'i');
+            const containsThe = regexForThe.test(audience[index].name.toLowerCase());
+
+            // Does not contain articles like "a", "an" or "the" (see LeasingNinja)
+            if (containsA || containsAn || containsThe) {
+                return false;
+            }
+
+            // Each actor and work object only exists once in a sentence --> Avoid "Loopbacks"
+            for (const observedElement of observedElements) {
+                if(observedElement.name === audience[index].name && observedElement.type === audience[index].type) {
+                    return false;
+                }
+            }
+
+            switch (audience[index].type) {
+                case "person": personNumber++; break;
                 case "system": systemNumber++; break;
                 case "preposition": systemNumber++; break;
                 case "annotation": break;   // Annotations doesn't matter now
                 default: return false;
             }
+            observedElements.push(audience[index]);
         }
-        // - [ ] Give Every Sentence its Own Work Object
-        // - [ ] Each actor only exists once
-        // - [ ] Make Work Objects explicit (wird schwierig; siehe Buch)
-        // - [ ] Use Different Icons for Actors and Work Objects (egal)
-        // - [ ] Avoid the "Request and Response" Pattern (wird schwierig)
-        // - [ ] After one (end) actor a domain story ends
-        // - [ ] If a sentence splits, the "branches" attach themselves to the main sentence.
-        // - [ ] Does not contain articles like a or "the" (see LeasingNinja)
 
         // Every sentence contains at least one actor and one work object
-        if (actorNumber === 0 || workObjectNumber === 0) {
+        if (personNumber === 0 || workObjectNumber === 0) {
             return false;
         }
+
         return true;
     }
 
