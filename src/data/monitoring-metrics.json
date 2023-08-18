@@ -2,12 +2,12 @@
   "metrics": [
     {
       "metric": "how_many",
-      "description": "How many total [actors] [verb] their [work objects] [where] the [system]?",
+      "description": "How many total [actors] [verb] their [work objects] [preposition] the [system]?",
       "expected": null
     },
     {
       "metric": "how_often",
-      "description": "How often do [actors] on average [verb] their [work objects] [where] the [system]?",
+      "description": "How often do [actors] on average [verb] their [work objects] [preposition] the [system]?",
       "expected": null
     },
     {
@@ -17,32 +17,32 @@
     },
     {
       "metric": "maximum_time_spending",
-      "description": "What is the maximum time it took for a [actor] to [verb] their [work object] [where] the [system]?",
+      "description": "What is the maximum time it took for a [actor] to [verb] their [work object] [preposition] the [system]?",
       "expected": null
     },
     {
       "metric": "average_time_spending",
-      "description": "How long does it take on average for [actors] to [verb] their [work objects] [where] the [system]?",
+      "description": "How long does it take on average for [actors] to [verb] their [work objects] [preposition] the [system]?",
       "expected": null
     },
     {
       "metric": "minimum_time_spending",
-      "description": "What is the minimum time it took for a [actor] to [verb] their [work object] [where] the [system]?",
+      "description": "What is the minimum time it took for a [actor] to [verb] their [work object] [preposition] the [system]?",
       "expected": null
     },
     {
       "metric": "when_the_most",
-      "description": "When do [actors] most often [verb] their [work objects] [where] the [system]?",
+      "description": "When do [actors] most often [verb] their [work objects] [preposition] the [system]?",
       "expected": null
     },
     {
       "metric": "when_average",
-      "description": "When do [actors] [verb] their [work objects] [where] the [system] on average?",
+      "description": "When do [actors] [verb] their [work objects] [preposition] the [system] on average?",
       "expected": null
     },
     {
       "metric": "when_the_least",
-      "description": "When are [actors] least likely [verb] their [work objects] [where] the [system]?",
+      "description": "When are [actors] least likely [verb] their [work objects] [preposition] the [system]?",
       "expected": null
     },
     {
@@ -72,17 +72,17 @@
     },
     {
       "metric": "maximum_throughput",
-      "description": "Up to how many [actors] have [verb] [work objects] [where] the [system] at the same time?",
+      "description": "Up to how many [actors] have [verb] [work objects] [preposition] the [system] at the same time?",
       "expected": null
     },
     {
       "metric": "average_throughput",
-      "description": "On average, how many [actors] [verb] [work objects] [where] the [system] at the same time?",
+      "description": "On average, how many [actors] [verb] [work objects] [preposition] the [system] at the same time?",
       "expected": null
     },
     {
       "metric": "minimum_throughput",
-      "description": "What is the minimum number of [actors] [verb ing] [work objects] [where] the [system] at the same time?",
+      "description": "What is the minimum number of [actors] [verb ing] [work objects] [preposition] the [system] at the same time?",
       "expected": null
     }
   ]
