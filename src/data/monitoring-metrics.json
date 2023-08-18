@@ -1,0 +1,89 @@
+{
+  "metrics": [
+    {
+      "metric": "how_many",
+      "description": "How many total [actors] [verb] their [work objects] [where] the [system]?",
+      "expected": null
+    },
+    {
+      "metric": "how_often",
+      "description": "How often do [actors] on average [verb] their [work objects] [where] the [system]?",
+      "expected": null
+    },
+    {
+      "metric": "popularity",
+      "description": "Are some [work objects] more popular than others?",
+      "expected": null
+    },
+    {
+      "metric": "maximum_time_spending",
+      "description": "What is the maximum time it took for a [actor] to [verb] their [work object] [where] the [system]?",
+      "expected": null
+    },
+    {
+      "metric": "average_time_spending",
+      "description": "How long does it take on average for [actors] to [verb] their [work objects] [where] the [system]?",
+      "expected": null
+    },
+    {
+      "metric": "minimum_time_spending",
+      "description": "What is the minimum time it took for a [actor] to [verb] their [work object] [where] the [system]?",
+      "expected": null
+    },
+    {
+      "metric": "when_the_most",
+      "description": "When do [actors] most often [verb] their [work objects] [where] the [system]?",
+      "expected": null
+    },
+    {
+      "metric": "when_average",
+      "description": "When do [actors] [verb] their [work objects] [where] the [system] on average?",
+      "expected": null
+    },
+    {
+      "metric": "when_the_least",
+      "description": "When are [actors] least likely [verb] their [work objects] [where] the [system]?",
+      "expected": null
+    },
+    {
+      "metric": "how_often_response_time",
+      "description": "How often is the response time of the [system] satisfied/tolerated/frustrated?",
+      "expected": null
+    },
+    {
+      "metric": "how_often_request_fail",
+      "description": "How often does a request to the [system] fail?",
+      "expected": null
+    },
+    {
+      "metric": "when_most_request_fail",
+      "description": "When have requests to the [system] failed most often?",
+      "expected": null
+    },
+    {
+      "metric": "mean_time_to_failure",
+      "description": "How long does it take on average for the [system] to fail?",
+      "expected": null
+    },
+    {
+      "metric": "mean_time_to_recover",
+      "description": "How long does it take on average for the [system] to recover?",
+      "expected": null
+    },
+    {
+      "metric": "maximum_throughput",
+      "description": "Up to how many [actors] have [verb] [work objects] [where] the [system] at the same time?",
+      "expected": null
+    },
+    {
+      "metric": "average_throughput",
+      "description": "On average, how many [actors] [verb] [work objects] [where] the [system] at the same time?",
+      "expected": null
+    },
+    {
+      "metric": "minimum_throughput",
+      "description": "What is the minimum number of [actors] [verb ing] [work objects] [where] the [system] at the same time?",
+      "expected": null
+    }
+  ]
+}
