@@ -57,7 +57,7 @@ export default function ScenarioTestMenu(props) {
         scenarios: [],
         settings: {
             accuracy: 0,
-            environment: settings.enviroment[0],
+            environment: null,
             timeSlot: null
         }
     }
@@ -79,7 +79,7 @@ export default function ScenarioTestMenu(props) {
         }
     ]);
     const [accuracy, setAccuracy] = useState(0);
-    const [enviroment, setEnviroment] = useState(settings.enviroment[0]);
+    const [enviroment, setEnviroment] = useState(null);
     const [timeSlot, setTimeSlot] = useState(null);
 
     const [isActivityView, setIsActivityView] = useState(true);
@@ -247,12 +247,6 @@ export default function ScenarioTestMenu(props) {
 
     const handleEnviromentChange = (e) => {
         let newEnviroment = e.target.value;
-
-        if (newEnviroment === 'Test') {
-            setTimeSlot(settings.timeSlot[0]);
-        } else {
-            setTimeSlot(null);
-        }
 
         setEnviroment(newEnviroment);
     }
@@ -883,6 +877,9 @@ export default function ScenarioTestMenu(props) {
                                 <Tooltip id="enviroment-tooltip" style={{maxWidth: '256px'}}/>
                                 <select value={enviroment} onChange={handleEnviromentChange} id=""
                                         className="select select-bordered w-full max-w-xs">
+                                    <option selected={true} value="" disabled>
+                                        Choose an enviroment
+                                    </option>
                                     {settings.enviroment.map((enviroment) => {
                                         return <option value={enviroment} key={enviroment}>{enviroment}</option>
                                     })}
@@ -900,8 +897,11 @@ export default function ScenarioTestMenu(props) {
                             </span>
                                     </label>
                                     <Tooltip id="timeslot-tooltip" style={{maxWidth: '256px'}}/>
-                                    <select value={timeSlot.representation} onChange={handleTimeSlotChange} id=""
+                                    <select value={timeSlot?.representation} onChange={handleTimeSlotChange} id=""
                                             className="select select-bordered w-full max-w-xs">
+                                        <option selected={true} value="" disabled>
+                                            Choose a time slot
+                                        </option>
                                         {settings.timeSlot.map((timeSlot) => {
                                             return <option value={timeSlot.representation}
                                                            key={timeSlot.representation}>{timeSlot.representation}</option>
