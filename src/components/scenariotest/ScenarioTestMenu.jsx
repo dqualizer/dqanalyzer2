@@ -10,6 +10,7 @@ import pluralize from 'pluralize';
 import compromise from 'compromise';
 import ActivityValidator from './ActivityValidator';
 import ActivityParser from "./ActivityParser.jsx";
+import ScenarioGenerator from "./ScenarioGenerator.jsx";
 
 export default function ScenarioTestMenu(props) {
 
@@ -353,171 +354,10 @@ export default function ScenarioTestMenu(props) {
     const getScenariosForActivityAndMode = (activity, mode) => {
         let wordArray = ActivityParser(props.nodes, props.edges, activity);
 
-        let generatedSentences;
-        if(mode === "What if") {
-            generatedSentences = generateWhatIfScenarios(wordArray);
-        }
-        else {
-            generatedSentences = generateMonitoringScenarios(wordArray);
-        }
+        let generatedSentences = ScenarioGenerator(mode, wordArray);
 
         //console.log(generatedSentences);
         return generatedSentences;
-    }
-
-    const generateScenarios = (wordArray, mode) => {
-        let scenarioArray = [];
-        for (const metric of allMonitoringMetrics) {
-            let sentence = {
-                description: "",
-                metric: metric.metric,
-                expected: null,
-                load_design: allLoadDesigns[0],
-                resilience_design: allResilienceDesigns[0]
-            };
-            if (metric.description_begin !== null) {
-                sentence.description += metric.description_begin;
-            }
-            for (let wordIndex = 0; wordIndex < wordArray.length; wordIndex++) {
-                if (wordIndex === 0) {
-                    sentence.description += wordArray[wordIndex].name + "s";
-                    if (metric.insert_to) {
-                        sentence.description += " to";
-                    }
-                } else if (wordIndex === wordArray.length - 1) {
-                    sentence.description += " the " + wordArray[wordIndex].name;
-                } else if (wordArray[wordIndex].type === "Work Object") {
-                    if (wordArray[wordIndex].name.endsWith("s")) {
-                        sentence.description += " their " + wordArray[wordIndex].name + "es";
-                    } else {
-                        sentence.description += " their " + wordArray[wordIndex].name + "s";
-                    }
-                } else {
-                    sentence.description += " " + wordArray[wordIndex].name;
-                }
-            }
-            if (mode === "What if") {
-                let randomDesign = Math.round(Math.random());
-                let designDescription = null
-                // 1 = Load
-                if (randomDesign === 1) {
-                    let numberLoadCategories = allLoadDesigns.length - 1; //Without "None"
-                    let randomLoadCategory = Math.floor(Math.random() * numberLoadCategories) + 1;  // + 1 to avoid getting the "None" category
-                    designDescription = allLoadDesigns[randomLoadCategory].description;
-                    sentence.load_design = deepCopy(allLoadDesigns[randomLoadCategory]);
-                    sentence.load_design.designParameters.forEach((parameter) => {
-                        delete parameter.values;
-                        parameter.value = null;
-                    });
-                    for (let parameter in allLoadDesigns[randomLoadCategory].designParameters) {
-                        let numberOfParamValues = allLoadDesigns[randomLoadCategory].designParameters[parameter].values.length;
-                        let randomValue = Math.floor(Math.random() * numberOfParamValues);
-                        let valuePlaceHolder = allLoadDesigns[randomLoadCategory].designParameters[parameter].placeholder;
-                        let valueDescription = allLoadDesigns[randomLoadCategory].designParameters[parameter].values[randomValue].name.toLowerCase();
-                        designDescription = designDescription.replace(valuePlaceHolder, valueDescription);
-                        sentence.load_design.designParameters[parameter].value = allLoadDesigns[randomLoadCategory].designParameters[parameter].values[randomValue];
-                    }
-                }
-                // 0 = Resilience
-                else {
-                    let numberResilienceCategories = allResilienceDesigns.length - 1; //Without "None"
-                    let randomResilienceCategory = Math.floor(Math.random() * numberResilienceCategories) + 1;  // + 1 to avoid getting the "None" category
-                    designDescription = allResilienceDesigns[randomResilienceCategory].description;
-                    sentence.resilience_design = deepCopy(allResilienceDesigns[randomResilienceCategory]);
-                    sentence.resilience_design.designParameters.forEach((parameter) => {
-                        delete parameter.values;
-                        parameter.value = null;
-                    });
-                    for (let parameter in allResilienceDesigns[randomResilienceCategory].designParameters) {
-                        let numberOfParamValues = allResilienceDesigns[randomResilienceCategory].designParameters[parameter].values.length;
-                        let randomValue = Math.floor(Math.random() * numberOfParamValues);
-                        let valuePlaceHolder = allResilienceDesigns[randomResilienceCategory].designParameters[parameter].placeholder;
-                        let valueDescription = allResilienceDesigns[randomResilienceCategory].designParameters[parameter].values[randomValue].name.toLowerCase();
-                        designDescription = designDescription.replace(valuePlaceHolder, valueDescription);
-                        sentence.resilience_design.designParameters[parameter].value = allResilienceDesigns[randomResilienceCategory].designParameters[parameter].values[randomValue];
-                    }
-                }
-                sentence.description += " under " + designDescription;
-            }
-
-            if (metric.description_end !== null) {
-                sentence.description += metric.description_end + "?";
-            } else {
-                sentence.description += "?";
-            }
-            scenarioArray.push(sentence)
-        }
-        return scenarioArray;
-    }
-
-    const generateWhatIfScenarios = (wordArray) => {
-        let scenarioArray = [];
-        return scenarioArray;
-    }
-
-    const generateMonitoringScenarios = (wordArray) => {
-        let scenarioArray = [];
-        for (const metric of allMonitoringMetrics) {
-            let sentence = {
-                description: "",
-                metric: metric.metric,
-                expected: null,
-                load_design: null,
-                resilience_design: null
-            };
-            sentence.description = fillDescriptionWithWords(metric.description, wordArray);
-            scenarioArray.push(sentence);
-        }
-        return scenarioArray;
-    }
-
-    const fillDescriptionWithWords = (description, wordArray) => {
-        const placeholderRegex = /\[(.*?)\]/g;
-
-        const currentIndexMap = {}; // To keep track of current index for each placeholder name
-
-        return description.replace(placeholderRegex, (match, placeholder) => {
-            if (wordArray.some(item => item.type === placeholder)) {
-                // If currentIndexMap doesn't have an entry for this placeholder, start from 0
-                if (!currentIndexMap[placeholder]) {
-                    currentIndexMap[placeholder] = 0;
-                }
-                const currentIndex = currentIndexMap[placeholder];
-                currentIndexMap[placeholder] = (currentIndex + 1) % wordArray.length;
-
-                const matchingItems = wordArray.filter(item => item.type === placeholder);
-
-                return matchingItems[currentIndex].name;
-            } else if (wordArray.some(item => item.type + "s" === placeholder)) {
-                // If currentIndexMap doesn't have an entry for this placeholder, start from 0
-                if (!currentIndexMap[placeholder]) {
-                    currentIndexMap[placeholder] = 0;
-                }
-
-                const currentIndex = currentIndexMap[placeholder];
-                currentIndexMap[placeholder] = (currentIndex + 1) % wordArray.length;
-
-                let matchingItems = wordArray.filter(item => item.type + "s" === placeholder);
-
-                return pluralize(matchingItems[currentIndex].name);
-            } else if (wordArray.some(item => item.type + " ing" === placeholder)) {
-                // If currentIndexMap doesn't have an entry for this placeholder, start from 0
-                if (!currentIndexMap[placeholder]) {
-                    currentIndexMap[placeholder] = 0;
-                }
-
-                const currentIndex = currentIndexMap[placeholder];
-                currentIndexMap[placeholder] = (currentIndex + 1) % wordArray.length;
-
-                let matchingItems = wordArray.filter(item => item.type + " ing" === placeholder);
-
-                let toGerundium = compromise(matchingItems[currentIndex].name).verbs().toGerund().out("text");
-                toGerundium = toGerundium.replace(/^(is |am |are |was |were )?/, '');
-                return toGerundium;
-            }
-
-            return match;
-        });
     }
 
     return (

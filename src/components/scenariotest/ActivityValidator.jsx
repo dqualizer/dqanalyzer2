@@ -127,14 +127,14 @@ export default function ActivityValidator(wordArray) {
                 name: "sales person",
                 type: "person",
             },
-            {
-                name: "and",
-                type: "preposition",
-            },
-            {
-                name: "sales persona",
-                type: "system",
-            }
+            // {
+            //     name: "and",
+            //     type: "preposition",
+            // },
+            // {
+            //     name: "sales person",
+            //     type: "system",
+            // }
         ]
     }
     //
