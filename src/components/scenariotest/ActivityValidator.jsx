@@ -1,15 +1,14 @@
-//TODO: Check with previous elements only if the element is either a person, a work object or a system. In all of them prepositions should always be in between actor/actor, actor/system
 export default function ActivityValidator(wordArray) {
 
     const validFirstAndLastElement = (elementArray, index, startArray, endArray) => {
-        // first element should always be a person or a system
+        // checks first element of the set
         if(index === 0) {
             if(!startArray.includes(elementArray[index].type)) {
                 return false;
             }
         }
 
-        // last element should be a person or a system
+        // checks last element of the set
         if(index === elementArray.length - 1) {
             if(!endArray.includes(elementArray[index].type)) {
                 return false;
