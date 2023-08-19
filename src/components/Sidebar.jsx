@@ -17,7 +17,7 @@ import {element} from "prop-types";
 import CloudQueueIcon from  "@mui/icons-material/CloudQueue";
 import CloudOffIcon from  "@mui/icons-material/CloudOff";
 import ContentPasteSearchIcon from  "@mui/icons-material/ContentPasteSearch";
-import ScenarioTestMenu from "./ScenarioTestMenu";
+import ScenarioTestMenu from "./scenariotest/ScenarioTestMenu.jsx";
 import ScenarioExplorer from "./scenario_explorer/ScenarioExplorer";
 
 
