@@ -194,6 +194,10 @@ export default function ScenarioTestMenu(props) {
         setAllDefinedScenarios(allDefinedScenariosCopy);
     }
 
+    const getScenarioDescription = (scenario) => {
+        return <p className="description"><span className="bold-text">{scenario.description}</span></p>
+    }
+
     const handleLoadDecisionChange = (event, index) => {
         let chosenLoadDecision = event.target.value;
         let allDefinedScenariosCopy = deepCopy(allDefinedScenarios);
@@ -411,7 +415,7 @@ export default function ScenarioTestMenu(props) {
                                             )
                                         })}
                                     </div>
-                                    {scenario.description !== null ? <p className="description">{scenario.description}</p> : null}
+                                    {getScenarioDescription(scenario)}
                                 </div>
                                 : null}
 

@@ -200,3 +200,7 @@ body,
 	right: 5px;
 	cursor: pointer;
 }
+
+.bold-text {
+	font-weight: bold;
+}
