@@ -1,7 +1,7 @@
 {
   "metrics": [
     {
-      "metric": "how_often_response_time",
+      "metric": "response_time_how_often",
       "speakers": {
         "description": "",
         "number_actor": null
@@ -19,13 +19,69 @@
       "expected": null,
       "what_if_mode": "load",
       "load_design": {
-        "description": "when [system] is under [load]",
+        "description": "if [system] is under [load]",
         "number_actor": null,
         "load_variants": ["constant load"]
       },
       "resilience_design": {
         "description": "and has [resilience]",
         "resilience_variants": ["None", "failed request", "late response", "unavailable"]
+      }
+    },
+    {
+      "metric": "response_time_increase_satisfied",
+      "speakers": {
+        "description": "",
+        "number_actor": null
+      },
+      "message": {
+        "description": "",
+        "form_verb": "infinitive",
+        "number_work_object": "plural"
+      },
+      "audience": {
+        "description": "At what load is the response time of [system] no longer satisfactory",
+        "number_actor": null
+      },
+      "attachment": "",
+      "expected": null,
+      "what_if_mode": "load",
+      "load_design": {
+        "description": "if [system] has a [load]",
+        "number_actor": null,
+        "load_variants": ["load increase"]
+      },
+      "resilience_design": {
+        "description": "and [resilience]",
+        "resilience_variants": ["None", "failed request", "late response", "unavailable"]
+      }
+    },
+    {
+      "metric": "response_time_peak",
+      "speakers": {
+        "description": "",
+        "number_actor": null
+      },
+      "message": {
+        "description": "",
+        "form_verb": "infinitive",
+        "number_work_object": "plural"
+      },
+      "audience": {
+        "description": "How will the response times of [system] change",
+        "number_actor": null
+      },
+      "attachment": "",
+      "expected": null,
+      "what_if_mode": "load",
+      "load_design": {
+        "description": "if [system] has a [load]",
+        "number_actor": null,
+        "load_variants": ["load peak"]
+      },
+      "resilience_design": {
+        "description": "and [resilience]",
+        "resilience_variants": ["none", "failed request", "late response", "unavailable"]
       }
     }
   ]
