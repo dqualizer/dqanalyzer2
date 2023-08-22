@@ -469,7 +469,7 @@ export default function ScenarioTestMenu(props) {
                                                 {allLoadDesigns.map((loadVariant) => {
                                                     return (
                                                         <>
-                                                            {loadVariant.name === scenario.load_design.name ? loadVariant.designParameters != null && loadVariant.designParameters.map((parameter, paramIndex) => {
+                                                            {loadVariant.name === scenario.load_design.name ? loadVariant.design_parameters != null && loadVariant.design_parameters.map((parameter, paramIndex) => {
                                                                 return (
                                                                     <>
                                                                         <label className="label">
@@ -489,7 +489,7 @@ export default function ScenarioTestMenu(props) {
                                                                                                className="btn"
                                                                                                data-tooltip-id={value.name + '-' + value.value}
                                                                                                data-tooltip-content={'Value: ' + value.value}
-                                                                                               checked={scenario.load_design.designParameters[paramIndex].value?.name === value.name}/>
+                                                                                               checked={scenario.load_design.design_parameters[paramIndex].value?.name === value.name}/>
                                                                                         <Tooltip
                                                                                             id={value.name + '-' + value.value}/>
                                                                                     </>
@@ -562,7 +562,7 @@ export default function ScenarioTestMenu(props) {
                                                 {allResilienceDesigns.map((resilienceVariant) => {
                                                     return (
                                                         <>
-                                                            {resilienceVariant.name === scenario.resilience_design.name ? resilienceVariant.designParameters != null && resilienceVariant.designParameters.map((parameter, paramIndex) => {
+                                                            {resilienceVariant.name === scenario.resilience_design.name ? resilienceVariant.design_parameters != null && resilienceVariant.design_parameters.map((parameter, paramIndex) => {
                                                                 return (
                                                                     <>
                                                                         <label className="label">
@@ -581,7 +581,7 @@ export default function ScenarioTestMenu(props) {
                                                                                                className="btn"
                                                                                                data-tooltip-id={value.name + '-' + value.value}
                                                                                                data-tooltip-content={'Value: ' + value.value}
-                                                                                               checked={scenario.resilience_design.designParameters[paramIndex].value?.name === value.name}/>
+                                                                                               checked={scenario.resilience_design.design_parameters[paramIndex].value?.name === value.name}/>
                                                                                         <Tooltip
                                                                                             id={value.name + '-' + value.value}/>
                                                                                     </>
