@@ -8,11 +8,14 @@ export default function WhatIfDescriptionFiller(whatIfVariant, whatIfDesign) {
     resultDescription = resultDescription.replace(placeholderRegex, (match, placeholder) => {
             for (let index in whatIfVariant.design_parameters) {
                 if(whatIfVariant.design_parameters[index].param_placeholder === match) {
-                    let value = whatIfVariant.design_parameters[index].values.find(value => value.name === whatIfDesign.design_parameters[index].value.name);
+                    let value = whatIfVariant.design_parameters[index].values.find(value => value.name === whatIfDesign.design_parameters[index].value?.name);
+                    if(value === undefined) {
+                        return match;
+                    }
                     return value.placeholder_value;
                 }
             }
-            return null;
+            return match;
         });
         if(resultDescription.includes("null")) {
             return null;
