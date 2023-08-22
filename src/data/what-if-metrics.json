@@ -1,0 +1,32 @@
+{
+  "metrics": [
+    {
+      "metric": "how_often_response_time",
+      "speakers": {
+        "description": "",
+        "number_actor": null
+      },
+      "message": {
+        "description": "",
+        "form_verb": "infinitive",
+        "number_work_object": "plural"
+      },
+      "audience": {
+        "description": "How often is the response time of [system] satisfactory/tolerable/frustrating",
+        "number_actor": null
+      },
+      "attachment": "",
+      "expected": null,
+      "what_if_mode": "load",
+      "load_design": {
+        "description": "when [system] is under [load]",
+        "number_actor": null,
+        "load_variants": ["constant load"]
+      },
+      "resilience_design": {
+        "description": "and has [resilience]",
+        "resilience_variants": ["None", "failed request", "late response", "unavailable"]
+      }
+    }
+  ]
+}

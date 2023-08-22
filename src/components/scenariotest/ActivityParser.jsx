@@ -100,5 +100,123 @@ export default function ActivityParser(nodes, edges, selectedActivity) {
     let allActiveEdges = edges.filter((edge) => edge.name === selectedActivity.description);
     let allElements = findAllElements(allActiveEdges);
 
+    if(selectedActivity.description === "Reading Order") {
+        return {
+            "speakers": [
+                {
+                    name: "customer",
+                    type: "person",
+                    number: "singular",
+                    change_allowed: true,
+                    is_proper_noun: false
+                },
+            ],
+            "message": [
+                {
+                    name: "read",
+                    type: "verb",
+                },
+                {
+                    name: "order",
+                    type: "work object",
+                    number: "singular",
+                    change_allowed: true,
+                    is_proper_noun: false
+                },
+            ],
+            "audience": [
+                {
+                    name: "in",
+                    type: "preposition",
+                },
+                {
+                    name: "order portal",
+                    type: "system",
+                    number: "singular",
+                    change_allowed: true,
+                    is_proper_noun: false
+                },
+            ]
+        }
+    }
+    else if(selectedActivity.description === "Creating Order") {
+        return {
+            "speakers": [
+                {
+                    name: "customer",
+                    type: "person",
+                    number: "singular",
+                    change_allowed: true,
+                    is_proper_noun: false
+                },
+            ],
+            "message": [
+                {
+                    name: "create",
+                    type: "verb",
+                },
+                {
+                    name: "order",
+                    type: "work object",
+                    number: "singular",
+                    change_allowed: true,
+                    is_proper_noun: false
+                },
+            ],
+            "audience": [
+                {
+                    name: "in",
+                    type: "preposition",
+                },
+                {
+                    name: "order portal",
+                    type: "system",
+                    number: "singular",
+                    change_allowed: true,
+                    is_proper_noun: false
+                },
+            ]
+        }
+    }
+    else if(selectedActivity.description === "Changing Status") {
+        return {
+            "speakers": [
+                {
+                    name: "merchant",
+                    type: "person",
+                    number: "singular",
+                    change_allowed: true,
+                    is_proper_noun: false
+                },
+            ],
+            "message": [
+                {
+                    name: "change",
+                    type: "verb",
+                },
+                {
+                    name: "order status",
+                    type: "work object",
+                    number: "singular",
+                    change_allowed: true,
+                    is_proper_noun: false
+                },
+            ],
+            "audience": [
+                {
+                    name: "in",
+                    type: "preposition",
+                },
+                {
+                    name: "order portal",
+                    type: "system",
+                    number: "singular",
+                    change_allowed: true,
+                    is_proper_noun: false
+                },
+            ]
+        }
+    }
+
     return buildWordArray(allElements);
 }

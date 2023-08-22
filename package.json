@@ -20,6 +20,7 @@
     "dagre": "^0.8.5",
     "dotenv": "^16.3.1",
     "flowbite-react": "^0.4.11",
+    "indefinite": "^2.4.3",
     "localforage": "^1.10.0",
     "match-sorter": "^6.3.1",
     "pluralize": "^8.0.0",
