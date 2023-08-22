@@ -10,6 +10,7 @@ import ActivityValidator from './ActivityValidator';
 import ActivityParser from "./ActivityParser.jsx";
 import ScenarioGenerator from "./ScenarioGenerator.jsx";
 import deepCopy from "./deepCopy.jsx";
+import ScenarioDescriptionFormatter from "./ScenarioDescriptionFormatter.jsx";
 
 export default function ScenarioTestMenu(props) {
 
@@ -148,7 +149,7 @@ export default function ScenarioTestMenu(props) {
         let loadVariant = allLoadDesigns.find((variant) => variant.name === event.target.value);
         let copyLoadVariant = deepCopy(loadVariant);
 
-        copyLoadVariant.designParameters?.forEach((parameter) => {
+        copyLoadVariant.design_parameters?.forEach((parameter) => {
             delete parameter.values;
             parameter.value = null;
         });
@@ -179,6 +180,13 @@ export default function ScenarioTestMenu(props) {
         allDefinedScenariosCopy[index].filteredScenariosList = null;
         allDefinedScenariosCopy[index].load_decision = null;
         allDefinedScenariosCopy[index].resilience_decision = null;
+        allDefinedScenariosCopy[index].description_speakers = selectedScenario.description_speakers;
+        allDefinedScenariosCopy[index].description_message = selectedScenario.description_message;
+        allDefinedScenariosCopy[index].description_audience = selectedScenario.description_audience;
+        allDefinedScenariosCopy[index].attachment = selectedScenario.attachment;
+        allDefinedScenariosCopy[index].description_load = selectedScenario.description_load;
+        allDefinedScenariosCopy[index].description_resilience = selectedScenario.description_resilience;
+        allDefinedScenariosCopy[index].what_if_mode = selectedScenario.what_if_mode;
 
         setAllDefinedScenarios(allDefinedScenariosCopy);
     }
@@ -195,7 +203,24 @@ export default function ScenarioTestMenu(props) {
     }
 
     const getScenarioDescription = (scenario) => {
-        return <p className="description"><span className="bold-text">{scenario.description}</span></p>
+        if(true) {
+            let descriptionList = [];
+            if(scenario.description_speakers !== "") {
+                descriptionList.push(scenario.description_speakers);
+            }
+            if(scenario.description_message !== "") {
+                descriptionList.push(scenario.description_message);
+            }
+            if(scenario.description_audience !== "" && scenario.description_audience !== null) {
+                descriptionList.push(scenario.description_audience);
+            }
+            let attachment = scenario.attachment === "" ? "": " " + scenario.attachment;
+            let question = descriptionList.join(" ") + attachment + "?";
+            return question;
+        }
+        else {
+            return null;
+        }
     }
 
     const handleLoadDecisionChange = (event, index) => {
@@ -216,7 +241,7 @@ export default function ScenarioTestMenu(props) {
         let resilienceVariant = allResilienceDesigns.find((variant) => variant.name === event.target.value);
         let copyResilienceVariant = deepCopy(resilienceVariant);
 
-        copyResilienceVariant.designParameters?.forEach((parameter) => {
+        copyResilienceVariant.design_parameters?.forEach((parameter) => {
             delete parameter.values;
             parameter.value = null;
         });
@@ -231,10 +256,10 @@ export default function ScenarioTestMenu(props) {
         let allDefinedScenariosCopy = deepCopy(allDefinedScenarios);
         let indexScenario = allDefinedScenariosCopy[index];
 
-        let copyDesignParameter = deepCopy(indexScenario.resilience_design.designParameters[paramIndex]);
+        let copyDesignParameter = deepCopy(indexScenario.resilience_design.design_parameters[paramIndex]);
         copyDesignParameter.value = value;
 
-        indexScenario.resilience_design.designParameters[paramIndex] = copyDesignParameter;
+        indexScenario.resilience_design.design_parameters[paramIndex] = copyDesignParameter;
         setAllDefinedScenarios(allDefinedScenariosCopy);
 
     }
@@ -259,10 +284,10 @@ export default function ScenarioTestMenu(props) {
         let allDefinedScenariosCopy = deepCopy(allDefinedScenarios);
         let indexScenario = allDefinedScenariosCopy[index];
 
-        let copyDesignParameter = deepCopy(indexScenario.load_design.designParameters[paramIndex]);
+        let copyDesignParameter = deepCopy(indexScenario.load_design.design_parameters[paramIndex]);
         copyDesignParameter.value = value;
 
-        indexScenario.load_design.designParameters[paramIndex] = copyDesignParameter;
+        indexScenario.load_design.design_parameters[paramIndex] = copyDesignParameter;
         setAllDefinedScenarios(allDefinedScenariosCopy);
     }
 
@@ -415,7 +440,7 @@ export default function ScenarioTestMenu(props) {
                                             )
                                         })}
                                     </div>
-                                    {getScenarioDescription(scenario)}
+                                    {scenario.description !== null ? ScenarioDescriptionFormatter(scenario) : null}
                                 </div>
                                 : null}
 
