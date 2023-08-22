@@ -371,9 +371,11 @@ export default function ScenarioGenerator(mode, wordArray) {
         const placeholderRegex = /\[(.*?)\]/g;
 
         resultDescription = resultDescription.replace(placeholderRegex, (match, placeholder) => {
-            for (const index in whatIfVariant.design_parameters) {
-                let value = whatIfVariant.design_parameters[index].values.find(value => value.name === whatIfDesign.design_parameters[index].value.name);
-                return value.placeholder_value;
+            for (let index in whatIfVariant.design_parameters) {
+                if(whatIfVariant.design_parameters[index].param_placeholder === match) {
+                    let value = whatIfVariant.design_parameters[index].values.find(value => value.name === whatIfDesign.design_parameters[index].value.name);
+                    return value.placeholder_value;
+                }
             }
             return null;
         });
