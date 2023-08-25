@@ -63,7 +63,7 @@
       "message": {
         "description": "to [verb] [work object]",
         "form_verb": "infinitive",
-        "number_work_object": "plural"
+        "number_work_object": "singular"
       },
       "audience": {
         "description": "[preposition] [actor]",
@@ -81,7 +81,7 @@
       "message": {
         "description": "to [verb] [work object]",
         "form_verb": "infinitive",
-        "number_work_object": "plural"
+        "number_work_object": "singular"
       },
       "audience": {
         "description": "[preposition] [actor]",
@@ -99,7 +99,7 @@
       "message": {
         "description": "to [verb] [work object]",
         "form_verb": "infinitive",
-        "number_work_object": "plural"
+        "number_work_object": "singular"
       },
       "audience": {
         "description": "[preposition] [actor]",

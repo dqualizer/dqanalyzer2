@@ -64,7 +64,10 @@ export default function ScenarioGenerator(mode, wordArray) {
             let descriptionAudience = replacePlaceholders(metric.audience, words.audience, "audience");
 
             if(descriptionSpeakers === null
-                || descriptionMessage === null) {
+                || descriptionMessage === null
+                || (descriptionSpeakers === ""
+                && descriptionMessage === ""
+                && descriptionAudience === null)){
                 continue;
             }
 
