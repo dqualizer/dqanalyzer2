@@ -147,7 +147,7 @@
     {
       "metric": "when_the_least",
       "speakers": {
-        "description": "When do fewest [actor]",
+        "description": "When do least [actor]",
         "number_actor": "plural"
       },
       "message": {
