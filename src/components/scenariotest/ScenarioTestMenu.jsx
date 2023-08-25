@@ -11,6 +11,7 @@ import ActivityParser from "./ActivityParser.jsx";
 import ScenarioGenerator from "./ScenarioGenerator.jsx";
 import deepCopy from "./deepCopy.jsx";
 import ScenarioDescriptionFormatter from "./ScenarioDescriptionFormatter.jsx";
+import ScenariosToFileWriter from "./ScenariosToFileWriter.jsx";
 
 export default function ScenarioTestMenu(props) {
 
@@ -347,7 +348,8 @@ export default function ScenarioTestMenu(props) {
 
         let generatedSentences = ScenarioGenerator(mode, wordArray);
 
-        console.log(generatedSentences);
+        ScenariosToFileWriter(generatedSentences);
+
         return generatedSentences;
     }
 
