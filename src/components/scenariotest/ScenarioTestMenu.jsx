@@ -149,15 +149,40 @@ export default function ScenarioTestMenu(props) {
         let loadVariant = allLoadDesigns.find((variant) => variant.name === event.target.value);
         let copyLoadVariant = deepCopy(loadVariant);
 
-        copyLoadVariant.design_parameters?.forEach((parameter) => {
-            delete parameter.values;
-            parameter.value = null;
-        });
+        if(copyLoadVariant.name === "None") {
+            copyLoadVariant = null;
+        }
+        else {
+            copyLoadVariant.design_parameters.forEach((parameter) => {
+                delete parameter.values;
+                parameter.value = null;
+            });
+        }
 
         // save
         let allDefinedScenariosCopy = deepCopy(allDefinedScenarios);
         allDefinedScenariosCopy[index].load_design = copyLoadVariant;
 
+        setAllDefinedScenarios(allDefinedScenariosCopy);
+    }
+
+    const handleResilienceDesignChange = (event, index) => {
+        let resilienceVariant = allResilienceDesigns.find((variant) => variant.name === event.target.value);
+        let copyResilienceVariant = deepCopy(resilienceVariant);
+
+        if(copyResilienceVariant.name === "None") {
+            copyResilienceVariant = null;
+        }
+        else {
+            copyResilienceVariant.design_parameters.forEach((parameter) => {
+                delete parameter.values;
+                parameter.value = null;
+            });
+        }
+
+        // save
+        let allDefinedScenariosCopy = deepCopy(allDefinedScenarios);
+        allDefinedScenariosCopy[index].resilience_design = copyResilienceVariant;
         setAllDefinedScenarios(allDefinedScenariosCopy);
     }
 
@@ -202,27 +227,6 @@ export default function ScenarioTestMenu(props) {
         setAllDefinedScenarios(allDefinedScenariosCopy);
     }
 
-    const getScenarioDescription = (scenario) => {
-        if(true) {
-            let descriptionList = [];
-            if(scenario.description_speakers !== "") {
-                descriptionList.push(scenario.description_speakers);
-            }
-            if(scenario.description_message !== "") {
-                descriptionList.push(scenario.description_message);
-            }
-            if(scenario.description_audience !== "" && scenario.description_audience !== null) {
-                descriptionList.push(scenario.description_audience);
-            }
-            let attachment = scenario.attachment === "" ? "": " " + scenario.attachment;
-            let question = descriptionList.join(" ") + attachment + "?";
-            return question;
-        }
-        else {
-            return null;
-        }
-    }
-
     const handleLoadDecisionChange = (event, index) => {
         let chosenLoadDecision = event.target.value;
         let allDefinedScenariosCopy = deepCopy(allDefinedScenarios);
@@ -234,21 +238,6 @@ export default function ScenarioTestMenu(props) {
         let chosenResilienceDecision = event.target.value;
         let allDefinedScenariosCopy = deepCopy(allDefinedScenarios);
         allDefinedScenariosCopy[index].resilience_decision = chosenResilienceDecision;
-        setAllDefinedScenarios(allDefinedScenariosCopy);
-    }
-
-    const handleResilienceDesignChange = (event, index) => {
-        let resilienceVariant = allResilienceDesigns.find((variant) => variant.name === event.target.value);
-        let copyResilienceVariant = deepCopy(resilienceVariant);
-
-        copyResilienceVariant.design_parameters?.forEach((parameter) => {
-            delete parameter.values;
-            parameter.value = null;
-        });
-
-        // save
-        let allDefinedScenariosCopy = deepCopy(allDefinedScenarios);
-        allDefinedScenariosCopy[index].resilience_design = copyResilienceVariant;
         setAllDefinedScenarios(allDefinedScenariosCopy);
     }
 
@@ -486,7 +475,7 @@ export default function ScenarioTestMenu(props) {
                                     {scenario.load_decision === "Yes" ?
                                         <div className="actvity-container">
                                             <div className="actvity-container">
-                                                <select value={scenario.load_design.name} onChange={(event) => handleLoadDesignChange(event, index)} id=""
+                                                <select value={scenario.load_design?.name} onChange={(event) => handleLoadDesignChange(event, index)} id=""
                                                         className="select select-bordered w-full max-w-xs">
                                                     {allLoadDesigns.map((loadVariant) => {
                                                         return <option value={loadVariant.name}
@@ -498,7 +487,7 @@ export default function ScenarioTestMenu(props) {
                                                 {allLoadDesigns.map((loadVariant) => {
                                                     return (
                                                         <>
-                                                            {loadVariant.name === scenario.load_design.name ? loadVariant.design_parameters != null && loadVariant.design_parameters.map((parameter, paramIndex) => {
+                                                            {loadVariant.name === scenario.load_design?.name ? loadVariant.design_parameters != null && loadVariant.design_parameters.map((parameter, paramIndex) => {
                                                                 return (
                                                                     <>
                                                                         <label className="label">
@@ -518,7 +507,7 @@ export default function ScenarioTestMenu(props) {
                                                                                                className="btn"
                                                                                                data-tooltip-id={value.name + '-' + value.value}
                                                                                                data-tooltip-content={'Value: ' + value.value}
-                                                                                               checked={scenario.load_design.design_parameters[paramIndex].value?.name === value.name}/>
+                                                                                               checked={scenario.load_design?.design_parameters[paramIndex].value?.name === value.name}/>
                                                                                         <Tooltip
                                                                                             id={value.name + '-' + value.value}/>
                                                                                     </>
@@ -578,7 +567,7 @@ export default function ScenarioTestMenu(props) {
 
                                     {scenario.resilience_decision === "Yes" ?
                                         <div className="actvity-container">
-                                            <select value={scenario.resilience_design.name} onChange={(event) => handleResilienceDesignChange(event, index)} id=""
+                                            <select value={scenario.resilience_design?.name} onChange={(event) => handleResilienceDesignChange(event, index)} id=""
                                                     className="select select-bordered w-full max-w-xs">
                                                 {allResilienceDesigns.map((resilienceVariant) => {
                                                     return <option value={resilienceVariant.name}
@@ -591,7 +580,7 @@ export default function ScenarioTestMenu(props) {
                                                 {allResilienceDesigns.map((resilienceVariant) => {
                                                     return (
                                                         <>
-                                                            {resilienceVariant.name === scenario.resilience_design.name ? resilienceVariant.design_parameters != null && resilienceVariant.design_parameters.map((parameter, paramIndex) => {
+                                                            {resilienceVariant.name === scenario.resilience_design?.name ? resilienceVariant.design_parameters != null && resilienceVariant.design_parameters.map((parameter, paramIndex) => {
                                                                 return (
                                                                     <>
                                                                         <label className="label">
