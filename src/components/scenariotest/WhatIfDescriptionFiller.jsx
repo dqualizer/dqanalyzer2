@@ -2,6 +2,10 @@ import deepCopy from "./deepCopy.jsx";
 import pluralize from "pluralize";
 
 export default function WhatIfDescriptionFiller(whatIfVariant, whatIfDesign) {
+    if(whatIfVariant === undefined || whatIfDesign === null) {
+        return null;
+    }
+
     let resultDescription = deepCopy(whatIfVariant.variant_placeholder);
     const placeholderRegex = /\[(.*?)\]/g;
 
@@ -28,7 +32,7 @@ export default function WhatIfDescriptionFiller(whatIfVariant, whatIfDesign) {
             if(whatIfName === "unavailable") {
                 whatIfName = "shutdown";
             }
-            if(whatIfDesign.design_parameters[0].value.name === "Once") {
+            if(whatIfDesign.design_parameters[0].value === null || whatIfDesign.design_parameters[0].value.name === "Once") {
                 return resultDescription + " " + whatIfName;
             }
             else {
