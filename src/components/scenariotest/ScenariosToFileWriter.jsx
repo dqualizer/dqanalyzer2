@@ -1,8 +1,8 @@
 export default function ScenariosToFileWriter(scenarioArray) {
     let content = "";
 
-    for (let index = 1; index < scenarioArray.length; index++) {
-        content = content + index + ": " + scenarioArray[index].description + "\n";
+    for (let index = 1; index <= scenarioArray.length; index++) {
+        content = content + index + ": " + scenarioArray[index-1].description + "\n";
     }
 
     const blob = new Blob([content], { type: 'text/plain' });
