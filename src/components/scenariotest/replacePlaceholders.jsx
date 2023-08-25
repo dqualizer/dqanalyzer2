@@ -69,6 +69,9 @@ export default function replacePlaceholders(sentencePart, words, part) {
                             if (examiningElement.is_proper_noun === true) {
                                 elementName = toTitleCase(elementName);
                             }
+                            else if (examiningElement.is_proper_noun === false && examiningElement.number === "singular" && sentencePart.number_work_object === "singular") {
+                                elementName = indefinite(elementName);
+                            }
                             if (sentencePart.number_work_object === "plural" && examiningElement.number === "singular") {
                                 replacingStringList.push(pluralize(elementName));
                             } else {
