@@ -33,7 +33,57 @@ export default function replacePlaceholders(sentencePart, words, part) {
 
     const placeholderRegex = /\[(.*?)\]/g;
 
+
+    // optional: change the form of the verbs in the sentence description
     let result = sentencePart.description.replace(placeholderRegex, (match, placeholder) => {
+        if(placeholder === 'are' || placeholder === 'do' || placeholder === 'have' || placeholder === 'fail' || placeholder === 'recover') {
+            let allPlaceholders = sentencePart.description.match(placeholderRegex).map(match => match.replace(/^\[|\]$/g, ''));
+            let noun = allPlaceholders.find(element => element !== placeholder);
+            let allFittingElement;
+            if(noun === "actor") {
+                allFittingElement = words.filter(word => word.type === "person" || word.type === "system");
+            }
+            else if(part === "load" || part === "resilience") {
+                allFittingElement = words.filter(word => word.type === "system");
+            }
+            else {
+                allFittingElement = words.filter(word => word.type === noun);
+            }
+            let isElementPlural = false;
+            for (let element of allFittingElement) {
+                if(element.number === "plural") {
+                    isElementPlural = true;
+                }
+            }
+            if(allFittingElement.length >= 2 || isElementPlural) {
+                return placeholder;
+            }
+            else {
+                // if there is a better implementation e.g. a library, you can insert it here
+                if(placeholder === "are") {
+                    return "is";
+                }
+                else if(placeholder === "do") {
+                    return "does";
+                }
+                else if(placeholder === "have") {
+                    return "has";
+                }
+                else if(placeholder === "fail") {
+                    return "fails";
+                }
+                else if(placeholder === "recover") {
+                    return "recovers";
+                }
+            }
+        }
+        else {
+            return match;
+        }
+    });
+
+    // insert the words
+    result = result.replace(placeholderRegex, (match, placeholder) => {
         if (words.some(item => fitsIn(item.type, placeholder))) {
             if (part === "speakers") {
                 const examiningElements = words;
@@ -126,7 +176,8 @@ export default function replacePlaceholders(sentencePart, words, part) {
                     }
                 }
             }
-        } else if (part === "load" || part === "resilience") {
+        }
+        else if (part === "load" || part === "resilience") {
             if (placeholder === "load") {
                 return "[load]";
             } else if (placeholder === "resilience") {
