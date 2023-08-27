@@ -3,7 +3,7 @@
     {
       "metric": "how_many",
       "speakers": {
-        "description": "How many [actor]",
+        "description": "In total how many [actor]",
         "number_actor": "plural"
       },
       "message": {
@@ -19,9 +19,9 @@
       "expected": null
     },
     {
-      "metric": "how_often",
+      "metric": "maximum_throughput",
       "speakers": {
-        "description": "How often do [actor] on average",
+        "description": "What is the maximum number of [actor] who",
         "number_actor": "plural"
       },
       "message": {
@@ -33,17 +33,143 @@
         "description": "[preposition] [actor]",
         "number_actor": null
       },
+      "attachment": "at the same time",
+      "expected": null
+    },
+    {
+      "metric": "average_throughput",
+      "speakers": {
+        "description": "What is the average number of [actor] who",
+        "number_actor": "plural"
+      },
+      "message": {
+        "description": "[verb] [work object]",
+        "form_verb": "infinitive",
+        "number_work_object": "plural"
+      },
+      "audience": {
+        "description": "[preposition] [actor]",
+        "number_actor": null
+      },
+      "attachment": "at the same time",
+      "expected": null
+    },
+    {
+      "metric": "minimum_throughput",
+      "speakers": {
+        "description": "What is the minimum number of [actor] who",
+        "number_actor": "plural"
+      },
+      "message": {
+        "description": "[verb] [work object]",
+        "form_verb": "infinitive",
+        "number_work_object": "plural"
+      },
+      "audience": {
+        "description": "[preposition] [actor]",
+        "number_actor": null
+      },
+      "attachment": "at the same time",
+      "expected": null
+    },
+    {
+      "metric": "how_often_average",
+      "speakers": {
+        "description": "How often does [actor] on average",
+        "number_actor": "singular"
+      },
+      "message": {
+        "description": "[verb] [work object]",
+        "form_verb": "infinitive",
+        "number_work_object": "singular"
+      },
+      "audience": {
+        "description": "[preposition] [actor]",
+        "number_actor": null
+      },
       "attachment": "",
       "expected": null
     },
     {
-      "metric": "popularity",
+      "metric": "how_often_maximum",
+      "speakers": {
+        "description": "Up to how many times does [actor]",
+        "number_actor": "singular"
+      },
+      "message": {
+        "description": "[verb] [work object]",
+        "form_verb": "infinitive",
+        "number_work_object": "singular"
+      },
+      "audience": {
+        "description": "[preposition] [actor]",
+        "number_actor": null
+      },
+      "attachment": "",
+      "expected": null
+    },
+    {
+      "metric": "how_often_minimum",
+      "speakers": {
+        "description": "Up to how rarely does [actor]",
+        "number_actor": "singular"
+      },
+      "message": {
+        "description": "[verb] [work object]",
+        "form_verb": "infinitive",
+        "number_work_object": "singular"
+      },
+      "audience": {
+        "description": "[preposition] [actor]",
+        "number_actor": null
+      },
+      "attachment": "",
+      "expected": null
+    },
+    {
+      "metric": "popularity_more",
       "speakers": {
         "description": "",
         "number_actor": null
       },
       "message": {
         "description": "Are some [work object] more popular than others",
+        "form_verb": null,
+        "number_work_object": "plural"
+      },
+      "audience": {
+        "description": "",
+        "number_actor": null
+      },
+      "attachment": "",
+      "expected": null
+    },
+    {
+      "metric": "popularity_less",
+      "speakers": {
+        "description": "",
+        "number_actor": null
+      },
+      "message": {
+        "description": "Are some [work object] less popular than others",
+        "form_verb": null,
+        "number_work_object": "plural"
+      },
+      "audience": {
+        "description": "",
+        "number_actor": null
+      },
+      "attachment": "",
+      "expected": null
+    },
+    {
+      "metric": "popularity_equal",
+      "speakers": {
+        "description": "",
+        "number_actor": null
+      },
+      "message": {
+        "description": "Do all [work object] have the same popularity",
         "form_verb": null,
         "number_work_object": "plural"
       },
@@ -145,9 +271,9 @@
       "expected": null
     },
     {
-      "metric": "when_the_least",
+      "metric": "when_the_fewest",
       "speakers": {
-        "description": "When do least [actor]",
+        "description": "When do fewest [actor]",
         "number_actor": "plural"
       },
       "message": {
@@ -210,7 +336,25 @@
         "number_work_object": null
       },
       "audience": {
-        "description": "When have requests to [system] failed most often",
+        "description": "When do the most requests to [system] fail",
+        "number_actor": null
+      },
+      "attachment": "",
+      "expected": null
+    },
+    {
+      "metric": "when_less_request_fail",
+      "speakers": {
+        "description": "",
+        "number_actor": null
+      },
+      "message": {
+        "description": "",
+        "form_verb": null,
+        "number_work_object": null
+      },
+      "audience": {
+        "description": "When do the fewest requests to [system] fail",
         "number_actor": null
       },
       "attachment": "",
@@ -235,6 +379,42 @@
       "expected": null
     },
     {
+      "metric": "longest_time_to_failure",
+      "speakers": {
+        "description": "",
+        "number_actor": null
+      },
+      "message": {
+        "description": "",
+        "form_verb": null,
+        "number_work_object": null
+      },
+      "audience": {
+        "description": "What is the longest time until [system] fail",
+        "number_actor": null
+      },
+      "attachment": "",
+      "expected": null
+    },
+    {
+      "metric": "shortest_time_to_failure",
+      "speakers": {
+        "description": "",
+        "number_actor": null
+      },
+      "message": {
+        "description": "",
+        "form_verb": null,
+        "number_work_object": null
+      },
+      "audience": {
+        "description": "What is the shortest time until [system] fail",
+        "number_actor": null
+      },
+      "attachment": "",
+      "expected": null
+    },
+    {
       "metric": "mean_time_to_recover",
       "speakers": {
         "description": "",
@@ -253,57 +433,111 @@
       "expected": null
     },
     {
-      "metric": "maximum_throughput",
+      "metric": "longest_time_to_recover",
       "speakers": {
-        "description": "What is the maximum number of [actor] who",
-        "number_actor": "plural"
-      },
-      "message": {
-        "description": "[verb] [work object]",
-        "form_verb": "infinitive",
-        "number_work_object": "plural"
-      },
-      "audience": {
-        "description": "[preposition] [actor]",
+        "description": "",
         "number_actor": null
       },
-      "attachment": "at the same time",
+      "message": {
+        "description": "",
+        "form_verb": null,
+        "number_work_object": null
+      },
+      "audience": {
+        "description": "What is the longest time until [system] recover",
+        "number_actor": null
+      },
+      "attachment": "",
       "expected": null
     },
     {
-      "metric": "average_throughput",
+      "metric": "shortest_time_to_failure",
       "speakers": {
-        "description": "What is the average number of [actor] who",
-        "number_actor": "plural"
-      },
-      "message": {
-        "description": "[verb] [work object]",
-        "form_verb": "infinitive",
-        "number_work_object": "plural"
-      },
-      "audience": {
-        "description": "[preposition] [actor]",
+        "description": "",
         "number_actor": null
       },
-      "attachment": "at the same time",
+      "message": {
+        "description": "",
+        "form_verb": null,
+        "number_work_object": null
+      },
+      "audience": {
+        "description": "What is the shortest time until [system] recover",
+        "number_actor": null
+      },
+      "attachment": "",
       "expected": null
     },
     {
-      "metric": "minimum_throughput",
+      "metric": "availibility",
       "speakers": {
-        "description": "What is the minimum number of [actor] who",
-        "number_actor": "plural"
-      },
-      "message": {
-        "description": "[verb] [work object]",
-        "form_verb": "infinitive",
-        "number_work_object": "plural"
-      },
-      "audience": {
-        "description": "[preposition] [actor]",
+        "description": "",
         "number_actor": null
       },
-      "attachment": "at the same time",
+      "message": {
+        "description": "",
+        "form_verb": null,
+        "number_work_object": null
+      },
+      "audience": {
+        "description": "What is the availability of [system]",
+        "number_actor": null
+      },
+      "attachment": "",
+      "expected": null
+    },
+    {
+      "metric": "how_often_timeout",
+      "speakers": {
+        "description": "",
+        "number_actor": null
+      },
+      "message": {
+        "description": "",
+        "form_verb": null,
+        "number_work_object": null
+      },
+      "audience": {
+        "description": "How often does [system] have timeouts",
+        "number_actor": null
+      },
+      "attachment": "",
+      "expected": null
+    },
+    {
+      "metric": "when_most_timeout",
+      "speakers": {
+        "description": "",
+        "number_actor": null
+      },
+      "message": {
+        "description": "",
+        "form_verb": null,
+        "number_work_object": null
+      },
+      "audience": {
+        "description": "When do the most timeouts in [system] occur",
+        "number_actor": null
+      },
+      "attachment": "",
+      "expected": null
+    },
+    {
+      "metric": "when_less_timeout",
+      "speakers": {
+        "description": "",
+        "number_actor": null
+      },
+      "message": {
+        "description": "",
+        "form_verb": null,
+        "number_work_object": null
+      },
+      "audience": {
+        "description": "When do the fewest timeouts in [system] occur",
+        "number_actor": null
+      },
+      "attachment": "",
       "expected": null
     }
   ]
