@@ -19,7 +19,7 @@
       "expected": null,
       "what_if_mode": "load",
       "load_design": {
-        "description": "if [system] has a [load]",
+        "description": "if [system] [have] a [load]",
         "number_actor": null,
         "load_variants": ["load peak"]
       },
@@ -47,7 +47,7 @@
       "expected": null,
       "what_if_mode": "load",
       "load_design": {
-        "description": "if [system] has a [load]",
+        "description": "if [system] [have] a [load]",
         "number_actor": null,
         "load_variants": ["load increase"]
       },
@@ -75,12 +75,12 @@
       "expected": null,
       "what_if_mode": "load",
       "load_design": {
-        "description": "if [system] is under a [load]",
+        "description": "if [system] [are] under a [load]",
         "number_actor": null,
         "load_variants": ["constant load"]
       },
       "resilience_design": {
-        "description": "and has [resilience]",
+        "description": "and [have] [resilience]",
         "resilience_variants": ["None", "failed request", "late response", "unavailable"]
       }
     },
@@ -103,7 +103,7 @@
       "expected": null,
       "what_if_mode": "load",
       "load_design": {
-        "description": "compared to when [system] has a [load]",
+        "description": "compared to when [system] [have] a [load]",
         "number_actor": null,
         "load_variants": ["load peak"]
       },
@@ -131,12 +131,12 @@
       "expected": null,
       "what_if_mode": "load",
       "load_design": {
-        "description": "if [system] is under a [load]",
+        "description": "if [system] [are] under a [load]",
         "number_actor": null,
         "load_variants": ["constant load"]
       },
       "resilience_design": {
-        "description": "and has [resilience]",
+        "description": "and [have] [resilience]",
         "resilience_variants": ["None", "failed request", "late response", "unavailable"]
       }
     },
@@ -159,12 +159,12 @@
       "expected": null,
       "what_if_mode": "load",
       "load_design": {
-        "description": "if [system] is under a [load]",
+        "description": "if [system] [are] under a [load]",
         "number_actor": null,
         "load_variants": ["constant load"]
       },
       "resilience_design": {
-        "description": "and has [resilience]",
+        "description": "and [have] [resilience]",
         "resilience_variants": ["None", "failed request", "late response", "unavailable"]
       }
     },
@@ -187,7 +187,7 @@
       "expected": null,
       "what_if_mode": "load",
       "load_design": {
-        "description": "when [system] has a [load]",
+        "description": "when [system] [have] a [load]",
         "number_actor": null,
         "load_variants": ["load peak"]
       },
@@ -215,12 +215,12 @@
       "expected": null,
       "what_if_mode": "load",
       "load_design": {
-        "description": "if [system] is under a [load]",
+        "description": "if [system] [are] under a [load]",
         "number_actor": null,
         "load_variants": ["constant load"]
       },
       "resilience_design": {
-        "description": "and has [resilience]",
+        "description": "and [have] [resilience]",
         "resilience_variants": ["None", "failed request", "late response", "unavailable"]
       }
     },
@@ -243,7 +243,7 @@
       "expected": null,
       "what_if_mode": "load",
       "load_design": {
-        "description": "when [system] has a [load]",
+        "description": "when [system] [have] a [load]",
         "number_actor": null,
         "load_variants": ["load peak"]
       },
@@ -271,12 +271,12 @@
       "expected": null,
       "what_if_mode": "load",
       "load_design": {
-        "description": "if [system] is under a [load]",
+        "description": "if [system] [are] under a [load]",
         "number_actor": null,
         "load_variants": ["constant load"]
       },
       "resilience_design": {
-        "description": "and has [resilience]",
+        "description": "and [have] [resilience]",
         "resilience_variants": ["None", "failed request", "late response", "unavailable"]
       }
     },
@@ -299,7 +299,7 @@
       "expected": null,
       "what_if_mode": "load",
       "load_design": {
-        "description": "when [system] has a [load]",
+        "description": "when [system] [have] a [load]",
         "number_actor": null,
         "load_variants": ["load peak"]
       },
@@ -327,12 +327,12 @@
       "expected": null,
       "what_if_mode": "load",
       "load_design": {
-        "description": "if [system] is under a [load]",
+        "description": "if [system] [are] under a [load]",
         "number_actor": null,
         "load_variants": ["constant load"]
       },
       "resilience_design": {
-        "description": "and has [resilience]",
+        "description": "and [have] [resilience]",
         "resilience_variants": ["None", "failed request", "late response", "unavailable"]
       }
     },
@@ -355,7 +355,7 @@
       "expected": null,
       "what_if_mode": "load",
       "load_design": {
-        "description": "when [system] has a [load]",
+        "description": "when [system] [have] a [load]",
         "number_actor": null,
         "load_variants": ["load peak"]
       },
@@ -383,12 +383,12 @@
       "expected": null,
       "what_if_mode": "load",
       "load_design": {
-        "description": "if [system] is under a [load]",
+        "description": "if [system] [are] under a [load]",
         "number_actor": null,
         "load_variants": ["constant load"]
       },
       "resilience_design": {
-        "description": "and has [resilience]",
+        "description": "and [have] [resilience]",
         "resilience_variants": ["None", "failed request", "late response", "unavailable"]
       }
     },
@@ -411,7 +411,7 @@
       "expected": null,
       "what_if_mode": "load",
       "load_design": {
-        "description": "when [system] has a [load]",
+        "description": "when [system] [have] a [load]",
         "number_actor": null,
         "load_variants": ["load peak"]
       },
@@ -439,12 +439,12 @@
       "expected": null,
       "what_if_mode": "load",
       "load_design": {
-        "description": "if [system] is under a [load]",
+        "description": "if [system] [are] under a [load]",
         "number_actor": null,
         "load_variants": ["constant load"]
       },
       "resilience_design": {
-        "description": "and has [resilience]",
+        "description": "and [have] [resilience]",
         "resilience_variants": ["None", "failed request", "late response", "unavailable"]
       }
     },
@@ -467,7 +467,7 @@
       "expected": null,
       "what_if_mode": "load",
       "load_design": {
-        "description": "when [system] has a [load]",
+        "description": "when [system] [have] a [load]",
         "number_actor": null,
         "load_variants": ["load peak"]
       },
@@ -495,12 +495,12 @@
       "expected": null,
       "what_if_mode": "load",
       "load_design": {
-        "description": "if [system] is under a [load]",
+        "description": "if [system] [are] under a [load]",
         "number_actor": null,
         "load_variants": ["constant load"]
       },
       "resilience_design": {
-        "description": "and has [resilience]",
+        "description": "and [have] [resilience]",
         "resilience_variants": ["None", "failed request", "late response", "unavailable"]
       }
     },
@@ -523,7 +523,7 @@
       "expected": null,
       "what_if_mode": "load",
       "load_design": {
-        "description": "if [system] has a [load]",
+        "description": "if [system] [have] a [load]",
         "number_actor": null,
         "load_variants": ["load peak"]
       },
@@ -551,7 +551,7 @@
       "expected": null,
       "what_if_mode": "load",
       "load_design": {
-        "description": "if [system] has a [load]",
+        "description": "if [system] [have] a [load]",
         "number_actor": null,
         "load_variants": ["load increase"]
       },
@@ -579,7 +579,7 @@
       "expected": null,
       "what_if_mode": "load",
       "load_design": {
-        "description": "if [system] has a [load]",
+        "description": "if [system] [have] a [load]",
         "number_actor": null,
         "load_variants": ["load peak"]
       },
@@ -607,7 +607,7 @@
       "expected": null,
       "what_if_mode": "load",
       "load_design": {
-        "description": "if [system] has a [load]",
+        "description": "if [system] [have] a [load]",
         "number_actor": null,
         "load_variants": ["load increase"]
       },
@@ -635,12 +635,12 @@
       "expected": null,
       "what_if_mode": "load",
       "load_design": {
-        "description": "if [system] is under a [load]",
+        "description": "if [system] [are] under a [load]",
         "number_actor": null,
         "load_variants": ["constant load"]
       },
       "resilience_design": {
-        "description": "and has [resilience]",
+        "description": "and [have] [resilience]",
         "resilience_variants": ["None", "late response", "unavailable"]
       }
     },
@@ -663,12 +663,12 @@
       "expected": null,
       "what_if_mode": "load",
       "load_design": {
-        "description": "if [system] is under a [load]",
+        "description": "if [system] [are] under a [load]",
         "number_actor": null,
         "load_variants": ["constant load"]
       },
       "resilience_design": {
-        "description": "and has [resilience]",
+        "description": "and [have] [resilience]",
         "resilience_variants": ["None", "failed request", "late response"]
       }
     },
@@ -691,12 +691,12 @@
       "expected": null,
       "what_if_mode": "load",
       "load_design": {
-        "description": "if [system] is under a [load]",
+        "description": "if [system] [are] under a [load]",
         "number_actor": null,
         "load_variants": ["constant load"]
       },
       "resilience_design": {
-        "description": "and has [resilience]",
+        "description": "and [have] [resilience]",
         "resilience_variants": ["None", "failed request", "late response"]
       }
     },
@@ -719,12 +719,12 @@
       "expected": null,
       "what_if_mode": "load",
       "load_design": {
-        "description": "if [system] is under a [load]",
+        "description": "if [system] [are] under a [load]",
         "number_actor": null,
         "load_variants": ["constant load"]
       },
       "resilience_design": {
-        "description": "and has [resilience]",
+        "description": "and [have] [resilience]",
         "resilience_variants": ["None", "failed request", "late response"]
       }
     },
@@ -747,12 +747,12 @@
       "expected": null,
       "what_if_mode": "load",
       "load_design": {
-        "description": "if [system] is under a [load]",
+        "description": "if [system] [are] under a [load]",
         "number_actor": null,
         "load_variants": ["constant load"]
       },
       "resilience_design": {
-        "description": "and has [resilience]",
+        "description": "and [have] [resilience]",
         "resilience_variants": ["None", "failed request", "late response"]
       }
     },
@@ -775,12 +775,12 @@
       "expected": null,
       "what_if_mode": "load",
       "load_design": {
-        "description": "if [system] is under a [load]",
+        "description": "if [system] [are] under a [load]",
         "number_actor": null,
         "load_variants": ["constant load"]
       },
       "resilience_design": {
-        "description": "and has [resilience]",
+        "description": "and [have] [resilience]",
         "resilience_variants": ["None", "failed request", "late response"]
       }
     }

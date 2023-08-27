@@ -380,7 +380,7 @@ export default function ScenarioTestMenu(props) {
                                                 Choose an activity
                                             </option>
                                             {uniqueActivitys.map((edge) => {
-                                                return <option value={edge.name} key={edge.id}>{edge.name}</option>
+                                                return <option disabled={allDefinedScenarios.find(s => s.activity?.description === edge.name)} value={edge.name} key={edge.id}>{edge.name}</option>
                                             })}
                                         </select>
                                     </div>
