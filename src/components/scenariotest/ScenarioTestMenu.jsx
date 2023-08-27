@@ -191,7 +191,9 @@ export default function ScenarioTestMenu(props) {
         let selectedMode = event.target.value;
         let allDefinedScenariosCopy = deepCopy(allDefinedScenarios);
         allDefinedScenariosCopy[index].selected_mode = selectedMode;
-        allDefinedScenariosCopy[index].generatedScenariosList = getScenariosForActivityAndMode(scenario.activity, selectedMode);
+        let scenarioListForActivityAndMode = getScenariosForActivityAndMode(scenario.activity, selectedMode);
+        allDefinedScenariosCopy[index].generatedScenariosList = scenarioListForActivityAndMode;
+        allDefinedScenariosCopy[index].filteredScenariosList = scenarioListForActivityAndMode;
 
         setAllDefinedScenarios(allDefinedScenariosCopy);
     }
@@ -213,6 +215,8 @@ export default function ScenarioTestMenu(props) {
         allDefinedScenariosCopy[index].description_load = selectedScenario.description_load;
         allDefinedScenariosCopy[index].description_resilience = selectedScenario.description_resilience;
         allDefinedScenariosCopy[index].what_if_mode = selectedScenario.what_if_mode;
+
+        document.getElementById("search-input").value = "";
 
         setAllDefinedScenarios(allDefinedScenariosCopy);
     }
@@ -421,7 +425,7 @@ export default function ScenarioTestMenu(props) {
                                         </span>
                                     </label>
                                     <Tooltip id="enviroment-tooltip" style={{maxWidth: '256px'}}/>
-                                    <input type="text" id="search-input" placeholder="Search" autoComplete="off" value={scenario.description} onChange={(event) => filterScenarios(event, index)} className="searchScenarioInputField"/>
+                                    <input type="text" id="search-input" placeholder="Search for an interesting scenario" autoComplete="off" onChange={(event) => filterScenarios(event, index)} className="searchScenarioInputField"/>
                                     <div className="generated-scenarios">
                                         {scenario.filteredScenariosList?.map((filteredScenario) => {
                                             return (
