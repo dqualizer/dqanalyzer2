@@ -150,10 +150,9 @@ export default function ScenarioTestMenu(props) {
         let loadVariant = allLoadDesigns.find((variant) => variant.name === event.target.value);
         let copyLoadVariant = deepCopy(loadVariant);
 
-        if(copyLoadVariant.name === "None") {
+        if (copyLoadVariant.name === "None") {
             copyLoadVariant = null;
-        }
-        else {
+        } else {
             copyLoadVariant.design_parameters.forEach((parameter) => {
                 delete parameter.values;
                 parameter.value = null;
@@ -171,10 +170,9 @@ export default function ScenarioTestMenu(props) {
         let resilienceVariant = allResilienceDesigns.find((variant) => variant.name === event.target.value);
         let copyResilienceVariant = deepCopy(resilienceVariant);
 
-        if(copyResilienceVariant.name === "None") {
+        if (copyResilienceVariant.name === "None") {
             copyResilienceVariant = null;
-        }
-        else {
+        } else {
             copyResilienceVariant.design_parameters.forEach((parameter) => {
                 delete parameter.values;
                 parameter.value = null;
@@ -312,6 +310,28 @@ export default function ScenarioTestMenu(props) {
         setIsDeletingContainerDisabled(false);
     }
 
+    const isAddingButtonDisabled = () => {
+        let isDisabled = false;
+        for (const scenario of allDefinedScenarios) {
+            if (scenario.activity === null
+                || scenario.selected_mode === null
+                || scenario.description === null
+                || (scenario.selected_mode === "What if"
+                    && (scenario.load_decision === null
+                        || scenario.resilience_decision === null)) //TODO: add scenario.metric
+                || scenario.isValid === null
+                || scenario.isValid === false) {
+                isDisabled = true;
+            }
+        }
+        if (accuracy === null
+            || enviroment === null
+            || (enviroment === "Test" && timeSlot === null)) {
+            isDisabled = true;
+        }
+        return isDisabled;
+    }
+
     const deleteScenario = (indexToDelete) => {
         let newScenarioList = deepCopy(allDefinedScenarios);
         newScenarioList.splice(indexToDelete, 1);
@@ -374,20 +394,24 @@ export default function ScenarioTestMenu(props) {
                                         <label className="label">
                                             <span className="label-text">Activity</span>
                                         </label>
-                                        <select value={scenario.activity?.description} onChange={(event) => handleActivityChange(event, index)} id=""
+                                        <select value={scenario.activity?.description}
+                                                onChange={(event) => handleActivityChange(event, index)} id=""
                                                 className="select select-bordered w-full max-w-xs">
                                             <option selected={true} value="" disabled>
                                                 Choose an activity
                                             </option>
                                             {uniqueActivitys.map((edge) => {
-                                                return <option disabled={allDefinedScenarios.find(s => s.activity?.description === edge.name)} value={edge.name} key={edge.id}>{edge.name}</option>
+                                                return <option
+                                                    disabled={allDefinedScenarios.find(s => s.activity?.description === edge.name)}
+                                                    value={edge.name} key={edge.id}>{edge.name}</option>
                                             })}
                                         </select>
                                     </div>
 
                                     {scenario.activity !== null && !scenario.isValid ?
-                                        <p className="description">You cannot examine the activity {scenario.activity.description} because it is invalid.</p>
-                                    : null}
+                                        <p className="description">You cannot examine the
+                                            activity {scenario.activity.description} because it is invalid.</p>
+                                        : null}
 
                                     {scenario.activity !== null && scenario.isValid ?
                                         <div className="activity-container">
@@ -402,7 +426,7 @@ export default function ScenarioTestMenu(props) {
                                                                    onClick={(event) => handleModeChange(event, scenario, index)}
                                                                    name="Mode"
                                                                    data-title={mode.name}
-                                                                   className={scenario.selected_mode === mode.name? "btn btn-primary" : "btn"}
+                                                                   className={scenario.selected_mode === mode.name ? "btn btn-primary" : "btn"}
                                                                    id={mode.name + '-' + mode.description}
                                                                    data-tooltip-content={mode.description}/>
                                                             <Tooltip
@@ -412,254 +436,268 @@ export default function ScenarioTestMenu(props) {
                                                 }))}
                                             </div>
                                         </div>
-                                    : null}
+                                        : null}
 
-                            {scenario.selected_mode !== null ?
-                                <div className="actvity-container">
-                                    <label className="label">
+                                    {scenario.selected_mode !== null ?
+                                        <div className="actvity-container">
+                                            <label className="label">
                                         <span className="label-text">
                                             Scenario
-                                            <span className="ml-1 font-normal text-sm" data-tooltip-id="stimulus-tooltip"
+                                            <span className="ml-1 font-normal text-sm"
+                                                  data-tooltip-id="stimulus-tooltip"
                                                   data-tooltip-place="right"
                                                   data-tooltip-content='The environment is the system on which the scenario test is executed. Warning: If the test is executed on the production environment, system failures may occur.'>&#9432;</span>
                                         </span>
-                                    </label>
-                                    <Tooltip id="enviroment-tooltip" style={{maxWidth: '256px'}}/>
-                                    <input type="text" id="search-input" placeholder="Search for an interesting scenario" autoComplete="off" onChange={(event) => filterScenarios(event, index)} className="searchScenarioInputField"/>
-                                    <div className="generated-scenarios">
-                                        {scenario.filteredScenariosList?.map((filteredScenario) => {
-                                            return (
-                                                <div className="suggestionItem"
-                                                     key={filteredScenario.description} onClick={() => handleScenarioChange(filteredScenario, index)}>{filteredScenario.description}
-                                                </div>
-                                            )
-                                        })}
-                                    </div>
-                                    {scenario.description !== null ? ScenarioDescriptionFormatter(scenario) : null}
-                                </div>
-                                : null}
-
-                            {scenario.selected_mode === "What if" && scenario.description !== null ?
-                                <div className="activity-container">
-                                    <label className="label">
-                                        <h6>
-                                            Load Design
-                                            <span className="ml-1 font-normal text-sm"
-                                                  data-tooltip-id="response-measure-tooltip"
-                                                  data-tooltip-place="right"
-                                                  data-tooltip-content='The Load Design allows you to further design the simulated load depending on the selected stimulus. For instance, if you design a "Load Peak" stimulus, you will need to specify the final peak to be achieved and how long it takes to reach it.'>&#9432;</span>
-                                        </h6>
-                                        <Tooltip id="response-measure-tooltip" style={{maxWidth: '256px'}}/>
-                                    </label>
-                                    <label className="label">
-                                        <span className="label-text">Do you want to change the Load Design?</span>
-                                    </label>
-                                    <div className="btn-group">
-                                        <input type="radio" value="Yes"
-                                               onClick={(event) => handleLoadDecisionChange(event, index)}
-                                               name="ChangeLoadDesign"
-                                               data-title="Yes"
-                                               className="btn"
-                                               id={"ChangeLoadDesign" + "-" + "Yes"}
-                                               data-tooltip-content={"Choose your own load design"}
-                                               checked={scenario.load_decision === "Yes"}/>
-                                        <Tooltip
-                                            id={"ChangeLoadDesign" + "-" + "Yes"}/>
-
-                                        <input type="radio" value="No"
-                                               onClick={(event) => handleLoadDecisionChange(event, index)}
-                                               name="ChangeLoadDesign"
-                                               data-title="No"
-                                               className="btn"
-                                               id={"ChangeLoadDesign" + "-" + "No"}
-                                               data-tooltip-content={"Keep the load design"}
-                                               checked={scenario.load_decision === "No"}/>
-                                        <Tooltip
-                                            id={"ChangeLoadDesign" + "-" + "No"}/>
-                                    </div>
-
-                                    {scenario.load_decision === "Yes" ?
-                                        <div className="actvity-container">
-                                            <div className="actvity-container">
-                                                <select value={scenario.load_design?.name} onChange={(event) => handleLoadDesignChange(event, index)} id=""
-                                                        className="select select-bordered w-full max-w-xs">
-                                                    {allLoadDesigns.map((loadVariant) => {
-                                                        return <option value={loadVariant.name}
-                                                                       key={loadVariant.name}>{loadVariant.name}</option>
-                                                    })}
-                                                </select>
-                                            </div>
-                                            <div className="actvity-container">
-                                                {allLoadDesigns.map((loadVariant) => {
+                                            </label>
+                                            <Tooltip id="enviroment-tooltip" style={{maxWidth: '256px'}}/>
+                                            <input type="text" id="search-input"
+                                                   placeholder="Search for an interesting scenario" autoComplete="off"
+                                                   onChange={(event) => filterScenarios(event, index)}
+                                                   className="searchScenarioInputField"/>
+                                            <div className="generated-scenarios">
+                                                {scenario.filteredScenariosList?.map((filteredScenario) => {
                                                     return (
-                                                        <>
-                                                            {loadVariant.name === scenario.load_design?.name ? loadVariant.design_parameters != null && loadVariant.design_parameters.map((parameter, paramIndex) => {
-                                                                return (
-                                                                    <>
-                                                                        <label className="label">
+                                                        <div className="suggestionItem"
+                                                             key={filteredScenario.description}
+                                                             onClick={() => handleScenarioChange(filteredScenario, index)}>{filteredScenario.description}
+                                                        </div>
+                                                    )
+                                                })}
+                                            </div>
+                                            {scenario.description !== null ? ScenarioDescriptionFormatter(scenario) : null}
+                                        </div>
+                                        : null}
+
+                                    {scenario.selected_mode === "What if" && scenario.description !== null ?
+                                        <div className="activity-container">
+                                            <label className="label">
+                                                <h6>
+                                                    Load Design
+                                                    <span className="ml-1 font-normal text-sm"
+                                                          data-tooltip-id="response-measure-tooltip"
+                                                          data-tooltip-place="right"
+                                                          data-tooltip-content='The Load Design allows you to further design the simulated load depending on the selected stimulus. For instance, if you design a "Load Peak" stimulus, you will need to specify the final peak to be achieved and how long it takes to reach it.'>&#9432;</span>
+                                                </h6>
+                                                <Tooltip id="response-measure-tooltip" style={{maxWidth: '256px'}}/>
+                                            </label>
+                                            <label className="label">
+                                                <span
+                                                    className="label-text">Do you want to change the Load Design?</span>
+                                            </label>
+                                            <div className="btn-group">
+                                                <input type="radio" value="Yes"
+                                                       onClick={(event) => handleLoadDecisionChange(event, index)}
+                                                       name="ChangeLoadDesign"
+                                                       data-title="Yes"
+                                                       className="btn"
+                                                       id={"ChangeLoadDesign" + "-" + "Yes"}
+                                                       data-tooltip-content={"Choose your own load design"}
+                                                       checked={scenario.load_decision === "Yes"}/>
+                                                <Tooltip
+                                                    id={"ChangeLoadDesign" + "-" + "Yes"}/>
+
+                                                <input type="radio" value="No"
+                                                       onClick={(event) => handleLoadDecisionChange(event, index)}
+                                                       name="ChangeLoadDesign"
+                                                       data-title="No"
+                                                       className="btn"
+                                                       id={"ChangeLoadDesign" + "-" + "No"}
+                                                       data-tooltip-content={"Keep the load design"}
+                                                       checked={scenario.load_decision === "No"}/>
+                                                <Tooltip
+                                                    id={"ChangeLoadDesign" + "-" + "No"}/>
+                                            </div>
+
+                                            {scenario.load_decision === "Yes" ?
+                                                <div className="actvity-container">
+                                                    <div className="actvity-container">
+                                                        <select value={scenario.load_design?.name}
+                                                                onChange={(event) => handleLoadDesignChange(event, index)}
+                                                                id=""
+                                                                className="select select-bordered w-full max-w-xs">
+                                                            {allLoadDesigns.map((loadVariant) => {
+                                                                return <option value={loadVariant.name}
+                                                                               key={loadVariant.name}>{loadVariant.name}</option>
+                                                            })}
+                                                        </select>
+                                                    </div>
+                                                    <div className="actvity-container">
+                                                        {allLoadDesigns.map((loadVariant) => {
+                                                            return (
+                                                                <>
+                                                                    {loadVariant.name === scenario.load_design?.name ? loadVariant.design_parameters != null && loadVariant.design_parameters.map((parameter, paramIndex) => {
+                                                                        return (
+                                                                            <>
+                                                                                <label className="label">
                                                                     <span className="label-text">
                                                                         {parameter.name}
                                                                     </span>
-                                                                        </label>
-                                                                        <div className="btn-group">
-                                                                            {parameter.values != null && parameter.values.map((value) => {
-                                                                                return (
-                                                                                    <>
-                                                                                        <input type="radio"
-                                                                                               value={value}
-                                                                                               onClick={() => handleLoadDesignParameterChange(value, index, paramIndex)}
-                                                                                               name={parameter.name}
-                                                                                               data-title={value.name}
-                                                                                               className="btn"
-                                                                                               data-tooltip-id={value.name + '-' + value.value}
-                                                                                               data-tooltip-content={'Value: ' + value.value}
-                                                                                               checked={scenario.load_design?.design_parameters[paramIndex].value?.name === value.name}/>
-                                                                                        <Tooltip
-                                                                                            id={value.name + '-' + value.value}/>
-                                                                                    </>
-                                                                                )
-                                                                            })}
-                                                                        </div>
-                                                                    </>
-                                                                )
-                                                            }) : null
-                                                            }
-                                                        </>)
-                                                })}
-                                            </div>
+                                                                                </label>
+                                                                                <div className="btn-group">
+                                                                                    {parameter.values != null && parameter.values.map((value) => {
+                                                                                        return (
+                                                                                            <>
+                                                                                                <input type="radio"
+                                                                                                       value={value}
+                                                                                                       onClick={() => handleLoadDesignParameterChange(value, index, paramIndex)}
+                                                                                                       name={parameter.name}
+                                                                                                       data-title={value.name}
+                                                                                                       className="btn"
+                                                                                                       data-tooltip-id={value.name + '-' + value.value}
+                                                                                                       data-tooltip-content={'Value: ' + value.value}
+                                                                                                       checked={scenario.load_design?.design_parameters[paramIndex].value?.name === value.name}/>
+                                                                                                <Tooltip
+                                                                                                    id={value.name + '-' + value.value}/>
+                                                                                            </>
+                                                                                        )
+                                                                                    })}
+                                                                                </div>
+                                                                            </>
+                                                                        )
+                                                                    }) : null
+                                                                    }
+                                                                </>)
+                                                        })}
+                                                    </div>
+                                                </div>
+                                                : null}
                                         </div>
                                         : null}
-                                </div>
-                                : null}
 
-                            {scenario.selected_mode === "What if" && scenario.description !== null && scenario.load_decision !== null ?
-                                <div className="activity-container">
-                                    <label className="label">
-                                        <h6>
-                                            Resilience Design
-                                            <span className="ml-1 font-normal text-sm"
-                                                  data-tooltip-id="response-measure-tooltip"
-                                                  data-tooltip-place="right"
-                                                  data-tooltip-content='The Load Design allows you to further design the simulated load depending on the selected stimulus. For instance, if you design a "Load Peak" stimulus, you will need to specify the final peak to be achieved and how long it takes to reach it.'>&#9432;</span>
-                                        </h6>
-                                        <Tooltip id="response-measure-tooltip" style={{maxWidth: '256px'}}/>
-                                    </label>
-                                    <label className="label">
-                                        <span className="label-text">Do you want to change the Resilience Design?</span>
-                                    </label>
-                                    <div className="btn-group">
-                                        <input type="radio" value="Yes"
-                                               onClick={(event) => handleResilienceDecisionChange(event, index)}
-                                               name="ChangeResilienceDesign"
-                                               data-title="Yes"
-                                               className="btn"
-                                               id={"ChangeResilienceDesign" + "-" + "Yes"}
-                                               data-tooltip-content={"Choose your own resilience design"}
-                                               checked={scenario.resilience_decision === "Yes"}/>
-                                        <Tooltip
-                                            id={"ChangeResilienceDesign" + "-" + "Yes"}/>
+                                    {scenario.selected_mode === "What if" && scenario.description !== null && scenario.load_decision !== null ?
+                                        <div className="activity-container">
+                                            <label className="label">
+                                                <h6>
+                                                    Resilience Design
+                                                    <span className="ml-1 font-normal text-sm"
+                                                          data-tooltip-id="response-measure-tooltip"
+                                                          data-tooltip-place="right"
+                                                          data-tooltip-content='The Load Design allows you to further design the simulated load depending on the selected stimulus. For instance, if you design a "Load Peak" stimulus, you will need to specify the final peak to be achieved and how long it takes to reach it.'>&#9432;</span>
+                                                </h6>
+                                                <Tooltip id="response-measure-tooltip" style={{maxWidth: '256px'}}/>
+                                            </label>
+                                            <label className="label">
+                                                <span className="label-text">Do you want to change the Resilience Design?</span>
+                                            </label>
+                                            <div className="btn-group">
+                                                <input type="radio" value="Yes"
+                                                       onClick={(event) => handleResilienceDecisionChange(event, index)}
+                                                       name="ChangeResilienceDesign"
+                                                       data-title="Yes"
+                                                       className="btn"
+                                                       id={"ChangeResilienceDesign" + "-" + "Yes"}
+                                                       data-tooltip-content={"Choose your own resilience design"}
+                                                       checked={scenario.resilience_decision === "Yes"}/>
+                                                <Tooltip
+                                                    id={"ChangeResilienceDesign" + "-" + "Yes"}/>
 
-                                        <input type="radio" value="No"
-                                               onClick={(event) => handleResilienceDecisionChange(event, index)}
-                                               name="ChangeResilienceDesign"
-                                               data-title="No"
-                                               className="btn"
-                                               id={"ChangeResilienceDesign" + "-" + "No"}
-                                               data-tooltip-content={"Keep the resilience design"}
-                                               checked={scenario.resilience_decision === "No"}/>
-                                        <Tooltip
-                                            id={"ChangeResilienceDesign" + "-" + "No"}/>
-                                    </div>
+                                                <input type="radio" value="No"
+                                                       onClick={(event) => handleResilienceDecisionChange(event, index)}
+                                                       name="ChangeResilienceDesign"
+                                                       data-title="No"
+                                                       className="btn"
+                                                       id={"ChangeResilienceDesign" + "-" + "No"}
+                                                       data-tooltip-content={"Keep the resilience design"}
+                                                       checked={scenario.resilience_decision === "No"}/>
+                                                <Tooltip
+                                                    id={"ChangeResilienceDesign" + "-" + "No"}/>
+                                            </div>
 
-                                    {scenario.resilience_decision === "Yes" ?
-                                        <div className="actvity-container">
-                                            <select value={scenario.resilience_design?.name} onChange={(event) => handleResilienceDesignChange(event, index)} id=""
-                                                    className="select select-bordered w-full max-w-xs">
-                                                {allResilienceDesigns.map((resilienceVariant) => {
-                                                    return <option value={resilienceVariant.name}
-                                                                   key={resilienceVariant.name}>{resilienceVariant.name}</option>
-                                                })}
-                                            </select>
+                                            {scenario.resilience_decision === "Yes" ?
+                                                <div className="actvity-container">
+                                                    <select value={scenario.resilience_design?.name}
+                                                            onChange={(event) => handleResilienceDesignChange(event, index)}
+                                                            id=""
+                                                            className="select select-bordered w-full max-w-xs">
+                                                        {allResilienceDesigns.map((resilienceVariant) => {
+                                                            return <option value={resilienceVariant.name}
+                                                                           key={resilienceVariant.name}>{resilienceVariant.name}</option>
+                                                        })}
+                                                    </select>
 
-                                            {/*TODO: Add Tooltip for each element*/}
-                                            <div className="actvity-container">
-                                                {allResilienceDesigns.map((resilienceVariant) => {
-                                                    return (
-                                                        <>
-                                                            {resilienceVariant.name === scenario.resilience_design?.name ? resilienceVariant.design_parameters != null && resilienceVariant.design_parameters.map((parameter, paramIndex) => {
-                                                                return (
-                                                                    <>
-                                                                        <label className="label">
+                                                    {/*TODO: Add Tooltip for each element*/}
+                                                    <div className="actvity-container">
+                                                        {allResilienceDesigns.map((resilienceVariant) => {
+                                                            return (
+                                                                <>
+                                                                    {resilienceVariant.name === scenario.resilience_design?.name ? resilienceVariant.design_parameters != null && resilienceVariant.design_parameters.map((parameter, paramIndex) => {
+                                                                        return (
+                                                                            <>
+                                                                                <label className="label">
                                                                         <span className="label-text">
                                                                             {parameter.name}
                                                                         </span>
-                                                                        </label>
-                                                                        <div className="btn-group">
-                                                                            {parameter.values != null && parameter.values.map((value) => {
-                                                                                return (
-                                                                                    <>
-                                                                                        <input type="radio" value={value}
-                                                                                               onClick={() => handleResilienceDesignParameterChange(value, index, paramIndex)}
-                                                                                               name={parameter.name}
-                                                                                               data-title={value.name}
-                                                                                               className="btn"
-                                                                                               data-tooltip-id={value.name + '-' + value.value}
-                                                                                               data-tooltip-content={'Value: ' + value.value}
-                                                                                               checked={scenario.resilience_design.design_parameters[paramIndex].value?.name === value.name}/>
-                                                                                        <Tooltip
-                                                                                            id={value.name + '-' + value.value}/>
-                                                                                    </>
-                                                                                )
-                                                                            })}
-                                                                        </div>
-                                                                    </>
-                                                                )
-                                                            }) : null
-                                                            }
-                                                        </>)
-                                                })}
-                                            </div>
+                                                                                </label>
+                                                                                <div className="btn-group">
+                                                                                    {parameter.values != null && parameter.values.map((value) => {
+                                                                                        return (
+                                                                                            <>
+                                                                                                <input type="radio"
+                                                                                                       value={value}
+                                                                                                       onClick={() => handleResilienceDesignParameterChange(value, index, paramIndex)}
+                                                                                                       name={parameter.name}
+                                                                                                       data-title={value.name}
+                                                                                                       className="btn"
+                                                                                                       data-tooltip-id={value.name + '-' + value.value}
+                                                                                                       data-tooltip-content={'Value: ' + value.value}
+                                                                                                       checked={scenario.resilience_design.design_parameters[paramIndex].value?.name === value.name}/>
+                                                                                                <Tooltip
+                                                                                                    id={value.name + '-' + value.value}/>
+                                                                                            </>
+                                                                                        )
+                                                                                    })}
+                                                                                </div>
+                                                                            </>
+                                                                        )
+                                                                    }) : null
+                                                                    }
+                                                                </>)
+                                                        })}
+                                                    </div>
+                                                </div>
+                                                : null}
                                         </div>
                                         : null}
+
+                                    {/*{scenario.selected_mode !== null && scenario.description !== null && (scenario.selected_mode === "Monitoring" || (scenario.selected_mode === "What if" && scenario.load_decision !== null && scenario.resilience_decision !== null)) ?*/}
+                                    {/*    <div>*/}
+                                    {/*        <label className="label">*/}
+                                    {/*            <h6>*/}
+                                    {/*                Response Measure*/}
+                                    {/*                <span className="ml-1 font-normal text-sm"*/}
+                                    {/*                      data-tooltip-id="response-measure-tooltip"*/}
+                                    {/*                      data-tooltip-place="right"*/}
+                                    {/*                      data-tooltip-content='The Load Design allows you to further design the simulated load depending on the selected stimulus. For instance, if you design a "Load Peak" stimulus, you will need to specify the final peak to be achieved and how long it takes to reach it.'>&#9432;</span>*/}
+                                    {/*            </h6>*/}
+                                    {/*            <Tooltip id="response-measure-tooltip" style={{maxWidth: '256px'}}/>*/}
+                                    {/*        </label>*/}
+
+                                    {/*        <div className="btn-group">*/}
+                                    {/*            {allMonitoringMetrics.find((metric) => metric.metric === scenario.metric).expected.map((responseParameter => {*/}
+                                    {/*                return (*/}
+                                    {/*                    <>*/}
+                                    {/*                        <input type="radio" value={responseParameter.value}*/}
+                                    {/*                               onClick={() => handleResponseParameterChange(responseParameter, index)}*/}
+                                    {/*                               name={"Response Measure" + index}*/}
+                                    {/*                               data-title={responseParameter.value}*/}
+                                    {/*                               className={scenario.expected === responseParameter? "btn btn-primary" : "btn"}*/}
+                                    {/*                               data-tooltip-id={responseParameter.value}*/}
+                                    {/*                               data-tooltip-content={"Value: " + responseParameter.value + " " + responseParameter.unit}/>*/}
+                                    {/*                        <Tooltip*/}
+                                    {/*                            id={responseParameter.value}/>*/}
+                                    {/*                    </>*/}
+                                    {/*                )*/}
+                                    {/*            }))}*/}
+                                    {/*        </div>*/}
+
+                                    {/*    </div>*/}
+                                    {/*    : null}*/}
+                                    <button className="btn deleting-container-button"
+                                            disabled={isDeletingContainerDisabled}
+                                            onClick={() => deleteScenario(index)}>X
+                                    </button>
                                 </div>
-                                : null}
-
-                            {/*{scenario.selected_mode !== null && scenario.description !== null && (scenario.selected_mode === "Monitoring" || (scenario.selected_mode === "What if" && scenario.load_decision !== null && scenario.resilience_decision !== null)) ?*/}
-                            {/*    <div>*/}
-                            {/*        <label className="label">*/}
-                            {/*            <h6>*/}
-                            {/*                Response Measure*/}
-                            {/*                <span className="ml-1 font-normal text-sm"*/}
-                            {/*                      data-tooltip-id="response-measure-tooltip"*/}
-                            {/*                      data-tooltip-place="right"*/}
-                            {/*                      data-tooltip-content='The Load Design allows you to further design the simulated load depending on the selected stimulus. For instance, if you design a "Load Peak" stimulus, you will need to specify the final peak to be achieved and how long it takes to reach it.'>&#9432;</span>*/}
-                            {/*            </h6>*/}
-                            {/*            <Tooltip id="response-measure-tooltip" style={{maxWidth: '256px'}}/>*/}
-                            {/*        </label>*/}
-
-                            {/*        <div className="btn-group">*/}
-                            {/*            {allMonitoringMetrics.find((metric) => metric.metric === scenario.metric).expected.map((responseParameter => {*/}
-                            {/*                return (*/}
-                            {/*                    <>*/}
-                            {/*                        <input type="radio" value={responseParameter.value}*/}
-                            {/*                               onClick={() => handleResponseParameterChange(responseParameter, index)}*/}
-                            {/*                               name={"Response Measure" + index}*/}
-                            {/*                               data-title={responseParameter.value}*/}
-                            {/*                               className={scenario.expected === responseParameter? "btn btn-primary" : "btn"}*/}
-                            {/*                               data-tooltip-id={responseParameter.value}*/}
-                            {/*                               data-tooltip-content={"Value: " + responseParameter.value + " " + responseParameter.unit}/>*/}
-                            {/*                        <Tooltip*/}
-                            {/*                            id={responseParameter.value}/>*/}
-                            {/*                    </>*/}
-                            {/*                )*/}
-                            {/*            }))}*/}
-                            {/*        </div>*/}
-
-                            {/*    </div>*/}
-                            {/*    : null}*/}
-                                <button className="btn deleting-container-button" disabled={isDeletingContainerDisabled} onClick={() => deleteScenario(index)}>X</button>
-                        </div>
-                        )
+                            )
                         })}
 
 
@@ -753,7 +791,7 @@ export default function ScenarioTestMenu(props) {
                                 Back
                             </button>
 
-                            <button onClick={addScenarioTest} className="btn">
+                            <button onClick={addScenarioTest} className="btn" disabled={isAddingButtonDisabled()}>
                                 Add Test
                             </button>
                         </div>
