@@ -32,7 +32,6 @@ export default function ScenarioDescriptionFormatter(scenario) {
     if(scenario.selected_mode === "What if") {
         let loadVariantWithPlaceholder = scenarioSpecs.load_design.find(loadVariant => loadVariant.name === scenario.load_design?.name);
         let resilientVariantWithPlaceholder = scenarioSpecs.resilience_design.find(resilientVariant => resilientVariant.name === scenario.resilience_design?.name);
-        console.log(loadVariantWithPlaceholder);
 
         let load_description = scenario.description_load?.replace(" [load]", "");
         let resilience_description = scenario.description_resilience?.replace(" [resilience]", "");
