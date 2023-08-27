@@ -24,7 +24,7 @@
         "load_variants": ["load peak"]
       },
       "resilience_design": {
-        "description": "and has [resilience]",
+        "description": "and [resilience]",
         "resilience_variants": ["None", "failed request", "late response", "unavailable"]
       }
     },
@@ -52,7 +52,7 @@
         "load_variants": ["load increase"]
       },
       "resilience_design": {
-        "description": "and has [resilience]",
+        "description": "and [resilience]",
         "resilience_variants": ["None", "failed request", "late response", "unavailable"]
       }
     },
@@ -192,7 +192,7 @@
         "load_variants": ["load peak"]
       },
       "resilience_design": {
-        "description": "and has [resilience]",
+        "description": "and [resilience]",
         "resilience_variants": ["None", "failed request", "late response", "unavailable"]
       }
     },
@@ -248,7 +248,7 @@
         "load_variants": ["load peak"]
       },
       "resilience_design": {
-        "description": "and has [resilience]",
+        "description": "and [resilience]",
         "resilience_variants": ["None", "failed request", "late response", "unavailable"]
       }
     },
@@ -304,7 +304,7 @@
         "load_variants": ["load peak"]
       },
       "resilience_design": {
-        "description": "and has [resilience]",
+        "description": "and [resilience]",
         "resilience_variants": ["None", "failed request", "late response", "unavailable"]
       }
     },
@@ -360,7 +360,7 @@
         "load_variants": ["load peak"]
       },
       "resilience_design": {
-        "description": "and has [resilience]",
+        "description": "and [resilience]",
         "resilience_variants": ["None", "failed request", "late response", "unavailable"]
       }
     },
@@ -416,7 +416,7 @@
         "load_variants": ["load peak"]
       },
       "resilience_design": {
-        "description": "and has [resilience]",
+        "description": "and [resilience]",
         "resilience_variants": ["None", "failed request", "late response", "unavailable"]
       }
     },
@@ -472,7 +472,7 @@
         "load_variants": ["load peak"]
       },
       "resilience_design": {
-        "description": "and has [resilience]",
+        "description": "and [resilience]",
         "resilience_variants": ["None", "failed request", "late response", "unavailable"]
       }
     },
@@ -584,7 +584,7 @@
         "load_variants": ["load peak"]
       },
       "resilience_design": {
-        "description": "and has [resilience]",
+        "description": "and [resilience]",
         "resilience_variants": ["None", "late response", "unavailable"]
       }
     },
@@ -612,7 +612,7 @@
         "load_variants": ["load increase"]
       },
       "resilience_design": {
-        "description": "and has [resilience]",
+        "description": "and [resilience]",
         "resilience_variants": ["None", "late response", "unavailable"]
       }
     },
