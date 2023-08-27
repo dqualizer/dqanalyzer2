@@ -213,6 +213,8 @@ export default function ScenarioTestMenu(props) {
         allDefinedScenariosCopy[index].description_load = selectedScenario.description_load;
         allDefinedScenariosCopy[index].description_resilience = selectedScenario.description_resilience;
         allDefinedScenariosCopy[index].what_if_mode = selectedScenario.what_if_mode;
+        allDefinedScenariosCopy[index].saved_load_design = selectedScenario.load_design;
+        allDefinedScenariosCopy[index].saved_resilience_design = selectedScenario.resilience_design;
 
         document.getElementById("search-input").value = "";
 
@@ -234,6 +236,11 @@ export default function ScenarioTestMenu(props) {
         let chosenLoadDecision = event.target.value;
         let allDefinedScenariosCopy = deepCopy(allDefinedScenarios);
         allDefinedScenariosCopy[index].load_decision = chosenLoadDecision;
+
+        if(chosenLoadDecision === "No") {
+            allDefinedScenariosCopy[index].load_design = allDefinedScenariosCopy[index].saved_load_design;
+        }
+
         setAllDefinedScenarios(allDefinedScenariosCopy);
     }
 
@@ -241,6 +248,11 @@ export default function ScenarioTestMenu(props) {
         let chosenResilienceDecision = event.target.value;
         let allDefinedScenariosCopy = deepCopy(allDefinedScenarios);
         allDefinedScenariosCopy[index].resilience_decision = chosenResilienceDecision;
+
+        if(chosenResilienceDecision === "No") {
+            allDefinedScenariosCopy[index].resilience_design = allDefinedScenariosCopy[index].saved_resilience_design;
+        }
+
         setAllDefinedScenarios(allDefinedScenariosCopy);
     }
 
