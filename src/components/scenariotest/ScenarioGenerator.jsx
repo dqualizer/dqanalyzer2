@@ -43,6 +43,10 @@ export default function ScenarioGenerator(mode, wordArray) {
 
             sentence.description = SentenceBuilder(sentence, "What if");
 
+            if(sentence.description === null) {
+                continue;
+            }
+
             scenarioArray.push(sentence);
         }
         return scenarioArray;

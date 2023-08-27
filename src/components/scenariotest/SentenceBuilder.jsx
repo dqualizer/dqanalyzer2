@@ -7,6 +7,10 @@ export default function SentenceBuilder(sentence, mode) {
     const getWhatIfDescription = (mode, loadDescriptionToReplace, resilienceDescriptionToReplace, loadDesign, resilienceDesign) => {
 
         if(mode === "load") {
+            // if there is no Description
+            if(loadDescriptionToReplace === null) {
+                return null;
+            }
             let loadVariantWithPlaceholder = scenarioSpecs.load_design.find(loadVariant => loadVariant.name === loadDesign.name);
             let loadDescription = WhatIfDescriptionFiller(loadVariantWithPlaceholder, loadDesign);
             loadDescriptionToReplace = loadDescriptionToReplace.replace("[load]", loadDescription);
@@ -44,7 +48,12 @@ export default function SentenceBuilder(sentence, mode) {
             }
             let attachment = sentence.attachment === "" ? "": " " + sentence.attachment;
             let descriptionWhatIf = getWhatIfDescription(sentence.what_if_mode, sentence.description_load, sentence.description_resilience, sentence.load_design, sentence.resilience_design);
-            return descriptionList.join(" ") + attachment + " " + descriptionWhatIf + "?";
+
+            if(descriptionWhatIf === null) {
+                return null;
+            }
+
+            return descriptionList.join(" ") + attachment + descriptionWhatIf + "?";
         }
         else {
             let descriptionList = [];
