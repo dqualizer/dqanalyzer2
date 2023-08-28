@@ -335,6 +335,10 @@ export default function ScenarioTestMenu(props) {
                 || scenario.isValid === false) {
                 isDisabled = true;
             }
+            else if(scenario.selected_mode === "What if" && (scenario.load_design?.design_parameters.find(param => param.value === null)
+                || scenario.resilience_design?.design_parameters.find(param => param.value === null))) {
+                isDisabled = true;
+            }
         }
         if (accuracy === null
             || enviroment === null
