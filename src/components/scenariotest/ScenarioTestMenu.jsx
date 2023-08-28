@@ -375,7 +375,7 @@ export default function ScenarioTestMenu(props) {
         }
         rqa.settings.accuracy = accuracy;
         rqa.settings.environment = enviroment;
-        rqa.settings.timeSlot = timeSlot;
+        rqa.settings.time_slot = timeSlot;
         console.log(rqa);
 
         // post the RQA to the axios api
