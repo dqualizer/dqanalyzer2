@@ -50,8 +50,6 @@ export default function ScenarioTestMenu(props) {
     const allLoadDesigns = scenarioSpecs.load_design;
     const allResilienceDesigns = scenarioSpecs.resilience_design;
     const allModes = scenarioSpecs.mode;
-    const allMonitoringMetrics = monitoringMetrics.metrics;
-    // const metrics = scenarioSpecs.metrics;
     const settings = scenarioSpecs.settings;
 
     let initRQADefiniton = {
@@ -84,8 +82,11 @@ export default function ScenarioTestMenu(props) {
     const [enviroment, setEnviroment] = useState(null);
     const [timeSlot, setTimeSlot] = useState(null);
 
+    const [isAllActivities, setIsAllActivities] = useState(false);
     const [isActivityView, setIsActivityView] = useState(true);
     const [isDeletingContainerDisabled, setIsDeletingContainerDisabled] = useState(true);
+    const [allActivityScenarios, setAllActivityScenarios] = useState([]);
+    const [filteredActivityScenarios, setFilteredActivityScenarios] = useState([]);
 
     // state-based RQA-definition
     const [rqa, setRqa] = useState(initRQADefiniton);
@@ -388,18 +389,195 @@ export default function ScenarioTestMenu(props) {
 
         let generatedSentences = ScenarioGenerator(mode, wordArray);
 
-        ScenariosToFileWriter(generatedSentences);
+        //ScenariosToFileWriter(generatedSentences);
 
         return generatedSentences;
+    }
+
+    const isAllActivitiesDisabled = () => {
+        let isDisabled = false;
+        for (let scenario of allDefinedScenarios) {
+            if(scenario.activity !== null) {
+                isDisabled = true;
+            }
+        }
+        if(allDefinedScenarios.length > 1) {
+            isDisabled = true;
+        }
+
+        return isDisabled;
+    }
+
+    const switchToAllActivities = () => {
+        if(isActivityView) {
+            setIsActivityView(false);
+            setIsAllActivities(true);
+            generateScenariosForAllActivities();
+
+        }
+        else {
+            setIsActivityView(true);
+            setIsAllActivities(false);
+            setAllActivityScenarios([]);
+            setFilteredActivityScenarios([]);
+        }
+    }
+
+    const generateScenariosForAllActivities = () => {
+        let scenariosForAllActivities = [];
+        for (let activity of uniqueActivitys) {
+            let activityEdges = allActivities.find((artifact) => artifact.description === activity.name);
+
+            // validate activity
+            let wordArray = ActivityParser(props.nodes, props.edges, activityEdges);
+            let isValidActivity = ActivityValidator(wordArray);
+            if(!isValidActivity) {
+                continue;
+            }
+            let allWhatIfScenariosForActivity = getScenariosForActivityAndMode(activityEdges, "What if");
+            let allMonitoringScenariosForActivity = getScenariosForActivityAndMode(activityEdges, "Monitoring");
+
+            for (let whatIfScenario of allWhatIfScenariosForActivity) {
+                scenariosForAllActivities.push(
+                    {
+                        "activity": activityEdges,
+                        "selected_mode": "What if",
+                        "generatedScenariosList": allWhatIfScenariosForActivity,
+                        "filteredScenariosList": null,
+                        "description": whatIfScenario.description,
+                        "load_decision": null,
+                        "load_design": whatIfScenario.load_design,
+                        "resilience_decision": null,
+                        "resilience_design": whatIfScenario.resilience_design,
+                        "metric": whatIfScenario.metric,
+                        "expected": whatIfScenario.expected,
+                        "isValid": true,
+                        "description_speakers": whatIfScenario.description_speakers,
+                        "description_message": whatIfScenario.description_message,
+                        "description_audience": whatIfScenario.description_audience,
+                        "attachment": whatIfScenario.attachment,
+                        "description_load": whatIfScenario.description_load,
+                        "description_resilience": whatIfScenario.description_resilience,
+                        "what_if_mode": whatIfScenario.what_if_mode,
+                        "saved_load_design": whatIfScenario.saved_load_design,
+                        "saved_resilience_design": whatIfScenario.saved_resilience_design,
+                    }
+                )
+            }
+
+            for (let monitoringScenario of allMonitoringScenariosForActivity) {
+                scenariosForAllActivities.push(
+                    {
+                        "activity": activityEdges,
+                        "selected_mode": "Monitoring",
+                        "generatedScenariosList": allMonitoringScenariosForActivity,
+                        "filteredScenariosList": null,
+                        "description": monitoringScenario.description,
+                        "load_decision": null,
+                        "load_design": monitoringScenario.load_design,
+                        "resilience_decision": null,
+                        "resilience_design": monitoringScenario.resilience_design,
+                        "metric": monitoringScenario.metric,
+                        "expected": monitoringScenario.expected,
+                        "isValid": true,
+                        "description_speakers": monitoringScenario.description_speakers,
+                        "description_message": monitoringScenario.description_message,
+                        "description_audience": monitoringScenario.description_audience,
+                        "attachment": monitoringScenario.attachment,
+                        "description_load": monitoringScenario.description_load,
+                        "description_resilience": monitoringScenario.description_resilience,
+                        "what_if_mode": monitoringScenario.what_if_mode,
+                        "saved_load_design": monitoringScenario.saved_load_design,
+                        "saved_resilience_design": monitoringScenario.saved_resilience_design,
+                    }
+                )
+            }
+        }
+        setAllActivityScenarios(scenariosForAllActivities);
+        setFilteredActivityScenarios(scenariosForAllActivities);
+    }
+
+    const filterAllActivityScenarios = (event) => {
+        const inputText = event.target.value;
+        let filteredScenarios = deepCopy(allActivityScenarios);
+        let result = filteredScenarios.filter(isShownScenario =>
+            isShownScenario.description.toLowerCase().includes(inputText.toLowerCase())
+        );
+        setFilteredActivityScenarios(result);
+    }
+
+    const handleAllActivityScenarioChange = (selectedScenario) => {
+        let allDefinedScenariosCopy = deepCopy(allDefinedScenarios);
+
+        allDefinedScenariosCopy[0].activity = selectedScenario.activity;
+        allDefinedScenariosCopy[0].selected_mode = selectedScenario.selected_mode;
+        allDefinedScenariosCopy[0].description = selectedScenario.description;
+        allDefinedScenariosCopy[0].metric = selectedScenario.metric;
+        allDefinedScenariosCopy[0].expected = selectedScenario.expected;
+        allDefinedScenariosCopy[0].load_design = selectedScenario.load_design;
+        allDefinedScenariosCopy[0].resilience_design = selectedScenario.resilience_design;
+        allDefinedScenariosCopy[0].filteredScenariosList = null;
+        allDefinedScenariosCopy[0].load_decision = null;
+        allDefinedScenariosCopy[0].resilience_decision = null;
+        allDefinedScenariosCopy[0].description_speakers = selectedScenario.description_speakers;
+        allDefinedScenariosCopy[0].description_message = selectedScenario.description_message;
+        allDefinedScenariosCopy[0].description_audience = selectedScenario.description_audience;
+        allDefinedScenariosCopy[0].attachment = selectedScenario.attachment;
+        allDefinedScenariosCopy[0].description_load = selectedScenario.description_load;
+        allDefinedScenariosCopy[0].description_resilience = selectedScenario.description_resilience;
+        allDefinedScenariosCopy[0].what_if_mode = selectedScenario.what_if_mode;
+        allDefinedScenariosCopy[0].saved_load_design = selectedScenario.load_design;
+        allDefinedScenariosCopy[0].saved_resilience_design = selectedScenario.resilience_design;
+        allDefinedScenariosCopy[0].isValid = selectedScenario.isValid;
+        allDefinedScenariosCopy[0].generatedScenariosList = selectedScenario.generatedScenariosList;
+
+        setAllDefinedScenarios(allDefinedScenariosCopy);
+        switchToAllActivities();
     }
 
     return (
         <>
             <div className="p-4 prose overflow-scroll h-full"
-                 style={{width: `${sidebarWidth}px`, cursor: isResizing ? 'col-resize' : 'default',}}>
-                <h3>Scenario Test Specification</h3>
+                 style={{width: `${sidebarWidth}px`, cursor: isResizing ? 'col-resize' : 'default'}}>
+                <div style={{display: "flex"}}>
+                    <h3>Scenario Test Specification</h3>
 
-                {isActivityView ?
+                    {isActivityView || isAllActivities ?
+                        <button className="btn all-activities-button"
+                            disabled={isAllActivitiesDisabled()}
+                            onClick={switchToAllActivities}>{isActivityView ? "All Activities" : "Activity View"}
+                        </button>
+                    : null }
+                </div>
+
+                {!isActivityView && isAllActivities ?
+                    <div>
+                        <h3>Scenarios For All Activities</h3>
+                        {allActivityScenarios === [] ?
+                            <p className="description">You cannot search for a scenario because there are no valid activities.</p>
+                        :
+                        <div>
+                            <input type="text" id="search-input"
+                                   placeholder="Search for an interesting scenario" autoComplete="off"
+                                   onChange={(event) => filterAllActivityScenarios(event)}
+                                   className="searchScenarioInputField"/>
+                            <div className="generated-scenarios">
+                                {filteredActivityScenarios.map((filteredScenario, i) => {
+                                    if(i < 20) {
+                                        return (
+                                            <div className="suggestionItem"
+                                                 key={filteredScenario.description}
+                                                 onClick={() => handleAllActivityScenarioChange(filteredScenario)}>{filteredScenario.description}
+                                            </div>
+                                        )
+                                    }
+                                })}
+                            </div>
+                        </div>}
+                    </div>
+                : null}
+
+                {isActivityView && !isAllActivities ?
                     <div>
                         <h3>Activity View</h3>
                         {allDefinedScenarios?.map((scenario, index) => {
@@ -731,7 +909,9 @@ export default function ScenarioTestMenu(props) {
                             </button>
                         </div>
                     </div>
-                    :
+                    : null}
+
+                {!isActivityView && !isAllActivities ?
                     <div>
                         <div className="activity-container">
                             <h3>Settings View</h3>
@@ -811,7 +991,8 @@ export default function ScenarioTestMenu(props) {
                                 Add Test
                             </button>
                         </div>
-                    </div>}
+                    </div>
+                : null}
             </div>
             <ResizeBar setIsResizing={setIsResizing} setSidebarWidth={setSidebarWidth}/>
         </>
