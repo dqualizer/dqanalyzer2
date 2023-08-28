@@ -95,7 +95,7 @@ export default function replacePlaceholders(sentencePart, words, part) {
                             elementName = toTitleCase(elementName);
                         } else if (sentencePart.number_actor === "plural" && examiningElement.number === "singular" && examiningElement.is_proper_noun === false) {
                             elementName = pluralize(elementName);
-                        } else if (examiningElement.type === "person" && examiningElement.is_proper_noun === false && examiningElement.number === "singular") {
+                        } else if ((examiningElement.type === "person" || examiningElement.type === "system") && examiningElement.is_proper_noun === false && examiningElement.number === "singular") {
                             elementName = indefinite(elementName);
                         }
                         replacingStringList.push(elementName);
