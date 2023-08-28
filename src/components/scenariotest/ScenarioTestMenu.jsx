@@ -144,6 +144,23 @@ export default function ScenarioTestMenu(props) {
         allDefinedScenariosCopy[index].filteredScenariosList = null;
         allDefinedScenariosCopy[index].isValid = isValidActivity;
 
+        allDefinedScenariosCopy[index].description = null;
+        allDefinedScenariosCopy[index].metric = null;
+        allDefinedScenariosCopy[index].expected = null;
+        allDefinedScenariosCopy[index].load_design = null;
+        allDefinedScenariosCopy[index].resilience_design = null;
+        allDefinedScenariosCopy[index].load_decision = null;
+        allDefinedScenariosCopy[index].resilience_decision = null;
+        allDefinedScenariosCopy[index].description_speakers = null;
+        allDefinedScenariosCopy[index].description_message = null;
+        allDefinedScenariosCopy[index].description_audience = null;
+        allDefinedScenariosCopy[index].attachment = null;
+        allDefinedScenariosCopy[index].description_load = null;
+        allDefinedScenariosCopy[index].description_resilience = null;
+        allDefinedScenariosCopy[index].what_if_mode = null;
+        allDefinedScenariosCopy[index].saved_load_design = null;
+        allDefinedScenariosCopy[index].saved_resilience_design = null;
+
         setAllDefinedScenarios(allDefinedScenariosCopy);
     }
 
@@ -193,6 +210,23 @@ export default function ScenarioTestMenu(props) {
         let scenarioListForActivityAndMode = getScenariosForActivityAndMode(scenario.activity, selectedMode);
         allDefinedScenariosCopy[index].generatedScenariosList = scenarioListForActivityAndMode;
         allDefinedScenariosCopy[index].filteredScenariosList = scenarioListForActivityAndMode;
+
+        allDefinedScenariosCopy[index].description = null;
+        allDefinedScenariosCopy[index].metric = null;
+        allDefinedScenariosCopy[index].expected = null;
+        allDefinedScenariosCopy[index].load_design = null;
+        allDefinedScenariosCopy[index].resilience_design = null;
+        allDefinedScenariosCopy[index].load_decision = null;
+        allDefinedScenariosCopy[index].resilience_decision = null;
+        allDefinedScenariosCopy[index].description_speakers = null;
+        allDefinedScenariosCopy[index].description_message = null;
+        allDefinedScenariosCopy[index].description_audience = null;
+        allDefinedScenariosCopy[index].attachment = null;
+        allDefinedScenariosCopy[index].description_load = null;
+        allDefinedScenariosCopy[index].description_resilience = null;
+        allDefinedScenariosCopy[index].what_if_mode = null;
+        allDefinedScenariosCopy[index].saved_load_design = null;
+        allDefinedScenariosCopy[index].saved_resilience_design = null;
 
         setAllDefinedScenarios(allDefinedScenariosCopy);
     }
