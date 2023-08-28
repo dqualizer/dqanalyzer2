@@ -562,15 +562,13 @@ export default function ScenarioTestMenu(props) {
                                    onChange={(event) => filterAllActivityScenarios(event)}
                                    className="searchScenarioInputField"/>
                             <div className="generated-scenarios">
-                                {filteredActivityScenarios.map((filteredScenario, i) => {
-                                    if(i < 20) {
-                                        return (
-                                            <div className="suggestionItem"
-                                                 key={filteredScenario.description}
-                                                 onClick={() => handleAllActivityScenarioChange(filteredScenario)}>{filteredScenario.description}
-                                            </div>
-                                        )
-                                    }
+                                {filteredActivityScenarios.map((filteredScenario) => {
+                                    return (
+                                        <div className="suggestionItem"
+                                             key={filteredScenario.description}
+                                             onClick={() => handleAllActivityScenarioChange(filteredScenario)}>{filteredScenario.description}
+                                        </div>
+                                    )
                                 })}
                             </div>
                         </div>}
