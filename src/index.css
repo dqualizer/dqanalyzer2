@@ -204,3 +204,9 @@ body,
 .bold-text {
 	font-weight: bold;
 }
+
+.all-activities-button {
+	cursor: pointer;
+	margin: 20px 10px 10px 50px;
+	/*position: absolute;*/
+}
