@@ -58,7 +58,7 @@ export default function ScenarioTestMenu(props) {
         settings: {
             accuracy: 0,
             environment: null,
-            timeSlot: null
+            time_slot: null
         }
     }
 
