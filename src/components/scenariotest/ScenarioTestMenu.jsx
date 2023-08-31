@@ -12,6 +12,7 @@ import ScenarioGenerator from "./ScenarioGenerator.jsx";
 import deepCopy from "./deepCopy.jsx";
 import ScenarioDescriptionFormatter from "./ScenarioDescriptionFormatter.jsx";
 import ScenariosToFileWriter from "./ScenariosToFileWriter.jsx";
+import SentenceBuilder from "./SentenceBuilder.jsx";
 
 export default function ScenarioTestMenu(props) {
 
@@ -160,6 +161,8 @@ export default function ScenarioTestMenu(props) {
         allDefinedScenariosCopy[index].what_if_mode = null;
         allDefinedScenariosCopy[index].saved_load_design = null;
         allDefinedScenariosCopy[index].saved_resilience_design = null;
+        allDefinedScenariosCopy[index].saved_resilience_design = null;
+        allDefinedScenariosCopy[index].all_expected = null;
 
         setAllDefinedScenarios(allDefinedScenariosCopy);
     }
@@ -227,6 +230,7 @@ export default function ScenarioTestMenu(props) {
         allDefinedScenariosCopy[index].what_if_mode = null;
         allDefinedScenariosCopy[index].saved_load_design = null;
         allDefinedScenariosCopy[index].saved_resilience_design = null;
+        allDefinedScenariosCopy[index].all_expected = null;
 
         setAllDefinedScenarios(allDefinedScenariosCopy);
     }
@@ -250,6 +254,7 @@ export default function ScenarioTestMenu(props) {
         allDefinedScenariosCopy[index].what_if_mode = selectedScenario.what_if_mode;
         allDefinedScenariosCopy[index].saved_load_design = selectedScenario.load_design;
         allDefinedScenariosCopy[index].saved_resilience_design = selectedScenario.resilience_design;
+        allDefinedScenariosCopy[index].all_expected = selectedScenario.all_expected;
 
         document.getElementById("search-input").value = "";
 
@@ -303,9 +308,13 @@ export default function ScenarioTestMenu(props) {
 
     }
 
-    const handleResponseParameterChange = (responseParameter, index) => {
+    const handleExpectedChange = (responseParameter, index) => {
         let allDefinedScenariosCopy = deepCopy(allDefinedScenarios);
-        allDefinedScenariosCopy[index].expected = responseParameter;
+        let scenario = allDefinedScenariosCopy[index];
+        scenario.expected = responseParameter;
+
+        scenario.description = SentenceBuilder(scenario, scenario.selected_mode);
+
         setAllDefinedScenarios(allDefinedScenariosCopy);
     }
 
@@ -425,7 +434,7 @@ export default function ScenarioTestMenu(props) {
 
         let generatedSentences = ScenarioGenerator(mode, wordArray);
 
-        //ScenariosToFileWriter(generatedSentences);
+        ScenariosToFileWriter(generatedSentences);
 
         return generatedSentences;
     }
@@ -696,6 +705,41 @@ export default function ScenarioTestMenu(props) {
                                         </div>
                                         : null}
 
+
+                                    {scenario.selected_mode !== null && scenario.description !== null && scenario.expected !== null ?
+                                        <div>
+                                            <label className="label">
+                                                <h6>
+                                                    Response Measure
+                                                    <span className="ml-1 font-normal text-sm"
+                                                          data-tooltip-id="response-measure-tooltip"
+                                                          data-tooltip-place="right"
+                                                          data-tooltip-content='The Load Design allows you to further design the simulated load depending on the selected stimulus. For instance, if you design a "Load Peak" stimulus, you will need to specify the final peak to be achieved and how long it takes to reach it.'>&#9432;</span>
+                                                </h6>
+                                                <Tooltip id="response-measure-tooltip" style={{maxWidth: '256px'}}/>
+                                            </label>
+
+                                            <div className="btn-group">
+                                                {scenario.all_expected !== null && scenario.all_expected.map((expectedParameter => {
+                                                    return (
+                                                        <>
+                                                            <input type="radio" value={expectedParameter}
+                                                                   onClick={() => handleExpectedChange(expectedParameter, index)}
+                                                                   name={"Response Measure" + index}
+                                                                   data-title={expectedParameter}
+                                                                   className={scenario.expected === expectedParameter? "btn btn-primary" : "btn"}
+                                                                   data-tooltip-id={expectedParameter}
+                                                                   data-tooltip-content={"Value: " + expectedParameter}/>
+                                                            <Tooltip
+                                                                id={expectedParameter}/>
+                                                        </>
+                                                    )
+                                                }))}
+                                            </div>
+
+                                        </div>
+                                        : null}
+
                                     {scenario.selected_mode === "What if" && scenario.description !== null ?
                                         <div className="activity-container">
                                             <label className="label">
@@ -709,8 +753,7 @@ export default function ScenarioTestMenu(props) {
                                                 <Tooltip id="response-measure-tooltip" style={{maxWidth: '256px'}}/>
                                             </label>
                                             <label className="label">
-                                                <span
-                                                    className="label-text">Do you want to change the Load Design?</span>
+                                                <span className="label-text">Do you want to change the Load Design?</span>
                                             </label>
                                             <div className="btn-group">
                                                 <input type="radio" value="Yes"
@@ -886,40 +929,6 @@ export default function ScenarioTestMenu(props) {
                                                 : null}
                                         </div>
                                         : null}
-
-                                    {/*{scenario.selected_mode !== null && scenario.description !== null && (scenario.selected_mode === "Monitoring" || (scenario.selected_mode === "What if" && scenario.load_decision !== null && scenario.resilience_decision !== null)) ?*/}
-                                    {/*    <div>*/}
-                                    {/*        <label className="label">*/}
-                                    {/*            <h6>*/}
-                                    {/*                Response Measure*/}
-                                    {/*                <span className="ml-1 font-normal text-sm"*/}
-                                    {/*                      data-tooltip-id="response-measure-tooltip"*/}
-                                    {/*                      data-tooltip-place="right"*/}
-                                    {/*                      data-tooltip-content='The Load Design allows you to further design the simulated load depending on the selected stimulus. For instance, if you design a "Load Peak" stimulus, you will need to specify the final peak to be achieved and how long it takes to reach it.'>&#9432;</span>*/}
-                                    {/*            </h6>*/}
-                                    {/*            <Tooltip id="response-measure-tooltip" style={{maxWidth: '256px'}}/>*/}
-                                    {/*        </label>*/}
-
-                                    {/*        <div className="btn-group">*/}
-                                    {/*            {allMonitoringMetrics.find((metric) => metric.metric === scenario.metric).expected.map((responseParameter => {*/}
-                                    {/*                return (*/}
-                                    {/*                    <>*/}
-                                    {/*                        <input type="radio" value={responseParameter.value}*/}
-                                    {/*                               onClick={() => handleResponseParameterChange(responseParameter, index)}*/}
-                                    {/*                               name={"Response Measure" + index}*/}
-                                    {/*                               data-title={responseParameter.value}*/}
-                                    {/*                               className={scenario.expected === responseParameter? "btn btn-primary" : "btn"}*/}
-                                    {/*                               data-tooltip-id={responseParameter.value}*/}
-                                    {/*                               data-tooltip-content={"Value: " + responseParameter.value + " " + responseParameter.unit}/>*/}
-                                    {/*                        <Tooltip*/}
-                                    {/*                            id={responseParameter.value}/>*/}
-                                    {/*                    </>*/}
-                                    {/*                )*/}
-                                    {/*            }))}*/}
-                                    {/*        </div>*/}
-
-                                    {/*    </div>*/}
-                                    {/*    : null}*/}
                                     <button className="btn deleting-container-button"
                                             disabled={isDeletingContainerDisabled}
                                             onClick={() => deleteScenario(index)}>X
@@ -1022,7 +1031,7 @@ export default function ScenarioTestMenu(props) {
                             </button>
 
                             <button onClick={addScenarioTest} className="btn" disabled={isAddingButtonDisabled()}>
-                                Add Test
+                                Add Scenario Test
                             </button>
                         </div>
                     </div>

@@ -198,19 +198,19 @@
     ],
     "timeSlot": [
       {
-        "representation": "00:00 - 00:00",
-        "startTime": 0.00,
-        "endTime": 0.00
+        "representation": "00:00 - 23:59",
+        "startTime": "00:00",
+        "endTime": "23:59"
       },
       {
         "representation": "08:00 - 16:00",
-        "startTime": 8.00,
-        "endTime": 16.00
+        "startTime": "08:00",
+        "endTime": "16:00"
       },
       {
         "representation": "16:00 - 08:00",
-        "startTime": 16.00,
-        "endTime": 8.00
+        "startTime": "16:00",
+        "endTime": "8:00"
       }
     ]
   }
