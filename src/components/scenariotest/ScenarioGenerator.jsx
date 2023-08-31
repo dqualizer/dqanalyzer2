@@ -15,16 +15,14 @@ export default function ScenarioGenerator(mode, wordArray) {
         let scenarioArray = [];
         for (const metric of allWhatIfMetrics) {
             let sentence = {
-                description: "",
                 metric: metric.metric,
-                expected: null,
-                load_design: null,
-                resilience_design: null,
                 what_if_mode: metric.what_if_mode
             };
-            let descriptionSpeakers = replacePlaceholders(metric.speakers, words.speakers, "speakers");
-            let descriptionMessage = replacePlaceholders(metric.message, words.message, "message")
-            let descriptionAudience = replacePlaceholders(metric.audience, words.audience, "audience");
+            sentence.expected = getExpected(metric.expected);
+
+            let descriptionSpeakers = replacePlaceholders(metric.speakers, words.speakers, "speakers", sentence.expected);
+            let descriptionMessage = replacePlaceholders(metric.message, words.message, "message", sentence.expected)
+            let descriptionAudience = replacePlaceholders(metric.audience, words.audience, "audience", sentence.expected);
 
             sentence.load_design = getLoadDesign(metric.load_design.load_variants);
             sentence.resilience_design = getResilienceDesign(metric.resilience_design.resilience_variants);
@@ -38,8 +36,8 @@ export default function ScenarioGenerator(mode, wordArray) {
             sentence.description_message = descriptionMessage;
             sentence.description_audience = descriptionAudience;
             sentence.attachment = metric.attachment;
-            sentence.description_load = replacePlaceholders(metric.load_design, words.audience, "load");
-            sentence.description_resilience = replacePlaceholders(metric.resilience_design, words.audience, "resilience");
+            sentence.description_load = replacePlaceholders(metric.load_design, words.audience, "load", sentence.expected);
+            sentence.description_resilience = replacePlaceholders(metric.resilience_design, words.audience, "resilience", sentence.expected);
 
             sentence.description = SentenceBuilder(sentence, "What if");
 
@@ -57,15 +55,17 @@ export default function ScenarioGenerator(mode, wordArray) {
         let scenarioArray = [];
         for (const metric of allMonitoringMetrics) {
             let sentence = {
-                description: "",
                 metric: metric.metric,
-                expected: null,
+                all_expected: metric.expected,
                 load_design: null,
                 resilience_design: null
             };
-            let descriptionSpeakers = replacePlaceholders(metric.speakers, words.speakers, "speakers");
-            let descriptionMessage = replacePlaceholders(metric.message, words.message, "message")
-            let descriptionAudience = replacePlaceholders(metric.audience, words.audience, "audience");
+            sentence.expected = getExpected(metric.expected);
+
+            let descriptionSpeakers = replacePlaceholders(metric.speakers, words.speakers, "speakers", sentence.expected);
+            let descriptionMessage = replacePlaceholders(metric.message, words.message, "message", sentence.expected);
+            let descriptionAudience = replacePlaceholders(metric.audience, words.audience, "audience", sentence.expected);
+
 
             if(descriptionSpeakers === null
                 || descriptionMessage === null
@@ -85,6 +85,16 @@ export default function ScenarioGenerator(mode, wordArray) {
             scenarioArray.push(sentence);
         }
         return scenarioArray;
+    }
+
+    const getExpected = (allExpected) => {
+        if(allExpected == null) {
+            return null;
+        }
+        else {
+            let randomIndex = Math.floor(Math.random() * allExpected.length);
+            return allExpected[randomIndex];
+        }
     }
 
     const getLoadDesign = (loadDesignArray) => {

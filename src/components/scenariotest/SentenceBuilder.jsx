@@ -1,6 +1,5 @@
 import scenarioSpecs from "../../data/scenariotest-specs.json";
 import WhatIfDescriptionFiller from "./WhatIfDescriptionFiller.jsx";
-import replacePlaceholders from "./replacePlaceholders.jsx";
 
 export default function SentenceBuilder(sentence, mode) {
 

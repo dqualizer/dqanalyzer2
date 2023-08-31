@@ -300,11 +300,13 @@
         "number_work_object": null
       },
       "audience": {
-        "description": "How often is the response time of [system] satisfactory/tolerable/frustrating",
+        "description": "How often is the response time of [system] [expected]",
         "number_actor": null
       },
       "attachment": "",
-      "expected": null
+      "expected": [
+        "satisfactory", "tolerable", "frustrating"
+      ]
     },
     {
       "metric": "how_often_request_fail",

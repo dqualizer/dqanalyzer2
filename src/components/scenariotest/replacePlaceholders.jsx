@@ -3,7 +3,7 @@ import indefinite from "indefinite";
 import compromise from "compromise";
 import scenarioSpecs from "../../data/scenariotest-specs.json";
 
-export default function replacePlaceholders(sentencePart, words, part) {
+export default function replacePlaceholders(sentencePart, words, part, expected) {
 
     const fitsIn = (type, placeHolder) => {
         if (placeHolder === "actor") {
@@ -176,6 +176,9 @@ export default function replacePlaceholders(sentencePart, words, part) {
                     }
                 }
             }
+        }
+        else if(placeholder === "expected") {
+            return expected;
         }
         else if (part === "load" || part === "resilience") {
             if (placeholder === "load") {

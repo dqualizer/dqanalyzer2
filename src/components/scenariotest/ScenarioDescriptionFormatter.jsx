@@ -2,6 +2,28 @@ import WhatIfDescriptionFiller from "./WhatIfDescriptionFiller.jsx";
 import scenarioSpecs from "../../data/scenariotest-specs.json";
 
 export default function ScenarioDescriptionFormatter(scenario) {
+
+    function replacePlaceholders(inputString) {
+        let result = inputString;
+        let expectedToReplace = scenario.expected;
+        let isSubstituted = false;
+
+        if(scenario.all_expected !== null) {
+            for (let expectedChoice  of scenario.all_expected) {
+                if(result.includes(expectedChoice)) {
+                    result = result.replace(new RegExp(expectedChoice, 'g'), `<span class="bold-text">${expectedToReplace}</span>`);
+                    isSubstituted = true;
+                }
+            }
+        }
+        if (isSubstituted === false && expectedToReplace === null) {
+            result = result.replace(new RegExp("expected", 'g'), `<span class="bold-text">[expected]</span>`);
+        }
+
+        return result;
+    }
+
+
     let presentence;
     if(scenario.description_audience === null) {
         let descriptionList = [];
@@ -28,6 +50,7 @@ export default function ScenarioDescriptionFormatter(scenario) {
         let attachment = scenario.attachment === "" ? "" : " " + scenario.attachment;
         presentence = descriptionList.join(" ") + attachment;
     }
+    presentence = replacePlaceholders(presentence);
 
     if(scenario.selected_mode === "What if") {
         let loadVariantWithPlaceholder = scenarioSpecs.load_design.find(loadVariant => loadVariant.name === scenario.load_design?.name);
@@ -48,7 +71,7 @@ export default function ScenarioDescriptionFormatter(scenario) {
     }
     else if(scenario.selected_mode === "Monitoring") {
         return (
-            <p className="description">{scenario.description}</p>
+            <p className="description" id="description-format" dangerouslySetInnerHTML={{ __html: presentence + '?' }}></p>
         )
     }
 }
