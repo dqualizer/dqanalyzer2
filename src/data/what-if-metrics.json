@@ -3,7 +3,7 @@
     {
       "metric": "how_many_change",
       "speakers": {
-        "description": "How does the number of [actor]",
+        "description": "How does the total number of [actor]",
         "number_actor": "plural"
       },
       "message": {
@@ -59,7 +59,7 @@
     {
       "metric": "how_many_load",
       "speakers": {
-        "description": "How many [actor]",
+        "description": "In total how many [actor]",
         "number_actor": "plural"
       },
       "message": {
@@ -82,6 +82,90 @@
       "resilience_design": {
         "description": "and [have] [resilience]",
         "resilience_variants": ["None", "failed request", "late response", "unavailable"]
+      }
+    },
+    {
+      "metric": "maximum_throughput_load",
+      "speakers": {
+        "description": "What is the maximum number of [actor] who",
+        "number_actor": "plural"
+      },
+      "message": {
+        "description": "[verb] [work object]",
+        "form_verb": "infinitive",
+        "number_work_object": "plural"
+      },
+      "audience": {
+        "description": "[preposition] [actor]",
+        "number_actor": null
+      },
+      "attachment": "at the same time",
+      "expected": null,
+      "what_if_mode": "load",
+      "load_design": {
+        "description": "if [system] [are] under a [load]",
+        "number_actor": null,
+        "load_variants": ["constant load"]
+      },
+      "resilience_design": {
+        "description": "and [have] [resilience]",
+        "resilience_variants": ["None", "failed request", "late response"]
+      }
+    },
+    {
+      "metric": "average_throughput_load",
+      "speakers": {
+        "description": "What is the average number of [actor] who",
+        "number_actor": "plural"
+      },
+      "message": {
+        "description": "[verb] [work object]",
+        "form_verb": "infinitive",
+        "number_work_object": "plural"
+      },
+      "audience": {
+        "description": "[preposition] [actor]",
+        "number_actor": null
+      },
+      "attachment": "at the same time",
+      "expected": null,
+      "what_if_mode": "load",
+      "load_design": {
+        "description": "if [system] [are] under a [load]",
+        "number_actor": null,
+        "load_variants": ["constant load"]
+      },
+      "resilience_design": {
+        "description": "and [have] [resilience]",
+        "resilience_variants": ["None", "failed request", "late response"]
+      }
+    },
+    {
+      "metric": "minimum_throughput_load",
+      "speakers": {
+        "description": "What is the minimum number of [actor] who",
+        "number_actor": "plural"
+      },
+      "message": {
+        "description": "[verb] [work object]",
+        "form_verb": "infinitive",
+        "number_work_object": "plural"
+      },
+      "audience": {
+        "description": "[preposition] [actor]",
+        "number_actor": null
+      },
+      "attachment": "at the same time",
+      "expected": null,
+      "what_if_mode": "load",
+      "load_design": {
+        "description": "if [system] [are] under a [load]",
+        "number_actor": null,
+        "load_variants": ["constant load"]
+      },
+      "resilience_design": {
+        "description": "and [have] [resilience]",
+        "resilience_variants": ["None", "failed request", "late response"]
       }
     },
     {
@@ -113,7 +197,7 @@
       }
     },
     {
-      "metric": "how_often_load",
+      "metric": "how_often_average_load",
       "speakers": {
         "description": "How often do [actor] on average",
         "number_actor": "plural"
@@ -141,7 +225,119 @@
       }
     },
     {
-      "metric": "popularity",
+      "metric": "how_often_maximum_load",
+      "speakers": {
+        "description": "Up to how many times [do] [actor]",
+        "number_actor": "plural"
+      },
+      "message": {
+        "description": "[verb] [work object]",
+        "form_verb": "infinitive",
+        "number_work_object": "plural"
+      },
+      "audience": {
+        "description": "[preposition] [actor]",
+        "number_actor": null
+      },
+      "attachment": "",
+      "expected": null,
+      "what_if_mode": "load",
+      "load_design": {
+        "description": "if [system] [are] under a [load]",
+        "number_actor": null,
+        "load_variants": ["constant load"]
+      },
+      "resilience_design": {
+        "description": "and [have] [resilience]",
+        "resilience_variants": ["None", "failed request", "late response", "unavailable"]
+      }
+    },
+    {
+      "metric": "how_often_minimum_load",
+      "speakers": {
+        "description": "Up to how rarely [do] [actor]",
+        "number_actor": "plural"
+      },
+      "message": {
+        "description": "[verb] [work object]",
+        "form_verb": "infinitive",
+        "number_work_object": "plural"
+      },
+      "audience": {
+        "description": "[preposition] [actor]",
+        "number_actor": null
+      },
+      "attachment": "",
+      "expected": null,
+      "what_if_mode": "load",
+      "load_design": {
+        "description": "if [system] [are] under a [load]",
+        "number_actor": null,
+        "load_variants": ["constant load"]
+      },
+      "resilience_design": {
+        "description": "and [have] [resilience]",
+        "resilience_variants": ["None", "failed request", "late response", "unavailable"]
+      }
+    },
+    {
+      "metric": "popularity_more",
+      "speakers": {
+        "description": "",
+        "number_actor": null
+      },
+      "message": {
+        "description": "Are some [work object] more popular than others",
+        "form_verb": null,
+        "number_work_object": "plural"
+      },
+      "audience": {
+        "description": "",
+        "number_actor": null
+      },
+      "attachment": "",
+      "expected": null,
+      "what_if_mode": "load",
+      "load_design": {
+        "description": "if [system] [are] under a [load]",
+        "number_actor": null,
+        "load_variants": ["constant load"]
+      },
+      "resilience_design": {
+        "description": "and [have] [resilience]",
+        "resilience_variants": ["None", "failed request", "late response", "unavailable"]
+      }
+    },
+    {
+      "metric": "popularity_less",
+      "speakers": {
+        "description": "",
+        "number_actor": null
+      },
+      "message": {
+        "description": "Are some [work object] less popular than others",
+        "form_verb": null,
+        "number_work_object": "plural"
+      },
+      "audience": {
+        "description": "",
+        "number_actor": null
+      },
+      "attachment": "",
+      "expected": null,
+      "what_if_mode": "load",
+      "load_design": {
+        "description": "if [system] [are] under a [load]",
+        "number_actor": null,
+        "load_variants": ["constant load"]
+      },
+      "resilience_design": {
+        "description": "and [have] [resilience]",
+        "resilience_variants": ["None", "failed request", "late response", "unavailable"]
+      }
+    },
+    {
+      "metric": "popularity_equal",
       "speakers": {
         "description": "",
         "number_actor": null
@@ -449,9 +645,9 @@
       }
     },
     {
-      "metric": "when_the_least_change",
+      "metric": "when_the_fewest_change",
       "speakers": {
-        "description": "How does the time when least [actor]",
+        "description": "How does the time when fewest [actor]",
         "number_actor": "plural"
       },
       "message": {
@@ -477,9 +673,9 @@
       }
     },
     {
-      "metric": "when_the_least_load",
+      "metric": "when_the_fewest_load",
       "speakers": {
-        "description": "When do least [actor]",
+        "description": "When do fewest [actor]",
         "number_actor": "plural"
       },
       "message": {
@@ -561,7 +757,7 @@
       }
     },
     {
-      "metric": "error_rate_change",
+      "metric": "failure_rate_change",
       "speakers": {
         "description": "",
         "number_actor": null
@@ -572,7 +768,7 @@
         "number_work_object": "plural"
       },
       "audience": {
-        "description": "How will the error rate of [system] change",
+        "description": "How will the failure rate of [system] change",
         "number_actor": null
       },
       "attachment": "",
@@ -600,7 +796,7 @@
         "number_work_object": null
       },
       "audience": {
-        "description": "At what load is the error rate of [system] unacceptable",
+        "description": "At what load is the request failure rate of [system] unacceptable",
         "number_actor": null
       },
       "attachment": "",
@@ -645,6 +841,62 @@
       }
     },
     {
+      "metric": "when_most_request_fail_load",
+      "speakers": {
+        "description": "",
+        "number_actor": null
+      },
+      "message": {
+        "description": "",
+        "form_verb": null,
+        "number_work_object": null
+      },
+      "audience": {
+        "description": "When do the most requests to [system] fail",
+        "number_actor": null
+      },
+      "attachment": "",
+      "expected": null,
+      "what_if_mode": "load",
+      "load_design": {
+        "description": "if [system] [have] a [load]",
+        "number_actor": null,
+        "load_variants": ["load increase"]
+      },
+      "resilience_design": {
+        "description": "and [resilience]",
+        "resilience_variants": ["None", "late response", "unavailable"]
+      }
+    },
+    {
+      "metric": "when_less_request_fail_load",
+      "speakers": {
+        "description": "",
+        "number_actor": null
+      },
+      "message": {
+        "description": "",
+        "form_verb": null,
+        "number_work_object": null
+      },
+      "audience": {
+        "description": "When do the fewest requests to [system] fail",
+        "number_actor": null
+      },
+      "attachment": "",
+      "expected": null,
+      "what_if_mode": "load",
+      "load_design": {
+        "description": "if [system] [have] a [load]",
+        "number_actor": null,
+        "load_variants": ["load increase"]
+      },
+      "resilience_design": {
+        "description": "and [resilience]",
+        "resilience_variants": ["None", "late response", "unavailable"]
+      }
+    },
+    {
       "metric": "mean_time_to_failure",
       "speakers": {
         "description": "",
@@ -657,6 +909,62 @@
       },
       "audience": {
         "description": "How long does it take on average for [system] to fail",
+        "number_actor": null
+      },
+      "attachment": "",
+      "expected": null,
+      "what_if_mode": "load",
+      "load_design": {
+        "description": "if [system] [are] under a [load]",
+        "number_actor": null,
+        "load_variants": ["constant load"]
+      },
+      "resilience_design": {
+        "description": "and [have] [resilience]",
+        "resilience_variants": ["None", "failed request", "late response"]
+      }
+    },
+    {
+      "metric": "longest_time_to_failure",
+      "speakers": {
+        "description": "",
+        "number_actor": null
+      },
+      "message": {
+        "description": "",
+        "form_verb": null,
+        "number_work_object": null
+      },
+      "audience": {
+        "description": "What is the longest time until [system] [fail]",
+        "number_actor": null
+      },
+      "attachment": "",
+      "expected": null,
+      "what_if_mode": "load",
+      "load_design": {
+        "description": "if [system] [are] under a [load]",
+        "number_actor": null,
+        "load_variants": ["constant load"]
+      },
+      "resilience_design": {
+        "description": "and [have] [resilience]",
+        "resilience_variants": ["None", "failed request", "late response"]
+      }
+    },
+    {
+      "metric": "shortest_time_to_failure",
+      "speakers": {
+        "description": "",
+        "number_actor": null
+      },
+      "message": {
+        "description": "",
+        "form_verb": null,
+        "number_work_object": null
+      },
+      "audience": {
+        "description": "What is the shortest time until [system] [fail]",
         "number_actor": null
       },
       "attachment": "",
@@ -701,21 +1009,21 @@
       }
     },
     {
-      "metric": "maximum_throughput",
+      "metric": "longest_time_to_recover",
       "speakers": {
-        "description": "What is the maximum number of [actor] who",
-        "number_actor": "plural"
-      },
-      "message": {
-        "description": "[verb] [work object]",
-        "form_verb": "infinitive",
-        "number_work_object": "plural"
-      },
-      "audience": {
-        "description": "[preposition] [actor]",
+        "description": "",
         "number_actor": null
       },
-      "attachment": "at the same time",
+      "message": {
+        "description": "",
+        "form_verb": null,
+        "number_work_object": null
+      },
+      "audience": {
+        "description": "What is the longest time until [system] [recover]",
+        "number_actor": null
+      },
+      "attachment": "",
       "expected": null,
       "what_if_mode": "load",
       "load_design": {
@@ -729,21 +1037,21 @@
       }
     },
     {
-      "metric": "average_throughput",
+      "metric": "shortest_time_to_recover",
       "speakers": {
-        "description": "What is the average number of [actor] who",
-        "number_actor": "plural"
-      },
-      "message": {
-        "description": "[verb] [work object]",
-        "form_verb": "infinitive",
-        "number_work_object": "plural"
-      },
-      "audience": {
-        "description": "[preposition] [actor]",
+        "description": "",
         "number_actor": null
       },
-      "attachment": "at the same time",
+      "message": {
+        "description": "",
+        "form_verb": null,
+        "number_work_object": null
+      },
+      "audience": {
+        "description": "What is the shortest time until [system] [recover]",
+        "number_actor": null
+      },
+      "attachment": "",
       "expected": null,
       "what_if_mode": "load",
       "load_design": {
@@ -757,21 +1065,161 @@
       }
     },
     {
-      "metric": "minimum_throughput",
+      "metric": "availability_change",
       "speakers": {
-        "description": "What is the minimum number of [actor] who",
-        "number_actor": "plural"
-      },
-      "message": {
-        "description": "[verb] [work object]",
-        "form_verb": "infinitive",
-        "number_work_object": "plural"
-      },
-      "audience": {
-        "description": "[preposition] [actor]",
+        "description": "",
         "number_actor": null
       },
-      "attachment": "at the same time",
+      "message": {
+        "description": "",
+        "form_verb": null,
+        "number_work_object": null
+      },
+      "audience": {
+        "description": "How does the availability of [system] change",
+        "number_actor": null
+      },
+      "attachment": "",
+      "expected": null,
+      "what_if_mode": "load",
+      "load_design": {
+        "description": "if [system] [have] a [load]",
+        "number_actor": null,
+        "load_variants": ["load peak"]
+      },
+      "resilience_design": {
+        "description": "and [resilience]",
+        "resilience_variants": ["None", "failed request", "late response", "unavailable"]
+      }
+    },
+    {
+      "metric": "availability_increase",
+      "speakers": {
+        "description": "",
+        "number_actor": null
+      },
+      "message": {
+        "description": "",
+        "form_verb": null,
+        "number_work_object": null
+      },
+      "audience": {
+        "description": "At what load is the availability of  [system] unacceptable",
+        "number_actor": null
+      },
+      "attachment": "",
+      "expected": null,
+      "what_if_mode": "load",
+      "load_design": {
+        "description": "if [system] [have] a [load]",
+        "number_actor": null,
+        "load_variants": ["load increase"]
+      },
+      "resilience_design": {
+        "description": "and [resilience]",
+        "resilience_variants": ["None", "failed request", "late response", "unavailable"]
+      }
+    },
+    {
+      "metric": "availability_load",
+      "speakers": {
+        "description": "",
+        "number_actor": null
+      },
+      "message": {
+        "description": "",
+        "form_verb": null,
+        "number_work_object": null
+      },
+      "audience": {
+        "description": "How high is the availability of [system]",
+        "number_actor": null
+      },
+      "attachment": "",
+      "expected": null,
+      "what_if_mode": "load",
+      "load_design": {
+        "description": "if [system] [are] under a [load]",
+        "number_actor": null,
+        "load_variants": ["constant load"]
+      },
+      "resilience_design": {
+        "description": "and [have] [resilience]",
+        "resilience_variants": ["None", "failed request", "late response"]
+      }
+    },
+    {
+      "metric": "how_often_timeout_load",
+      "speakers": {
+        "description": "",
+        "number_actor": null
+      },
+      "message": {
+        "description": "",
+        "form_verb": null,
+        "number_work_object": null
+      },
+      "audience": {
+        "description": "How often [do] [system] have timeouts",
+        "number_actor": null
+      },
+      "attachment": "",
+      "expected": null,
+      "what_if_mode": "load",
+      "load_design": {
+        "description": "if [system] [are] under a [load]",
+        "number_actor": null,
+        "load_variants": ["constant load"]
+      },
+      "resilience_design": {
+        "description": "and [have] [resilience]",
+        "resilience_variants": ["None", "failed request", "late response"]
+      }
+    },
+    {
+      "metric": "when_most_timeout_load",
+      "speakers": {
+        "description": "",
+        "number_actor": null
+      },
+      "message": {
+        "description": "",
+        "form_verb": null,
+        "number_work_object": null
+      },
+      "audience": {
+        "description": "When do the most timeouts in [system] occur",
+        "number_actor": null
+      },
+      "attachment": "",
+      "expected": null,
+      "what_if_mode": "load",
+      "load_design": {
+        "description": "if [system] [are] under a [load]",
+        "number_actor": null,
+        "load_variants": ["constant load"]
+      },
+      "resilience_design": {
+        "description": "and [have] [resilience]",
+        "resilience_variants": ["None", "failed request", "late response"]
+      }
+    },
+    {
+      "metric": "when_less_timeout_load",
+      "speakers": {
+        "description": "",
+        "number_actor": null
+      },
+      "message": {
+        "description": "",
+        "form_verb": null,
+        "number_work_object": null
+      },
+      "audience": {
+        "description": "When do the fewest timeouts in [system] occur",
+        "number_actor": null
+      },
+      "attachment": "",
       "expected": null,
       "what_if_mode": "load",
       "load_design": {
