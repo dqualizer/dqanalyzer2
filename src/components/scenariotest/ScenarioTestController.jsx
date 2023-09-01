@@ -1,20 +1,14 @@
 import React, {useEffect, useState} from 'react';
 import {useReactFlow} from 'reactflow';
 import * as scenarioSpecs from '../../data/scenariotest-specs.json';
-import * as monitoringMetrics from '../../data/monitoring-metrics.json';
 import ResizeBar from '../ResizeBar.jsx';
 import * as mapping from '../../data/werkstatt-en.json';
 import {Tooltip} from 'react-tooltip';
-import axios from 'axios';
-import ActivityValidator from './ActivityValidator';
-import ActivityParser from "./ActivityParser.jsx";
-import ScenarioGenerator from "./ScenarioGenerator.jsx";
 import deepCopy from "./deepCopy.jsx";
 import ScenarioDescriptionFormatter from "./ScenarioDescriptionFormatter.jsx";
-import ScenariosToFileWriter from "./ScenariosToFileWriter.jsx";
-import SentenceBuilder from "./SentenceBuilder.jsx";
+import ScenarioTestApplicationService from "./ScenarioTestApplicationService.jsx";
 
-export default function ScenarioTestMenu(props) {
+export default function ScenarioTestController(props) {
 
     // Resize States
     const [isResizing, setIsResizing] = useState(false);
@@ -53,16 +47,6 @@ export default function ScenarioTestMenu(props) {
     const allModes = scenarioSpecs.mode;
     const settings = scenarioSpecs.settings;
 
-    let initRQADefiniton = {
-        context: mapping.context,
-        scenarios: [],
-        settings: {
-            accuracy: 0,
-            environment: null,
-            time_slot: null
-        }
-    }
-
     const [allDefinedScenarios, setAllDefinedScenarios] = useState([
         {
             "activity": null,
@@ -89,9 +73,6 @@ export default function ScenarioTestMenu(props) {
     const [allActivityScenarios, setAllActivityScenarios] = useState([]);
     const [filteredActivityScenarios, setFilteredActivityScenarios] = useState([]);
 
-    // state-based RQA-definition
-    const [rqa, setRqa] = useState(initRQADefiniton);
-
     const allActivities = [];
 
     // initialize the artifacts key with the activities in the domain
@@ -110,153 +91,31 @@ export default function ScenarioTestMenu(props) {
         return index === self.findIndex((t) => (t.name === obj.name));
     });
 
-    const colorActiveActivities = (event) => {
-        let relatedEdgesArray = reactFlowInstance.getEdges().filter((edge) => edge.name === event.target.value);
-        let unrelatedEdgesArray = reactFlowInstance.getEdges().filter((edge) => edge.name !== event.target.value);
-
-        unrelatedEdgesArray.forEach((edge) => {
-            edge.selected = false;
-        })
-
-        relatedEdgesArray.forEach((edge) => {
-            edge.selected = true;
-        })
-
-        let newEdgesArray = relatedEdgesArray.concat(unrelatedEdgesArray);
-
-        // updates reactFlowInstance
-        reactFlowInstance.setEdges(newEdgesArray);
-    }
-
     const handleActivityChange = (event, index) => {
-        colorActiveActivities(event);
-
-        // update the view for the selected edge
         let selectedActivity = allActivities.find((artifact) => artifact.description === event.target.value);
-
-        // validate activity
-        let wordArray = ActivityParser(props.nodes, props.edges, selectedActivity);
-        let isValidActivity = ActivityValidator(wordArray);
-
         let allDefinedScenariosCopy = deepCopy(allDefinedScenarios);
-        allDefinedScenariosCopy[index].activity = selectedActivity;
-        allDefinedScenariosCopy[index].selected_mode = null;
-        allDefinedScenariosCopy[index].generatedScenariosList = null;
-        allDefinedScenariosCopy[index].filteredScenariosList = null;
-        allDefinedScenariosCopy[index].isValid = isValidActivity;
+        let scenario = allDefinedScenariosCopy[index];
 
-        allDefinedScenariosCopy[index].description = null;
-        allDefinedScenariosCopy[index].metric = null;
-        allDefinedScenariosCopy[index].expected = null;
-        allDefinedScenariosCopy[index].load_design = null;
-        allDefinedScenariosCopy[index].resilience_design = null;
-        allDefinedScenariosCopy[index].load_decision = null;
-        allDefinedScenariosCopy[index].resilience_decision = null;
-        allDefinedScenariosCopy[index].description_speakers = null;
-        allDefinedScenariosCopy[index].description_message = null;
-        allDefinedScenariosCopy[index].description_audience = null;
-        allDefinedScenariosCopy[index].attachment = null;
-        allDefinedScenariosCopy[index].description_load = null;
-        allDefinedScenariosCopy[index].description_resilience = null;
-        allDefinedScenariosCopy[index].what_if_mode = null;
-        allDefinedScenariosCopy[index].saved_load_design = null;
-        allDefinedScenariosCopy[index].saved_resilience_design = null;
-        allDefinedScenariosCopy[index].saved_resilience_design = null;
-        allDefinedScenariosCopy[index].all_expected = null;
+        ScenarioTestApplicationService.handleActivityChange(event, reactFlowInstance, selectedActivity, scenario, props.nodes, props.edges);
 
         setAllDefinedScenarios(allDefinedScenariosCopy);
     }
 
-    const handleLoadDesignChange = (event, index) => {
-        let loadVariant = allLoadDesigns.find((variant) => variant.name === event.target.value);
-        let copyLoadVariant = deepCopy(loadVariant);
-
-        if (copyLoadVariant.name === "None") {
-            copyLoadVariant = null;
-        } else {
-            copyLoadVariant.design_parameters.forEach((parameter) => {
-                delete parameter.values;
-                parameter.value = null;
-            });
-        }
-
-        // save
-        let allDefinedScenariosCopy = deepCopy(allDefinedScenarios);
-        allDefinedScenariosCopy[index].load_design = copyLoadVariant;
-
-        setAllDefinedScenarios(allDefinedScenariosCopy);
-    }
-
-    const handleResilienceDesignChange = (event, index) => {
-        let resilienceVariant = allResilienceDesigns.find((variant) => variant.name === event.target.value);
-        let copyResilienceVariant = deepCopy(resilienceVariant);
-
-        if (copyResilienceVariant.name === "None") {
-            copyResilienceVariant = null;
-        } else {
-            copyResilienceVariant.design_parameters.forEach((parameter) => {
-                delete parameter.values;
-                parameter.value = null;
-            });
-        }
-
-        // save
-        let allDefinedScenariosCopy = deepCopy(allDefinedScenarios);
-        allDefinedScenariosCopy[index].resilience_design = copyResilienceVariant;
-        setAllDefinedScenarios(allDefinedScenariosCopy);
-    }
-
-    const handleModeChange = (event, scenario, index) => {
+    const handleModeChange = (event, index) => {
         let selectedMode = event.target.value;
         let allDefinedScenariosCopy = deepCopy(allDefinedScenarios);
-        allDefinedScenariosCopy[index].selected_mode = selectedMode;
-        let scenarioListForActivityAndMode = getScenariosForActivityAndMode(scenario.activity, selectedMode);
-        allDefinedScenariosCopy[index].generatedScenariosList = scenarioListForActivityAndMode;
-        allDefinedScenariosCopy[index].filteredScenariosList = scenarioListForActivityAndMode;
+        let scenario = allDefinedScenariosCopy[index];
 
-        allDefinedScenariosCopy[index].description = null;
-        allDefinedScenariosCopy[index].metric = null;
-        allDefinedScenariosCopy[index].expected = null;
-        allDefinedScenariosCopy[index].load_design = null;
-        allDefinedScenariosCopy[index].resilience_design = null;
-        allDefinedScenariosCopy[index].load_decision = null;
-        allDefinedScenariosCopy[index].resilience_decision = null;
-        allDefinedScenariosCopy[index].description_speakers = null;
-        allDefinedScenariosCopy[index].description_message = null;
-        allDefinedScenariosCopy[index].description_audience = null;
-        allDefinedScenariosCopy[index].attachment = null;
-        allDefinedScenariosCopy[index].description_load = null;
-        allDefinedScenariosCopy[index].description_resilience = null;
-        allDefinedScenariosCopy[index].what_if_mode = null;
-        allDefinedScenariosCopy[index].saved_load_design = null;
-        allDefinedScenariosCopy[index].saved_resilience_design = null;
-        allDefinedScenariosCopy[index].all_expected = null;
+        ScenarioTestApplicationService.handleModeChange(scenario, selectedMode, props.nodes, props.edges);
 
         setAllDefinedScenarios(allDefinedScenariosCopy);
     }
 
     const handleScenarioChange = (selectedScenario, index) => {
         let allDefinedScenariosCopy = deepCopy(allDefinedScenarios);
-        allDefinedScenariosCopy[index].description = selectedScenario.description;
-        allDefinedScenariosCopy[index].metric = selectedScenario.metric;
-        allDefinedScenariosCopy[index].expected = selectedScenario.expected;
-        allDefinedScenariosCopy[index].load_design = selectedScenario.load_design;
-        allDefinedScenariosCopy[index].resilience_design = selectedScenario.resilience_design;
-        allDefinedScenariosCopy[index].filteredScenariosList = null;
-        allDefinedScenariosCopy[index].load_decision = null;
-        allDefinedScenariosCopy[index].resilience_decision = null;
-        allDefinedScenariosCopy[index].description_speakers = selectedScenario.description_speakers;
-        allDefinedScenariosCopy[index].description_message = selectedScenario.description_message;
-        allDefinedScenariosCopy[index].description_audience = selectedScenario.description_audience;
-        allDefinedScenariosCopy[index].attachment = selectedScenario.attachment;
-        allDefinedScenariosCopy[index].description_load = selectedScenario.description_load;
-        allDefinedScenariosCopy[index].description_resilience = selectedScenario.description_resilience;
-        allDefinedScenariosCopy[index].what_if_mode = selectedScenario.what_if_mode;
-        allDefinedScenariosCopy[index].saved_load_design = selectedScenario.load_design;
-        allDefinedScenariosCopy[index].saved_resilience_design = selectedScenario.resilience_design;
-        allDefinedScenariosCopy[index].all_expected = selectedScenario.all_expected;
+        let scenario = allDefinedScenariosCopy[index];
 
-        document.getElementById("search-input").value = "";
+        ScenarioTestApplicationService.handleScenarioChange(scenario, selectedScenario);
 
         setAllDefinedScenarios(allDefinedScenariosCopy);
     }
@@ -264,46 +123,70 @@ export default function ScenarioTestMenu(props) {
     const filterScenarios = (event, index) => {
         const inputText = event.target.value;
         let allDefinedScenariosCopy = deepCopy(allDefinedScenarios);
-        let scenarioCopy = allDefinedScenariosCopy[index];
-        let filteredScenarios = deepCopy(scenarioCopy.generatedScenariosList);
-        scenarioCopy.filteredScenariosList = filteredScenarios.filter(isShownScenario =>
-            isShownScenario.description.toLowerCase().includes(inputText.toLowerCase())
-        );
+        let scenario = allDefinedScenariosCopy[index];
+
+        ScenarioTestApplicationService.filterScenarios(scenario, inputText);
+
         setAllDefinedScenarios(allDefinedScenariosCopy);
     }
 
     const handleLoadDecisionChange = (event, index) => {
-        let chosenLoadDecision = event.target.value;
+        let loadDecision = event.target.value;
         let allDefinedScenariosCopy = deepCopy(allDefinedScenarios);
-        allDefinedScenariosCopy[index].load_decision = chosenLoadDecision;
+        let scenario = allDefinedScenariosCopy[index];
 
-        if(chosenLoadDecision === "No") {
-            allDefinedScenariosCopy[index].load_design = allDefinedScenariosCopy[index].saved_load_design;
-        }
+        ScenarioTestApplicationService.handleDecisionChange(scenario, loadDecision, true);
 
         setAllDefinedScenarios(allDefinedScenariosCopy);
     }
 
     const handleResilienceDecisionChange = (event, index) => {
-        let chosenResilienceDecision = event.target.value;
+        let resilienceDecision = event.target.value;
         let allDefinedScenariosCopy = deepCopy(allDefinedScenarios);
-        allDefinedScenariosCopy[index].resilience_decision = chosenResilienceDecision;
+        let scenario = allDefinedScenariosCopy[index];
 
-        if(chosenResilienceDecision === "No") {
-            allDefinedScenariosCopy[index].resilience_design = allDefinedScenariosCopy[index].saved_resilience_design;
-        }
+        ScenarioTestApplicationService.handleDecisionChange(scenario, resilienceDecision, false);
+
+        setAllDefinedScenarios(allDefinedScenariosCopy);
+    }
+
+    const handleLoadDesignChange = (event, index) => {
+        let loadVariant = allLoadDesigns.find((variant) => variant.name === event.target.value);
+        let copyLoadVariant = deepCopy(loadVariant);
+        let allDefinedScenariosCopy = deepCopy(allDefinedScenarios);
+        let scenario = allDefinedScenariosCopy[index];
+
+        ScenarioTestApplicationService.setDesignChange(scenario, copyLoadVariant, true);
+
+        setAllDefinedScenarios(allDefinedScenariosCopy);
+    }
+
+    const handleResilienceDesignChange = (event, index) => {
+        let resilienceVariant = allResilienceDesigns.find((variant) => variant.name === event.target.value);
+        let copyResilienceVariant = deepCopy(resilienceVariant);
+        let allDefinedScenariosCopy = deepCopy(allDefinedScenarios);
+        let scenario = allDefinedScenariosCopy[index];
+
+        ScenarioTestApplicationService.setDesignChange(scenario, copyResilienceVariant, false);
+
+        setAllDefinedScenarios(allDefinedScenariosCopy);
+    }
+
+    const handleLoadDesignParameterChange = (value, index, paramIndex) => {
+        let allDefinedScenariosCopy = deepCopy(allDefinedScenarios);
+        let scenario = allDefinedScenariosCopy[index];
+
+        ScenarioTestApplicationService.handleDesignParameterChange(scenario, paramIndex, value, true);
 
         setAllDefinedScenarios(allDefinedScenariosCopy);
     }
 
     const handleResilienceDesignParameterChange = (value, index, paramIndex) => {
         let allDefinedScenariosCopy = deepCopy(allDefinedScenarios);
-        let indexScenario = allDefinedScenariosCopy[index];
+        let scenario = allDefinedScenariosCopy[index];
 
-        let copyDesignParameter = deepCopy(indexScenario.resilience_design.design_parameters[paramIndex]);
-        copyDesignParameter.value = value;
+        ScenarioTestApplicationService.handleDesignParameterChange(scenario, paramIndex, value, false);
 
-        indexScenario.resilience_design.design_parameters[paramIndex] = copyDesignParameter;
         setAllDefinedScenarios(allDefinedScenariosCopy);
 
     }
@@ -311,153 +194,64 @@ export default function ScenarioTestMenu(props) {
     const handleExpectedChange = (responseParameter, index) => {
         let allDefinedScenariosCopy = deepCopy(allDefinedScenarios);
         let scenario = allDefinedScenariosCopy[index];
-        scenario.expected = responseParameter;
 
-        scenario.description = SentenceBuilder(scenario, scenario.selected_mode);
+        ScenarioTestApplicationService.handleExpectedChange(scenario, responseParameter);
 
         setAllDefinedScenarios(allDefinedScenariosCopy);
     }
 
-    const handleAccuracyChange = (e) => {
-        setAccuracy(e.target.value);
+    const handleAccuracyChange = (event) => {
+        setAccuracy(event.target.value);
     }
 
-    const handleEnviromentChange = (e) => {
-        let newEnviroment = e.target.value;
+    const handleEnviromentChange = (event) => {
+        let newEnviroment = event.target.value;
 
         setEnviroment(newEnviroment);
     }
 
-    const handleLoadDesignParameterChange = (value, index, paramIndex) => {
-        let allDefinedScenariosCopy = deepCopy(allDefinedScenarios);
-        let indexScenario = allDefinedScenariosCopy[index];
-
-        let copyDesignParameter = deepCopy(indexScenario.load_design.design_parameters[paramIndex]);
-        copyDesignParameter.value = value;
-
-        indexScenario.load_design.design_parameters[paramIndex] = copyDesignParameter;
-        setAllDefinedScenarios(allDefinedScenariosCopy);
-    }
-
-    const handleTimeSlotChange = (e) => {
-        let newTimeSlot = settings.timeSlot.find((time) => time.representation === e.target.value);
+    const handleTimeSlotChange = (event) => {
+        let newTimeSlot = settings.timeSlot.find((time) => time.representation === event.target.value);
         setTimeSlot(newTimeSlot);
     }
 
     const addScenario = () => {
-        let newScenario = {
-            "activity": null,
-            "selected_mode": null,
-            "generatedScenariosList": null,
-            "filteredScenariosList": null,
-            "description": null,
-            "load_decision": null,
-            "load_design": null,
-            "resilience_decision": null,
-            "resilience_design": null,
-            "metric": null,
-            "expected": null,
-            "isValid": null
-        };
         let newScenarioList = deepCopy(allDefinedScenarios);
-        newScenarioList.push(newScenario);
-        setAllDefinedScenarios(newScenarioList);
+        ScenarioTestApplicationService.addScenario(newScenarioList);
 
+        setAllDefinedScenarios(newScenarioList);
         setIsDeletingContainerDisabled(false);
     }
 
     const isAddingButtonDisabled = () => {
-        let isDisabled = false;
-        for (const scenario of allDefinedScenarios) {
-            if (scenario.activity === null
-                || scenario.selected_mode === null
-                || scenario.description === null
-                || (scenario.selected_mode === "What if"
-                    && (scenario.load_decision === null
-                        || scenario.resilience_decision === null)) //TODO: add scenario.metric
-                || scenario.isValid === null
-                || scenario.isValid === false) {
-                isDisabled = true;
-            }
-            else if(scenario.selected_mode === "What if" && (scenario.load_design?.design_parameters.find(param => param.value === null)
-                || scenario.resilience_design?.design_parameters.find(param => param.value === null))) {
-                isDisabled = true;
-            }
-        }
-        if (accuracy === null
-            || enviroment === null
-            || (enviroment === "Test" && timeSlot === null)) {
-            isDisabled = true;
-        }
-        return isDisabled;
+        return ScenarioTestApplicationService.isAddingButtonDisabled(allDefinedScenarios, accuracy, enviroment, timeSlot);
     }
 
     const deleteScenario = (indexToDelete) => {
         let newScenarioList = deepCopy(allDefinedScenarios);
+
         newScenarioList.splice(indexToDelete, 1);
 
         setAllDefinedScenarios(newScenarioList);
         setIsDeletingContainerDisabled(newScenarioList.length === 1);
     }
 
-    const addScenarioTest = (event) => {
-        let scenarios = [];
-        for (const definedScenario of allDefinedScenarios) {
-            let rqaScenario = {
-                activity: definedScenario.activity,
-                mode: definedScenario.selected_mode,
-                description: definedScenario.description,
-                metric: definedScenario.metric,
-                expected: definedScenario.expected,
-                load_design: definedScenario.load_design,
-                resilience_design: definedScenario.resilience_design
-            };
-            rqaScenario.load_design?.design_parameters?.forEach(param => delete param.value.placeholder_value);
-            rqaScenario.resilience_design?.design_parameters?.forEach(param => delete param.value.placeholder_value);
-            rqa.scenarios.push(rqaScenario);
-        }
-        rqa.settings.accuracy = accuracy;
-        rqa.settings.environment = enviroment;
-        rqa.settings.time_slot = timeSlot;
-        console.log(rqa);
-
-        // post the RQA to the axios api
-        axios.post(`https://64bbef8f7b33a35a4446d353.mockapi.io/dqualizer/scenarios/v1/scenarios`, rqa);
-
-        // close the Scenario Test Window and open the Scenario Explorer
-        props.setScenarioExplorerShow(true);
-        props.setScenarioTestShow(false);
+    const addScenarioTest = () => {
+        ScenarioTestApplicationService.addScenarioTest(allDefinedScenarios, accuracy, enviroment, timeSlot, props.setScenarioExplorerShow, props.setScenarioTestShow);
     }
 
-    const getScenariosForActivityAndMode = (activity, mode) => {
-        let wordArray = ActivityParser(props.nodes, props.edges, activity);
-
-        let generatedSentences = ScenarioGenerator(mode, wordArray);
-
-        ScenariosToFileWriter(generatedSentences);
-
-        return generatedSentences;
-    }
-
-    const isAllActivitiesDisabled = () => {
-        let isDisabled = false;
-        for (let scenario of allDefinedScenarios) {
-            if(scenario.activity !== null) {
-                isDisabled = true;
-            }
-        }
-        if(allDefinedScenarios.length > 1) {
-            isDisabled = true;
-        }
-
-        return isDisabled;
+    const isAllActivitiesButtonDisabled = () => {
+        return ScenarioTestApplicationService.isAllActivitiesButtonDiasabled(allDefinedScenarios);
     }
 
     const switchToAllActivities = () => {
         if(isActivityView) {
+            let scenariosForAllActivities = ScenarioTestApplicationService.generateScenariosForAllActivities(uniqueActivitys, allActivities, props.nodes, props.edges);
+
             setIsActivityView(false);
             setIsAllActivities(true);
-            generateScenariosForAllActivities();
+            setAllActivityScenarios(scenariosForAllActivities);
+            setFilteredActivityScenarios(scenariosForAllActivities);
 
         }
         else {
@@ -468,113 +262,19 @@ export default function ScenarioTestMenu(props) {
         }
     }
 
-    const generateScenariosForAllActivities = () => {
-        let scenariosForAllActivities = [];
-        for (let activity of uniqueActivitys) {
-            let activityEdges = allActivities.find((artifact) => artifact.description === activity.name);
-
-            // validate activity
-            let wordArray = ActivityParser(props.nodes, props.edges, activityEdges);
-            let isValidActivity = ActivityValidator(wordArray);
-            if(!isValidActivity) {
-                continue;
-            }
-            let allWhatIfScenariosForActivity = getScenariosForActivityAndMode(activityEdges, "What if");
-            let allMonitoringScenariosForActivity = getScenariosForActivityAndMode(activityEdges, "Monitoring");
-
-            for (let whatIfScenario of allWhatIfScenariosForActivity) {
-                scenariosForAllActivities.push(
-                    {
-                        "activity": activityEdges,
-                        "selected_mode": "What if",
-                        "generatedScenariosList": allWhatIfScenariosForActivity,
-                        "filteredScenariosList": null,
-                        "description": whatIfScenario.description,
-                        "load_decision": null,
-                        "load_design": whatIfScenario.load_design,
-                        "resilience_decision": null,
-                        "resilience_design": whatIfScenario.resilience_design,
-                        "metric": whatIfScenario.metric,
-                        "expected": whatIfScenario.expected,
-                        "isValid": true,
-                        "description_speakers": whatIfScenario.description_speakers,
-                        "description_message": whatIfScenario.description_message,
-                        "description_audience": whatIfScenario.description_audience,
-                        "attachment": whatIfScenario.attachment,
-                        "description_load": whatIfScenario.description_load,
-                        "description_resilience": whatIfScenario.description_resilience,
-                        "what_if_mode": whatIfScenario.what_if_mode,
-                        "saved_load_design": whatIfScenario.saved_load_design,
-                        "saved_resilience_design": whatIfScenario.saved_resilience_design,
-                    }
-                )
-            }
-
-            for (let monitoringScenario of allMonitoringScenariosForActivity) {
-                scenariosForAllActivities.push(
-                    {
-                        "activity": activityEdges,
-                        "selected_mode": "Monitoring",
-                        "generatedScenariosList": allMonitoringScenariosForActivity,
-                        "filteredScenariosList": null,
-                        "description": monitoringScenario.description,
-                        "load_decision": null,
-                        "load_design": monitoringScenario.load_design,
-                        "resilience_decision": null,
-                        "resilience_design": monitoringScenario.resilience_design,
-                        "metric": monitoringScenario.metric,
-                        "expected": monitoringScenario.expected,
-                        "isValid": true,
-                        "description_speakers": monitoringScenario.description_speakers,
-                        "description_message": monitoringScenario.description_message,
-                        "description_audience": monitoringScenario.description_audience,
-                        "attachment": monitoringScenario.attachment,
-                        "description_load": monitoringScenario.description_load,
-                        "description_resilience": monitoringScenario.description_resilience,
-                        "what_if_mode": monitoringScenario.what_if_mode,
-                        "saved_load_design": monitoringScenario.saved_load_design,
-                        "saved_resilience_design": monitoringScenario.saved_resilience_design,
-                    }
-                )
-            }
-        }
-        setAllActivityScenarios(scenariosForAllActivities);
-        setFilteredActivityScenarios(scenariosForAllActivities);
-    }
-
     const filterAllActivityScenarios = (event) => {
         const inputText = event.target.value;
-        let filteredScenarios = deepCopy(allActivityScenarios);
-        let result = filteredScenarios.filter(isShownScenario =>
-            isShownScenario.description.toLowerCase().includes(inputText.toLowerCase())
-        );
+
+        let result = ScenarioTestApplicationService.filterAllScenarios(allActivityScenarios, inputText);
+
         setFilteredActivityScenarios(result);
     }
 
     const handleAllActivityScenarioChange = (selectedScenario) => {
         let allDefinedScenariosCopy = deepCopy(allDefinedScenarios);
+        let scenario = allDefinedScenariosCopy[0];
 
-        allDefinedScenariosCopy[0].activity = selectedScenario.activity;
-        allDefinedScenariosCopy[0].selected_mode = selectedScenario.selected_mode;
-        allDefinedScenariosCopy[0].description = selectedScenario.description;
-        allDefinedScenariosCopy[0].metric = selectedScenario.metric;
-        allDefinedScenariosCopy[0].expected = selectedScenario.expected;
-        allDefinedScenariosCopy[0].load_design = selectedScenario.load_design;
-        allDefinedScenariosCopy[0].resilience_design = selectedScenario.resilience_design;
-        allDefinedScenariosCopy[0].filteredScenariosList = null;
-        allDefinedScenariosCopy[0].load_decision = null;
-        allDefinedScenariosCopy[0].resilience_decision = null;
-        allDefinedScenariosCopy[0].description_speakers = selectedScenario.description_speakers;
-        allDefinedScenariosCopy[0].description_message = selectedScenario.description_message;
-        allDefinedScenariosCopy[0].description_audience = selectedScenario.description_audience;
-        allDefinedScenariosCopy[0].attachment = selectedScenario.attachment;
-        allDefinedScenariosCopy[0].description_load = selectedScenario.description_load;
-        allDefinedScenariosCopy[0].description_resilience = selectedScenario.description_resilience;
-        allDefinedScenariosCopy[0].what_if_mode = selectedScenario.what_if_mode;
-        allDefinedScenariosCopy[0].saved_load_design = selectedScenario.load_design;
-        allDefinedScenariosCopy[0].saved_resilience_design = selectedScenario.resilience_design;
-        allDefinedScenariosCopy[0].isValid = selectedScenario.isValid;
-        allDefinedScenariosCopy[0].generatedScenariosList = selectedScenario.generatedScenariosList;
+        ScenarioTestApplicationService.handleAllActivityScenarioChange(scenario, selectedScenario);
 
         setAllDefinedScenarios(allDefinedScenariosCopy);
         switchToAllActivities();
@@ -589,7 +289,7 @@ export default function ScenarioTestMenu(props) {
 
                     {isActivityView || isAllActivities ?
                         <button className="btn all-activities-button"
-                            disabled={isAllActivitiesDisabled()}
+                            disabled={isAllActivitiesButtonDisabled()}
                             onClick={switchToAllActivities}>{isActivityView ? "All Activities" : "Activity View"}
                         </button>
                     : null }
@@ -660,7 +360,7 @@ export default function ScenarioTestMenu(props) {
                                                     return (
                                                         <>
                                                             <input type="radio" value={mode.name}
-                                                                   onClick={(event) => handleModeChange(event, scenario, index)}
+                                                                   onClick={(event) => handleModeChange(event, index)}
                                                                    name="Mode"
                                                                    data-title={mode.name}
                                                                    className={scenario.selected_mode === mode.name ? "btn btn-primary" : "btn"}
