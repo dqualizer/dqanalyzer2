@@ -17,7 +17,7 @@ import {element} from "prop-types";
 import CloudQueueIcon from  "@mui/icons-material/CloudQueue";
 import CloudOffIcon from  "@mui/icons-material/CloudOff";
 import ContentPasteSearchIcon from  "@mui/icons-material/ContentPasteSearch";
-import ScenarioTestMenu from "./scenariotest/ScenarioTestMenu.jsx";
+import ScenarioTestController from "./scenariotest/ScenarioTestController.jsx";
 import ScenarioExplorer from "./scenario_explorer/ScenarioExplorer";
 
 
@@ -142,7 +142,7 @@ export default function Sidebar({ domain, loadtestSpecs, rqas, nodes, edges }) {
           </div>
 
           {scenarioExplorerShow ? <ScenarioExplorer selectedEdge={selectedEdge} edges={edges} onEditScenarioTestClick={onEditScenarioTestClick}/> : null}
-          {scenarioTestShow ? <div> <ScenarioTestMenu selectedEdge={selectedEdge} nodes={nodes} edges={edges} setScenarioExplorerShow={setScenarioExplorerShow} setScenarioTestShow={setScenarioTestShow}/> </div> : null}
+          {scenarioTestShow ? <div> <ScenarioTestController selectedEdge={selectedEdge} nodes={nodes} edges={edges} setScenarioExplorerShow={setScenarioExplorerShow} setScenarioTestShow={setScenarioTestShow}/> </div> : null}
           {editScenarioTestShow ? <div> <EditScenarioTestMenu edges={edges} rqa={editRqa} setScenarioExplorerShow={setScenarioExplorerShow} setScenarioTestShow={setScenarioTestShow}/> </div> : null}
 
         </div>
