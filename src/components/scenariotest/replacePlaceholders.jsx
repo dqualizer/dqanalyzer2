@@ -1,7 +1,6 @@
 import pluralize from "pluralize";
 import indefinite from "indefinite";
 import compromise from "compromise";
-import scenarioSpecs from "../../data/scenariotest-specs.json";
 
 export default function replacePlaceholders(sentencePart, words, part, expected) {
 
@@ -178,7 +177,7 @@ export default function replacePlaceholders(sentencePart, words, part, expected)
             }
         }
         else if(placeholder === "expected") {
-            return expected;
+            return expected.value + " " + expected.unit;
         }
         else if (part === "load" || part === "resilience") {
             if (placeholder === "load") {

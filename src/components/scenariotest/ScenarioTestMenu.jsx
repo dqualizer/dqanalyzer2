@@ -598,7 +598,7 @@ export default function ScenarioTestMenu(props) {
                 {!isActivityView && isAllActivities ?
                     <div>
                         <h3>Scenarios For All Activities</h3>
-                        {allActivityScenarios === [] ?
+                        {allActivityScenarios.length === 0 ?
                             <p className="description">You cannot search for a scenario because there are no valid activities.</p>
                         :
                         <div>
@@ -723,15 +723,15 @@ export default function ScenarioTestMenu(props) {
                                                 {scenario.all_expected !== null && scenario.all_expected.map((expectedParameter => {
                                                     return (
                                                         <>
-                                                            <input type="radio" value={expectedParameter}
+                                                            <input type="radio" value={expectedParameter.value}
                                                                    onClick={() => handleExpectedChange(expectedParameter, index)}
                                                                    name={"Response Measure" + index}
-                                                                   data-title={expectedParameter}
+                                                                   data-title={expectedParameter.value}
                                                                    className={scenario.expected === expectedParameter? "btn btn-primary" : "btn"}
-                                                                   data-tooltip-id={expectedParameter}
-                                                                   data-tooltip-content={"Value: " + expectedParameter}/>
+                                                                   data-tooltip-id={expectedParameter.value}
+                                                                   data-tooltip-content={"Value: " + expectedParameter + " " + expectedParameter.unit}/>
                                                             <Tooltip
-                                                                id={expectedParameter}/>
+                                                                id={expectedParameter.value}/>
                                                         </>
                                                     )
                                                 }))}
