@@ -16,6 +16,7 @@ export default function ScenarioGenerator(mode, wordArray) {
         for (const metric of allWhatIfMetrics) {
             let sentence = {
                 metric: metric.metric,
+                all_expected: metric.expected,
                 what_if_mode: metric.what_if_mode
             };
             sentence.expected = getExpected(metric.expected);

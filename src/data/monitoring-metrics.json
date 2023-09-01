@@ -539,6 +539,37 @@
       },
       "attachment": "",
       "expected": null
+    },
+    {
+      "metric": "response_time_active_under",
+      "speakers": {
+        "description": "After [expected] [actor] must be able to",
+        "number_actor": null
+      },
+      "message": {
+        "description": "[verb] [work object]",
+        "form_verb": "infinitive",
+        "number_work_object": "plural"
+      },
+      "audience": {
+        "description": "[preposition] [system]",
+        "number_actor": null
+      },
+      "attachment": "",
+      "expected": [
+        {
+          "value": 200,
+          "unit": "milliseconds"
+        },
+        {
+          "value": 500,
+          "unit": "milliseconds"
+        },
+        {
+          "value": 700,
+          "unit": "milliseconds"
+        }
+      ]
     }
   ]
 }

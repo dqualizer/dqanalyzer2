@@ -17,31 +17,35 @@ Now you should have a view like this:
 
 By pressing the cloud icon in the upper left corner, you can switch between the normal view of dqAnalyzer and the scenario view from the bachelor thesis.
 
-To create a scenario test, click on the form icon on the left.
+To create a scenario test, click on the icon with a form and a magnifier on the left.
 
 #### Test Steps
 
 1. First of all, choose the activity you want to examine.
-2. You can decide if you want to do pure monitoring or if you want to under test your system in terms of load or resilience.
+2. You can decide if you want to do pure monitoring or if you want to examine your system in terms of load or resilience.
 3. Afterward, scenarios are suggested. You can filter for suitable questions using the search bar.
 
-If you have selected ”What if” as the mode:
-4. You can adjust the parameters for the load and resilience design respectively or use the pre-selected ones from dqualizer.
+4. Some scenario questions can be modified with response measures. This means that some
 
-5. If you want to examine multiple scenarios in one test, you can add more forms using ”Add Scenario”. In addition, there is an X-button at the top right of each form that can be used to delete the respective form.
+If you have selected ”What if” as the mode:
+5. You can additionally adjust the parameters for the load and resilience design respectively or use the pre-selected ones from dqualizer.
+
+If you have selected ”What if” as the mode: You cannot set any parameters.
+
+6. If you want to examine multiple scenarios in one test, you can add more forms using ”Add Scenario”. In addition, there is an X-button at the top right of each form that can be used to delete the respective form.
 
 A filled form could look like this:
 ![README_Img_3.png](rsc%2FREADME_Img_3.png)
 
-6. Alternatively, you can skip steps 1, 2 and 3 by clicking "All Activities" and selecting a question from a collection of all activities that can be examined.
+7. Alternatively, you can skip steps 1, 2 and 3 by clicking "All Activities" and selecting a question from a collection of all activities that can be examined.
 
 ![README_Img_4.png](rsc%2FREADME_Img_4.png)
 
-7. After filling in the forms, you can click "Next" to get to the Settings View, where you can specify the duration of the entire test under "Accuracy". Furthermore, the user can decide whether the test should take place in the real or in a test environment. Finally, a time slot can be specified for the test environment.
+8. After filling in the forms, you can click "Next" to get to the Settings View, where you can specify the duration of the entire test under "Accuracy". Furthermore, the user can decide whether the test should take place in the real or in a test environment. Finally, a time slot can be specified for the test environment.
 
 ![README_Img_5.png](rsc%2FREADME_Img_5.png)
 
-8. Pressing “Add Test” creates a configuration for the scenario test. This may look like this, for example:
+9. Pressing “Add Scenario Test” creates a configuration for the scenario test. This may look like this, for example:
 
 ```
 {
@@ -89,7 +93,7 @@ A filled form could look like this:
 }
 ```
 
-Last but not least, a prototype for the Scenario Explorer was developed as part of the bachelor thesis, which can be accessed via the bar chart icon on the left. In the future, it should be possible to edit, delete, enable, disable and execute scenario tests.
+Last but not least, a prototype for the scenario explorer was developed as part of the bachelor thesis, which can be accessed via the bar chart icon on the left. The Scenario Explorer contains all defined scenario tests. In the future, it should be possible to edit, delete, enable, disable and execute scenario tests.
 
-![README_Img_6.png](rsc%2FREADME_Img_6.png)
+![README_Img_5.png](rsc%2FREADME_Img_5.png)
 

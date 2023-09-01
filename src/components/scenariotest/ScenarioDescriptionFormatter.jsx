@@ -3,15 +3,16 @@ import scenarioSpecs from "../../data/scenariotest-specs.json";
 
 export default function ScenarioDescriptionFormatter(scenario) {
 
-    function replacePlaceholders(inputString) {
+    const replacePlaceholders = (inputString) => {
         let result = inputString;
         let expectedToReplace = scenario.expected;
         let isSubstituted = false;
 
         if(scenario.all_expected !== null) {
             for (let expectedChoice  of scenario.all_expected) {
-                if(result.includes(expectedChoice)) {
-                    result = result.replace(new RegExp(expectedChoice, 'g'), `<span class="bold-text">${expectedToReplace}</span>`);
+                let textRepresentation = expectedChoice.value + " " + expectedChoice.unit;
+                if(result.includes(textRepresentation)) {
+                    result = result.replace(new RegExp(textRepresentation, 'g'), `<span class="bold-text">${textRepresentation}</span>`);
                     isSubstituted = true;
                 }
             }
