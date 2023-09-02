@@ -1,4 +1,4 @@
-export default function ScenariosToFileWriter(scenarioArray) {
+export default function FileWriterService(scenarioArray) {
     let content = "";
 
     for (let index = 1; index <= scenarioArray.length; index++) {

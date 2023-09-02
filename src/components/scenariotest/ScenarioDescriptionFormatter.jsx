@@ -1,78 +1,45 @@
-import WhatIfDescriptionFiller from "./WhatIfDescriptionFiller.jsx";
-import scenarioSpecs from "../../data/scenariotest-specs.json";
+import PlaceholderWordMapperService from "./PlaceholderWordMapperService.jsx";
+import WhatIfVariantFormatterService from "./WhatIfVariantFormatterService.jsx";
 
 export default function ScenarioDescriptionFormatter(scenario) {
 
-    const replacePlaceholders = (inputString) => {
-        let result = inputString;
-        let expectedToReplace = scenario.expected;
-        let isSubstituted = false;
+    const formatRqsDescription = () => {
+        let resultString = scenario.description;
+        let attachmentToFormat = formatPart("Attachment");
+        let loadToFormat = formatPart("Load");
+        let resilienceToFormat = formatPart("Resilience");
 
-        if(scenario.all_expected !== null) {
-            for (let expectedChoice  of scenario.all_expected) {
-                let textRepresentation = expectedChoice.value + " " + expectedChoice.unit;
-                if(result.includes(textRepresentation)) {
-                    result = result.replace(new RegExp(textRepresentation, 'g'), `<span class="bold-text">${textRepresentation}</span>`);
-                    isSubstituted = true;
-                }
+        if(attachmentToFormat !== null) {
+            resultString = resultString.replace(attachmentToFormat, "<span class='bold-text'>${attachmentToFormat}</span>");
+        }
+        if(loadToFormat !== null) {
+            resultString = resultString.replace(loadToFormat, "<span class='bold-text'>${loadToFormat}</span>");
+        }
+        if(resilienceToFormat !== null) {
+            resultString = resultString.replace(resilienceToFormat, "<span class='bold-text'>${resilienceToFormat}</span>");
+        }
+
+        return resultString;
+    }
+
+    const formatPart = (part) => {
+        if(part === "Attachment") {
+            if(scenario.attachment !== null && scenario.attachment.includes("[expected]")) {
+                return scenario.expected.value + " " + scenario.expected.unit;
             }
         }
-        if (isSubstituted === false && expectedToReplace === null) {
-            result = result.replace(new RegExp("expected", 'g'), `<span class="bold-text">[expected]</span>`);
+        else if(part === "Load") {
+            return WhatIfVariantFormatterService(scenario, "Load");
         }
-
-        return result;
+        else if(part === "Resilience") {
+            return WhatIfVariantFormatterService(scenario, "Resilience");
+        }
+        return null;
     }
 
+    let formattedRqsDescription = formatRqsDescription();
 
-    let presentence;
-    if(scenario.description_audience === null) {
-        let descriptionList = [];
-        if(scenario.description_speakers !== "") {
-            descriptionList.push(scenario.description_speakers);
-        }
-        if(scenario.description_message !== "") {
-            descriptionList.push(scenario.description_message);
-        }
-        let attachment = scenario.attachment === "" ? "": " " + scenario.attachment;
-        presentence = descriptionList.join(" ") + attachment;
-    }
-    else {
-        let descriptionList = [];
-        if (scenario.description_speakers !== "") {
-            descriptionList.push(scenario.description_speakers);
-        }
-        if (scenario.description_message !== "") {
-            descriptionList.push(scenario.description_message);
-        }
-        if (scenario.description_audience !== "") {
-            descriptionList.push(scenario.description_audience);
-        }
-        let attachment = scenario.attachment === "" ? "" : " " + scenario.attachment;
-        presentence = descriptionList.join(" ") + attachment;
-    }
-    presentence = replacePlaceholders(presentence);
-
-    if(scenario.selected_mode === "What if") {
-        let loadVariantWithPlaceholder = scenarioSpecs.load_design.find(loadVariant => loadVariant.name === scenario.load_design?.name);
-        let resilientVariantWithPlaceholder = scenarioSpecs.resilience_design.find(resilientVariant => resilientVariant.name === scenario.resilience_design?.name);
-
-        let load_description = scenario.description_load?.replace(" [load]", "");
-        let resilience_description = scenario.description_resilience?.replace(" [resilience]", "");
-        if(scenario.what_if_mode === "load") {
-            return (
-                <p className="description">{presentence} {load_description} <span className="bold-text">{WhatIfDescriptionFiller(loadVariantWithPlaceholder, scenario.load_design, false)}</span>{scenario.resilience_design !== null ? " " +  resilience_description : null}{scenario.resilience_design !== null ? <span className="bold-text"> {WhatIfDescriptionFiller(resilientVariantWithPlaceholder, scenario.resilience_design, false)}</span>: null}?</p>
-            )
-        }
-        else if(scenario.what_if_mode === "resilience") {
-            return (
-                <p className="description">{presentence} {resilience_description} <span className="bold-text">{WhatIfDescriptionFiller(loadVariantWithPlaceholder, scenario.load_design, false)}</span>{scenario.load_design !== null ? " " +  load_description : null} {scenario.load_design !== null ?<span className="bold-text"> {WhatIfDescriptionFiller(loadVariantWithPlaceholder, scenario.load_design, false)}</span>: null}?</p>
-            )
-        }
-    }
-    else if(scenario.selected_mode === "Monitoring") {
-        return (
-            <p className="description" id="description-format" dangerouslySetInnerHTML={{ __html: presentence + '?' }}></p>
-        )
-    }
+    return (
+        <p className="description" id="description-format" dangerouslySetInnerHTML={{ __html: formattedRqsDescription }}></p>
+    )
 }
