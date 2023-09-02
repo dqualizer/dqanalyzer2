@@ -165,17 +165,34 @@ export default function PlaceholderWordMapperService(sentence, part) {
         }
 
         for (let match of matches) {
-            if (match[1] === "actor" || match[1] === "system") {
+            if (match[1] === "system") {
                 let examiningElements = sentence.words.audience.slice(1);
+                let allSystems = [];
+                // look for all systems
+                for (let index = 0; index < examiningElements.length; index++) {
+                    if(examiningElements[index].type === "system") {
+                        allSystems.push(examiningElements[index]);
+                    }
+                }
+                // insert "and" between the systems
+                for(let indexToInsert = 1; indexToInsert < allSystems.length; indexToInsert = indexToInsert + 3) {
+                    allSystems = [...allSystems.slice(0, indexToInsert),
+                        {
+                            name: "and",
+                            type: "preposition",
+                        }
+                        , ...allSystems.slice(indexToInsert)];
+                }
+
                 let replacingStringList = [];
-                for (let examiningElement of examiningElements) {
-                    let elementName = examiningElement.name;
-                    if (examiningElement.is_proper_noun === true) {
+                for (let system of allSystems) {
+                    let elementName = system.name;
+                    if (system.is_proper_noun === true) {
                         elementName = CaseService.toTitleCase(elementName);
-                    } else if (examiningElement.type === "person" || examiningElement.type === "system" && examiningElement.is_proper_noun === false) {
+                    } else if (system.type === "system" && system.is_proper_noun === false) {
                         elementName = "the " + elementName;
                     }
-                    if (loadDescription.number_actor === "plural" && examiningElement.number === "singular" && examiningElement.is_proper_noun === false) {
+                    if (loadDescription.number_actor === "plural" && system.number === "singular" && system.is_proper_noun === false) {
                         replacingStringList.push(pluralize(elementName));
                     } else {
                         replacingStringList.push(elementName);
@@ -213,17 +230,34 @@ export default function PlaceholderWordMapperService(sentence, part) {
         }
 
         for (let match of matches) {
-            if (match[1] === "actor" || match[1] === "system") {
+            if (match[1] === "system") {
                 let examiningElements = sentence.words.audience.slice(1);
+                let allSystems = [];
+                // look for all systems
+                for (let index = 0; index < examiningElements.length; index++) {
+                    if(examiningElements[index].type === "system") {
+                        allSystems.push(examiningElements[index]);
+                    }
+                }
+                // insert "and" between the systems
+                for(let indexToInsert = 1; indexToInsert < allSystems.length; indexToInsert = indexToInsert + 3) {
+                    allSystems = [...allSystems.slice(0, indexToInsert),
+                        {
+                            name: "and",
+                            type: "preposition",
+                        }
+                        , ...allSystems.slice(indexToInsert)];
+                }
+
                 let replacingStringList = [];
-                for (let examiningElement of examiningElements) {
-                    let elementName = examiningElement.name;
-                    if (examiningElement.is_proper_noun === true) {
+                for (let system of allSystems) {
+                    let elementName = system.name;
+                    if (system.is_proper_noun === true) {
                         elementName = CaseService.toTitleCase(elementName);
-                    } else if (examiningElement.type === "person" || examiningElement.type === "system" && examiningElement.is_proper_noun === false) {
+                    } else if (system.type === "system" && system.is_proper_noun === false) {
                         elementName = "the " + elementName;
                     }
-                    if (resilienceDescription.number_actor === "plural" && examiningElement.number === "singular" && examiningElement.is_proper_noun === false) {
+                    if (resilienceDescription.number_actor === "plural" && system.number === "singular" && system.is_proper_noun === false) {
                         replacingStringList.push(pluralize(elementName));
                     } else {
                         replacingStringList.push(elementName);
