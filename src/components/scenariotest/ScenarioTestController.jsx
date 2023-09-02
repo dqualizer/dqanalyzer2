@@ -481,7 +481,7 @@ export default function ScenarioTestController(props) {
 
                                             {scenario.load_decision === "Yes" ?
                                                 <div className="actvity-container">
-                                                    <div className="actvity-container">
+                                                    <div className="actvity-container design-select">
                                                         <select value={scenario.load_design?.name}
                                                                 onChange={(event) => handleLoadDesignChange(event, index)}
                                                                 id=""
@@ -576,15 +576,17 @@ export default function ScenarioTestController(props) {
 
                                             {scenario.resilience_decision === "Yes" ?
                                                 <div className="actvity-container">
-                                                    <select value={scenario.resilience_design?.name}
-                                                            onChange={(event) => handleResilienceDesignChange(event, index)}
-                                                            id=""
-                                                            className="select select-bordered w-full max-w-xs">
-                                                        {allResilienceDesigns.map((resilienceVariant) => {
-                                                            return <option value={resilienceVariant.name}
-                                                                           key={resilienceVariant.name}>{resilienceVariant.name}</option>
-                                                        })}
-                                                    </select>
+                                                    <div className="actvity-container design-select">
+                                                        <select value={scenario.resilience_design?.name}
+                                                                onChange={(event) => handleResilienceDesignChange(event, index)}
+                                                                id=""
+                                                                className="select select-bordered w-full max-w-xs">
+                                                            {allResilienceDesigns.map((resilienceVariant) => {
+                                                                return <option value={resilienceVariant.name}
+                                                                               key={resilienceVariant.name}>{resilienceVariant.name}</option>
+                                                            })}
+                                                        </select>
+                                                    </div>
 
                                                     {/*TODO: Add Tooltip for each element*/}
                                                     <div className="actvity-container">

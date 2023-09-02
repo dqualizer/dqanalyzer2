@@ -3,6 +3,7 @@ import RqsGeneratorService from "./ScenarioGenerator.jsx";
 import FileWriterService from "./FileWriterService.jsx";
 import * as mapping from '../../data/werkstatt-en.json';
 import deepCopy from "./deepCopy.jsx";
+import RqsBuilderService from "./RqsBuilderService.jsx";
 
 class ScenarioService {
     colorActiveActivities(event, reactFlowInstance) {
@@ -108,6 +109,9 @@ class ScenarioService {
         scenario.all_expected = selectedScenario.all_expected;
         scenario.metric_load = selectedScenario.metric_load;
         scenario.metric_resilience = selectedScenario.metric_resilience;
+        scenario.mandatory = selectedScenario.mandatory;
+        scenario.optional = selectedScenario.optional;
+        scenario.words = selectedScenario.words;
     }
 
     deleteDesignparametersFromVariant(scenario, newVariant) {
@@ -122,11 +126,15 @@ class ScenarioService {
     }
 
     saveNewDesign(scenario, newVariant, isLoad) {
+        if(newVariant.name === "None") {
+            newVariant = null;
+        }
         if (isLoad) {
             scenario.load_design = newVariant;
         } else {
             scenario.resilience_design = newVariant;
         }
+        scenario.description = RqsBuilderService(scenario, scenario.selected_mode);
     }
 
 

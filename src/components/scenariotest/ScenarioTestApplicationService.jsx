@@ -48,12 +48,14 @@ class ScenarioTestApplicationService {
             scenario.load_decision = decision;
             if(decision === "No") {
                 scenario.load_design = scenario.saved_load_design;
+                scenario.description = RqsBuilderService(scenario, scenario.selected_mode);
             }
         }
         else {
             scenario.resilience_decision = decision;
             if(decision === "No") {
                 scenario.resilience_design = scenario.saved_resilience_design;
+                scenario.description = RqsBuilderService(scenario, scenario.selected_mode);
             }
         }
     }
@@ -71,6 +73,7 @@ class ScenarioTestApplicationService {
 
             scenario.resilience_design.design_parameters[paramIndex] = copyDesignParameter;
         }
+        scenario.description = RqsBuilderService(scenario, scenario.selected_mode);
     }
 
     handleExpectedChange(scenario, responseParameter) {
