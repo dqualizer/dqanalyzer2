@@ -8,9 +8,9 @@ export default function RqsBuilderService(sentence, mode) {
 
     const getDescription = (description, part) => {
         let words = PlaceholderWordMapperService(sentence, part);
-        let descriptionCopy = deepCopy(description);
+        let descriptionOfSentencePart = deepCopy(description);
         if(words === null) {
-            descriptionCopy = null;
+            descriptionOfSentencePart = null;
         }
         else {
             const keys = Object.keys(words);
@@ -19,22 +19,34 @@ export default function RqsBuilderService(sentence, mode) {
                     return null;
                 }
                 else {
-                    descriptionCopy = descriptionCopy.replace(key, words[key]);
+                    descriptionOfSentencePart = descriptionOfSentencePart.replace(key, words[key]);
                 }
             }
         }
-        return descriptionCopy;
+        if(part === "Optional" && placeholderRegex.test(descriptionOfSentencePart)) {
+            descriptionOfSentencePart = null;
+        }
+        return descriptionOfSentencePart;
     }
 
     const combineDescriptionsToSentence = (mandatory, optional, attachment, load, resilience, isQuestion) => {
-        if (mandatory === null) {
-            return null;
+        let description = "";
+
+        if (mandatory !== null) {
+            description += mandatory;
         }
 
-        let description = CaseService.capitalizeFirstLetter(mandatory);
-
         if (optional !== null) {
-            description += " " + optional;
+            if(description === "") {
+                description += optional;
+            }
+            else {
+                description += " " + optional;
+            }
+        }
+
+        if(description === "") {
+            return null;
         }
 
         if (attachment !== null) {
@@ -56,7 +68,7 @@ export default function RqsBuilderService(sentence, mode) {
             description += ".";
         }
 
-        return description;
+        return CaseService.capitalizeFirstLetter(description);
     }
 
     let mandatoryDescription = getDescription(sentence.mandatory.description, "Mandatory");
