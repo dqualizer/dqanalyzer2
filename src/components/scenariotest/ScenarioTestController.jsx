@@ -245,7 +245,7 @@ export default function ScenarioTestController(props) {
     }
 
     const switchToAllActivities = () => {
-        if(isActivityView) {
+        if (isActivityView) {
             let scenariosForAllActivities = ScenarioTestApplicationService.generateScenariosForAllActivities(uniqueActivitys, allActivities, props.nodes, props.edges);
 
             setIsActivityView(false);
@@ -253,8 +253,7 @@ export default function ScenarioTestController(props) {
             setAllActivityScenarios(scenariosForAllActivities);
             setFilteredActivityScenarios(scenariosForAllActivities);
 
-        }
-        else {
+        } else {
             setIsActivityView(true);
             setIsAllActivities(false);
             setAllActivityScenarios([]);
@@ -289,36 +288,37 @@ export default function ScenarioTestController(props) {
 
                     {isActivityView || isAllActivities ?
                         <button className="btn all-activities-button"
-                            disabled={isAllActivitiesButtonDisabled()}
-                            onClick={switchToAllActivities}>{isActivityView ? "All Activities" : "Activity View"}
+                                disabled={isAllActivitiesButtonDisabled()}
+                                onClick={switchToAllActivities}>{isActivityView ? "All Activities" : "Activity View"}
                         </button>
-                    : null }
+                        : null}
                 </div>
 
                 {!isActivityView && isAllActivities ?
                     <div>
                         <h3>Scenarios For All Activities</h3>
                         {allActivityScenarios.length === 0 ?
-                            <p className="description">You cannot search for a scenario because there are no valid activities.</p>
-                        :
-                        <div>
-                            <input type="text" id="search-input"
-                                   placeholder="Search for an interesting scenario" autoComplete="off"
-                                   onChange={(event) => filterAllActivityScenarios(event)}
-                                   className="searchScenarioInputField"/>
-                            <div className="generated-scenarios">
-                                {filteredActivityScenarios.map((filteredScenario) => {
-                                    return (
-                                        <div className="suggestionItem"
-                                             key={filteredScenario.description}
-                                             onClick={() => handleAllActivityScenarioChange(filteredScenario)}>{filteredScenario.description}
-                                        </div>
-                                    )
-                                })}
-                            </div>
-                        </div>}
+                            <p className="description">You cannot search for a scenario because there are no valid
+                                activities.</p>
+                            :
+                            <div>
+                                <input type="text" id="search-input"
+                                       placeholder="Search for an interesting scenario" autoComplete="off"
+                                       onChange={(event) => filterAllActivityScenarios(event)}
+                                       className="searchScenarioInputField"/>
+                                <div className="generated-scenarios">
+                                    {filteredActivityScenarios.map((filteredScenario) => {
+                                        return (
+                                            <div className="suggestionItem"
+                                                 key={filteredScenario.description}
+                                                 onClick={() => handleAllActivityScenarioChange(filteredScenario)}>{filteredScenario.description}
+                                            </div>
+                                        )
+                                    })}
+                                </div>
+                            </div>}
                     </div>
-                : null}
+                    : null}
 
                 {isActivityView && !isAllActivities ?
                     <div>
@@ -347,7 +347,9 @@ export default function ScenarioTestController(props) {
 
                                     {scenario.activity !== null && !scenario.isValid ?
                                         <p className="description">You cannot examine the
-                                            activity {scenario.activity.description} because it is invalid.</p>
+                                            activity <span
+                                                className="bold-text">{scenario.activity.description}</span> because it
+                                            is invalid.</p>
                                         : null}
 
                                     {scenario.activity !== null && scenario.isValid ?
@@ -361,7 +363,7 @@ export default function ScenarioTestController(props) {
                                                         <>
                                                             <input type="radio" value={mode.name}
                                                                    onClick={(event) => handleModeChange(event, index)}
-                                                                   name="Mode"
+                                                                   name={"Mode" + index}
                                                                    data-title={mode.name}
                                                                    className={scenario.selected_mode === mode.name ? "btn btn-primary" : "btn"}
                                                                    id={mode.name + '-' + mode.description}
@@ -378,29 +380,40 @@ export default function ScenarioTestController(props) {
                                     {scenario.selected_mode !== null ?
                                         <div className="actvity-container">
                                             <label className="label">
-                                        <span className="label-text">
-                                            Scenario
-                                            <span className="ml-1 font-normal text-sm"
-                                                  data-tooltip-id="stimulus-tooltip"
-                                                  data-tooltip-place="right"
-                                                  data-tooltip-content='The environment is the system on which the scenario test is executed. Warning: If the test is executed on the production environment, system failures may occur.'>&#9432;</span>
-                                        </span>
+                                                <span className="label-text">
+                                                    Scenario
+                                                    <span className="ml-1 font-normal text-sm"
+                                                          data-tooltip-id="stimulus-tooltip"
+                                                          data-tooltip-place="right"
+                                                          data-tooltip-content='The environment is the system on which the scenario test is executed. Warning: If the test is executed on the production environment, system failures may occur.'>&#9432;</span>
+                                                </span>
                                             </label>
                                             <Tooltip id="enviroment-tooltip" style={{maxWidth: '256px'}}/>
-                                            <input type="text" id="search-input"
-                                                   placeholder="Search for an interesting scenario" autoComplete="off"
-                                                   onChange={(event) => filterScenarios(event, index)}
-                                                   className="searchScenarioInputField"/>
-                                            <div className="generated-scenarios">
-                                                {scenario.filteredScenariosList?.map((filteredScenario) => {
-                                                    return (
-                                                        <div className="suggestionItem"
-                                                             key={filteredScenario.description}
-                                                             onClick={() => handleScenarioChange(filteredScenario, index)}>{filteredScenario.description}
-                                                        </div>
-                                                    )
-                                                })}
-                                            </div>
+                                            {scenario.generatedScenariosList.length === 0 ?
+                                                <p className="description">The activity <span
+                                                    className="bold-text">{scenario.activity.description}</span> has
+                                                    no <span className="bold-text">Runtime Quality Scenarios</span> for
+                                                    the mode <span
+                                                        className="bold-text">"{scenario.selected_mode}"</span>.</p>
+                                                :
+                                                <div>
+                                                    <input type="text" id="search-input"
+                                                           placeholder="Search for an interesting scenario"
+                                                           autoComplete="off"
+                                                           onChange={(event) => filterScenarios(event, index)}
+                                                           className="searchScenarioInputField"/>
+                                                    <div className="generated-scenarios">
+                                                        {scenario.filteredScenariosList?.map((filteredScenario) => {
+                                                            return (
+                                                                <div className="suggestionItem"
+                                                                     key={filteredScenario.description}
+                                                                     onClick={() => handleScenarioChange(filteredScenario, index)}>{filteredScenario.description}
+                                                                </div>
+                                                            )
+                                                        })}
+                                                    </div>
+                                                </div>
+                                            }
                                             {scenario.description !== null ? ScenarioTestApplicationService.formatDescription(scenario) : null}
                                         </div>
                                         : null}
@@ -425,9 +438,9 @@ export default function ScenarioTestController(props) {
                                                         <>
                                                             <input type="radio" value={expectedParameter.value}
                                                                    onClick={() => handleExpectedChange(expectedParameter, index)}
-                                                                   name={"Response Measure" + index}
+                                                                   name={"Response Measure: Index" + index + "ExpectedParam" + expectedParameter}
                                                                    data-title={expectedParameter.value}
-                                                                   className={scenario.expected === expectedParameter? "btn btn-primary" : "btn"}
+                                                                   className={scenario.expected === expectedParameter ? "btn btn-primary" : "btn"}
                                                                    data-tooltip-id={expectedParameter.value}
                                                                    data-tooltip-content={"Value: " + expectedParameter + " " + expectedParameter.unit}/>
                                                             <Tooltip
@@ -453,12 +466,13 @@ export default function ScenarioTestController(props) {
                                                 <Tooltip id="response-measure-tooltip" style={{maxWidth: '256px'}}/>
                                             </label>
                                             <label className="label">
-                                                <span className="label-text">Do you want to change the Load Design?</span>
+                                                <span
+                                                    className="label-text">Do you want to change the Load Design?</span>
                                             </label>
                                             <div className="btn-group">
                                                 <input type="radio" value="Yes"
                                                        onClick={(event) => handleLoadDecisionChange(event, index)}
-                                                       name="ChangeLoadDesign"
+                                                       name={"ChangeLoadDesign" + index}
                                                        data-title="Yes"
                                                        className="btn"
                                                        id={"ChangeLoadDesign" + "-" + "Yes"}
@@ -469,7 +483,7 @@ export default function ScenarioTestController(props) {
 
                                                 <input type="radio" value="No"
                                                        onClick={(event) => handleLoadDecisionChange(event, index)}
-                                                       name="ChangeLoadDesign"
+                                                       name={"ChangeLoadDesign" + index}
                                                        data-title="No"
                                                        className="btn"
                                                        id={"ChangeLoadDesign" + "-" + "No"}
@@ -500,9 +514,9 @@ export default function ScenarioTestController(props) {
                                                                         return (
                                                                             <>
                                                                                 <label className="label">
-                                                                    <span className="label-text">
-                                                                        {parameter.name}
-                                                                    </span>
+                                                                                    <span className="label-text">
+                                                                                        {parameter.name}
+                                                                                    </span>
                                                                                 </label>
                                                                                 <div className="btn-group">
                                                                                     {parameter.values != null && parameter.values.map((value) => {
@@ -511,7 +525,7 @@ export default function ScenarioTestController(props) {
                                                                                                 <input type="radio"
                                                                                                        value={value}
                                                                                                        onClick={() => handleLoadDesignParameterChange(value, index, paramIndex)}
-                                                                                                       name={parameter.name}
+                                                                                                       name={"Parameter: Index " + index + ", ParamIndex:" + paramIndex}
                                                                                                        data-title={value.name}
                                                                                                        className="btn"
                                                                                                        data-tooltip-id={value.name + '-' + value.value}
@@ -553,7 +567,7 @@ export default function ScenarioTestController(props) {
                                             <div className="btn-group">
                                                 <input type="radio" value="Yes"
                                                        onClick={(event) => handleResilienceDecisionChange(event, index)}
-                                                       name="ChangeResilienceDesign"
+                                                       name={"ChangeResilienceDesign" + index}
                                                        data-title="Yes"
                                                        className="btn"
                                                        id={"ChangeResilienceDesign" + "-" + "Yes"}
@@ -564,7 +578,7 @@ export default function ScenarioTestController(props) {
 
                                                 <input type="radio" value="No"
                                                        onClick={(event) => handleResilienceDecisionChange(event, index)}
-                                                       name="ChangeResilienceDesign"
+                                                       name={"ChangeResilienceDesign" + index}
                                                        data-title="No"
                                                        className="btn"
                                                        id={"ChangeResilienceDesign" + "-" + "No"}
@@ -608,7 +622,7 @@ export default function ScenarioTestController(props) {
                                                                                                 <input type="radio"
                                                                                                        value={value}
                                                                                                        onClick={() => handleResilienceDesignParameterChange(value, index, paramIndex)}
-                                                                                                       name={parameter.name}
+                                                                                                       name={"Parameter: Index " + index + ", ParamIndex:" + paramIndex}
                                                                                                        data-title={value.name}
                                                                                                        className="btn"
                                                                                                        data-tooltip-id={value.name + '-' + value.value}
@@ -737,7 +751,7 @@ export default function ScenarioTestController(props) {
                             </button>
                         </div>
                     </div>
-                : null}
+                    : null}
             </div>
             <ResizeBar setIsResizing={setIsResizing} setSidebarWidth={setSidebarWidth}/>
         </>
