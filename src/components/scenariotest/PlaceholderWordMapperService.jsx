@@ -181,7 +181,12 @@ export default function PlaceholderWordMapperService(sentence, part) {
                         replacingStringList.push(elementName);
                     }
                 }
-                loadWordMap[match[0]] = replacingStringList.join(" ");
+                if(replacingStringList.length === 0) {
+                    loadWordMap[match[0]] = null;
+                }
+                else {
+                    loadWordMap[match[0]] = replacingStringList.join(" ");
+                }
             } else if (VerbConjugationService.isMatchConjugableVerb(match[1])) {
                 loadWordMap[match[0]] = VerbConjugationService.getConjugatedVersionOfVerb(sentence.words.audience, match[1]);
             }
@@ -224,7 +229,12 @@ export default function PlaceholderWordMapperService(sentence, part) {
                         replacingStringList.push(elementName);
                     }
                 }
-                resilienceWordMap[match[0]] = replacingStringList.join(" ");
+                if(replacingStringList.length === 0) {
+                    resilienceWordMap[match[0]] = null;
+                }
+                else {
+                    resilienceWordMap[match[0]] = replacingStringList.join(" ");
+                }
             } else if (VerbConjugationService.isMatchConjugableVerb(match[1])) {
                 resilienceWordMap[match[0]] = VerbConjugationService.getConjugatedVersionOfVerb(sentence.words.audience, match[1]);
             }

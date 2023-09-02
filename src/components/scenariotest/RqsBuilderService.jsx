@@ -81,6 +81,10 @@ export default function RqsBuilderService(sentence, mode) {
     if(mode === "What if") {
         loadDescription = getDescription(sentence.metric_load.description, "Load");
         resilienceDescription = getDescription(sentence.metric_resilience.description, "Resilience");
+
+        if(loadDescription === null) {  // If the load description in a what if rqs is null, it is not a valid rqs anymore
+            return null;
+        }
     }
 
     let isQuestion = sentence.all_expected === null;
