@@ -5,87 +5,43 @@ import compromise from "compromise";
 import indefinite from "indefinite";
 import deepCopy from "./deepCopy.jsx";
 import scenarioSpecs from "../../data/scenariotest-specs.json";
-import SentenceBuilder from "./SentenceBuilder.jsx";
+import RqsBuilderService from "./RqsBuilderService.jsx";
 import replacePlaceholders from "./replacePlaceholders.jsx";
 
 export default function ScenarioGenerator(mode, wordArray) {
 
-    const generateWhatIfScenarios = (words) => {
+    const generateRqs = (words, mode, metrics) => {
 
-        let scenarioArray = [];
-        for (const metric of allWhatIfMetrics) {
-            let sentence = {
-                metric: metric.metric,
-                all_expected: metric.expected,
-                what_if_mode: metric.what_if_mode
-            };
-            sentence.expected = getExpected(metric.expected);
-
-            let descriptionSpeakers = replacePlaceholders(metric.speakers, words.speakers, "speakers", sentence.expected);
-            let descriptionMessage = replacePlaceholders(metric.message, words.message, "message", sentence.expected)
-            let descriptionAudience = replacePlaceholders(metric.audience, words.audience, "audience", sentence.expected);
-
-            sentence.load_design = getLoadDesign(metric.load_design.load_variants);
-            sentence.resilience_design = getResilienceDesign(metric.resilience_design.resilience_variants);
-
-            if(descriptionSpeakers === null
-                || descriptionMessage === null) {
-                continue;
-            }
-
-            sentence.description_speakers = descriptionSpeakers;
-            sentence.description_message = descriptionMessage;
-            sentence.description_audience = descriptionAudience;
-            sentence.attachment = metric.attachment;
-            sentence.description_load = replacePlaceholders(metric.load_design, words.audience, "load", sentence.expected);
-            sentence.description_resilience = replacePlaceholders(metric.resilience_design, words.audience, "resilience", sentence.expected);
-
-            sentence.description = SentenceBuilder(sentence, "What if");
-
-            if(sentence.description === null) {
-                continue;
-            }
-
-            scenarioArray.push(sentence);
-        }
-        return scenarioArray;
-    }
-
-    const generateMonitoringScenarios = (words) => {
-
-        let scenarioArray = [];
-        for (const metric of allMonitoringMetrics) {
-            let sentence = {
+        let rqsArray = [];
+        for (const metric of metrics) {
+            let rqs = {
                 metric: metric.metric,
                 all_expected: metric.expected,
                 load_design: null,
-                resilience_design: null
+                resilience_design: null,
+                metric_load: metric.load_design,
+                metric_resilience: metric.resilience_design,
             };
-            sentence.expected = getExpected(metric.expected);
+            rqs.expected = getExpected(metric.expected);
 
-            let descriptionSpeakers = replacePlaceholders(metric.speakers, words.speakers, "speakers", sentence.expected);
-            let descriptionMessage = replacePlaceholders(metric.message, words.message, "message", sentence.expected);
-            let descriptionAudience = replacePlaceholders(metric.audience, words.audience, "audience", sentence.expected);
+            rqs.mandatory = metric.mandatory;
+            rqs.optional = metric.optional;
+            rqs.attachment = metric.attachment;
+            rqs.words = words;
 
-
-            if(descriptionSpeakers === null
-                || descriptionMessage === null
-                || (descriptionSpeakers === ""
-                && descriptionMessage === ""
-                && descriptionAudience === null)){
-                continue;
+            if(mode === "What if") {
+                rqs.load_design = getLoadDesign(metric.load_design.load_variants);
+                rqs.resilience_design = getResilienceDesign(metric.resilience_design.resilience_variants);
             }
 
-            sentence.description_speakers = descriptionSpeakers;
-            sentence.description_message = descriptionMessage;
-            sentence.description_audience = descriptionAudience;
-            sentence.attachment = metric.attachment;
+            rqs.description = RqsBuilderService(rqs, mode);
 
-            sentence.description = SentenceBuilder(sentence, "Monitoring");
-
-            scenarioArray.push(sentence);
+            if(rqs.description === null) {
+                continue;
+            }
+            rqsArray.push(rqs);
         }
-        return scenarioArray;
+        return rqsArray;
     }
 
     const getExpected = (allExpected) => {
@@ -152,10 +108,10 @@ export default function ScenarioGenerator(mode, wordArray) {
     const allMonitoringMetrics = monitoringMetrics.metrics;
 
     if(mode === "What if") {
-        return generateWhatIfScenarios(wordArray);
+        return generateRqs(wordArray, mode, allWhatIfMetrics);
     }
-    else {
-        return generateMonitoringScenarios(wordArray);
+    else if(mode === "Monitoring") {
+        return generateRqs(wordArray, mode, allMonitoringMetrics);
     }
-
+    return null;
 }

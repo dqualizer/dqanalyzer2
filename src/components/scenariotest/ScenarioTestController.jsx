@@ -401,7 +401,7 @@ export default function ScenarioTestController(props) {
                                                     )
                                                 })}
                                             </div>
-                                            {scenario.description !== null ? ScenarioDescriptionFormatter(scenario) : null}
+                                            {scenario.description !== null ? ScenarioTestApplicationService.formatDescription(scenario) : null}
                                         </div>
                                         : null}
 

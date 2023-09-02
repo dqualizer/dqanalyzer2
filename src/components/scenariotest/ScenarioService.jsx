@@ -1,6 +1,6 @@
 import ActivityParser from "./ActivityParser.jsx";
-import ScenarioGenerator from "./ScenarioGenerator.jsx";
-import ScenariosToFileWriter from "./ScenariosToFileWriter.jsx";
+import RqsGeneratorService from "./ScenarioGenerator.jsx";
+import FileWriterService from "./FileWriterService.jsx";
 import * as mapping from '../../data/werkstatt-en.json';
 import deepCopy from "./deepCopy.jsx";
 
@@ -52,14 +52,15 @@ class ScenarioService {
         scenario.all_expected = null;
     }
 
-    getScenariosForActivityAndMode = (activity, mode, nodes, edges) => {
+    getRqsForActivityAndMode = (activity, mode, nodes, edges) => {
         let wordArray = ActivityParser(nodes, edges, activity);
 
-        let generatedSentences = ScenarioGenerator(mode, wordArray);
+        let generatedRqs = RqsGeneratorService(mode, wordArray);
 
-        ScenariosToFileWriter(generatedSentences);
+        // to download a file with all RQS
+        FileWriterService(generatedRqs);
 
-        return generatedSentences;
+        return generatedRqs;
     }
 
     setAttributesForModeChange(scenario, selectedMode, scenarioListForActivityAndMode) {
@@ -105,6 +106,8 @@ class ScenarioService {
         scenario.saved_load_design = selectedScenario.load_design;
         scenario.saved_resilience_design = selectedScenario.resilience_design;
         scenario.all_expected = selectedScenario.all_expected;
+        scenario.metric_load = selectedScenario.metric_load;
+        scenario.metric_resilience = selectedScenario.metric_resilience;
     }
 
     deleteDesignparametersFromVariant(scenario, newVariant) {

@@ -2,8 +2,9 @@ import ScenarioService from "./ScenarioService.jsx";
 import ActivityParser from "./ActivityParser.jsx";
 import ActivityValidator from "./ActivityValidator.jsx";
 import deepCopy from "./deepCopy.jsx";
-import SentenceBuilder from "./SentenceBuilder.jsx";
+import RqsBuilderService from "./RqsBuilderService.jsx";
 import axios from "axios";
+import ScenarioDescriptionFormatter from "./ScenarioDescriptionFormatter.jsx";
 
 class ScenarioTestApplicationService {
 
@@ -19,7 +20,7 @@ class ScenarioTestApplicationService {
     }
 
     handleModeChange(scenario, selectedMode, nodes, edges) {
-        let scenarioListForActivityAndMode = ScenarioService.getScenariosForActivityAndMode(scenario.activity, selectedMode, nodes, edges);
+        let scenarioListForActivityAndMode = ScenarioService.getRqsForActivityAndMode(scenario.activity, selectedMode, nodes, edges);
         ScenarioService.setAttributesForModeChange(scenario, selectedMode, scenarioListForActivityAndMode);
     }
 
@@ -75,7 +76,7 @@ class ScenarioTestApplicationService {
     handleExpectedChange(scenario, responseParameter) {
         scenario.expected = responseParameter;
 
-        scenario.description = SentenceBuilder(scenario, scenario.selected_mode);
+        scenario.description = RqsBuilderService(scenario, scenario.selected_mode);
     }
 
     addScenario(newScenarioList) {
@@ -141,8 +142,8 @@ class ScenarioTestApplicationService {
             if(!isValidActivity) {
                 continue;
             }
-            let allWhatIfScenariosForActivity = ScenarioService.getScenariosForActivityAndMode(activityEdges, "What if", nodes, edges);
-            let allMonitoringScenariosForActivity = ScenarioService.getScenariosForActivityAndMode(activityEdges, "Monitoring", nodes, edges);
+            let allWhatIfScenariosForActivity = ScenarioService.getRqsForActivityAndMode(activityEdges, "What if", nodes, edges);
+            let allMonitoringScenariosForActivity = ScenarioService.getRqsForActivityAndMode(activityEdges, "Monitoring", nodes, edges);
 
             for (let whatIfScenario of allWhatIfScenariosForActivity) {
                 scenariosForAllActivities.push(
@@ -232,6 +233,10 @@ class ScenarioTestApplicationService {
         return filteredScenarios.filter(isShownScenario =>
             isShownScenario.description.toLowerCase().includes(inputText.toLowerCase())
         );
+    }
+
+    formatDescription(scenario) {
+        return ScenarioDescriptionFormatter(scenario);
     }
 }
 
