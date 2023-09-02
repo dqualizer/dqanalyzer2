@@ -189,8 +189,16 @@ class ScenarioService {
                 load_design: definedScenario.load_design,
                 resilience_design: definedScenario.resilience_design
             };
-            rqaScenario.load_design?.design_parameters?.forEach(param => delete param.value.placeholder_value);
-            rqaScenario.resilience_design?.design_parameters?.forEach(param => delete param.value.placeholder_value);
+            delete rqaScenario.load_design?.variant_placeholder;
+            rqaScenario.load_design?.design_parameters?.forEach(param => {
+                delete param.param_placeholder;
+                delete param.value.placeholder_value;
+            });
+            delete rqaScenario.resilience_design?.variant_placeholder;
+            rqaScenario.resilience_design?.design_parameters?.forEach(param => {
+                delete param.param_placeholder;
+                delete param.value.placeholder_value;
+            });
             rqa.scenarios.push(rqaScenario);
         }
         rqa.settings.accuracy = accuracy;
