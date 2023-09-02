@@ -16,6 +16,442 @@
       "expected": null
     },
     {
+      "metric": "maximum_throughput",
+      "mandatory": {
+        "description": "What is the maximum number of [actor] who [verb] [work object]",
+        "number_actor": "plural",
+        "form_verb": "infinitive",
+        "number_work_object": "plural"
+      },
+      "optional": {
+        "description": "[preposition] [actor]",
+        "number_actor": null
+      },
+      "attachment": "at the same time",
+      "expected": null
+    },
+    {
+      "metric": "average_throughput",
+      "mandatory": {
+        "description": "What is the average number of [actor] who [verb] [work object]",
+        "number_actor": "plural",
+        "form_verb": "infinitive",
+        "number_work_object": "plural"
+      },
+      "optional": {
+        "description": "[preposition] [actor]",
+        "number_actor": null
+      },
+      "attachment": "at the same time",
+      "expected": null
+    },
+    {
+      "metric": "minimum_throughput",
+      "mandatory": {
+        "description": "What is the minimum number of [actor] who [verb] [work object]",
+        "number_actor": "plural",
+        "form_verb": "infinitive",
+        "number_work_object": "plural"
+      },
+      "optional": {
+        "description": "[preposition] [actor]",
+        "number_actor": null
+      },
+      "attachment": "at the same time",
+      "expected": null
+    },
+    {
+      "metric": "how_often_average",
+      "mandatory": {
+        "description": "How often [do] [actor] on average [verb] [work object]",
+        "number_actor": "singular",
+        "form_verb": "infinitive",
+        "number_work_object": "singular"
+      },
+      "optional": {
+        "description": "[preposition] [actor]",
+        "number_actor": null
+      },
+      "attachment": null,
+      "expected": null
+    },
+    {
+      "metric": "how_often_maximum",
+      "mandatory": {
+        "description": "Up to how many times [do] [actor] [verb] [work object]",
+        "number_actor": "singular",
+        "form_verb": "infinitive",
+        "number_work_object": "singular"
+      },
+      "optional": {
+        "description": "[preposition] [actor]",
+        "number_actor": null
+      },
+      "attachment": null,
+      "expected": null
+    },
+    {
+      "metric": "how_often_minimum",
+      "mandatory": {
+        "description": "Up to how rarely [do] [actor] [verb] [work object]",
+        "number_actor": "singular",
+        "form_verb": "infinitive",
+        "number_work_object": "singular"
+      },
+      "optional": {
+        "description": "[preposition] [actor]",
+        "number_actor": null
+      },
+      "attachment": null,
+      "expected": null
+    },
+    {
+      "metric": "popularity_more",
+      "mandatory": {
+        "description": "Are some [work object] more popular than others",
+        "number_actor": null,
+        "form_verb": null,
+        "number_work_object": "plural"
+      },
+      "optional": {
+        "description": null,
+        "number_actor": null
+      },
+      "attachment": null,
+      "expected": null
+    },
+    {
+      "metric": "popularity_less",
+      "mandatory": {
+        "description": "Are some [work object] less popular than others",
+        "number_actor": null,
+        "form_verb": null,
+        "number_work_object": "plural"
+      },
+      "optional": {
+        "description": null,
+        "number_actor": null
+      },
+      "attachment": null,
+      "expected": null
+    },
+    {
+      "metric": "popularity_equal",
+      "mandatory": {
+        "description": "Do all [work object] [have] the same popularity",
+        "number_actor": null,
+        "form_verb": null,
+        "number_work_object": "plural"
+      },
+      "optional": {
+        "description": null,
+        "number_actor": null
+      },
+      "attachment": null,
+      "expected": null
+    },
+    {
+      "metric": "maximum_time_spending",
+      "mandatory": {
+        "description": "What is the maximum time it took for [actor] to [verb] [work object]",
+        "number_actor": "singular",
+        "form_verb": "infinitive",
+        "number_work_object": "singular"
+      },
+      "optional": {
+        "description": "[preposition] [actor]",
+        "number_actor": null
+      },
+      "attachment": null,
+      "expected": null
+    },
+    {
+      "metric": "average_time_spending",
+      "mandatory": {
+        "description": "How long does it take on average for [actor] to [verb] [work object]",
+        "number_actor": "singular",
+        "form_verb": "infinitive",
+        "number_work_object": "singular"
+      },
+      "optional": {
+        "description": "[preposition] [actor]",
+        "number_actor": null
+      },
+      "attachment": null,
+      "expected": null
+    },
+    {
+      "metric": "minimum_time_spending",
+      "mandatory": {
+        "description": "What is the minimum time it took for [actor] to [verb] [work object]",
+        "number_actor": "singular",
+        "form_verb": "infinitive",
+        "number_work_object": "singular"
+      },
+      "optional": {
+        "description": "[preposition] [actor]",
+        "number_actor": null
+      },
+      "attachment": null,
+      "expected": null
+    },
+    {
+      "metric": "when_the_most",
+      "mandatory": {
+        "description": "When do most [actor] [verb] [work object]",
+        "number_actor": "plural",
+        "form_verb": "infinitive",
+        "number_work_object": "plural"
+      },
+      "optional": {
+        "description": "[preposition] [actor]",
+        "number_actor": null
+      },
+      "attachment": null,
+      "expected": null
+    },
+    {
+      "metric": "when_average",
+      "mandatory": {
+        "description": "When do [actor] [verb] [work object]",
+        "number_actor": "plural",
+        "form_verb": "infinitive",
+        "number_work_object": "plural"
+      },
+      "optional": {
+        "description": "[preposition] [actor]",
+        "number_actor": null
+      },
+      "attachment": "on average",
+      "expected": null
+    },
+    {
+      "metric": "when_the_fewest",
+      "mandatory": {
+        "description": "When do fewest [actor] [verb] [work object]",
+        "number_actor": "plural",
+        "form_verb": "infinitive",
+        "number_work_object": "plural"
+      },
+      "optional": {
+        "description": "[preposition] [actor]",
+        "number_actor": null
+      },
+      "attachment": null,
+      "expected": null
+    },
+    {
+      "metric": "how_often_response_time",
+      "mandatory": {
+        "description": null,
+        "number_actor": null,
+        "form_verb": null,
+        "number_work_object": null
+      },
+      "optional": {
+        "description": "How often is the response time of [system] satisfactory/tolerable/frustrating",
+        "form_verb": null,
+        "number_work_object": null
+      },
+      "attachment": null,
+      "expected": null
+    },
+    {
+      "metric": "how_often_request_fail",
+      "mandatory": {
+        "description": null,
+        "number_actor": null,
+        "form_verb": null,
+        "number_work_object": null
+      },
+      "optional": {
+        "description": "How often does a request to [system] fail",
+        "number_actor": null
+      },
+      "attachment": null,
+      "expected": null
+    },
+    {
+      "metric": "when_most_request_fail",
+      "mandatory": {
+        "description": null,
+        "number_actor": null,
+        "form_verb": null,
+        "number_work_object": null
+      },
+      "optional": {
+        "description": "When do the most requests to [system] fail",
+        "number_actor": null
+      },
+      "attachment": null,
+      "expected": null
+    },
+    {
+      "metric": "when_less_request_fail",
+      "mandatory": {
+        "description": null,
+        "number_actor": null,
+        "form_verb": null,
+        "number_work_object": null
+      },
+      "optional": {
+        "description": "When do the fewest requests to [system] fail",
+        "number_actor": null
+      },
+      "attachment": null,
+      "expected": null
+    },
+    {
+      "metric": "mean_time_to_failure",
+      "mandatory": {
+        "description": null,
+        "number_actor": null,
+        "form_verb": null,
+        "number_work_object": null
+      },
+      "optional": {
+        "description": "How long does it take on average for [system] to fail",
+        "number_actor": null
+      },
+      "attachment": null,
+      "expected": null
+    },
+    {
+      "metric": "longest_time_to_failure",
+      "mandatory": {
+        "description": null,
+        "number_actor": null,
+        "form_verb": null,
+        "number_work_object": null
+      },
+      "optional": {
+        "description": "What is the longest time until [system] [fail]",
+        "number_actor": null
+      },
+      "attachment": null,
+      "expected": null
+    },
+    {
+      "metric": "shortest_time_to_failure",
+      "mandatory": {
+        "description": null,
+        "number_actor": null,
+        "form_verb": null,
+        "number_work_object": null
+      },
+      "optional": {
+        "description": "What is the shortest time until [system] [fail]",
+        "number_actor": null
+      },
+      "attachment": null,
+      "expected": null
+    },
+    {
+      "metric": "mean_time_to_recover",
+      "mandatory": {
+        "description": null,
+        "number_actor": null,
+        "form_verb": null,
+        "number_work_object": null
+      },
+      "optional": {
+        "description": "How long does it take on average for [system] to recover",
+        "number_actor": null
+      },
+      "attachment": null,
+      "expected": null
+    },
+    {
+      "metric": "longest_time_to_recover",
+      "mandatory": {
+        "description": null,
+        "number_actor": null,
+        "form_verb": null,
+        "number_work_object": null
+      },
+      "optional": {
+        "description": "What is the longest time until [system] [recover]",
+        "number_actor": null
+      },
+      "attachment": null,
+      "expected": null
+    },
+    {
+      "metric": "shortest_time_to_failure",
+      "mandatory": {
+        "description": null,
+        "number_actor": null,
+        "form_verb": null,
+        "number_work_object": null
+      },
+      "optional": {
+        "description": "What is the shortest time until [system] [recover]",
+        "number_actor": null
+      },
+      "attachment": null,
+      "expected": null
+    },
+    {
+      "metric": "availability",
+      "mandatory": {
+        "description": null,
+        "number_actor": null,
+        "form_verb": null,
+        "number_work_object": null
+      },
+      "optional": {
+        "description": "How high is the availability of [system]",
+        "number_actor": null
+      },
+      "attachment": null,
+      "expected": null
+    },
+    {
+      "metric": "how_often_timeout",
+      "mandatory": {
+        "description": null,
+        "number_actor": null,
+        "form_verb": null,
+        "number_work_object": null
+      },
+      "optional": {
+        "description": "How often [do] [system] have timeouts",
+        "number_actor": null
+      },
+      "attachment": null,
+      "expected": null
+    },
+    {
+      "metric": "when_most_timeout",
+      "mandatory": {
+        "description": null,
+        "number_actor": null,
+        "form_verb": null,
+        "number_work_object": null
+      },
+      "optional": {
+        "description": "When do the most timeouts in [system] occur",
+        "number_actor": null
+      },
+      "attachment": null,
+      "expected": null
+    },
+    {
+      "metric": "when_less_timeout",
+      "mandatory": {
+        "description": null,
+        "number_actor": null,
+        "form_verb": null,
+        "number_work_object": null
+      },
+      "optional": {
+        "description": "When do the fewest timeouts in [system] occur",
+        "number_actor": null
+      },
+      "attachment": null,
+      "expected": null
+    },
+    {
       "metric": "response_time_active_under",
       "mandatory": {
         "description": "[actor] must be able to [verb] [work object]",

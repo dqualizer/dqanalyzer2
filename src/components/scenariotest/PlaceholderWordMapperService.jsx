@@ -15,6 +15,9 @@ export default function PlaceholderWordMapperService(sentence, part) {
     }
 
     if (part === "Mandatory") {
+        if (sentence.mandatory === null) {
+            return null;
+        }
         let mandatoryDetails = sentence.mandatory;
         let mandatoryDescription = mandatoryDetails.description;
         let mandatoryWordMap = {};
@@ -72,11 +75,14 @@ export default function PlaceholderWordMapperService(sentence, part) {
                     mandatoryWordMap[match[0]] = replacingStringList.join(" ");
                 }
             } else if (VerbConjugationService.isMatchConjugableVerb(match[1])) {
-                mandatoryWordMap[match[0]] = VerbConjugationService.getConjugatedVersionOfVerb(sentence.words.mandatory, match[1]);
+                mandatoryWordMap[match[0]] = VerbConjugationService.getConjugatedVersionOfVerb(sentence.words.speakers, match[1]);
             }
         }
         return mandatoryWordMap;
     } else if (part === "Optional") {
+        if (sentence.optional === null) {
+            return null;
+        }
         let optionalDetails = sentence.optional;
         let optionalDescription = optionalDetails.description;
         let optionalWordMap = {};
@@ -112,9 +118,10 @@ export default function PlaceholderWordMapperService(sentence, part) {
                         }
                     }
                     optionalWordMap[match[0]] = replacingStringList.join(" ");
-                } else if (VerbConjugationService.isMatchConjugableVerb(match[1])) {
-                    optionalWordMap[match[0]] = VerbConjugationService.getConjugatedVersionOfVerb(sentence.words.audience, match[1]);
                 }
+            }
+            else if (VerbConjugationService.isMatchConjugableVerb(match[1])) {
+                optionalWordMap[match[0]] = VerbConjugationService.getConjugatedVersionOfVerb(sentence.words.audience, match[1]);
             }
         }
         return optionalWordMap;
