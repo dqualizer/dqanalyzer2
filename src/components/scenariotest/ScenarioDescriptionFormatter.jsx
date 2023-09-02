@@ -10,13 +10,13 @@ export default function ScenarioDescriptionFormatter(scenario) {
         let resilienceToFormat = formatPart("Resilience");
 
         if(attachmentToFormat !== null) {
-            resultString = resultString.replace(attachmentToFormat, "<span class='bold-text'>${attachmentToFormat}</span>");
+            resultString = resultString.replace(attachmentToFormat, `<span class="bold-text">${attachmentToFormat}</span>`);
         }
         if(loadToFormat !== null) {
-            resultString = resultString.replace(loadToFormat, "<span class='bold-text'>${loadToFormat}</span>");
+            resultString = resultString.replace(loadToFormat, `<span class="bold-text">${loadToFormat}</span>`);
         }
         if(resilienceToFormat !== null) {
-            resultString = resultString.replace(resilienceToFormat, "<span class='bold-text'>${resilienceToFormat}</span>");
+            resultString = resultString.replace(resilienceToFormat, `<span class="bold-text">${resilienceToFormat}</span>`);
         }
 
         return resultString;

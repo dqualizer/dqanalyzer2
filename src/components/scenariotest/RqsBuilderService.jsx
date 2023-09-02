@@ -13,9 +13,14 @@ export default function RqsBuilderService(sentence, mode) {
             descriptionCopy = null;
         }
         else {
-            Object.entries(words).forEach(([key, value]) => descriptionCopy = descriptionCopy.replace(key, value));
-            if (descriptionCopy.match(placeholderRegex) !== null) {
-                descriptionCopy = null;
+            const keys = Object.keys(words);
+            for (const key of keys) {
+                if (words[key] === null) {
+                    return null;
+                }
+                else {
+                    descriptionCopy = descriptionCopy.replace(key, words[key]);
+                }
             }
         }
         return descriptionCopy;

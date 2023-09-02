@@ -141,6 +141,9 @@ export default function PlaceholderWordMapperService(sentence, part) {
         }
         return attachmentWordMap;
     } else if (part === "Load") {
+        if(sentence.load_design === null) {
+            return null;
+        }
         let loadDescription = sentence.metric_load.description;
         let loadWordMap = {};
 
@@ -181,6 +184,9 @@ export default function PlaceholderWordMapperService(sentence, part) {
         }
         return loadWordMap;
     } else if (part === "Resilience") {
+        if(sentence.resilience_design === null) {
+            return null;
+        }
         let resilienceDescription = sentence.metric_resilience.description;
         let resilienceWordMap = {};
 
