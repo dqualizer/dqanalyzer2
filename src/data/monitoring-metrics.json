@@ -138,7 +138,7 @@
     {
       "metric": "popularity_equal",
       "mandatory": {
-        "description": "Do all [work object] [have] the same popularity",
+        "description": "Do all [work object] have the same popularity",
         "number_actor": null,
         "form_verb": null,
         "number_work_object": "plural"
