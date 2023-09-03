@@ -1436,6 +1436,51 @@
           "late response"
         ]
       }
+    },
+    {
+      "metric": "response_time_active_under",
+      "mandatory": {
+        "description": "[actor] must be able to [verb] [work object]",
+        "number_actor": null,
+        "form_verb": "infinitive",
+        "number_work_object": "plural"
+      },
+      "optional": {
+        "description": "[preposition] [system]",
+        "number_actor": null
+      },
+      "attachment": "after [expected]",
+      "options": null,
+      "expected": [
+        {
+          "value": 200,
+          "unit": "milliseconds"
+        },
+        {
+          "value": 500,
+          "unit": "milliseconds"
+        },
+        {
+          "value": 700,
+          "unit": "milliseconds"
+        }
+      ],
+      "what_if_mode": "load",
+      "load_design": {
+        "description": "if [system] [are] under a [load]",
+        "number_actor": null,
+        "load_variants": [
+          "constant load"
+        ]
+      },
+      "resilience_design": {
+        "description": "and [have] [resilience]",
+        "resilience_variants": [
+          "None",
+          "failed request",
+          "late response"
+        ]
+      }
     }
   ]
 }
