@@ -13,6 +13,7 @@
         "number_actor": null
       },
       "attachment": null,
+      "options": null,
       "expected": null
     },
     {
@@ -28,6 +29,7 @@
         "number_actor": null
       },
       "attachment": "at the same time",
+      "options": null,
       "expected": null
     },
     {
@@ -43,6 +45,7 @@
         "number_actor": null
       },
       "attachment": "at the same time",
+      "options": null,
       "expected": null
     },
     {
@@ -58,6 +61,7 @@
         "number_actor": null
       },
       "attachment": "at the same time",
+      "options": null,
       "expected": null
     },
     {
@@ -73,6 +77,7 @@
         "number_actor": null
       },
       "attachment": null,
+      "options": null,
       "expected": null
     },
     {
@@ -88,6 +93,7 @@
         "number_actor": null
       },
       "attachment": null,
+      "options": null,
       "expected": null
     },
     {
@@ -103,6 +109,7 @@
         "number_actor": null
       },
       "attachment": null,
+      "options": null,
       "expected": null
     },
     {
@@ -118,6 +125,7 @@
         "number_actor": null
       },
       "attachment": null,
+      "options": null,
       "expected": null
     },
     {
@@ -133,6 +141,7 @@
         "number_actor": null
       },
       "attachment": null,
+      "options": null,
       "expected": null
     },
     {
@@ -148,6 +157,7 @@
         "number_actor": null
       },
       "attachment": null,
+      "options": null,
       "expected": null
     },
     {
@@ -163,6 +173,7 @@
         "number_actor": null
       },
       "attachment": null,
+      "options": null,
       "expected": null
     },
     {
@@ -178,6 +189,7 @@
         "number_actor": null
       },
       "attachment": null,
+      "options": null,
       "expected": null
     },
     {
@@ -193,6 +205,7 @@
         "number_actor": null
       },
       "attachment": null,
+      "options": null,
       "expected": null
     },
     {
@@ -208,6 +221,7 @@
         "number_actor": null
       },
       "attachment": null,
+      "options": null,
       "expected": null
     },
     {
@@ -223,6 +237,7 @@
         "number_actor": null
       },
       "attachment": "on average",
+      "options": null,
       "expected": null
     },
     {
@@ -238,6 +253,7 @@
         "number_actor": null
       },
       "attachment": null,
+      "options": null,
       "expected": null
     },
     {
@@ -249,11 +265,16 @@
         "number_work_object": null
       },
       "optional": {
-        "description": "How often is the response time of [system] satisfactory/tolerable/frustrating",
+        "description": "How often is the response time of [system]",
         "form_verb": null,
         "number_work_object": null
       },
-      "attachment": null,
+      "attachment": "[options]",
+      "options": [
+        "satisfactory",
+        "tolerable",
+        "frustrating"
+      ],
       "expected": null
     },
     {
@@ -269,6 +290,7 @@
         "number_actor": null
       },
       "attachment": null,
+      "options": null,
       "expected": null
     },
     {
@@ -284,6 +306,7 @@
         "number_actor": null
       },
       "attachment": null,
+      "options": null,
       "expected": null
     },
     {
@@ -299,6 +322,7 @@
         "number_actor": null
       },
       "attachment": null,
+      "options": null,
       "expected": null
     },
     {
@@ -314,6 +338,7 @@
         "number_actor": null
       },
       "attachment": null,
+      "options": null,
       "expected": null
     },
     {
@@ -329,6 +354,7 @@
         "number_actor": null
       },
       "attachment": null,
+      "options": null,
       "expected": null
     },
     {
@@ -344,6 +370,7 @@
         "number_actor": null
       },
       "attachment": null,
+      "options": null,
       "expected": null
     },
     {
@@ -359,6 +386,7 @@
         "number_actor": null
       },
       "attachment": null,
+      "options": null,
       "expected": null
     },
     {
@@ -374,6 +402,7 @@
         "number_actor": null
       },
       "attachment": null,
+      "options": null,
       "expected": null
     },
     {
@@ -389,6 +418,7 @@
         "number_actor": null
       },
       "attachment": null,
+      "options": null,
       "expected": null
     },
     {
@@ -404,6 +434,7 @@
         "number_actor": null
       },
       "attachment": null,
+      "options": null,
       "expected": null
     },
     {
@@ -419,6 +450,7 @@
         "number_actor": null
       },
       "attachment": null,
+      "options": null,
       "expected": null
     },
     {
@@ -434,6 +466,7 @@
         "number_actor": null
       },
       "attachment": null,
+      "options": null,
       "expected": null
     },
     {
@@ -449,6 +482,7 @@
         "number_actor": null
       },
       "attachment": null,
+      "options": null,
       "expected": null
     },
     {
@@ -464,6 +498,7 @@
         "number_actor": null
       },
       "attachment": "after [expected]",
+      "options": null,
       "expected": [
         {
           "value": 200,

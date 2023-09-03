@@ -51,6 +51,13 @@ class ScenarioService {
         scenario.saved_resilience_design = null;
         scenario.saved_resilience_design = null;
         scenario.all_expected = null;
+        scenario.metric_load = null;
+        scenario.metric_resilience = null;
+        scenario.mandatory = null;
+        scenario.optional = null;
+        scenario.words = null;
+        scenario.options = null;
+        scenario.all_options = null;
     }
 
     getRqsForActivityAndMode = (activity, mode, nodes, edges) => {
@@ -86,6 +93,13 @@ class ScenarioService {
         scenario.saved_load_design = null;
         scenario.saved_resilience_design = null;
         scenario.all_expected = null;
+        scenario.metric_load = null;
+        scenario.metric_resilience = null;
+        scenario.mandatory = null;
+        scenario.optional = null;
+        scenario.words = null;
+        scenario.options = null;
+        scenario.all_options = null;
     }
 
     setAttributesForScenarioChange(scenario, selectedScenario) {
@@ -112,6 +126,8 @@ class ScenarioService {
         scenario.mandatory = selectedScenario.mandatory;
         scenario.optional = selectedScenario.optional;
         scenario.words = selectedScenario.words;
+        scenario.options = selectedScenario.options;
+        scenario.all_options = selectedScenario.all_options;
     }
 
     deleteDesignparametersFromVariant(scenario, newVariant) {
@@ -185,6 +201,7 @@ class ScenarioService {
                 mode: definedScenario.selected_mode,
                 description: definedScenario.description,
                 metric: definedScenario.metric,
+                options: definedScenario.options,
                 expected: definedScenario.expected,
                 load_design: definedScenario.load_design,
                 resilience_design: definedScenario.resilience_design

@@ -5,12 +5,16 @@ export default function ScenarioDescriptionFormatter(scenario) {
 
     const formatRqsDescription = () => {
         let resultString = scenario.description;
-        let attachmentToFormat = formatPart("Attachment");
+        let optionsToFormat = formatPart("Options");
+        let expectedToFormat = formatPart("Expected");
         let loadToFormat = formatPart("Load");
         let resilienceToFormat = formatPart("Resilience");
 
-        if(attachmentToFormat !== null) {
-            resultString = resultString.replace(attachmentToFormat, `<span class="bold-text">${attachmentToFormat}</span>`);
+        if(optionsToFormat !== null) {
+            resultString = resultString.replace(optionsToFormat, `<span class="bold-text">${optionsToFormat}</span>`);
+        }
+        if(expectedToFormat !== null) {
+            resultString = resultString.replace(expectedToFormat, `<span class="bold-text">${expectedToFormat}</span>`);
         }
         if(loadToFormat !== null) {
             resultString = resultString.replace(loadToFormat, `<span class="bold-text">${loadToFormat}</span>`);
@@ -23,7 +27,12 @@ export default function ScenarioDescriptionFormatter(scenario) {
     }
 
     const formatPart = (part) => {
-        if(part === "Attachment") {
+        if(part === "Options") {
+            if(scenario.attachment !== null && scenario.attachment.includes("[options]")) {
+                return scenario.options;
+            }
+        }
+        else if(part === "Expected") {
             if(scenario.attachment !== null && scenario.attachment.includes("[expected]")) {
                 return scenario.expected.value + " " + scenario.expected.unit;
             }

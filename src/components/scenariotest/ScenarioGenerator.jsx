@@ -16,13 +16,15 @@ export default function ScenarioGenerator(mode, wordArray) {
         for (const metric of metrics) {
             let rqs = {
                 metric: metric.metric,
+                all_options: metric.options,
                 all_expected: metric.expected,
                 load_design: null,
                 resilience_design: null,
                 metric_load: metric.load_design,
                 metric_resilience: metric.resilience_design,
             };
-            rqs.expected = getExpected(metric.expected);
+            rqs.options = chooseOptionOrExpected(metric.options);
+            rqs.expected = chooseOptionOrExpected(metric.expected);
 
             rqs.mandatory = metric.mandatory;
             rqs.optional = metric.optional;
@@ -44,13 +46,13 @@ export default function ScenarioGenerator(mode, wordArray) {
         return rqsArray;
     }
 
-    const getExpected = (allExpected) => {
-        if(allExpected == null) {
+    const chooseOptionOrExpected = (allOptions) => {
+        if(allOptions == null) {
             return null;
         }
         else {
-            let randomIndex = Math.floor(Math.random() * allExpected.length);
-            return allExpected[randomIndex];
+            let randomIndex = Math.floor(Math.random() * allOptions.length);
+            return allOptions[randomIndex];
         }
     }
 
