@@ -44,16 +44,15 @@ class ScenarioTestApplicationService {
     }
 
     handleDecisionChange(scenario, decision, isLoad) {
-        if(isLoad) {
+        if (isLoad) {
             scenario.load_decision = decision;
-            if(decision === "No") {
+            if (decision === "No") {
                 scenario.load_design = scenario.saved_load_design;
                 scenario.description = RqsBuilderService(scenario, scenario.selected_mode);
             }
-        }
-        else {
+        } else {
             scenario.resilience_decision = decision;
-            if(decision === "No") {
+            if (decision === "No") {
                 scenario.resilience_design = scenario.saved_resilience_design;
                 scenario.description = RqsBuilderService(scenario, scenario.selected_mode);
             }
@@ -61,13 +60,12 @@ class ScenarioTestApplicationService {
     }
 
     handleDesignParameterChange(scenario, paramIndex, value, isLoad) {
-        if(isLoad) {
+        if (isLoad) {
             let copyDesignParameter = deepCopy(scenario.load_design.design_parameters[paramIndex]);
             copyDesignParameter.value = value;
 
             scenario.load_design.design_parameters[paramIndex] = copyDesignParameter;
-        }
-        else {
+        } else {
             let copyDesignParameter = deepCopy(scenario.resilience_design.design_parameters[paramIndex]);
             copyDesignParameter.value = value;
 
@@ -123,11 +121,11 @@ class ScenarioTestApplicationService {
     isAllActivitiesButtonDiasabled(allDefinedScenarios) {
         let isDisabled = false;
         for (let scenario of allDefinedScenarios) {
-            if(scenario.activity !== null) {
+            if (scenario.activity !== null) {
                 isDisabled = true;
             }
         }
-        if(allDefinedScenarios.length > 1) {
+        if (allDefinedScenarios.length > 1) {
             isDisabled = true;
         }
 
@@ -142,7 +140,7 @@ class ScenarioTestApplicationService {
             // validate activity
             let wordArray = ActivityParser(nodes, edges, activityEdges);
             let isValidActivity = ActivityValidator(wordArray);
-            if(!isValidActivity) {
+            if (!isValidActivity) {
                 continue;
             }
             let allWhatIfScenariosForActivity = ScenarioService.getRqsForActivityAndMode(activityEdges, "What if", nodes, edges);
@@ -241,6 +239,12 @@ class ScenarioTestApplicationService {
         scenario.saved_resilience_design = selectedScenario.resilience_design;
         scenario.isValid = selectedScenario.isValid;
         scenario.generatedScenariosList = selectedScenario.generatedScenariosList;
+        scenario.all_expected = selectedScenario.all_expected;
+        scenario.metric_load = selectedScenario.metric_load;
+        scenario.metric_resilience = selectedScenario.metric_resilience;
+        scenario.mandatory = selectedScenario.mandatory;
+        scenario.optional = selectedScenario.optional;
+        scenario.words = selectedScenario.words;
     }
 
     filterAllScenarios(allActivityScenarios, inputText) {
