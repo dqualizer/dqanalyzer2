@@ -172,6 +172,12 @@ class ScenarioTestApplicationService {
                         "what_if_mode": whatIfScenario.what_if_mode,
                         "saved_load_design": whatIfScenario.saved_load_design,
                         "saved_resilience_design": whatIfScenario.saved_resilience_design,
+                        "all_expected": whatIfScenario.all_expected,
+                        "metric_load": whatIfScenario.metric_load,
+                        "metric_resilience": whatIfScenario.metric_resilience,
+                        "mandatory": whatIfScenario.mandatory,
+                        "optional": whatIfScenario.optional,
+                        "words": whatIfScenario.words,
                     }
                 )
             }
@@ -200,6 +206,12 @@ class ScenarioTestApplicationService {
                         "what_if_mode": monitoringScenario.what_if_mode,
                         "saved_load_design": monitoringScenario.saved_load_design,
                         "saved_resilience_design": monitoringScenario.saved_resilience_design,
+                        "all_expected": monitoringScenario.all_expected,
+                        "metric_load": monitoringScenario.metric_load,
+                        "metric_resilience": monitoringScenario.metric_resilience,
+                        "mandatory": monitoringScenario.mandatory,
+                        "optional": monitoringScenario.optional,
+                        "words": monitoringScenario.words,
                     }
                 )
             }
@@ -240,6 +252,10 @@ class ScenarioTestApplicationService {
 
     formatDescription(scenario) {
         return ScenarioDescriptionFormatter(scenario);
+    }
+
+    isVariantAvailable(scenario, variant, isLoad) {
+        return ScenarioService.isVariantAvailable(scenario, variant, isLoad);
     }
 }
 
