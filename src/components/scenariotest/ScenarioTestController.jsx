@@ -447,7 +447,8 @@ export default function ScenarioTestController(props) {
                                                                    data-title={expectedParameter.value}
                                                                    className={scenario.expected === expectedParameter ? "btn btn-primary" : "btn"}
                                                                    data-tooltip-id={expectedParameter.value}
-                                                                   data-tooltip-content={"Value: " + expectedParameter + " " + expectedParameter.unit}/>
+                                                                   data-tooltip-content={"Value: " + expectedParameter + " " + expectedParameter.unit}
+                                                                   checked={scenario.expected.value === expectedParameter.value}/>
                                                             <Tooltip
                                                                 id={expectedParameter.value}/>
                                                         </>
