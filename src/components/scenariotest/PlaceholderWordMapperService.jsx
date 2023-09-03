@@ -143,8 +143,13 @@ export default function PlaceholderWordMapperService(sentence, part) {
         }
 
         for (let match of matches) {
-            let examiningElement = sentence.expected;
-            attachmentWordMap[match[0]] = examiningElement.value + " " + examiningElement.unit;
+            if(match[1] === "options") {
+                attachmentWordMap[match[0]] = sentence.options;
+            }
+            else if(match[1] === "expected") {
+                let examiningElement = sentence.expected;
+                attachmentWordMap[match[0]] = examiningElement.value + " " + examiningElement.unit;
+            }
         }
         return attachmentWordMap;
     } else if (part === "Load") {

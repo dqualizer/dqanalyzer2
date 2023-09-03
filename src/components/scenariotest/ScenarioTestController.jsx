@@ -191,6 +191,15 @@ export default function ScenarioTestController(props) {
 
     }
 
+    const handleOptionsChange = (responseParameter, index) => {
+        let allDefinedScenariosCopy = deepCopy(allDefinedScenarios);
+        let scenario = allDefinedScenariosCopy[index];
+
+        ScenarioTestApplicationService.handleOptionsChange(scenario, responseParameter);
+
+        setAllDefinedScenarios(allDefinedScenariosCopy);
+    }
+
     const handleExpectedChange = (responseParameter, index) => {
         let allDefinedScenariosCopy = deepCopy(allDefinedScenarios);
         let scenario = allDefinedScenariosCopy[index];
@@ -424,7 +433,7 @@ export default function ScenarioTestController(props) {
                                         : null}
 
 
-                                    {scenario.selected_mode !== null && scenario.description !== null && scenario.expected !== null ?
+                                    {scenario.selected_mode !== null && scenario.description !== null && (scenario.options !== null || scenario.expected !== null) ?
                                         <div>
                                             <label className="label">
                                                 <h6>
@@ -438,22 +447,41 @@ export default function ScenarioTestController(props) {
                                             </label>
 
                                             <div className="btn-group">
-                                                {scenario.all_expected !== null && scenario.all_expected.map((expectedParameter => {
+                                                {scenario.all_options !== null && scenario.all_options.map(expectedParameter => {
+                                                    return (
+                                                        <>
+                                                            <input type="radio" value={expectedParameter}
+                                                                   onClick={() => handleOptionsChange(expectedParameter, index)}
+                                                                   name={"Response Measure Option: Index" + index}
+                                                                   data-title={expectedParameter}
+                                                                   className={scenario.options === expectedParameter ? "btn btn-primary" : "btn"}
+                                                                   data-tooltip-id={expectedParameter}
+                                                                   data-tooltip-content={"Value: " + expectedParameter}
+                                                                   checked={scenario.options === expectedParameter}/>
+                                                            <Tooltip
+                                                                id={expectedParameter}/>
+                                                        </>
+                                                    )
+                                                })}
+                                            </div>
+
+                                            <div className="btn-group">
+                                                {scenario.all_expected !== null && scenario.all_expected.map(expectedParameter => {
                                                     return (
                                                         <>
                                                             <input type="radio" value={expectedParameter.value}
                                                                    onClick={() => handleExpectedChange(expectedParameter, index)}
-                                                                   name={"Response Measure: Index" + index}
+                                                                   name={"Response Measure Expected: Index" + index}
                                                                    data-title={expectedParameter.value}
                                                                    className={scenario.expected === expectedParameter ? "btn btn-primary" : "btn"}
                                                                    data-tooltip-id={expectedParameter.value}
-                                                                   data-tooltip-content={"Value: " + expectedParameter + " " + expectedParameter.unit}
+                                                                   data-tooltip-content={"Value: " + expectedParameter.value + " " + expectedParameter.unit}
                                                                    checked={scenario.expected.value === expectedParameter.value}/>
                                                             <Tooltip
                                                                 id={expectedParameter.value}/>
                                                         </>
                                                     )
-                                                }))}
+                                                })}
                                             </div>
 
                                         </div>

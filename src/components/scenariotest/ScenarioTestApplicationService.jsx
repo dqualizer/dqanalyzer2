@@ -74,6 +74,12 @@ class ScenarioTestApplicationService {
         scenario.description = RqsBuilderService(scenario, scenario.selected_mode);
     }
 
+    handleOptionsChange(scenario, responseParameter) {
+        scenario.options = responseParameter;
+
+        scenario.description = RqsBuilderService(scenario, scenario.selected_mode);
+    }
+
     handleExpectedChange(scenario, responseParameter) {
         scenario.expected = responseParameter;
 
@@ -176,6 +182,8 @@ class ScenarioTestApplicationService {
                         "mandatory": whatIfScenario.mandatory,
                         "optional": whatIfScenario.optional,
                         "words": whatIfScenario.words,
+                        "options": whatIfScenario.options,
+                        "all_options": whatIfScenario.all_options,
                     }
                 )
             }
@@ -210,6 +218,8 @@ class ScenarioTestApplicationService {
                         "mandatory": monitoringScenario.mandatory,
                         "optional": monitoringScenario.optional,
                         "words": monitoringScenario.words,
+                        "options": monitoringScenario.options,
+                        "all_options": monitoringScenario.all_options,
                     }
                 )
             }
@@ -245,6 +255,8 @@ class ScenarioTestApplicationService {
         scenario.mandatory = selectedScenario.mandatory;
         scenario.optional = selectedScenario.optional;
         scenario.words = selectedScenario.words;
+        scenario.options = selectedScenario.options;
+        scenario.all_options = selectedScenario.all_options;
     }
 
     filterAllScenarios(allActivityScenarios, inputText) {
