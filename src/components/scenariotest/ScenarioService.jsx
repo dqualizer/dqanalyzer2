@@ -207,6 +207,15 @@ class ScenarioService {
 
         return rqa;
     }
+
+    isVariantAvailable(scenario, variant, isLoad) {
+        if(isLoad) {
+            return (scenario.metric_load.load_variants.some(loadVariant => loadVariant === variant.name.toLowerCase()));
+        }
+        else {
+            return (scenario.metric_resilience.resilience_variants.some(resilienceVariant => resilienceVariant === variant.name.toLowerCase()));
+        }
+    }
 }
 
 export default new ScenarioService();

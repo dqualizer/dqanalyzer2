@@ -279,6 +279,11 @@ export default function ScenarioTestController(props) {
         switchToAllActivities();
     }
 
+    const isLoadDesignNotAvailable = (loadVariant, index) => {
+        let scenario = allDefinedScenarios[index];
+        return !ScenarioTestApplicationService.isVariantAvailable(scenario, loadVariant, true);
+    }
+
     return (
         <>
             <div className="p-4 prose overflow-scroll h-full"
@@ -438,7 +443,7 @@ export default function ScenarioTestController(props) {
                                                         <>
                                                             <input type="radio" value={expectedParameter.value}
                                                                    onClick={() => handleExpectedChange(expectedParameter, index)}
-                                                                   name={"Response Measure: Index" + index + "ExpectedParam" + expectedParameter}
+                                                                   name={"Response Measure: Index" + index}
                                                                    data-title={expectedParameter.value}
                                                                    className={scenario.expected === expectedParameter ? "btn btn-primary" : "btn"}
                                                                    data-tooltip-id={expectedParameter.value}
@@ -502,7 +507,7 @@ export default function ScenarioTestController(props) {
                                                                 className="select select-bordered w-full max-w-xs">
                                                             {allLoadDesigns.map((loadVariant) => {
                                                                 return <option value={loadVariant.name}
-                                                                               key={loadVariant.name}>{loadVariant.name}</option>
+                                                                               key={loadVariant.name} disabled={isLoadDesignNotAvailable(loadVariant, index)}>{loadVariant.name}</option>
                                                             })}
                                                         </select>
                                                     </div>
@@ -525,7 +530,7 @@ export default function ScenarioTestController(props) {
                                                                                                 <input type="radio"
                                                                                                        value={value}
                                                                                                        onClick={() => handleLoadDesignParameterChange(value, index, paramIndex)}
-                                                                                                       name={"Parameter: Index " + index + ", ParamIndex:" + paramIndex}
+                                                                                                       name={"Load Parameter: Index " + index + ", ParamIndex:" + paramIndex}
                                                                                                        data-title={value.name}
                                                                                                        className="btn"
                                                                                                        data-tooltip-id={value.name + '-' + value.value}
@@ -622,7 +627,7 @@ export default function ScenarioTestController(props) {
                                                                                                 <input type="radio"
                                                                                                        value={value}
                                                                                                        onClick={() => handleResilienceDesignParameterChange(value, index, paramIndex)}
-                                                                                                       name={"Parameter: Index " + index + ", ParamIndex:" + paramIndex}
+                                                                                                       name={"Resilience Parameter: Index " + index + ", ParamIndex:" + paramIndex}
                                                                                                        data-title={value.name}
                                                                                                        className="btn"
                                                                                                        data-tooltip-id={value.name + '-' + value.value}
