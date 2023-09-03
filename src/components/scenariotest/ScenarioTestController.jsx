@@ -301,10 +301,17 @@ export default function ScenarioTestController(props) {
                     <h3>Scenario Test Specification</h3>
 
                     {isActivityView || isAllActivities ?
-                        <button className="btn all-activities-button"
-                                disabled={isAllActivitiesButtonDisabled()}
-                                onClick={switchToAllActivities}>{isActivityView ? "All Activities" : "Activity View"}
-                        </button>
+                        <div>
+                            <button className="btn all-activities-button"
+                                    disabled={isAllActivitiesButtonDisabled()}
+                                    onClick={switchToAllActivities}>{isActivityView ? "All Activities" : "Activity View"}
+                            </button>
+                            <span className="ml-1 font-normal text-sm"
+                                  data-tooltip-id="all-activities-tooltip"
+                                  data-tooltip-place="right"
+                                  data-tooltip-content='You can choose if you want to generate scenarios over all activities or select a specific activity.'>&#9432;</span>
+                            <Tooltip id="all-activities-tooltip" style={{maxWidth: '256px'}}/>
+                        </div>
                         : null}
                 </div>
 
@@ -343,7 +350,13 @@ export default function ScenarioTestController(props) {
                                 <div className="scenario-container">
                                     <div className="actvity-container">
                                         <label className="label">
-                                            <span className="label-text">Activity</span>
+                                            <span className="label-text">Activity
+                                                <span className="ml-1 font-normal text-sm"
+                                                      data-tooltip-id="all-activities-tooltip"
+                                                      data-tooltip-place="right"
+                                                      data-tooltip-content='Choose the activity you want to examine.'>&#9432;</span>
+                                            </span>
+                                            <Tooltip id="all-activities-tooltip" style={{maxWidth: '256px'}}/>
                                         </label>
                                         <select value={scenario.activity?.description}
                                                 onChange={(event) => handleActivityChange(event, index)} id=""
@@ -369,7 +382,14 @@ export default function ScenarioTestController(props) {
                                     {scenario.activity !== null && scenario.isValid ?
                                         <div className="activity-container">
                                             <label className="label">
-                                                <span className="label-text">Choose Mode</span>
+                                                <span className="label-text">Choose Mode
+                                                    <span className="ml-1 font-normal text-sm"
+                                                          data-tooltip-id="mode-tooltip"
+                                                          data-tooltip-place="right"
+                                                          data-tooltip-content="By choosing 'What if' scenarios are created that are testing runtime quality requirement under specific load or resilience conditions. 'Monitoring' generates scenarios that are do not include load and resilience changes.">&#9432;
+                                                </span>
+                                                </span>
+                                                <Tooltip id="mode-tooltip" style={{maxWidth: '256px'}}/>
                                             </label>
                                             <div className="btn-group">
                                                 {allModes.map(((mode) => {
@@ -397,12 +417,12 @@ export default function ScenarioTestController(props) {
                                                 <span className="label-text">
                                                     Scenario
                                                     <span className="ml-1 font-normal text-sm"
-                                                          data-tooltip-id="stimulus-tooltip"
+                                                          data-tooltip-id="scenario-tooltip"
                                                           data-tooltip-place="right"
-                                                          data-tooltip-content='The environment is the system on which the scenario test is executed. Warning: If the test is executed on the production environment, system failures may occur.'>&#9432;</span>
+                                                          data-tooltip-content='Choose a scenario that is interesting to examine. You can search for a specific scenario with the search bar.'>&#9432;</span>
                                                 </span>
+                                                <Tooltip id="scenario-tooltip" style={{maxWidth: '256px'}}/>
                                             </label>
-                                            <Tooltip id="enviroment-tooltip" style={{maxWidth: '256px'}}/>
                                             {scenario.generatedScenariosList.length === 0 ?
                                                 <p className="description">The activity <span
                                                     className="bold-text">{scenario.activity.description}</span> has
@@ -441,7 +461,7 @@ export default function ScenarioTestController(props) {
                                                     <span className="ml-1 font-normal text-sm"
                                                           data-tooltip-id="response-measure-tooltip"
                                                           data-tooltip-place="right"
-                                                          data-tooltip-content='The Load Design allows you to further design the simulated load depending on the selected stimulus. For instance, if you design a "Load Peak" stimulus, you will need to specify the final peak to be achieved and how long it takes to reach it.'>&#9432;</span>
+                                                          data-tooltip-content='By changing the response measures you can specify the metric the test should examine or change the expected behavior of your system.'>&#9432;</span>
                                                 </h6>
                                                 <Tooltip id="response-measure-tooltip" style={{maxWidth: '256px'}}/>
                                             </label>
@@ -455,11 +475,11 @@ export default function ScenarioTestController(props) {
                                                                    name={"Response Measure Option: Index" + index}
                                                                    data-title={expectedParameter}
                                                                    className={scenario.options === expectedParameter ? "btn btn-primary" : "btn"}
-                                                                   data-tooltip-id={expectedParameter}
+                                                                   data-tooltip-id={expectedParameter + index}
                                                                    data-tooltip-content={"Value: " + expectedParameter}
                                                                    checked={scenario.options === expectedParameter}/>
                                                             <Tooltip
-                                                                id={expectedParameter}/>
+                                                                id={expectedParameter + index}/>
                                                         </>
                                                     )
                                                 })}
@@ -474,11 +494,11 @@ export default function ScenarioTestController(props) {
                                                                    name={"Response Measure Expected: Index" + index}
                                                                    data-title={expectedParameter.value}
                                                                    className={scenario.expected === expectedParameter ? "btn btn-primary" : "btn"}
-                                                                   data-tooltip-id={expectedParameter.value}
+                                                                   data-tooltip-id={expectedParameter.value + index}
                                                                    data-tooltip-content={"Value: " + expectedParameter.value + " " + expectedParameter.unit}
                                                                    checked={scenario.expected.value === expectedParameter.value}/>
                                                             <Tooltip
-                                                                id={expectedParameter.value}/>
+                                                                id={expectedParameter.value + index}/>
                                                         </>
                                                     )
                                                 })}
@@ -493,15 +513,21 @@ export default function ScenarioTestController(props) {
                                                 <h6>
                                                     Load Design
                                                     <span className="ml-1 font-normal text-sm"
-                                                          data-tooltip-id="response-measure-tooltip"
+                                                          data-tooltip-id="load-design-tooltip"
                                                           data-tooltip-place="right"
                                                           data-tooltip-content='The Load Design allows you to further design the simulated load depending on the selected stimulus. For instance, if you design a "Load Peak" stimulus, you will need to specify the final peak to be achieved and how long it takes to reach it.'>&#9432;</span>
                                                 </h6>
-                                                <Tooltip id="response-measure-tooltip" style={{maxWidth: '256px'}}/>
+                                                <Tooltip id="load-design-tooltip" style={{maxWidth: '256px'}}/>
                                             </label>
                                             <label className="label">
                                                 <span
-                                                    className="label-text">Do you want to change the Load Design?</span>
+                                                    className="label-text">Do you want to change the Load Design?
+                                                <span className="ml-1 font-normal text-sm"
+                                                      data-tooltip-id="load-decision-tooltip"
+                                                      data-tooltip-place="right"
+                                                      data-tooltip-content='You can choose if you want to customize the load design or pick the preselected settings from dqualizer.'>&#9432;</span>
+                                                </span>
+                                                <Tooltip id="load-decision-tooltip" style={{maxWidth: '256px'}}/>
                                             </label>
                                             <div className="btn-group">
                                                 <input type="radio" value="Yes"
@@ -509,22 +535,22 @@ export default function ScenarioTestController(props) {
                                                        name={"ChangeLoadDesign" + index}
                                                        data-title="Yes"
                                                        className="btn"
-                                                       id={"ChangeLoadDesign" + "-" + "Yes"}
+                                                       id={"ChangeLoadDesign" + "-" + "Yes" + index}
                                                        data-tooltip-content={"Choose your own load design"}
                                                        checked={scenario.load_decision === "Yes"}/>
                                                 <Tooltip
-                                                    id={"ChangeLoadDesign" + "-" + "Yes"}/>
+                                                    id={"ChangeLoadDesign" + "-" + "Yes" + index}/>
 
                                                 <input type="radio" value="No"
                                                        onClick={(event) => handleLoadDecisionChange(event, index)}
                                                        name={"ChangeLoadDesign" + index}
                                                        data-title="No"
                                                        className="btn"
-                                                       id={"ChangeLoadDesign" + "-" + "No"}
+                                                       id={"ChangeLoadDesign" + "-" + "No" + index}
                                                        data-tooltip-content={"Keep the load design"}
                                                        checked={scenario.load_decision === "No"}/>
                                                 <Tooltip
-                                                    id={"ChangeLoadDesign" + "-" + "No"}/>
+                                                    id={"ChangeLoadDesign" + "-" + "No" + index}/>
                                             </div>
 
                                             {scenario.load_decision === "Yes" ?
@@ -536,7 +562,8 @@ export default function ScenarioTestController(props) {
                                                                 className="select select-bordered w-full max-w-xs">
                                                             {allLoadDesigns.map((loadVariant) => {
                                                                 return <option value={loadVariant.name}
-                                                                               key={loadVariant.name} disabled={isLoadDesignNotAvailable(loadVariant, index)}>{loadVariant.name}</option>
+                                                                               key={loadVariant.name}
+                                                                               disabled={isLoadDesignNotAvailable(loadVariant, index)}>{loadVariant.name}</option>
                                                             })}
                                                         </select>
                                                     </div>
@@ -562,11 +589,11 @@ export default function ScenarioTestController(props) {
                                                                                                        name={"Load Parameter: Index " + index + ", ParamIndex:" + paramIndex}
                                                                                                        data-title={value.name}
                                                                                                        className="btn"
-                                                                                                       data-tooltip-id={value.name + '-' + value.value}
+                                                                                                       data-tooltip-id={value.name + '-' + value.value + index}
                                                                                                        data-tooltip-content={'Value: ' + value.value}
                                                                                                        checked={scenario.load_design?.design_parameters[paramIndex].value?.name === value.name}/>
                                                                                                 <Tooltip
-                                                                                                    id={value.name + '-' + value.value}/>
+                                                                                                    id={value.name + '-' + value.value + index}/>
                                                                                             </>
                                                                                         )
                                                                                     })}
@@ -589,14 +616,21 @@ export default function ScenarioTestController(props) {
                                                 <h6>
                                                     Resilience Design
                                                     <span className="ml-1 font-normal text-sm"
-                                                          data-tooltip-id="response-measure-tooltip"
+                                                          data-tooltip-id="resilience-design-tooltip"
                                                           data-tooltip-place="right"
-                                                          data-tooltip-content='The Load Design allows you to further design the simulated load depending on the selected stimulus. For instance, if you design a "Load Peak" stimulus, you will need to specify the final peak to be achieved and how long it takes to reach it.'>&#9432;</span>
+                                                          data-tooltip-content='The Resilience Design allows you to further design the simulated resilience depending on the selected stimulus. For instance, if you design a "Failed Request" stimulus, the system can let requests fail. You can specify how often it should happen.'>&#9432;</span>
                                                 </h6>
-                                                <Tooltip id="response-measure-tooltip" style={{maxWidth: '256px'}}/>
+                                                <Tooltip id="resilience-design-tooltip" style={{maxWidth: '256px'}}/>
                                             </label>
                                             <label className="label">
-                                                <span className="label-text">Do you want to change the Resilience Design?</span>
+                                                <span className="label-text">Do you want to change the Resilience Design?
+                                                    <span className="ml-1 font-normal text-sm"
+                                                          data-tooltip-id="resilience-decision-tooltip"
+                                                          data-tooltip-place="right"
+                                                          data-tooltip-content='You can choose if you want to customize the resilience design or pick the preselected settings from dqualizer.'>&#9432;</span>
+
+                                                </span>
+                                                <Tooltip id="resilience-decision-tooltip" style={{maxWidth: '256px'}}/>
                                             </label>
                                             <div className="btn-group">
                                                 <input type="radio" value="Yes"
@@ -604,22 +638,22 @@ export default function ScenarioTestController(props) {
                                                        name={"ChangeResilienceDesign" + index}
                                                        data-title="Yes"
                                                        className="btn"
-                                                       id={"ChangeResilienceDesign" + "-" + "Yes"}
+                                                       id={"ChangeResilienceDesign" + "-" + "Yes" + index}
                                                        data-tooltip-content={"Choose your own resilience design"}
                                                        checked={scenario.resilience_decision === "Yes"}/>
                                                 <Tooltip
-                                                    id={"ChangeResilienceDesign" + "-" + "Yes"}/>
+                                                    id={"ChangeResilienceDesign" + "-" + "Yes" + index}/>
 
                                                 <input type="radio" value="No"
                                                        onClick={(event) => handleResilienceDecisionChange(event, index)}
                                                        name={"ChangeResilienceDesign" + index}
                                                        data-title="No"
                                                        className="btn"
-                                                       id={"ChangeResilienceDesign" + "-" + "No"}
+                                                       id={"ChangeResilienceDesign" + "-" + "No" + index}
                                                        data-tooltip-content={"Keep the resilience design"}
                                                        checked={scenario.resilience_decision === "No"}/>
                                                 <Tooltip
-                                                    id={"ChangeResilienceDesign" + "-" + "No"}/>
+                                                    id={"ChangeResilienceDesign" + "-" + "No" + index}/>
                                             </div>
 
                                             {scenario.resilience_decision === "Yes" ?
@@ -645,9 +679,9 @@ export default function ScenarioTestController(props) {
                                                                         return (
                                                                             <>
                                                                                 <label className="label">
-                                                                        <span className="label-text">
-                                                                            {parameter.name}
-                                                                        </span>
+                                                                                    <span className="label-text">
+                                                                                        {parameter.name}
+                                                                                    </span>
                                                                                 </label>
                                                                                 <div className="btn-group">
                                                                                     {parameter.values != null && parameter.values.map((value) => {
@@ -659,11 +693,11 @@ export default function ScenarioTestController(props) {
                                                                                                        name={"Resilience Parameter: Index " + index + ", ParamIndex:" + paramIndex}
                                                                                                        data-title={value.name}
                                                                                                        className="btn"
-                                                                                                       data-tooltip-id={value.name + '-' + value.value}
+                                                                                                       data-tooltip-id={value.name + '-' + value.value + index}
                                                                                                        data-tooltip-content={'Value: ' + value.value}
                                                                                                        checked={scenario.resilience_design.design_parameters[paramIndex].value?.name === value.name}/>
                                                                                                 <Tooltip
-                                                                                                    id={value.name + '-' + value.value}/>
+                                                                                                    id={value.name + '-' + value.value + index}/>
                                                                                             </>
                                                                                         )
                                                                                     })}
@@ -711,8 +745,10 @@ export default function ScenarioTestController(props) {
                             <p>
                                 The Settings to include into the Scenario Test
                                 <span className="ml-1 font-normal text-sm" data-tooltip-place="right"
-                                      data-tooltip-id="metrics-tooltip"
-                                      data-tooltip-content='You may check one or multiple of these fields to tell the system which metrics you would like to include in the final analysis results.'>&#9432;</span>
+                                      data-tooltip-id="settings-view-tooltip"
+                                      data-tooltip-content='Here you can set the settings for the whole scenario test.'>&#9432;</span>
+                                <Tooltip
+                                    id={"settings-view-tooltip"}/>
                             </p>
 
                             <div className="actvity-container">
@@ -733,12 +769,12 @@ export default function ScenarioTestController(props) {
                                 <label className="label">
                             <span className="label-text">
                                 Enviroment
-                                <span className="ml-1 font-normal text-sm" data-tooltip-id="stimulus-tooltip"
+                                <span className="ml-1 font-normal text-sm" data-tooltip-id="enviroment-tooltip"
                                       data-tooltip-place="right"
                                       data-tooltip-content='The environment is the system on which the scenario test is executed. Warning: If the test is executed on the production environment, system failures may occur.'>&#9432;</span>
                             </span>
+                                    <Tooltip id="enviroment-tooltip" style={{maxWidth: '256px'}}/>
                                 </label>
-                                <Tooltip id="enviroment-tooltip" style={{maxWidth: '256px'}}/>
                                 <select value={enviroment} onChange={handleEnviromentChange} id=""
                                         className="select select-bordered w-full max-w-xs">
                                     <option selected={true} value="" disabled>
@@ -755,9 +791,9 @@ export default function ScenarioTestController(props) {
                                     <label className="label">
                             <span className="label-text">
                                 Time Slot
-                                <span className="ml-1 font-normal text-sm" data-tooltip-id="stimulus-tooltip"
+                                <span className="ml-1 font-normal text-sm" data-tooltip-id="timeslot-tooltip"
                                       data-tooltip-place="right"
-                                      data-tooltip-content='The stimulus specifies how the load should look like. For instance, a "Load peak" will lead to a massive spike in simulated users accessing the application in a secure environment whereas a "Load Increase" may lead to a slow in crease in users accessing the application.'>&#9432;</span>
+                                      data-tooltip-content='The time slot below define your environment in more detail as a means to be as close to your productive environment as possible. It says that the test enviroment should simulate the load of office hours, the hours after work or the night.'>&#9432;</span>
                             </span>
                                     </label>
                                     <Tooltip id="timeslot-tooltip" style={{maxWidth: '256px'}}/>
