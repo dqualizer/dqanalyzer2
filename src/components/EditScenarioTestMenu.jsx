@@ -49,7 +49,7 @@ export default function EditScenarioTestMenu(props) {
     const [resilienceDesign, setResilienceDesign] = useState(props.rqa.runtime_quality_analysis.artifacts[0].resilience_design);
     const [responseMeasures, setResponseMeasures] = useState(props.rqa.runtime_quality_analysis.artifacts[0].response_measures);
     const [accuracy, setAccuracy] = useState(props.rqa.runtime_quality_analysis.settings.accuracy);
-    const [enviroment, setEnviroment] = useState(props.rqa.runtime_quality_analysis.settings.environment);
+    const [environment, setEnvironment] = useState(props.rqa.runtime_quality_analysis.settings.environment);
     const [timeSlot, setTimeSlot] = useState(props.rqa.runtime_quality_analysis.settings.timeSlot);
 
     // state-based RQA-definition
@@ -154,16 +154,16 @@ export default function EditScenarioTestMenu(props) {
         setAccuracy(e.target.value);
     }
 
-    const handleEnviromentChange = (e) => {
+    const handleEnvironmentChange = (e) => {
         console.log("Env has changed.");
-        let newEnviroment = e.target.value;
+        let newEnvironment = e.target.value;
 
-        if (newEnviroment === 'Test') {
+        if (newEnvironment === 'Test') {
             setTimeSlot(settings.timeSlot[0]);
         } else {
             setTimeSlot(null);
         }
-        setEnviroment(newEnviroment);
+        setEnvironment(newEnvironment);
     }
 
     const handleTimeSlotChange = (e) => {
@@ -183,7 +183,7 @@ export default function EditScenarioTestMenu(props) {
 
         // set the settings config
         rqa.runtime_quality_analysis.settings.accuracy = accuracy;
-        rqa.runtime_quality_analysis.settings.environment = enviroment;
+        rqa.runtime_quality_analysis.settings.environment = environment;
         rqa.runtime_quality_analysis.settings.timeSlot = timeSlot;
 
         // post the RQA to the axios api
@@ -424,22 +424,22 @@ export default function EditScenarioTestMenu(props) {
                     <div className="actvity-container">
                         <label className="label">
                             <span className="label-text">
-                                Enviroment
-                                <span className="ml-1 font-normal text-sm" data-tooltip-id="stimulus-tooltip"
+                                Environment
+                                <span className="ml-1 font-normal text-sm" data-tooltip-id="environment-tooltip"
                                       data-tooltip-place="right"
                                       data-tooltip-content='The environment is the system on which the scenario test is executed. Warning: If the test is executed on the production environment, system failures may occur.'>&#9432;</span>
                             </span>
                         </label>
-                        <Tooltip id="enviroment-tooltip" style={{maxWidth: '256px'}}/>
-                        <select value={enviroment} onChange={handleEnviromentChange} id=""
+                        <Tooltip id="environment-tooltip" style={{maxWidth: '256px'}}/>
+                        <select value={environment} onChange={handleEnvironmentChange} id=""
                                 className="select select-bordered w-full max-w-xs">
-                            {settings.enviroment.map((enviroment) => {
-                                return <option value={enviroment} key={enviroment}>{enviroment}</option>
+                            {settings.environment.map((environment) => {
+                                return <option value={environment} key={environment}>{environment}</option>
                             })}
                         </select>
                     </div>
 
-                    {enviroment === 'Test' ?
+                    {environment === 'Test' ?
                         <div className="actvity-container">
                             <label className="label">
                             <span className="label-text">

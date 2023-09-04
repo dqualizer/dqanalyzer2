@@ -64,7 +64,7 @@ export default function ScenarioTestController(props) {
         }
     ]);
     const [accuracy, setAccuracy] = useState(0);
-    const [enviroment, setEnviroment] = useState(null);
+    const [environment, setEnvironment] = useState(null);
     const [timeSlot, setTimeSlot] = useState(null);
 
     const [isAllActivities, setIsAllActivities] = useState(false);
@@ -213,10 +213,10 @@ export default function ScenarioTestController(props) {
         setAccuracy(event.target.value);
     }
 
-    const handleEnviromentChange = (event) => {
-        let newEnviroment = event.target.value;
+    const handleEnvironmentChange = (event) => {
+        let newEnvironment = event.target.value;
 
-        setEnviroment(newEnviroment);
+        setEnvironment(newEnvironment);
     }
 
     const handleTimeSlotChange = (event) => {
@@ -233,7 +233,7 @@ export default function ScenarioTestController(props) {
     }
 
     const isAddingButtonDisabled = () => {
-        return ScenarioTestApplicationService.isAddingButtonDisabled(allDefinedScenarios, accuracy, enviroment, timeSlot);
+        return ScenarioTestApplicationService.isAddingButtonDisabled(allDefinedScenarios, accuracy, environment, timeSlot);
     }
 
     const deleteScenario = (indexToDelete) => {
@@ -246,7 +246,7 @@ export default function ScenarioTestController(props) {
     }
 
     const addScenarioTest = () => {
-        ScenarioTestApplicationService.addScenarioTest(allDefinedScenarios, accuracy, enviroment, timeSlot, props.setScenarioExplorerShow, props.setScenarioTestShow);
+        ScenarioTestApplicationService.addScenarioTest(allDefinedScenarios, accuracy, environment, timeSlot, props.setScenarioExplorerShow, props.setScenarioTestShow);
     }
 
     const isAllActivitiesButtonDisabled = () => {
@@ -311,6 +311,7 @@ export default function ScenarioTestController(props) {
                                   data-tooltip-place="right"
                                   data-tooltip-content='You can choose if you want to generate scenarios over all activities or select a specific activity.'>&#9432;</span>
                             <Tooltip id="all-activities-tooltip" style={{maxWidth: '256px'}}/>
+
                         </div>
                         : null}
                 </div>
@@ -352,11 +353,11 @@ export default function ScenarioTestController(props) {
                                         <label className="label">
                                             <span className="label-text">Activity
                                                 <span className="ml-1 font-normal text-sm"
-                                                      data-tooltip-id="all-activities-tooltip"
+                                                      data-tooltip-id="activity-tooltip"
                                                       data-tooltip-place="right"
                                                       data-tooltip-content='Choose the activity you want to examine.'>&#9432;</span>
                                             </span>
-                                            <Tooltip id="all-activities-tooltip" style={{maxWidth: '256px'}}/>
+                                            <Tooltip id="activity-tooltip" style={{maxWidth: '256px'}}/>
                                         </label>
                                         <select value={scenario.activity?.description}
                                                 onChange={(event) => handleActivityChange(event, index)} id=""
@@ -768,32 +769,32 @@ export default function ScenarioTestController(props) {
                             <div className="actvity-container">
                                 <label className="label">
                             <span className="label-text">
-                                Enviroment
-                                <span className="ml-1 font-normal text-sm" data-tooltip-id="enviroment-tooltip"
+                                Environment
+                                <span className="ml-1 font-normal text-sm" data-tooltip-id="environment-tooltip"
                                       data-tooltip-place="right"
                                       data-tooltip-content='The environment is the system on which the scenario test is executed. Warning: If the test is executed on the production environment, system failures may occur.'>&#9432;</span>
                             </span>
-                                    <Tooltip id="enviroment-tooltip" style={{maxWidth: '256px'}}/>
+                                    <Tooltip id="environment-tooltip" style={{maxWidth: '256px'}}/>
                                 </label>
-                                <select value={enviroment} onChange={handleEnviromentChange} id=""
+                                <select value={environment} onChange={handleEnvironmentChange} id=""
                                         className="select select-bordered w-full max-w-xs">
                                     <option selected={true} value="" disabled>
-                                        Choose an enviroment
+                                        Choose an environment
                                     </option>
-                                    {settings.enviroment.map((enviroment) => {
-                                        return <option value={enviroment} key={enviroment}>{enviroment}</option>
+                                    {settings.environment.map((environment) => {
+                                        return <option value={environment} key={environment}>{environment}</option>
                                     })}
                                 </select>
                             </div>
 
-                            {enviroment === 'Test' ?
+                            {environment === 'Test' ?
                                 <div className="actvity-container">
                                     <label className="label">
                             <span className="label-text">
                                 Time Slot
                                 <span className="ml-1 font-normal text-sm" data-tooltip-id="timeslot-tooltip"
                                       data-tooltip-place="right"
-                                      data-tooltip-content='The time slot below define your environment in more detail as a means to be as close to your productive environment as possible. It says that the test enviroment should simulate the load of office hours, the hours after work or the night.'>&#9432;</span>
+                                      data-tooltip-content='The time slot defines your environment in more detail as a means to be as close to your productive environment as possible. It says that the test environment should simulate the load of office hours, the hours after work or the night.'>&#9432;</span>
                             </span>
                                     </label>
                                     <Tooltip id="timeslot-tooltip" style={{maxWidth: '256px'}}/>
