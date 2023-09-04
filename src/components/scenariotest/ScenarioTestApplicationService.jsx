@@ -104,17 +104,17 @@ class ScenarioTestApplicationService {
         newScenarioList.push(newScenario);
     }
 
-    isAddingButtonDisabled(allDefinedScenarios, accuracy, enviroment, timeSlot) {
+    isAddingButtonDisabled(allDefinedScenarios, accuracy, environment, timeSlot) {
         let isDisabled = false;
 
         isDisabled = ScenarioService.isActivityViewInvalid(isDisabled, allDefinedScenarios);
-        isDisabled = ScenarioService.isSettingsViewInvalid(isDisabled, accuracy, enviroment, timeSlot);
+        isDisabled = ScenarioService.isSettingsViewInvalid(isDisabled, accuracy, environment, timeSlot);
 
         return isDisabled;
     }
 
-    addScenarioTest(allDefinedScenarios, accuracy, enviroment, timeSlot, setScenarioExplorerShow, setScenarioTestShow) {
-        let rqa = ScenarioService.createScenarioTest(allDefinedScenarios, accuracy, enviroment, timeSlot);
+    addScenarioTest(allDefinedScenarios, accuracy, environment, timeSlot, setScenarioExplorerShow, setScenarioTestShow) {
+        let rqa = ScenarioService.createScenarioTest(allDefinedScenarios, accuracy, environment, timeSlot);
 
         // post the RQA to the axios api
         axios.post(`https://64bbef8f7b33a35a4446d353.mockapi.io/dqualizer/scenarios/v1/scenarios`, rqa);

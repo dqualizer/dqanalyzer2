@@ -34,6 +34,18 @@ export default function PlaceholderWordMapperService(sentence, part) {
 
         for (let match of matches) {
             if (sentence.words.speakers.some(speaker => fitsIn(speaker.type, match[1]))) {
+
+
+                function foo() {
+                    let activityString = "tells wish for";
+                    let verb = compromise(activityString).verbs().out("text");
+                    let conjugatedVerb = compromise(verb).verbs().toInfinitive().out("text").replace(/^(is |am |are |was |were )?/, '');
+                    activityString = activityString.replace(verb, conjugatedVerb);
+                    console.log(activityString);
+                }
+
+                foo();
+
                 let replacingStringList = [];
                 for (let speaker of sentence.words.speakers) {
                     let elementName = speaker.name;
