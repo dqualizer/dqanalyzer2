@@ -38,7 +38,6 @@ export default function RqaInput({ setInputOpen }) {
         name: value,
         domain_id: 1,
         environment: "TEST",
-        context: "Werkstatt",
       });
     }
   }
