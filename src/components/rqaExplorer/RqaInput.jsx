@@ -38,24 +38,25 @@ export default function RqaInput({ setInputOpen }) {
         name: value,
         domain_id: 1,
         environment: "TEST",
+        context: "Werkstatt",
       });
     }
   }
 
   return (
-    <div
-      className={`flex items-center hover:bg-slate-500 hover:cursor-pointer w-50 ${spacingVariants[1]} py-2 `}
-    >
-      <KeyboardArrowRightIcon fontSize="small" />
-      <input
-        autoFocus
-        type="text"
-        placeholder="Name of the Rqa..."
-        className="input input-bordered input-sm w-full max-w-xs"
-        onChange={handleChange}
-        onKeyDown={handleSave}
-        onBlur={handleSave}
-      />
-    </div>
+      <div
+          className={`flex items-center hover:bg-slate-500 hover:cursor-pointer w-50 ${spacingVariants[1]} py-2 `}
+      >
+        <KeyboardArrowRightIcon fontSize="small" />
+        <input
+            autoFocus
+            type="text"
+            placeholder="Name of the Rqa..."
+            className="input input-bordered input-sm w-full max-w-xs"
+            onChange={handleChange}
+            onKeyDown={handleSave}
+            onBlur={handleSave}
+        />
+      </div>
   );
 }

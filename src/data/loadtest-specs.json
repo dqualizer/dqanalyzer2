@@ -4,7 +4,7 @@
 			"name": "Load Peak",
 			"id": "LOAD_PEAK",
 			"supported": 1,
-			"design_parameters": [
+			"designParameters": [
 				{
 					"name": "Highest Load",
 					"id": "HIGHEST_LOAD",
@@ -53,7 +53,7 @@
 			"name": "Load Increase",
 			"id": "LOAD_INCREASE",
 			"supported": 1,
-			"design_parameters": [
+			"designParameters": [
 				{
 					"name": "Type of Increase",
 					"id": "TYPE_OF_INCREASE",
@@ -79,9 +79,9 @@
 		},
 		{
 			"name": "Constant Load",
-			"id": "CONSTANT LOAD",
+			"id": "CONSTANT_LOAD",
 			"supported": 1,
-			"design_parameters": [
+			"designParameters": [
 				{
 					"name": "Base Load",
 					"id": "BASE_LOAD",
@@ -132,16 +132,16 @@
 	"metrics": [
 		{
 			"label":"Response Time",
-			"id": "RESPONSE_TIME" 
+			"id": "RESPONSE_TIME"
 
 		},
 		{
 			"id": "NINETY_PERCENTILE",
-			"label":"90th Percentile" 
+			"label":"90th Percentile"
 		},
 		{
-			"id": "NINETY_FIVE_PERCENTILEx",
-			"label":"95th Percentile" 
+			"id": "NINETY_FIVE_PERCENTILE",
+			"label":"95th Percentile"
 		}
 	]
 }
