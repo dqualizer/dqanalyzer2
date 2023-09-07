@@ -1,10 +1,13 @@
 import React, {useEffect, useState} from 'react';
 import {useReactFlow} from 'reactflow';
 import * as scenarioSpecs from '../data/scenariotest-specs.json';
+import * as monitoringMetrics from '../data/monitoring-metrics.json';
 import ResizeBar from './ResizeBar';
 import * as mapping from '../data/werkstatt-en.json';
 import {Tooltip} from 'react-tooltip';
 import axios from 'axios';
+import pluralize from 'pluralize';
+import compromise from 'compromise';
 
 export default function ScenarioTestMenu(props) {
 
@@ -43,7 +46,7 @@ export default function ScenarioTestMenu(props) {
     const allLoadDesigns = scenarioSpecs.load_design;
     const allResilienceDesigns = scenarioSpecs.resilience_design;
     const allModes = scenarioSpecs.mode;
-    const allMetrics = scenarioSpecs.metrics;
+    const allMonitoringMetrics = monitoringMetrics.metrics;
     // const metrics = scenarioSpecs.metrics;
     const settings = scenarioSpecs.settings;
 
@@ -373,11 +376,22 @@ export default function ScenarioTestMenu(props) {
     };
 
     const getScenariosForActivityAndMode = (activity, mode) => {
+        if(mode === null) {
+            console.log("The Mode is null.");
+            return;
+        }
+
         let activityDescription = activity.description;
         let allActiveEdges = props.edges.filter((edge) => edge.name === activityDescription);
         let allElements = findAllElements(allActiveEdges);
         let wordArray = buildWordArray(allElements);
-        let generatedSentences = generateScenarios(wordArray, mode);
+        let generatedSentences;
+        if(mode === "What if") {
+            generatedSentences = generateWhatIfScenarios(wordArray);
+        }
+        else {
+            generatedSentences = generateMonitoringScenarios(wordArray);
+        }
         console.log(generatedSentences);
         return generatedSentences;
     }
@@ -449,9 +463,11 @@ export default function ScenarioTestMenu(props) {
             if (element.data !== undefined) {
                 let typeString = null;
                 if (element.data.icon === "Document") {
-                    typeString = "Work Object";
+                    typeString = "work object";
+                } else if (element.data.icon === "Person") {
+                    typeString = "actor";
                 } else {
-                    typeString = element.data.icon;
+                    typeString = "system";
                 }
                 let wordObject = {name: element.data.label.toLowerCase(), type: typeString};
                 sentenceArray.push(wordObject);
@@ -459,7 +475,11 @@ export default function ScenarioTestMenu(props) {
             // else element is an edge
             else {
                 let name = element.label.endsWith("s") ? element.label.slice(0, -1) : element.label;
-                let wordObject = {name: name.toLowerCase(), type: "Activity"};
+                let typeString = "verb";
+                if (name === "in") {
+                    typeString = "where"
+                }
+                let wordObject = {name: name.toLowerCase(), type: typeString};
                 sentenceArray.push(wordObject);
             }
         }
@@ -468,7 +488,7 @@ export default function ScenarioTestMenu(props) {
 
     const generateScenarios = (wordArray, mode) => {
         let scenarioArray = [];
-        for (const metric of allMetrics) {
+        for (const metric of allMonitoringMetrics) {
             let sentence = {
                 description: "",
                 metric: metric.metric,
@@ -551,6 +571,190 @@ export default function ScenarioTestMenu(props) {
         return scenarioArray;
     }
 
+    const generateWhatIfScenarios = (wordArray) => {
+        let scenarioArray = [];
+        return scenarioArray;
+    }
+
+    const generateMonitoringScenarios = (wordArray) => {
+        let scenarioArray = [];
+        for (const metric of allMonitoringMetrics) {
+            let sentence = {
+                description: "",
+                metric: metric.metric,
+                expected: null,
+                load_design: null,
+                resilience_design: null
+            };
+            let scenarioDescription = fillDescriptionWithWords(metric.description, wordArray);
+            sentence.description = scenarioDescription;
+            scenarioArray.push(sentence);
+        }
+        return scenarioArray;
+        //     if (metric.description_begin !== null) {
+        //         sentence.description += metric.description_begin;
+        //     }
+        //     for (let wordIndex = 0; wordIndex < wordArray.length; wordIndex++) {
+        //         if (wordIndex === 0) {
+        //             sentence.description += wordArray[wordIndex].name + "s";
+        //             if (metric.insert_to) {
+        //                 sentence.description += " to";
+        //             }
+        //         } else if (wordIndex === wordArray.length - 1) {
+        //             sentence.description += " the " + wordArray[wordIndex].name;
+        //         } else if (wordArray[wordIndex].type === "Work Object") {
+        //             if (wordArray[wordIndex].name.endsWith("s")) {
+        //                 sentence.description += " their " + wordArray[wordIndex].name + "es";
+        //             } else {
+        //                 sentence.description += " their " + wordArray[wordIndex].name + "s";
+        //             }
+        //         } else {
+        //             sentence.description += " " + wordArray[wordIndex].name;
+        //         }
+        //     }
+        //     if (mode === "What if") {
+        //         let randomDesign = Math.round(Math.random());
+        //         let designDescription = null
+        //         // 1 = Load
+        //         if (randomDesign === 1) {
+        //             let numberLoadCategories = allLoadDesigns.length - 1; //Without "None"
+        //             let randomLoadCategory = Math.floor(Math.random() * numberLoadCategories) + 1;  // + 1 to avoid getting the "None" category
+        //             designDescription = allLoadDesigns[randomLoadCategory].description;
+        //             sentence.load_design = deepCopy(allLoadDesigns[randomLoadCategory]);
+        //             sentence.load_design.designParameters.forEach((parameter) => {
+        //                 delete parameter.values;
+        //                 parameter.value = null;
+        //             });
+        //             for (let parameter in allLoadDesigns[randomLoadCategory].designParameters) {
+        //                 let numberOfParamValues = allLoadDesigns[randomLoadCategory].designParameters[parameter].values.length;
+        //                 let randomValue = Math.floor(Math.random() * numberOfParamValues);
+        //                 let valuePlaceHolder = allLoadDesigns[randomLoadCategory].designParameters[parameter].placeholder;
+        //                 let valueDescription = allLoadDesigns[randomLoadCategory].designParameters[parameter].values[randomValue].name.toLowerCase();
+        //                 designDescription = designDescription.replace(valuePlaceHolder, valueDescription);
+        //                 sentence.load_design.designParameters[parameter].value = allLoadDesigns[randomLoadCategory].designParameters[parameter].values[randomValue];
+        //             }
+        //         }
+        //         // 0 = Resilience
+        //         else {
+        //             let numberResilienceCategories = allResilienceDesigns.length - 1; //Without "None"
+        //             let randomResilienceCategory = Math.floor(Math.random() * numberResilienceCategories) + 1;  // + 1 to avoid getting the "None" category
+        //             designDescription = allResilienceDesigns[randomResilienceCategory].description;
+        //             sentence.resilience_design = deepCopy(allResilienceDesigns[randomResilienceCategory]);
+        //             sentence.resilience_design.designParameters.forEach((parameter) => {
+        //                 delete parameter.values;
+        //                 parameter.value = null;
+        //             });
+        //             for (let parameter in allResilienceDesigns[randomResilienceCategory].designParameters) {
+        //                 let numberOfParamValues = allResilienceDesigns[randomResilienceCategory].designParameters[parameter].values.length;
+        //                 let randomValue = Math.floor(Math.random() * numberOfParamValues);
+        //                 let valuePlaceHolder = allResilienceDesigns[randomResilienceCategory].designParameters[parameter].placeholder;
+        //                 let valueDescription = allResilienceDesigns[randomResilienceCategory].designParameters[parameter].values[randomValue].name.toLowerCase();
+        //                 designDescription = designDescription.replace(valuePlaceHolder, valueDescription);
+        //                 sentence.resilience_design.designParameters[parameter].value = allResilienceDesigns[randomResilienceCategory].designParameters[parameter].values[randomValue];
+        //             }
+        //         }
+        //         sentence.description += " under " + designDescription;
+        //     }
+        //
+        //     if (metric.description_end !== null) {
+        //         sentence.description += metric.description_end + "?";
+        //     } else {
+        //         sentence.description += "?";
+        //     }
+        //     scenarioArray.push(sentence)
+        // }
+        // return scenarioArray;
+    }
+
+    const fillDescriptionWithWords = (description, wordArray) => {
+        const placeholderRegex = /\[(.*?)\]/g;
+
+        const currentIndexMap = {}; // To keep track of current index for each placeholder name
+
+        const result = description.replace(placeholderRegex, (match, placeholder) => {
+            if (wordArray.some(item => item.type === placeholder)) {
+                // If currentIndexMap doesn't have an entry for this placeholder, start from 0
+                if (!currentIndexMap[placeholder]) {
+                    currentIndexMap[placeholder] = 0;
+                }
+                const currentIndex = currentIndexMap[placeholder];
+                currentIndexMap[placeholder] = (currentIndex + 1) % wordArray.length;
+
+                const matchingItems = wordArray.filter(item => item.type === placeholder);
+
+                return matchingItems[currentIndex].name;
+            }
+            else if (wordArray.some(item => item.type + "s" === placeholder)) {
+                // If currentIndexMap doesn't have an entry for this placeholder, start from 0
+                if (!currentIndexMap[placeholder]) {
+                    currentIndexMap[placeholder] = 0;
+                }
+
+                const currentIndex = currentIndexMap[placeholder];
+                currentIndexMap[placeholder] = (currentIndex + 1) % wordArray.length;
+
+                let matchingItems = wordArray.filter(item => item.type + "s" === placeholder);
+
+                return pluralize(matchingItems[currentIndex].name);
+            }
+            else if (wordArray.some(item => item.type + " ing" === placeholder)) {
+                // If currentIndexMap doesn't have an entry for this placeholder, start from 0
+                if (!currentIndexMap[placeholder]) {
+                    currentIndexMap[placeholder] = 0;
+                }
+
+                const currentIndex = currentIndexMap[placeholder];
+                currentIndexMap[placeholder] = (currentIndex + 1) % wordArray.length;
+
+                let matchingItems = wordArray.filter(item => item.type + " ing" === placeholder);
+
+                let toGerundium = compromise(matchingItems[currentIndex].name).verbs().toGerund().out("text");
+                toGerundium = toGerundium.replace(/^(is |am |are |was |were )?/, '');
+                return toGerundium;
+            }
+
+            return match;
+        });
+
+        return result;
+
+
+
+
+
+
+
+
+
+        // Regular expression to match placeholders in the format "[someText]"
+        // const placeholderRegex = /\[(.*?)\]/g;
+        //
+        // // Use the replace() method with a callback function
+        // const result = description.replace(placeholderRegex, (match, placeholder) => {
+        //
+        //     // Look at first to the singular word
+        //     let index = wordArray.findIndex(item => item.type === placeholder);
+        //     // If the placeholder is found in the array, replace with the corresponding value
+        //     if (index !== -1) {
+        //         return wordArray[index].name;
+        //     }
+        //     index = wordArray.findIndex(item => item.type + "s" === placeholder);
+        //     if (index !== -1) {
+        //         if(wordArray[index].name.endsWith("s")) {
+        //             return wordArray[index].name + "es";
+        //         }
+        //         else {
+        //             return wordArray[index].name + "s";
+        //         }
+        //     }
+        //
+        //     // If the placeholder is not found, leave it unchanged
+        //     return match;
+        // });
+        //
+        // return result;
+    }
+
     return (
         <>
             <div className="p-4 prose overflow-scroll h-full"
@@ -570,34 +774,39 @@ export default function ScenarioTestMenu(props) {
                                         </label>
                                         <select value={scenario.activity?.description} onChange={(event) => handleSelectionChange(event, index)} id=""
                                                 className="select select-bordered w-full max-w-xs">
+                                            <option selected={true} value="" disabled>
+                                                Choose an activity
+                                            </option>
                                             {uniqueActivitys.map((edge) => {
                                                 return <option value={edge.name} key={edge.id}>{edge.name}</option>
                                             })}
                                         </select>
                                     </div>
 
-                                    <div className="activity-container">
-                                        <label className="label">
-                                            <span className="label-text">Choose Mode</span>
-                                        </label>
-                                        <div className="btn-group">
-                                            {allModes.map(((mode) => {
-                                                return (
-                                                    <>
-                                                        <input type="radio" value={mode.name}
-                                                               onClick={(event) => handleModeChange(event, scenario, index)}
-                                                               name="Mode"
-                                                               data-title={mode.name}
-                                                               className={scenario.selected_mode === mode.name? "btn btn-primary" : "btn"}
-                                                               id={mode.name + '-' + mode.description}
-                                                               data-tooltip-content={mode.description}/>
-                                                        <Tooltip
-                                                            id={mode.name + '-' + mode.description}/>
-                                                    </>
-                                                )
-                                            }))}
+                                    {scenario.activity !== null ?
+                                        <div className="activity-container">
+                                            <label className="label">
+                                                <span className="label-text">Choose Mode</span>
+                                            </label>
+                                            <div className="btn-group">
+                                                {allModes.map(((mode) => {
+                                                    return (
+                                                        <>
+                                                            <input type="radio" value={mode.name}
+                                                                   onClick={(event) => handleModeChange(event, scenario, index)}
+                                                                   name="Mode"
+                                                                   data-title={mode.name}
+                                                                   className={scenario.selected_mode === mode.name? "btn btn-primary" : "btn"}
+                                                                   id={mode.name + '-' + mode.description}
+                                                                   data-tooltip-content={mode.description}/>
+                                                            <Tooltip
+                                                                id={mode.name + '-' + mode.description}/>
+                                                        </>
+                                                    )
+                                                }))}
+                                            </div>
                                         </div>
-                                    </div>
+                                    : null}
 
                             {scenario.selected_mode !== null ?
                                 <div className="actvity-container">
@@ -823,7 +1032,7 @@ export default function ScenarioTestMenu(props) {
                                     </label>
 
                                     <div className="btn-group">
-                                        {allMetrics.find((metric) => metric.metric === scenario.metric).expected.map((responseParameter => {
+                                        {allMonitoringMetrics.find((metric) => metric.metric === scenario.metric).expected.map((responseParameter => {
                                             return (
                                                 <>
                                                     <input type="radio" value={responseParameter.value}
