@@ -29,11 +29,14 @@ export default function RqsBuilderService(sentence, mode) {
         return descriptionOfSentencePart;
     }
 
-    const combineDescriptionsToSentence = (mandatory, optional, attachment, load, resilience, isQuestion) => {
+    const combineDescriptionsToSentence = (mandatory, optional, attachment, load, resilience, isMandatoryDescriptionNotEmpty, isQuestion) => {
         let description = "";
 
         if (mandatory !== null) {
             description += mandatory;
+        }
+        else if(isMandatoryDescriptionNotEmpty) {
+            return null;
         }
 
         if (optional !== null) {
@@ -87,8 +90,8 @@ export default function RqsBuilderService(sentence, mode) {
         }
     }
 
-    let isMandatoryEmpty = sentence.mandatory.description === "";
+    let isMandatoryDescriptionNotEmpty = sentence.mandatory.description !== null;
     let isQuestion = sentence.all_expected === null;
 
-    return combineDescriptionsToSentence(mandatoryDescription, optionalDescription, attachmentDescription, loadDescription, resilienceDescription, isQuestion);
+    return combineDescriptionsToSentence(mandatoryDescription, optionalDescription, attachmentDescription, loadDescription, resilienceDescription, isMandatoryDescriptionNotEmpty, isQuestion);
 }
