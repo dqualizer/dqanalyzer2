@@ -1,315 +1,92 @@
-import React, { useEffect, useState } from "react";
-import LoadtestSelect from "./LoadtestSelect";
-import LoadtestSlider from "./LoadtestSlider";
-import LoadtestRadios from "./LoadtestRadios";
-import LoadtestCheck from "./LoadtestCheck";
-import DropdownLeft from "../DropdownLeft";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { addLoadtestToRqa } from "../../queries/rqa";
-export default function LoadtestSpecifier({
-  rqas,
-  domain,
-  loadtestSpecs,
-  selectedEdge,
-}) {
-  const queryClient = useQueryClient();
+import React, { useState, useEffect } from 'react'
+import axios from 'axios';
 
-  const [inputs, setInputs] = useState({
-    name: "Test",
-    system: "",
-    activity: "",
-    load_profile: "",
-    accuracy: 0,
-    response_time: "",
-    designParameters: {},
-    result_metrics: [],
-  });
+import SpecSelect from './SpecSelect';
+import SpecSlider from './SpecSlider';
+import SpecButtons from './SpecButtons';
+import * as loadtestSpecs from '../../data/loadtest-specs.json';
 
-  const [showAdd, setShowAdd] = useState();
+export default function LoadtestSpecifier({ selectedEdge }) {
 
-  // We need to extract the Endpoint from the DAM to get the Parametrization
-  const [endpoint, setEndpoint] = useState();
+    //Current Domain... we need State-Management
+    const [domain, setDomain] = useState({});
 
-  const handleChange = (event) => {
-    const name = event.target.name;
-    const value = event.target.value;
-    setInputs((values) => ({ ...values, [name]: value }));
-    if (name == "load_profile")
-      setInputs((values) => ({ ...values, designParameters: {} }));
-  };
+    // Rqas
+    const [rqas, setRqas] = useState([]);
+    // The Loadtest, which is gonna be passed into the selected Rqa
+    const [loadtest, setLoadtest] = useState({});
 
-  const handleResultMetricsChange = (optionId, isChecked) => {
-    if (isChecked) {
-      setInputs((prevInputs) => ({
-        ...prevInputs,
-        result_metrics: [...prevInputs.result_metrics, optionId],
-      }));
-    } else {
-      setInputs((prevInputs) => ({
-        ...prevInputs,
-        result_metrics: prevInputs.result_metrics.filter(
-          (id) => id !== optionId
-        ),
-      }));
-    }
-  };
+    // All the States of the Input-Fields
+    const [inputs, setInputs] = useState({});
 
-  const handleDesignParameterChange = (event) => {
-    const actualName = event.target.name.split("designParameter_")[1];
-    const value = event.target.value;
-    setInputs((prev) => ({
-      ...prev,
-      designParameters: {
-        ...prev.designParameters,
-        [actualName]: value,
-      },
-    }));
-  };
 
-  // Path Variables not implemented yet!
-  const handlePathVariableChange = (event) => {
-    const name = event.target.name;
-    const value = event.target.value;
-    let path_variables_copy = inputs.path_variables;
-    path_variables_copy.find((variable) => variable.key == name).value = value;
-
-    setInputs((values) => ({
-      ...values,
-      path_variables: path_variables_copy,
-    }));
-  };
-
-  // Show only the Activities for the selected System
-  const getActivities = () => {
-    if (inputs.system) {
-      return domain?.systems?.find((system) => system.id == inputs.system)
-        ?.activities;
-    }
-    return [];
-  };
-
-  const getDesignParameters = () => {
-    if (inputs.load_profile) {
-      const stimulus = loadtestSpecs.stimuluses.find(
-        (stimulus) => stimulus.id == inputs.load_profile
-      );
-      if (!stimulus.supported) return false;
-
-      return stimulus.designParameters;
-    }
-    return [];
-  };
-
-  // NOT IN USE - ENDPOINT WILL NOT BE INCLUDED IN DOMAIN SCHEMA
-  // const getEndpoint = useEffect(() => {
-  //   if (inputs.activity) {
-  //     setEndpoint(
-  //       domain.systems
-  //         .find((system) => system.name == inputs.system)
-  //         .activities.find(
-  //           (activity) => activity.activity_id == inputs.activity
-  //         ).endpoint
-  //     );
-  //   }
-  // }, [inputs.activity]);
-
-  // NOT PART OF Q3 -- Not in use
-
-  // Before we can initialize the path_variables, we have to know the endpoint
-  // Without it we don´t know the keys
-  // const setParametrization = useEffect(() => {
-  //   if (endpoint) {
-  //     let path_variables = [];
-  //     endpoint.path_variables.forEach((path_variable) => {
-  //       path_variables.push({ key: path_variable.name, value: "" });
-  //     });
-  //     console.log(path_variables);
-  //     setInputs((values) => ({
-  //       ...values,
-  //       path_variables: path_variables,
-  //     }));
-  //   }
-  // }, [endpoint]);
-
-  // Change System and Actvitivity, when selecte Eddge changes
-  useEffect(() => {
-    if (domain) {
-      console.log("edge");
-      console.log(domain);
-      getSystemAndActivityBasedOnSelectedEdge();
-    }
-  }, [selectedEdge, domain]);
-
-  const getSystemAndActivityBasedOnSelectedEdge = async () => {
-    if (selectedEdge) {
-      console.log(selectedEdge);
-      let system = domain.systems.find(
-        (system) => system.id == selectedEdge.system
-      );
-      let activity = system.activities.find(
-        (activity) => activity.activity_id == selectedEdge.mappingId
-      );
-      setInputs((prevState) => ({
-        ...prevState,
-        System: system.system_id,
-        Activity: activity.activity_id,
-      }));
-    }
-  };
-
-  useEffect(() => {
-    function checkProperties(obj) {
-      for (let key in obj) {
-        if (obj.hasOwnProperty(key)) {
-          const value = obj[key];
-
-          if (
-            value === null ||
-            value === undefined ||
-            value === "" ||
-            (typeof value === "object" && Object.keys(value).length === 0) ||
-            (Array.isArray(value) && value.length === 0)
-          ) {
-            console.log(key);
-            return false;
-          }
-        }
-      }
-      return true;
-    }
-
-    if (checkProperties(inputs)) {
-      setShowAdd(true);
-    } else {
-      setShowAdd(false);
-    }
-  }, [inputs]);
-
-  const addToRqa = (rqaId) => {
-    rqaMutation.mutate({ rqaId, inputs: inputs });
-  };
-
-  const rqaMutation = useMutation({
-    mutationFn: addLoadtestToRqa,
-    onSuccess: (data) => {
-      //queryClient.setQueryData(["rqas", data.id], data);
-      queryClient.invalidateQueries(["rqas"]);
-    },
-  });
-
-  console.log(domain.systems);
-
-  return (
-    <div className="p-4 prose h-full overflow-auto bg-slate-200 ">
-      <h3>Loadtest Specification</h3>
-      <h4>Domain Story Item</h4>
-      <LoadtestSelect
-        label={"System"}
-        onChange={handleChange}
-        value={inputs.system}
-        options={domain.systems}
-        optionName={"name"}
-        optionValue={"id"}
-      />
-      <LoadtestSelect
-        label={"Activity"}
-        onChange={handleChange}
-        value={inputs.activity}
-        options={getActivities()}
-        optionName={"name"}
-        optionValue={"id"}
-      />
-      <div className="divider " />
-      <h3>Load Design</h3>
-      <LoadtestSelect
-        label={"Load Profile"}
-        onChange={handleChange}
-        value={inputs.load_profile}
-        options={loadtestSpecs.stimuluses}
-        optionName={"name"}
-        optionValue={"id"}
-      />
-      {getDesignParameters() ? (
-        getDesignParameters().map((designParameter) => {
-          return (
-            <LoadtestRadios
-              label={designParameter.name}
-              onChange={handleDesignParameterChange}
-              value={inputs.load_profile}
-              options={designParameter.values}
-              optionName={designParameter.id}
-              optionValue={"id"}
-              propType={"designParameter"}
-            />
-          );
+    // Get Rqas
+    useEffect(() => {
+        axios.get(`https://64917f002f2c7ee6c2c85311.mockapi.io/api/v1/rqas`).then((response) => {
+            setRqas(response.data);
         })
-      ) : (
-        <h4 className="text-error">This Load Profile is not supported yet!</h4>
-      )}
-      <LoadtestSlider
-        label={"Accuracy"}
-        onChange={handleChange}
-        value={inputs.accuracy}
-      />
-      <div className="divider " />
-      <h3>Response Measures</h3>
-      {loadtestSpecs.responseMeasures.map((responseMeasure) => {
-        return (
-          <LoadtestRadios
-            label={responseMeasure.name}
-            onChange={handleChange}
-            value={inputs.response_measures}
-            options={responseMeasure.values}
-            optionName={responseMeasure.name}
-            optionValue={"value"}
-          />
-        );
-      })}
+    }, []);
 
-      <div className="divider"></div>
-      <h3>Result Metrics</h3>
-      {loadtestSpecs.metrics.map((option) => {
-        return (
-          <LoadtestCheck
-            option={option}
-            onChange={(e) =>
-              handleResultMetricsChange(option.id, e.target.checked)
-            }
-            inputs={inputs}
-          />
-        );
-      })}
+    // Get Domain
+    useEffect(() => {
+        const fetchData = async () => {
+            await axios.get(`https://64917f002f2c7ee6c2c85311.mockapi.io/api/v1/domain/1`).then((response) => {
+                setDomain(response.data);
+            })
+        }
 
-      {/* Tryed to implement Parametrization. Not Part of Q3 */}
-      {/* {endpoint && (
-        <div>
-          <h3>Parametrization Details</h3>
-          {endpoint.path_variables && (
-            <div>
-              <h4>Path Variables</h4>
-              {endpoint.path_variables.map((path_variable) => {
-                let variableName = path_variable.name;
-                console.log();
-                return (
-                  <LoadtestSelect
-                    label={path_variable.name}
-                    onChange={handlePathVariableChange}
-                    value={
-                      inputs.path_variables.find(
-                        (variable) => variable.key == variableName
-                      )?.value
-                    }
-                    options={path_variable.szenarios}
-                    optionName={"name"}
-                    optionValue={"path"}
-                  />
-                );
-              })}
-            </div>
-          )}
+        fetchData();
+
+    }, []);
+
+    // Get System based on Selected Edge
+    useEffect(() => {
+        if (domain) {
+            getSystemAndActivityBasedOnSelectedEdge();
+        }
+
+    }, [selectedEdge, domain]);
+
+    const getSystemAndActivityBasedOnSelectedEdge = async () => {
+        if (selectedEdge) {
+            let system = domain.systems.find((system) => system.system_id == selectedEdge.system);
+            let activity = system.activities.find((activity) => activity.activity_id == selectedEdge.mappingId);
+            setInputs((prevState) => ({
+                ...prevState,
+                System: system.system_id,
+                Activity: activity.activity_id
+            }));
+
+        }
+    }
+
+
+
+    const getActivities = () => {
+        if (inputs.System) {
+            return domain?.systems?.find((system) => system.system_id == inputs.System).activities
+        }
+        return [];
+
+    }
+
+
+
+
+
+
+    return (
+        <div className="p-4 prose overflow-scroll h-full">
+            <h3>Loadtest Specification</h3>
+            <SpecSelect domain={domain} spec={"System"} data={domain.systems} inputs={inputs} setInputs={setInputs} />
+            <SpecSelect spec={"Activity"} data={getActivities()} inputs={inputs} setInputs={setInputs} />
+            <SpecSelect spec={"Stimulus"} data={loadtestSpecs.stimuluses} inputs={inputs} setInputs={setInputs} tooltip />
+            <SpecSlider spec={"Accuracy"} data={loadtestSpecs.accuracy} inputs={inputs} setInputs={setInputs} tooltip />
+            <SpecButtons spec={"Response Measure"} data={loadtestSpecs.responseMeasures} inputs={inputs} setInputs={setInputs} tooltip />
+            {inputs.Stimulus && loadtestSpecs.stimuluses.find((stimulus) => stimulus.name == inputs.Stimulus).designParameters.map((parameter) =>
+                <SpecButtons spec={parameter.name} data={parameter} inputs={inputs} setInputs={setInputs} tooltip />
+
+            )}
         </div>
-      )} */}
-      {showAdd && <DropdownLeft rqas={rqas} action={addToRqa} />}
-    </div>
-  );
+    )
 }
