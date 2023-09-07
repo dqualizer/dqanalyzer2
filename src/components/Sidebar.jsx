@@ -1,5 +1,5 @@
 import React, { useRef, useState, useEffect } from "react";
-import RqaExplorer from "./rqa_explorer/RqaExplorer";
+import RqaExplorer from "./rqaExplorer/RqaExplorer";
 import "../language/icon/icons.css";
 import EqualizerIcon from "@mui/icons-material/Equalizer";
 import PlaylistPlayIcon from "@mui/icons-material/PlaylistPlay";
@@ -12,9 +12,16 @@ import {
 import { MarkerType } from "reactflow";
 import "../language/icon/icons.css";
 import ViewportChangeLogger from "../utils/hideComponentOnViewportClick";
-import LoadtestSpecifier from "../components/testing/loadtest/LoadtestSpecifier";
+import LoadtestSpecifier from "./loadtest/LoadtestSpecifier";
+import {element} from "prop-types";
+import CloudQueueIcon from  "@mui/icons-material/CloudQueue";
+import CloudOffIcon from  "@mui/icons-material/CloudOff";
+import ContentPasteSearchIcon from  "@mui/icons-material/ContentPasteSearch";
+import ScenarioTestMenu from "./ScenarioTestMenu";
+import ScenarioExplorer from "./scenario_explorer/ScenarioExplorer";
 
-export default function Sidebar({ domain, loadtestSpecs }) {
+
+export default function Sidebar({ domain, loadtestSpecs, rqas, nodes, edges }) {
   const [edgeSelected, setEgdeSelected] = useState(false);
   const [selectedEdge, setSelectedEdge] = useState(null);
   const [rqaExplorerShow, setRqaExplorerShow] = useState();
@@ -22,6 +29,12 @@ export default function Sidebar({ domain, loadtestSpecs }) {
   const [rqaPlayShow, setRqaPlayShow] = useState(false);
   const reactFlowInstance = useReactFlow();
   const loadtestRef = useRef(null);
+
+  const [scenarioMode, setScenarioMode] = useState(true);
+  const [scenarioExplorerShow, setScenarioExplorerShow] = useState();
+  const [scenarioTestShow, setScenarioTestShow] = useState();
+  const [editScenarioTestShow, setEditScenarioTestShow] = useState();
+  const [editRqa, setEditRqa] = useState(null);
 
   ViewportChangeLogger(loadtestRef, setLoadTestShow);
 
@@ -80,6 +93,29 @@ export default function Sidebar({ domain, loadtestSpecs }) {
     },
   });
 
+  const onChangeModeClick = () => {
+    setScenarioView((prevState) => !prevState);
+
+    // Hide all possible windows when changing the mode
+    setScenarioExplorerShow(false);
+    setScenarioTestShow(false);
+    setRqaExplorerShow(false);
+    setLoadTestShow(false);
+  };
+
+  const onScenarioExplorerClick = () => {
+    setScenarioExplorerShow((prevState) => !prevState);
+  };
+
+  const onEditScenarioTestClick = (rqa) => {
+    setEditRqa(rqa);
+    setEditScenarioTestShow((prevState) => !prevState);
+  };
+
+  const onScenarioTestClick = () => {
+    setScenarioTestShow((prevState) => !prevState);
+  };
+
   const onRqaExplorerClick = () => {
     setRqaExplorerShow((prevState) => !prevState);
   };
@@ -88,36 +124,68 @@ export default function Sidebar({ domain, loadtestSpecs }) {
     setLoadTestShow((prevState) => !prevState);
   };
 
-  return (
-    <div className="sidebar">
-      <div className="taskbar-container">
-        <button onClick={onRqaExplorerClick}>
-          <div>
-            <EqualizerIcon />
+  if(scenarioMode) {
+    return (
+        <div className="sidebar">
+          <div className="taskbar-container">
+            <button className="change-mode" onClick={onChangeModeClick}>
+              <div>
+                <CloudQueueIcon/>
+              </div>
+            </button>
+            <button onClick={onScenarioExplorerClick}>
+              <div><EqualizerIcon/></div>
+            </button>
+            <button onClick={onScenarioTestClick}>
+              <div><ContentPasteSearchIcon/></div>
+            </button>
           </div>
-        </button>
-        <button onClick={onLoadtestClick}>
-          <div className="icon-domain-story-loadtest"></div>
-        </button>
-        <button>
-          <div className="icon-domain-story-monitoring"></div>
-        </button>
-        <button>
-          <div className="icon-domain-story-chaosexperiment"></div>
-        </button>
-      </div>
-      {loadTestShow && (
-        <div ref={loadtestRef}>
-          {" "}
-          <LoadtestSpecifier
-            domain={domain}
-            loadtestSpecs={loadtestSpecs}
-          />{" "}
+
+          {scenarioExplorerShow ? <ScenarioExplorer selectedEdge={selectedEdge} edges={edges} onEditScenarioTestClick={onEditScenarioTestClick}/> : null}
+          {scenarioTestShow ? <div> <ScenarioTestMenu selectedEdge={selectedEdge} nodes={nodes} edges={edges} setScenarioExplorerShow={setScenarioExplorerShow} setScenarioTestShow={setScenarioTestShow}/> </div> : null}
+          {editScenarioTestShow ? <div> <EditScenarioTestMenu edges={edges} rqa={editRqa} setScenarioExplorerShow={setScenarioExplorerShow} setScenarioTestShow={setScenarioTestShow}/> </div> : null}
+
         </div>
-      )}
-      {rqaExplorerShow ? (
-        <RqaExplorer loadtestSpecifier={setLoadTestShow} />
-      ) : null}
-    </div>
-  );
+    );
+  }
+  else {
+    return (
+        <div className="sidebar">
+          <div className="taskbar-container">
+            <button className="change-mode" onClick={onChangeModeClick}>
+              <div>
+                <CloudOffIcon/>
+              </div>
+            </button>
+            <button onClick={onRqaExplorerClick}>
+              <div>
+                <EqualizerIcon />
+              </div>
+            </button>
+            <button onClick={onLoadtestClick}>
+              <div className="icon-domain-story-loadtest"></div>
+            </button>
+            <button>
+              <div className="icon-domain-story-monitoring"></div>
+            </button>
+            <button>
+              <div className="icon-domain-story-chaosexperiment"></div>
+            </button>
+          </div>
+          {loadTestShow && (
+              <div ref={loadtestRef}>
+                <LoadtestSpecifier
+                    domain={domain}
+                    loadtestSpecs={loadtestSpecs}
+                    selectedEdge={selectedEdge}
+                    rqas={rqas}
+                />
+              </div>
+          )}
+          {rqaExplorerShow ? (
+              <RqaExplorer loadtestSpecifier={setLoadTestShow} />
+          ) : null}
+        </div>
+    );
+  }
 }
