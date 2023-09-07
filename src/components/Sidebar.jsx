@@ -1,100 +1,123 @@
-import React, { useRef, useState, useEffect } from 'react'
-import RqaExplorer from './rqa_explorer/RqaExplorer';
-import '../language/icon/icons.css'
-import EqualizerIcon from '@mui/icons-material/Equalizer';
-import { useEdges, useOnSelectionChange, useReactFlow, useStore } from 'reactflow';
-import { MarkerType } from 'reactflow';
-import '../language/icon/icons.css';
-import ViewportChangeLogger from '../utils/hideComponentOnViewportClick';
-import LoadtestSpecifier from './loadtest/LoadtestSpecifier';
+import React, { useRef, useState, useEffect } from "react";
+import RqaExplorer from "./rqa_explorer/RqaExplorer";
+import "../language/icon/icons.css";
+import EqualizerIcon from "@mui/icons-material/Equalizer";
+import PlaylistPlayIcon from "@mui/icons-material/PlaylistPlay";
+import {
+  useEdges,
+  useOnSelectionChange,
+  useReactFlow,
+  useStore,
+} from "reactflow";
+import { MarkerType } from "reactflow";
+import "../language/icon/icons.css";
+import ViewportChangeLogger from "../utils/hideComponentOnViewportClick";
+import LoadtestSpecifier from "../components/testing/loadtest/LoadtestSpecifier";
 
-export default function Sidebar(props) {
+export default function Sidebar({ domain, loadtestSpecs }) {
+  const [edgeSelected, setEgdeSelected] = useState(false);
+  const [selectedEdge, setSelectedEdge] = useState(null);
+  const [rqaExplorerShow, setRqaExplorerShow] = useState();
+  const [loadTestShow, setLoadTestShow] = useState();
+  const [rqaPlayShow, setRqaPlayShow] = useState(false);
+  const reactFlowInstance = useReactFlow();
+  const loadtestRef = useRef(null);
 
-    const [edgeSelected, setEgdeSelected] = useState(false);
-    const [selectedEdge, setSelectedEdge] = useState(null);
-    const [rqaExplorerShow, setRqaExplorerShow] = useState();
-    const [loadTestShow, setLoadTestShow] = useState();
-    const reactFlowInstance = useReactFlow();
-    const loadtestRef = useRef(null);
+  ViewportChangeLogger(loadtestRef, setLoadTestShow);
 
-    ViewportChangeLogger(loadtestRef, setLoadTestShow);
+  const selectionChange = useOnSelectionChange({
+    onChange: ({ edges }) => {
+      if (edges[0]) {
+        setSelectedEdge(edges[0]);
 
-    const selectionChange = useOnSelectionChange({
-        onChange: ({ edges }) => {
-            if (edges[0]) {
+        let relatedEdgesArray = reactFlowInstance
+          .getEdges()
+          .filter((edge) => edge.name == edges[0].name);
+        let unrelatedEdgesArray = reactFlowInstance
+          .getEdges()
+          .filter((edge) => edge.name != edges[0].name);
 
-                setSelectedEdge(edges[0]);
+        let newEdgeArray = [];
 
-                let relatedEdgesArray = reactFlowInstance.getEdges().filter((edge) => edge.name == edges[0].name);
-                let unrelatedEdgesArray = reactFlowInstance.getEdges().filter((edge) => edge.name != edges[0].name);
+        unrelatedEdgesArray.forEach((edge) => {
+          edge.animated = false;
+          edge.style = {};
+          edge.markerStart = {
+            type: MarkerType.ArrowClosed,
+            width: 20,
+            height: 20,
+          };
+        });
 
-                let newEdgeArray = []
+        relatedEdgesArray.forEach((edge) => {
+          edge.selected = true;
+          edge.animated = true;
+          edge.style = {
+            stroke: "#570FF2",
+          };
+          edge.markerStart = {
+            type: MarkerType.ArrowClosed,
+            width: 20,
+            height: 20,
+            color: "#570FF2",
+          };
+        });
 
-                unrelatedEdgesArray.forEach((edge) => {
-                    edge.animated = false;
-                    edge.style = {}
-                    edge.markerStart = {
-                        type: MarkerType.ArrowClosed,
-                        width: 20,
-                        height: 20,
-                    }
-                })
+        newEdgeArray = newEdgeArray.concat(
+          unrelatedEdgesArray,
+          relatedEdgesArray
+        );
+        reactFlowInstance.setEdges(newEdgeArray);
+      } else {
+        setSelectedEdge();
+        let updatedEdgesArray = reactFlowInstance.getEdges();
+        updatedEdgesArray.forEach((edge) => {
+          edge.animated = false;
+          edge.style = {};
+        });
+        reactFlowInstance.setEdges(updatedEdgesArray);
+      }
+    },
+  });
 
-                relatedEdgesArray.forEach((edge) => {
-                    edge.selected = true;
-                    edge.animated = true;
-                    edge.style = {
-                        stroke: '#570FF2'
-                    }
-                    edge.markerStart = {
-                        type: MarkerType.ArrowClosed,
-                        width: 20,
-                        height: 20,
-                        color: '#570FF2'
-                    }
-                })
+  const onRqaExplorerClick = () => {
+    setRqaExplorerShow((prevState) => !prevState);
+  };
 
-                newEdgeArray = newEdgeArray.concat(unrelatedEdgesArray, relatedEdgesArray);
-                reactFlowInstance.setEdges(newEdgeArray);
-            }
-            else {
-                setSelectedEdge();
-                let updatedEdgesArray = reactFlowInstance.getEdges()
-                updatedEdgesArray.forEach((edge) => {
-                    edge.animated = false;
-                    edge.style = {
+  const onLoadtestClick = () => {
+    setLoadTestShow((prevState) => !prevState);
+  };
 
-                    }
-                });
-                reactFlowInstance.setEdges(updatedEdgesArray);
-            }
-        }
-    });
-
-
-
-    const onRqaExplorerClick = () => {
-        setRqaExplorerShow((prevState) => !prevState);
-    }
-
-    const onLoadtestClick = () => {
-        setLoadTestShow((prevState) => !prevState);
-    }
-
-    return (
-        <div className="sidebar">
-            <div className='taskbar-container'>
-                <button onClick={onRqaExplorerClick}><div><EqualizerIcon /></div></button>
-                <button onClick={onLoadtestClick}><div className="icon-domain-story-loadtest"></div></button>
-                <button><div className="icon-domain-story-monitoring"></div></button>
-                <button><div className="icon-domain-story-chaosexperiment"></div></button>
-
-
-            </div>
-            {loadTestShow ? <div ref={loadtestRef}> <LoadtestSpecifier selectedEdge={selectedEdge} edges={props.edges} /> </div> : null}
-            {rqaExplorerShow ? <RqaExplorer /> : null}
+  return (
+    <div className="sidebar">
+      <div className="taskbar-container">
+        <button onClick={onRqaExplorerClick}>
+          <div>
+            <EqualizerIcon />
+          </div>
+        </button>
+        <button onClick={onLoadtestClick}>
+          <div className="icon-domain-story-loadtest"></div>
+        </button>
+        <button>
+          <div className="icon-domain-story-monitoring"></div>
+        </button>
+        <button>
+          <div className="icon-domain-story-chaosexperiment"></div>
+        </button>
+      </div>
+      {loadTestShow && (
+        <div ref={loadtestRef}>
+          {" "}
+          <LoadtestSpecifier
+            domain={domain}
+            loadtestSpecs={loadtestSpecs}
+          />{" "}
         </div>
-
-
-    )
+      )}
+      {rqaExplorerShow ? (
+        <RqaExplorer loadtestSpecifier={setLoadTestShow} />
+      ) : null}
+    </div>
+  );
 }

@@ -1,4 +1,4 @@
-import { useState, useRef, useMemo } from "react";
+import React, { useState, useRef, useMemo } from "react";
 import "reactflow/dist/style.css";
 import {
   Background,
@@ -10,29 +10,25 @@ import {
   addEdge,
   MarkerType,
 } from "reactflow";
+import loadtestSpecs from "../data/loadtest-specs.json";
 import Sidebar from "../components/Sidebar";
 import IconNode from "../nodes/IconNode";
 import { createInitialElements } from "../utils/createInitialElements";
 import { getLayoutedElements } from "../utils/layoutElements";
-import { useLoaderData, useParams } from "react-router-dom";
-import { getAllRqas } from "../queries/rqa";
-import { getDamById } from "../queries/dam";
+import { useLoaderData } from "react-router-dom";
 
-import { string } from "prop-types";
-import loadtestSpecs from "../data/loadtest-specs.json";
-import { useQuery } from "@tanstack/react-query";
+import { getDomain } from "./Home";
 
-export function damLoader({ params }) {
-  return getDamById(params.damId);
+export async function loader({ params }) {
+  const domain = await getDomain(params.domainId);
+  return { domain };
 }
 
 function App() {
-  const dam = useLoaderData();
-
-  console.log(dam);
+  const { domain } = useLoaderData();
 
   // create the initial nodes and edges from the mapping
-  const [initialNodes, initialEgdes] = createInitialElements(dam);
+  const [initialNodes, initialEgdes] = createInitialElements(domain);
 
   // Add the custom node-type IconNode
   const nodeTypes = useMemo(() => ({ iconNode: IconNode }), []);
@@ -48,11 +44,6 @@ function App() {
   const reactFlowWrapper = useRef(null);
   const [nodes, setNodes, onNodesChange] = useNodesState(layoutedNodes);
   const [edges, setEdges, onEdgesChange] = useEdgesState(layoutedEdges);
-
-  const rqaQuery = useQuery({
-    queryKey: ["rqas"],
-    queryFn: getAllRqas,
-  });
 
   return (
     <div className="root" style={{ height: "100%" }}>
@@ -75,9 +66,8 @@ function App() {
         <Sidebar
           nodes={nodes}
           edges={edges}
-          domain={dam}
+          domain={domain}
           loadtestSpecs={loadtestSpecs}
-          rqas={rqaQuery.data}
         />
       </ReactFlowProvider>
     </div>

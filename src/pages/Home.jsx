@@ -1,9 +1,12 @@
 import dqLogo from '../assets/dqualizer_logo.png';
 
+import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
+import { Button } from '@mui/base';
+
 import React from 'react'
 import { Link, useLoaderData } from 'react-router-dom';
 
-import werkstatt from '../data/werkstatt-en.json';
+import werkstatt from '../data/werkstatt.json';
 
 import localforage from "localforage";
 import { matchSorter } from "match-sorter";
@@ -65,21 +68,52 @@ async function fakeNetwork(key) {
     });
 }
 
+const POSTS = [
+    { id: 1, title: "Post 1" },
+    { id: 2, title: "Post 2" }
+]
+
+function wait(duration) {
+    return new Promise(resolve => setTimeout(resolve, duration));
+}
+
 export default function Home() {
     createDomain();
+
+    const queryClient = useQueryClient();
+
+    const postsQuery = useQuery({
+        queryKey: ["post"],
+        queryFn: () => wait(1000).then(() => [...POSTS])
+    })
+
+    const newPost = useMutation({
+        mutationFn: (title) => {
+            return wait(1000).then(() => POSTS.push({ id: crypto.randomUUID(), title }))
+        },
+        onSuccess: () => {
+            queryClient.invalidateQueries("post");
+        }
+    })
+
+    if (postsQuery.isLoading) return <h1>Loading...</h1>
+    if (postsQuery.isError) return <pre>{JSON.stringify(postsQuery.error)}</pre>
+
 
     const { domains } = useLoaderData();
 
     return (
-        <div className="flex items-center justify-center h-screen flex-col">
-            <div className="text-center">
-                <img src={dqLogo} alt="" srcSet="" className="mx-auto mb-4 w-1/2" />
-                <p className="font-bold text-2xl">Welcome to dqAnalyzer 1.0!</p>
-                <p className="text-xl">First of all: Choose your Demo-Domain.</p>
+        <div class="flex items-center justify-center h-screen flex-col">
+            {postsQuery.data.map(post => (<div key={post.id}>{post.title}</div>))}
+            <Button className='btn' onClick={() => newPost.mutate("New Post")}>New Post</Button>
+            <div class="text-center">
+                <img src={dqLogo} alt="" srcset="" class="mx-auto mb-4 w-1/2" />
+                <p class="font-bold text-2xl">Welcome to dqAnalyzer 1.0!</p>
+                <p class="text-xl">First of all: Choose your Demo-Domain.</p>
             </div>
             <div className='flex gap-4 mt-5'>
                 {domains.length ? (domains.map((domain) => (
-                    <Link key={domain} to={`/analyzer/${domain.domainId}`}>
+                    <Link to={`/analyzer/${domain.domainId}`}>
                         <div className="w-60 h-60 border-2 border-cyan-400 relative hover:scale-110">
                             <img
                                 src="http://localhost:5173/werkstatt.png"
