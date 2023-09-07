@@ -15,7 +15,7 @@ export default function replacePlaceholders(sentencePart, words, part, expected)
     const areValidElementsForDescription = (examiningElements, condition) => {
         for (const examiningElement of examiningElements) {
             if (examiningElement.type === "person" || examiningElement.type === "system" || examiningElement.type === "work object") {
-                if (!(condition === examiningElement.number || examiningElement.change_allowed)) {
+                if (condition !== examiningElement.number && examiningElement.is_proper_noun) {
                     return false;
                 }
             }

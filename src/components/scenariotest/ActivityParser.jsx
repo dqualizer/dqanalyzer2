@@ -107,7 +107,6 @@ export default function ActivityParser(nodes, edges, selectedActivity) {
                     name: "customer",
                     type: "person",
                     number: "singular",
-                    change_allowed: true,
                     is_proper_noun: false
                 },
             ],
@@ -120,7 +119,6 @@ export default function ActivityParser(nodes, edges, selectedActivity) {
                     name: "order",
                     type: "work object",
                     number: "singular",
-                    change_allowed: true,
                     is_proper_noun: false
                 },
             ],
@@ -133,7 +131,6 @@ export default function ActivityParser(nodes, edges, selectedActivity) {
                     name: "order portal",
                     type: "system",
                     number: "singular",
-                    change_allowed: true,
                     is_proper_noun: false
                 },
             ]
@@ -146,7 +143,6 @@ export default function ActivityParser(nodes, edges, selectedActivity) {
                     name: "customer",
                     type: "person",
                     number: "singular",
-                    change_allowed: true,
                     is_proper_noun: false
                 },
             ],
@@ -159,7 +155,6 @@ export default function ActivityParser(nodes, edges, selectedActivity) {
                     name: "order",
                     type: "work object",
                     number: "singular",
-                    change_allowed: true,
                     is_proper_noun: false
                 },
             ],
@@ -172,7 +167,6 @@ export default function ActivityParser(nodes, edges, selectedActivity) {
                     name: "order portal",
                     type: "system",
                     number: "singular",
-                    change_allowed: true,
                     is_proper_noun: false
                 },
             ]
@@ -185,7 +179,6 @@ export default function ActivityParser(nodes, edges, selectedActivity) {
                     name: "merchant",
                     type: "person",
                     number: "singular",
-                    change_allowed: true,
                     is_proper_noun: false
                 },
             ],
@@ -198,7 +191,6 @@ export default function ActivityParser(nodes, edges, selectedActivity) {
                     name: "order status",
                     type: "work object",
                     number: "singular",
-                    change_allowed: true,
                     is_proper_noun: false
                 },
             ],
@@ -211,7 +203,151 @@ export default function ActivityParser(nodes, edges, selectedActivity) {
                     name: "order portal",
                     type: "system",
                     number: "singular",
-                    change_allowed: true,
+                    is_proper_noun: false
+                },
+            ]
+        }
+    }
+
+    else if(selectedActivity.description === "Creating Contract") {
+        return {
+            "speakers": [
+                {
+                    name: "petra",
+                    type: "person",
+                    number: "singular",
+                    is_proper_noun: true
+                },
+            ],
+            "message": [
+                {
+                    name: "creates",
+                    type: "verb",
+                },
+                {
+                    name: "car contract",
+                    type: "work object",
+                    number: "singular",
+                    is_proper_noun: false
+                },
+            ],
+            "audience": [
+                {
+                    name: "in",
+                    type: "preposition",
+                },
+                {
+                    name: "sales portal",
+                    type: "system",
+                    number: "singular",
+                    is_proper_noun: false
+                },
+            ]
+        }
+    }
+    else if(selectedActivity.description === "Checking Rating") {
+        return {
+            "speakers": [
+                {
+                    name: "risk manager",
+                    type: "person",
+                    number: "singular",
+                    is_proper_noun: true
+                },
+            ],
+            "message": [
+                {
+                    name: "checks",
+                    type: "verb",
+                },
+                {
+                    name: "client's credit rating",
+                    type: "work object",
+                    number: "singular",
+                    is_proper_noun: false
+                },
+            ],
+            "audience": [
+                {
+                    name: "in",
+                    type: "preposition",
+                },
+                {
+                    name: "risk management portal",
+                    type: "system",
+                    number: "singular",
+                    is_proper_noun: false
+                },
+            ]
+        }
+    }
+    else if(selectedActivity.description === "Calculating Resale Value") {
+        return {
+            "speakers": [
+                {
+                    name: "risk manager",
+                    type: "person",
+                    number: "singular",
+                    is_proper_noun: false
+                },
+            ],
+            "message": [
+                {
+                    name: "calculates",
+                    type: "verb",
+                },
+                {
+                    name: "resale value",
+                    type: "work object",
+                    number: "singular",
+                    is_proper_noun: false
+                },
+            ],
+            "audience": [
+                {
+                    name: "in",
+                    type: "preposition",
+                },
+                {
+                    name: "risk management portal",
+                    type: "system",
+                    number: "singular",
+                    is_proper_noun: false
+                },
+            ]
+        }
+    }
+    else if(selectedActivity.description === "Voting Contract") {
+        return {
+            "speakers": [
+                {
+                    name: "risk manager",
+                    type: "person",
+                    number: "singular",
+                    is_proper_noun: false
+                },
+            ],
+            "message": [
+                {
+                    name: "votes",
+                    type: "verb",
+                },
+                {
+                    name: "car contract",
+                    type: "work object",
+                    number: "singular",
+                    is_proper_noun: false
+                },
+            ],
+            "audience": [
+                {
+                    name: "in",
+                    type: "preposition",
+                },
+                {
+                    name: "risk management portal",
+                    type: "system",
+                    number: "singular",
                     is_proper_noun: false
                 },
             ]

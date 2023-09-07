@@ -14,6 +14,18 @@ export default function PlaceholderWordMapperService(sentence, part) {
         }
     }
 
+    const areValidElementsForDescription = (examiningElements, condition) => {
+        for (const examiningElement of examiningElements) {
+            if (examiningElement.type === "person" || examiningElement.type === "system" || examiningElement.type === "work object") {
+                if (condition !== examiningElement.number && examiningElement.is_proper_noun) {
+                    return false;
+                }
+            }
+        }
+
+        return true;
+    }
+
     if (part === "Mandatory") {
         if (sentence.mandatory === null) {
             return null;
@@ -34,18 +46,10 @@ export default function PlaceholderWordMapperService(sentence, part) {
 
         for (let match of matches) {
             if (sentence.words.speakers.some(speaker => fitsIn(speaker.type, match[1]))) {
-
-
-                function foo() {
-                    let activityString = "tells wish for";
-                    let verb = compromise(activityString).verbs().out("text");
-                    let conjugatedVerb = compromise(verb).verbs().toInfinitive().out("text").replace(/^(is |am |are |was |were )?/, '');
-                    activityString = activityString.replace(verb, conjugatedVerb);
-                    console.log(activityString);
+                let isPossibleDescription = areValidElementsForDescription(sentence.words.speakers, mandatoryDetails.number_actor);
+                if(!isPossibleDescription) {
+                    return null;
                 }
-
-                foo();
-
                 let replacingStringList = [];
                 for (let speaker of sentence.words.speakers) {
                     let elementName = speaker.name;
@@ -115,6 +119,10 @@ export default function PlaceholderWordMapperService(sentence, part) {
                     optionalWordMap[match[0]] = sentence.words.audience[0].name;
                 } else if (match[1] === "actor" || match[1] === "system") {
                     let examiningElements = sentence.words.audience.slice(1);
+                    let isPossibleDescription = areValidElementsForDescription(examiningElements, optionalDetails.number_actor);
+                    if(!isPossibleDescription) {
+                        return null;
+                    }
                     let replacingStringList = [];
                     for (let examiningElement of examiningElements) {
                         let elementName = examiningElement.name;

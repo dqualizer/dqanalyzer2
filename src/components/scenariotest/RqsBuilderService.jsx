@@ -87,6 +87,7 @@ export default function RqsBuilderService(sentence, mode) {
         }
     }
 
+    let isMandatoryEmpty = sentence.mandatory.description === "";
     let isQuestion = sentence.all_expected === null;
 
     return combineDescriptionsToSentence(mandatoryDescription, optionalDescription, attachmentDescription, loadDescription, resilienceDescription, isQuestion);
