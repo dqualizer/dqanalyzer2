@@ -6,7 +6,6 @@ import indefinite from "indefinite";
 import deepCopy from "./deepCopy.jsx";
 import scenarioSpecs from "../../data/scenariotest-specs.json";
 import RqsBuilderService from "./RqsBuilderService.jsx";
-import replacePlaceholders from "./replacePlaceholders.jsx";
 
 export default function ScenarioGenerator(mode, wordArray) {
 
