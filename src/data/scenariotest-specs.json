@@ -2,42 +2,52 @@
   "load_design": [
     {
       "name": "None",
-      "designParameters": null
+      "variant_placeholder": null,
+      "design_parameters": null
     },
     {
       "name": "Load Peak",
-      "designParameters": [
+      "variant_placeholder": "[high] and [time]",
+      "design_parameters": [
         {
           "name": "Highest Load",
+          "param_placeholder": "[high]",
           "values": [
             {
               "name": "High",
-              "value": 10
+              "value": 10,
+              "placeholder_value": "high"
             },
             {
               "name": "Very High",
-              "value": 15
+              "value": 15,
+              "placeholder_value": "very high"
             },
             {
               "name": "Extremly High",
-              "value": 30
+              "value": 30,
+              "placeholder_value": "extremly high"
             }
           ]
         },
         {
           "name": "Time to Highest load",
+          "param_placeholder": "[time]",
           "values": [
             {
               "name": "Slow",
-              "value": "20s"
+              "value": "20s",
+              "placeholder_value": "slow"
             },
             {
               "name": "Fast",
-              "value": "15s"
+              "value": "15s",
+              "placeholder_value": "fast"
             },
             {
               "name": "Very Fast",
-              "value": "10s"
+              "value": "10s",
+              "placeholder_value": "very fast"
             }
           ]
         }
@@ -45,21 +55,26 @@
     },
     {
       "name": "Load Increase",
-      "designParameters": [
+      "variant_placeholder": "[type]",
+      "design_parameters": [
         {
           "name": "Type of Increase",
+          "param_placeholder": "[type]",
           "values": [
             {
               "name": "Linear",
-              "value": 1
+              "value": 1,
+              "placeholder_value": "linear"
             },
             {
               "name": "Quadratic",
-              "value": 2
+              "value": 2,
+              "placeholder_value": "quadratic"
             },
             {
               "name": "Cubic",
-              "value": 3
+              "value": 3,
+              "placeholder_value": "cubic"
             }
           ]
         }
@@ -67,21 +82,26 @@
     },
     {
       "name": "Constant Load",
-      "designParameters": [
+      "variant_placeholder": "[base]",
+      "design_parameters": [
         {
           "name": "Base Load",
+          "param_placeholder": "[base]",
           "values": [
             {
               "name": "Low",
-              "value": 10
+              "value": 10,
+              "placeholder_value": "low"
             },
             {
               "name": "Medium",
-              "value": 20
+              "value": 20,
+              "placeholder_value": "medium"
             },
             {
               "name": "High",
-              "value": 30
+              "value": 30,
+              "placeholder_value": "high"
             }
           ]
         }
@@ -91,46 +111,26 @@
   "resilience_design": [
     {
       "name": "None",
-      "description": null,
-      "designParameters": null
+      "variant_placeholder": null,
+      "design_parameters": null
     },
     {
       "name": "Failed Request",
-      "description": "[error_rate] and [frequency] failed request",
-      "designParameters": [
-        {
-          "name": "Error Rate",
-          "placeholder": "[error_rate]",
-          "values": [
-            {
-              "name": "Low",
-              "value": 20
-            },
-            {
-              "name": "Medium",
-              "value": 30
-            },
-            {
-              "name": "High",
-              "value": 30
-            }
-          ]
-        },
+      "variant_placeholder": "[frequency]",
+      "design_parameters": [
         {
           "name": "How often does the stimulus occur?",
-          "placeholder": "[frequency]",
+          "param_placeholder": "[frequency]",
           "values": [
             {
               "name": "Once",
-              "value": 10
+              "value": 10,
+              "placeholder_value": "one"
             },
             {
               "name": "More than once",
-              "value": 20
-            },
-            {
-              "name": "Frustrated",
-              "value": 30
+              "value": 20,
+              "placeholder_value": "many"
             }
           ]
         }
@@ -138,23 +138,21 @@
     },
     {
       "name": "Late Response",
-      "description": "[frequency] late responses",
-      "designParameters": [
+      "variant_placeholder": "[frequency]",
+      "design_parameters": [
         {
           "name": "How often does the stimulus occur?",
-          "placeholder": "[frequency]",
+          "param_placeholder": "[frequency]",
           "values": [
             {
               "name": "Once",
-              "value": 10
+              "value": 10,
+              "placeholder_value": "one"
             },
             {
               "name": "More than once",
-              "value": 20
-            },
-            {
-              "name": "Frustrated",
-              "value": 30
+              "value": 20,
+              "placeholder_value": "many"
             }
           ]
         }
@@ -162,41 +160,21 @@
     },
     {
       "name": "Unavailable",
-      "description": "[recovery time] and [frequency] unavailable",
-      "designParameters": [
-        {
-          "name": "Recovery Time",
-          "placeholder": "[recovery time]",
-          "values": [
-            {
-              "name": "Satisfied",
-              "value": 10
-            },
-            {
-              "name": "Tolerated",
-              "value": 20
-            },
-            {
-              "name": "Frustrated",
-              "value": 30
-            }
-          ]
-        },
+      "variant_placeholder": "[frequency]",
+      "design_parameters": [
         {
           "name": "How often does the stimulus occur?",
-          "placeholder": "[frequency]",
+          "param_placeholder": "[frequency]",
           "values": [
             {
               "name": "Once",
-              "value": 10
+              "value": 10,
+              "placeholder_value": "one"
             },
             {
               "name": "More than once",
-              "value": 20
-            },
-            {
-              "name": "Frustrated",
-              "value": 30
+              "value": 20,
+              "placeholder_value": "many"
             }
           ]
         }
@@ -206,11 +184,11 @@
   "mode": [
     {
       "name": "What if",
-      "description": "Check your activity under specific conditions"
+      "variant_placeholder": "Check your activity under specific conditions"
     },
     {
       "name": "Monitoring",
-      "description": "Monitor your activity in the context of expected behavior"
+      "variant_placeholder": "Monitor your activity in the context of expected behavior"
     }
   ],
   "settings": {

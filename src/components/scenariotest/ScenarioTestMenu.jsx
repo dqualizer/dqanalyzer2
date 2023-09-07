@@ -6,11 +6,10 @@ import ResizeBar from '../ResizeBar.jsx';
 import * as mapping from '../../data/werkstatt-en.json';
 import {Tooltip} from 'react-tooltip';
 import axios from 'axios';
-import pluralize from 'pluralize';
-import compromise from 'compromise';
 import ActivityValidator from './ActivityValidator';
 import ActivityParser from "./ActivityParser.jsx";
 import ScenarioGenerator from "./ScenarioGenerator.jsx";
+import deepCopy from "./deepCopy.jsx";
 
 export default function ScenarioTestMenu(props) {
 
@@ -174,10 +173,10 @@ export default function ScenarioTestMenu(props) {
         let allDefinedScenariosCopy = deepCopy(allDefinedScenarios);
         allDefinedScenariosCopy[index].description = selectedScenario.description;
         allDefinedScenariosCopy[index].metric = selectedScenario.metric;
+        allDefinedScenariosCopy[index].expected = selectedScenario.expected;
         allDefinedScenariosCopy[index].load_design = selectedScenario.load_design;
         allDefinedScenariosCopy[index].resilience_design = selectedScenario.resilience_design;
         allDefinedScenariosCopy[index].filteredScenariosList = null;
-        allDefinedScenariosCopy[index].expected = null;
         allDefinedScenariosCopy[index].load_decision = null;
         allDefinedScenariosCopy[index].resilience_decision = null;
 
@@ -290,9 +289,9 @@ export default function ScenarioTestMenu(props) {
         setIsDeletingContainerDisabled(false);
     }
 
-    const deleteScenario = () => {
+    const deleteScenario = (indexToDelete) => {
         let newScenarioList = deepCopy(allDefinedScenarios);
-        newScenarioList.pop();
+        newScenarioList.splice(indexToDelete, 1);
 
         setAllDefinedScenarios(newScenarioList);
         setIsDeletingContainerDisabled(newScenarioList.length === 1);
@@ -325,38 +324,12 @@ export default function ScenarioTestMenu(props) {
         props.setScenarioTestShow(false);
     }
 
-    /*
-        Produces a copy of the input object to detach the operations from its original
-     */
-    const deepCopy = (obj) => {
-        if (obj === null || typeof obj !== 'object') {
-            return obj;
-        }
-
-        let copiedObject;
-        if (obj instanceof Array) {
-            copiedObject = [];
-            for (let i = 0; i < obj.length; i++) {
-                copiedObject.push(deepCopy(obj[i]));
-            }
-        } else {
-            copiedObject = {};
-            for (const key in obj) {
-                if (obj.hasOwnProperty(key)) {
-                    copiedObject[key] = deepCopy(obj[key]);
-                }
-            }
-        }
-
-        return copiedObject;
-    };
-
     const getScenariosForActivityAndMode = (activity, mode) => {
         let wordArray = ActivityParser(props.nodes, props.edges, activity);
 
         let generatedSentences = ScenarioGenerator(mode, wordArray);
 
-        //console.log(generatedSentences);
+        console.log(generatedSentences);
         return generatedSentences;
     }
 
@@ -627,40 +600,40 @@ export default function ScenarioTestMenu(props) {
                                 </div>
                                 : null}
 
-                            {scenario.selected_mode !== null && scenario.description !== null && (scenario.selected_mode === "Monitoring" || (scenario.selected_mode === "What if" && scenario.load_decision !== null && scenario.resilience_decision !== null)) ?
-                                <div>
-                                    <label className="label">
-                                        <h6>
-                                            Response Measure
-                                            <span className="ml-1 font-normal text-sm"
-                                                  data-tooltip-id="response-measure-tooltip"
-                                                  data-tooltip-place="right"
-                                                  data-tooltip-content='The Load Design allows you to further design the simulated load depending on the selected stimulus. For instance, if you design a "Load Peak" stimulus, you will need to specify the final peak to be achieved and how long it takes to reach it.'>&#9432;</span>
-                                        </h6>
-                                        <Tooltip id="response-measure-tooltip" style={{maxWidth: '256px'}}/>
-                                    </label>
+                            {/*{scenario.selected_mode !== null && scenario.description !== null && (scenario.selected_mode === "Monitoring" || (scenario.selected_mode === "What if" && scenario.load_decision !== null && scenario.resilience_decision !== null)) ?*/}
+                            {/*    <div>*/}
+                            {/*        <label className="label">*/}
+                            {/*            <h6>*/}
+                            {/*                Response Measure*/}
+                            {/*                <span className="ml-1 font-normal text-sm"*/}
+                            {/*                      data-tooltip-id="response-measure-tooltip"*/}
+                            {/*                      data-tooltip-place="right"*/}
+                            {/*                      data-tooltip-content='The Load Design allows you to further design the simulated load depending on the selected stimulus. For instance, if you design a "Load Peak" stimulus, you will need to specify the final peak to be achieved and how long it takes to reach it.'>&#9432;</span>*/}
+                            {/*            </h6>*/}
+                            {/*            <Tooltip id="response-measure-tooltip" style={{maxWidth: '256px'}}/>*/}
+                            {/*        </label>*/}
 
-                                    <div className="btn-group">
-                                        {allMonitoringMetrics.find((metric) => metric.metric === scenario.metric).expected.map((responseParameter => {
-                                            return (
-                                                <>
-                                                    <input type="radio" value={responseParameter.value}
-                                                           onClick={() => handleResponseParameterChange(responseParameter, index)}
-                                                           name={"Response Measure" + index}
-                                                           data-title={responseParameter.value}
-                                                           className={scenario.expected === responseParameter? "btn btn-primary" : "btn"}
-                                                           data-tooltip-id={responseParameter.value}
-                                                           data-tooltip-content={"Value: " + responseParameter.value + " " + responseParameter.unit}/>
-                                                    <Tooltip
-                                                        id={responseParameter.value}/>
-                                                </>
-                                            )
-                                        }))}
-                                    </div>
+                            {/*        <div className="btn-group">*/}
+                            {/*            {allMonitoringMetrics.find((metric) => metric.metric === scenario.metric).expected.map((responseParameter => {*/}
+                            {/*                return (*/}
+                            {/*                    <>*/}
+                            {/*                        <input type="radio" value={responseParameter.value}*/}
+                            {/*                               onClick={() => handleResponseParameterChange(responseParameter, index)}*/}
+                            {/*                               name={"Response Measure" + index}*/}
+                            {/*                               data-title={responseParameter.value}*/}
+                            {/*                               className={scenario.expected === responseParameter? "btn btn-primary" : "btn"}*/}
+                            {/*                               data-tooltip-id={responseParameter.value}*/}
+                            {/*                               data-tooltip-content={"Value: " + responseParameter.value + " " + responseParameter.unit}/>*/}
+                            {/*                        <Tooltip*/}
+                            {/*                            id={responseParameter.value}/>*/}
+                            {/*                    </>*/}
+                            {/*                )*/}
+                            {/*            }))}*/}
+                            {/*        </div>*/}
 
-                                </div>
-                                : null}
-                                <button className="btn deleting-container-button" disabled={isDeletingContainerDisabled} onClick={deleteScenario}>X</button>
+                            {/*    </div>*/}
+                            {/*    : null}*/}
+                                <button className="btn deleting-container-button" disabled={isDeletingContainerDisabled} onClick={() => deleteScenario(index)}>X</button>
                         </div>
                         )
                         })}
