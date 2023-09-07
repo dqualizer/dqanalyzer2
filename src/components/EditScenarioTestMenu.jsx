@@ -2,7 +2,7 @@ import React, {useEffect, useState} from 'react';
 import {useEdges, useOnSelectionChange, useReactFlow} from 'reactflow';
 import * as scenarioSpecs from '../data/scenariotest-specs.json';
 import ResizeBar from './ResizeBar';
-import * as mapping from '../data/werkstatt.json';
+import * as mapping from '../data/werkstatt-en.json';
 import {Tooltip} from 'react-tooltip';
 import axios from 'axios';
 
