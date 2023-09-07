@@ -29,7 +29,7 @@ COPY .env .
 COPY entrypoint.sh /usr/bin/
 
 # Adding nginx-config
-COPY nginx.conf  /etc/nginx/nginx.conf
+COPY nginx.conf  /etc/nginx/conf.d/default.conf
 
 RUN chmod +x /usr/bin/entrypoint.sh
 
