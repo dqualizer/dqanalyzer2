@@ -1,3 +1,5 @@
+import compromise from "compromise";
+
 export default function ActivityValidator(wordArray) {
 
     const validFirstAndLastElement = (elementArray, index, startArray, endArray) => {
@@ -129,6 +131,17 @@ export default function ActivityValidator(wordArray) {
             || !isNoDuplicate(message, index)
             || !hasRightOrder(message, index, true)) {
             return false;
+        }
+
+        if(index === 0) {
+            let firstActivityArrow = message[index];
+            let firstActivityString = firstActivityArrow.name;
+            let activityWords = firstActivityString.split(" ");
+            let firstWord = activityWords[0];
+            let isNotAVerb = compromise(firstWord).verbs().toInfinitive().out("text") === "";
+            if(isNotAVerb) {
+                return false;
+            }
         }
 
         switch (message[index].type) {
