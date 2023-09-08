@@ -54,11 +54,11 @@ export default function ActivityValidator(wordArray) {
         return true;
     }
 
-    const hasRightOrder = (elementArray, index, prepositionsAreEven) => {
+    const hasRightOrder = (elementArray, index, shouldHaveEvenIndex) => {
         // Prepositions should be at the right place. In speakers and message prepositions are only allowed at odd indexes, in audience at even indexes only
-        if (elementArray[index].type === "verb" || elementArray[index].type === "preposition") {
+        if (elementArray[index].type === "verb" || elementArray[index].type === "preposition" || elementArray[index].type === "conjunction") {
            if (index % 2 === 0) {
-               if(prepositionsAreEven) {
+               if(shouldHaveEvenIndex) {
                    return true;
                }
                else {
@@ -66,7 +66,7 @@ export default function ActivityValidator(wordArray) {
                }
            }
            else {
-               if(prepositionsAreEven) {
+               if(shouldHaveEvenIndex) {
                    return false;
                }
                else {
@@ -76,7 +76,7 @@ export default function ActivityValidator(wordArray) {
         }
         else {
             if (index % 2 === 0) {
-                if(prepositionsAreEven) {
+                if(shouldHaveEvenIndex) {
                     return false;
                 }
                 else {
@@ -84,7 +84,7 @@ export default function ActivityValidator(wordArray) {
                 }
             }
             else {
-                if(prepositionsAreEven) {
+                if(shouldHaveEvenIndex) {
                     return true;
                 }
                 else {
@@ -117,8 +117,8 @@ export default function ActivityValidator(wordArray) {
         switch (speakers[index].type) {
             case "person": personNumber++; break;
             case "system": systemNumber++; break;
-            case "preposition": break;
-            case "annotation": break;   // Annotations doesn't matter now
+            case "conjunction": break;
+            // case "annotation": break;   // Annotations doesn't matter now
             default: return false;
         }
         observedElements.push(speakers[index]);
@@ -148,7 +148,8 @@ export default function ActivityValidator(wordArray) {
             case "verb": verbNumber++; break;
             case "work object": workObjectNumber++; break;
             case "preposition": break;
-            case "annotation": break;   // Annotations doesn't matter now
+            case "conjunction": break;
+            // case "annotation": break;   // Annotations doesn't matter now
             default: return false;
         }
         observedElements.push(message[index]);
@@ -166,8 +167,13 @@ export default function ActivityValidator(wordArray) {
         switch (audience[index].type) {
             case "person": personNumber++; break;
             case "system": systemNumber++; break;
-            case "preposition": systemNumber++; break;
-            case "annotation": break;   // Annotations doesn't matter now
+            case "preposition":
+                if(index !== 0) {
+                    return false;
+                }
+                break;
+            case "conjunction": break;
+            // case "annotation": break;   // Annotations doesn't matter now
             default: return false;
         }
         observedElements.push(audience[index]);

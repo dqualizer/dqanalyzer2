@@ -180,7 +180,7 @@ export default function ActivityParser(nodes, edges, selectedActivity) {
                     type: "person",
                     number: "singular",
                     is_proper_noun: false
-                },
+                }
             ],
             "message": [
                 {
@@ -217,7 +217,7 @@ export default function ActivityParser(nodes, edges, selectedActivity) {
                     type: "person",
                     number: "singular",
                     is_proper_noun: true
-                },
+                }
             ],
             "message": [
                 {
@@ -229,7 +229,7 @@ export default function ActivityParser(nodes, edges, selectedActivity) {
                     type: "work object",
                     number: "singular",
                     is_proper_noun: false
-                },
+                }
             ],
             "audience": [
                 {
@@ -241,7 +241,7 @@ export default function ActivityParser(nodes, edges, selectedActivity) {
                     type: "system",
                     number: "singular",
                     is_proper_noun: false
-                },
+                }
             ]
         }
     }
