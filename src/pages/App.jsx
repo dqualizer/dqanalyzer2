@@ -1,4 +1,4 @@
-import React, { useState, useRef, useMemo } from "react";
+import { useState, useRef, useMemo } from "react";
 import "reactflow/dist/style.css";
 import {
   Background,
@@ -10,29 +10,29 @@ import {
   addEdge,
   MarkerType,
 } from "reactflow";
-import loadtestSpecs from "../data/loadtest-specs.json";
 import Sidebar from "../components/Sidebar";
 import IconNode from "../nodes/IconNode";
 import { createInitialElements } from "../utils/createInitialElements";
 import { getLayoutedElements } from "../utils/layoutElements";
-import { RouteObject, useLoaderData } from "react-router-dom";
+import { useLoaderData, useParams } from "react-router-dom";
+import { getAllRqas } from "../queries/rqa";
+import { getDamById } from "../queries/dam";
 
-import { getDomain } from "./Home";
-import { AppLoaderProps } from "../interfaces/AppLoaderProps";
-import { ReactJSXIntrinsicAttributes } from "@emotion/react/types/jsx-namespace";
 import { string } from "prop-types";
+import loadtestSpecs from "../data/loadtest-specs.json";
+import { useQuery } from "@tanstack/react-query";
 
-export async function loader({domainId}: {domainId: String}) {
-  const domain = await getDomain(domainId);
-  return { domain };
+export function damLoader({ params }) {
+  return getDamById(params.damId);
 }
 
 function App() {
-  
-  const domain = useLoaderData() as any
+  const dam = useLoaderData();
+
+  console.log(dam);
 
   // create the initial nodes and edges from the mapping
-  const [initialNodes, initialEgdes] = createInitialElements(domain);
+  const [initialNodes, initialEgdes] = createInitialElements(dam);
 
   // Add the custom node-type IconNode
   const nodeTypes = useMemo(() => ({ iconNode: IconNode }), []);
@@ -48,6 +48,11 @@ function App() {
   const reactFlowWrapper = useRef(null);
   const [nodes, setNodes, onNodesChange] = useNodesState(layoutedNodes);
   const [edges, setEdges, onEdgesChange] = useEdgesState(layoutedEdges);
+
+  const rqaQuery = useQuery({
+    queryKey: ["rqas"],
+    queryFn: getAllRqas,
+  });
 
   return (
     <div className="root" style={{ height: "100%" }}>
@@ -70,8 +75,9 @@ function App() {
         <Sidebar
           nodes={nodes}
           edges={edges}
-          domain={domain}
+          domain={dam}
           loadtestSpecs={loadtestSpecs}
+          rqas={rqaQuery.data}
         />
       </ReactFlowProvider>
     </div>

@@ -252,7 +252,7 @@ export default function ActivityParser(nodes, edges, selectedActivity) {
                     name: "risk manager",
                     type: "person",
                     number: "singular",
-                    is_proper_noun: true
+                    is_proper_noun: false
                 },
             ],
             "message": [

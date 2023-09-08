@@ -1,6 +1,7 @@
 import axios from "axios";
+import { getBackendUrl } from "./dam";
 
-const backend = import.meta.env.VITE_BACKEND_URL;
+const backend = new URL('/api/v1', getBackendUrl());
 
 export const getAllRqas = () => {
     return axios.get(`${backend}/rqa-definition`)
@@ -24,6 +25,7 @@ export const deleteLoadtest = (deleteLoadtestPath) => {
     return axios.delete(`${backend}/rqa-definition/${deleteLoadtestPath.rqaId}/loadtest/${deleteLoadtestPath.loadtestName}`).then(res => res.data);
 }
 
-export const addLoadtestToRqa = ({ rqaId, loadtest }) => {
-    return axios.put(`${backend}/rqa-definition/${rqaId}/loadtest`, loadtest).then(res => res.data);
+export const addLoadtestToRqa = ({ rqaId, inputs }) => {
+    console.log(inputs);
+    return axios.put(`${backend}/rqa-definition/${rqaId}/loadtest`, inputs).then(res => res.data);
 } 
