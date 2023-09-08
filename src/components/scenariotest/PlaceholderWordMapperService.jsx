@@ -17,7 +17,7 @@ export default function PlaceholderWordMapperService(sentence, part) {
     const areValidElementsForDescription = (examiningElements, condition) => {
         for (const examiningElement of examiningElements) {
             if (examiningElement.type === "person" || examiningElement.type === "system" || examiningElement.type === "work object") {
-                if (condition !== examiningElement.number && examiningElement.is_proper_noun) {
+                if (condition !== null && condition !== examiningElement.number && examiningElement.is_proper_noun) {
                     return false;
                 }
             }
