@@ -402,7 +402,8 @@ export default function ScenarioTestController(props) {
                                                                    data-title={mode.name}
                                                                    className={scenario.selected_mode === mode.name ? "btn btn-primary" : "btn"}
                                                                    id={mode.name + '-' + mode.description}
-                                                                   data-tooltip-content={mode.description}/>
+                                                                   data-tooltip-content={mode.description}
+                                                                   checked={scenario.selected_mode === mode.name}/>
                                                             <Tooltip
                                                                 id={mode.name + '-' + mode.description}/>
                                                         </>
