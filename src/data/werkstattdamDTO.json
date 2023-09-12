@@ -10,12 +10,14 @@
     "actors": [
      {
       "_id": "1",      
-      "actor_name": "Kunde"
+      "actor_name": "Kunde",
+      "is_group": false
   
      },
      {
       "_id": "2",   
-      "actor_name": "Händler"
+      "actor_name": "Händler",
+      "is_group": false
   
      }
     ],
@@ -44,18 +46,10 @@
          "path_variables": [
           {
            "name": "auftragsnummer",
-           "szenarios": [
+           "scenarios": [
             {
-             "path": "auftrag/auftragsnummern/nicht_angelegt.json"
-            }
-           ]
-          },
-          {
-           "name": "customer",
-           "szenarios": [
-            {
-             "name": "Valide Customer",
-             "path": "auftrag/auftragsnummern/angelegt.json"
+                "name": "valide AUftragsnummern",
+                "path": "auftrag/auftragsnummern/angelegt.json"
             }
            ]
           }
@@ -90,7 +84,7 @@
          "request_parameter": [
           {
            "name": "headers",
-           "szenarios": [
+           "scenarios": [
             {
              "name": "valid headers",
              "path": "auftrag/allgemein/headers.json"
@@ -99,7 +93,7 @@
           },
           {
            "name": "authorization",
-           "szenarios": [
+           "scenarios": [
             {
              "name": "valid authorization",
              "path": "auftrag/allgemein/authorization.json"
@@ -110,7 +104,7 @@
          "payload": [
           {
            "name": "auftraggeber",
-           "szenarios": [
+           "scenarios": [
             {
              "name": "auftraggeber_2022",
              "path": "auftrag/auftraggeber/2022/auftraggeber.json"
@@ -119,7 +113,7 @@
           },
           {
            "name": "auftraggeber",
-           "szenarios": [
+           "scenarios": [
             {
              "name": "auftraggeber_2023",
              "path": "auftrag/auftraggeber/2023/auftraggeber.json"
@@ -151,7 +145,7 @@
          "path_variables": [
           {
            "name": "auftragsnummer",
-           "szenarios": [
+           "scenarios": [
             {
              "name": "Valide Auftragsnummern",
              "path": "auftrag/auftragsnummern/angelegt.json"
@@ -163,7 +157,7 @@
          "request_parameter": [
           {
            "name": "headers",
-           "szenarios": [
+           "scenarios": [
             {
              "name": "valid headers",
              "path": "auftrag/allgemein/headers.json"
@@ -174,7 +168,7 @@
          "payload": [
           {
            "name": "auftragsstatus",
-           "szenarios": [
+           "scenarios": [
             {
              "name": "Mixed Status",
              "path": "auftrag/auftragsstatus/auftragsstatus.json"
