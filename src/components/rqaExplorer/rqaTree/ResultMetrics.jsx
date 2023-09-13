@@ -9,7 +9,6 @@ export default function ResultMetrics({ data }) {
     formattedData.push(toHumanCasing(metric));
   });
 
-  console.log(formattedData);
   return (
     <details>
       <summary>

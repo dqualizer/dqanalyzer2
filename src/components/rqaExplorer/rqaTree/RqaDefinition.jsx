@@ -11,19 +11,14 @@ export default function RqaDefinition({ data, loadtestSpecifier }) {
   };
   return (
     <ul>
-      {Object.keys(data).map((key, index) => {
-        if (typeof data[key] == "object") {
-          return (
-            <li>
-              <Loadtests
-                data={data.runtime_quality_analysis.loadtests}
-                rqaId={data.id}
-                loadtestSpecifier={loadtestSpecifier}
-              />
-            </li>
-          );
-        }
-      })}
+      <li>
+        <Loadtests
+          data={data.runtime_quality_analysis.loadtests}
+          rqaId={data.id}
+          loadtestSpecifier={loadtestSpecifier}
+        />
+      </li>
+
       <li>
         <details>
           <summary>Details</summary>
