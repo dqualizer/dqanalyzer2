@@ -66,7 +66,7 @@ class ScenarioService {
         let generatedRqs = RqsGeneratorService(mode, wordArray);
 
         // to download a file with all RQS
-        FileWriterService(generatedRqs);
+        //FileWriterService(generatedRqs);
 
         return generatedRqs;
     }
