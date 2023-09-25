@@ -57,6 +57,9 @@ export default function PlaceholderWordMapperService(sentence, part) {
                         elementName = CaseService.toTitleCase(elementName);
                     } else if (mandatoryDetails.number_actor === "plural" && speaker.number === "singular" && speaker.is_proper_noun === false) {
                         elementName = pluralize(elementName);
+                        // if((speaker.type === "person" || speaker.type === "system") && speaker.is_proper_noun === false && speaker.number === "singular") {
+                        //     elementName = indefinite(elementName);
+                        // }
                     } else if ((speaker.type === "person" || speaker.type === "system") && speaker.is_proper_noun === false && speaker.number === "singular") {
                         elementName = indefinite(elementName);
                     }
@@ -65,13 +68,17 @@ export default function PlaceholderWordMapperService(sentence, part) {
                 mandatoryWordMap[match[0]] = replacingStringList.join(" ");
             } else if (sentence.words.message.some(message => fitsIn(message.type, match[1]))) {
                 if (match[1] === "verb") {
-                    let verb = sentence.words.message[0].name;
+                    let description = sentence.words.message[0].name;
+                    let activityWords = description.split(" ");
+                    let verb = activityWords[0];
+                    let verbForm;
                     if (mandatoryDetails.form_verb === "infinitive") {
-                        verb = compromise(verb).verbs().toInfinitive().out("text");
+                        verbForm = compromise(verb).verbs().toInfinitive().out("text");
                     } else if (mandatoryDetails.form_verb === "gerund") {
-                        verb = compromise(verb).verbs().toGerund().out("text").replace(/^(is |am |are |was |were )?/, '');
+                        verbForm = compromise(verb).verbs().toGerund().out("text").replace(/^(is |am |are |was |were )?/, '');
                     }
-                    mandatoryWordMap[match[0]] = verb;
+                    description = description.replace(verb, verbForm);
+                    mandatoryWordMap[match[0]] = description;
                 } else if (match[1] === "work object") {
                     let examiningElements = sentence.words.message.slice(1);
                     let replacingStringList = [];

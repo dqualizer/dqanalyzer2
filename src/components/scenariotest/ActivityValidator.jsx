@@ -179,8 +179,8 @@ export default function ActivityValidator(wordArray) {
         observedElements.push(audience[index]);
     }
 
-    // Every sentence contains at least one actor and one work object
-    if (personNumber === 0 || workObjectNumber === 0) {
+    // Every sentence contains at least one actor and one work object and one verb only
+    if (personNumber === 0 || workObjectNumber === 0 || verbNumber !== 1) {
         return false;
     }
 
