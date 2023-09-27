@@ -121,7 +121,7 @@ A filled form could look like this:
       }
     ],
     "settings": {
-      "accuracy": "66",
+      "accuracy": 66,
       "environment": "Test",
       "time_slot": {
         "representation": "After work from 16:00 PM to 12:00 AM",

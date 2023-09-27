@@ -177,6 +177,7 @@ class ScenarioService {
 
     isSettingsViewInvalid(isDisabled, accuracy, environment, timeSlot) {
         if (accuracy === null
+            || accuracy === 0
             || environment === null
             || (environment === "Test" && timeSlot === null)) {
             isDisabled = true;
