@@ -63,7 +63,7 @@ export default function ScenarioTestController(props) {
             "isValid": null
         }
     ]);
-    const [accuracy, setAccuracy] = useState(0);
+    const [confidence, setConfidence] = useState(0);
     const [environment, setEnvironment] = useState(null);
     const [timeSlot, setTimeSlot] = useState(null);
 
@@ -209,8 +209,8 @@ export default function ScenarioTestController(props) {
         setAllDefinedScenarios(allDefinedScenariosCopy);
     }
 
-    const handleAccuracyChange = (event) => {
-        setAccuracy(Number(event.target.value));
+    const handleConfidenceChange = (event) => {
+        setConfidence(Number(event.target.value));
     }
 
     const handleEnvironmentChange = (event) => {
@@ -233,7 +233,7 @@ export default function ScenarioTestController(props) {
     }
 
     const isAddingButtonDisabled = () => {
-        return ScenarioTestApplicationService.isAddingButtonDisabled(allDefinedScenarios, accuracy, environment, timeSlot);
+        return ScenarioTestApplicationService.isAddingButtonDisabled(allDefinedScenarios, confidence, environment, timeSlot);
     }
 
     const deleteScenario = (indexToDelete) => {
@@ -246,7 +246,7 @@ export default function ScenarioTestController(props) {
     }
 
     const addScenarioTest = () => {
-        ScenarioTestApplicationService.addScenarioTest(allDefinedScenarios, accuracy, environment, timeSlot, props.setScenarioExplorerShow, props.setScenarioTestShow);
+        ScenarioTestApplicationService.addScenarioTest(allDefinedScenarios, confidence, environment, timeSlot, props.setScenarioExplorerShow, props.setScenarioTestShow);
     }
 
     const isAllActivitiesButtonDisabled = () => {
@@ -756,14 +756,14 @@ export default function ScenarioTestController(props) {
                             <div className="actvity-container">
                                 <label className="label">
                             <span className="label-text">
-                                Accuracy
-                                <span className="ml-1 font-normal text-sm" data-tooltip-id="accuracy-tooltip"
+                                Confidence
+                                <span className="ml-1 font-normal text-sm" data-tooltip-id="confidence-tooltip"
                                       data-tooltip-place="right"
-                                      data-tooltip-content='The accuracy defines how long the test will be executed. The higher the accuracy is, the longer the test will be executed. By default, a 100% accuracy is set to a test duration of 1 week. An accuracy of 1% relates to approximately 1 hour. An accuracy value of 0% is not possible. We advise to use at least 60% accuracy to receive meaningful results. With a value of 60% the test will run approximately 60 hours, i.e., two and a half days.'>&#9432;</span>
+                                      data-tooltip-content='The confidence defines how long the test will be executed. The higher the confidence is, the longer the test will be executed. By default, a 100% confidence is set to a test duration of 1 week. An confidence of 1% relates to approximately 1 hour. An accuracy value of 0% is not possible. We advise to use at least 60% accuracy to receive meaningful results. With a value of 60% the test will run approximately 60 hours, i.e., two and a half days.'>&#9432;</span>
                             </span>
                                 </label>
-                                <Tooltip id="accuracy-tooltip" style={{maxWidth: '256px'}}/>
-                                <input type="range" value={accuracy} onChange={handleAccuracyChange} name="" id=""
+                                <Tooltip id="confidence-tooltip" style={{maxWidth: '256px'}}/>
+                                <input type="range" value={confidence} onChange={handleConfidenceChange} name="" id=""
                                        className="range range-primary" min={0} max={100} step={10}/>
                                 <div className="w-full flex justify-between text-xs px-2">
                                     <span>0%</span>

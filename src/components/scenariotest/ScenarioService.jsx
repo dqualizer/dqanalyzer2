@@ -175,9 +175,9 @@ class ScenarioService {
         return isDisabled;
     }
 
-    isSettingsViewInvalid(isDisabled, accuracy, environment, timeSlot) {
-        if (accuracy === null
-            || accuracy === 0
+    isSettingsViewInvalid(isDisabled, confidence, environment, timeSlot) {
+        if (confidence === null
+            || confidence === 0
             || environment === null
             || (environment === "Test" && timeSlot === null)) {
             isDisabled = true;
@@ -185,12 +185,12 @@ class ScenarioService {
         return isDisabled;
     }
 
-    createScenarioTest(allDefinedScenarios, accuracy, environment, timeSlot) {
+    createScenarioTest(allDefinedScenarios, confidence, environment, timeSlot) {
         let rqa = {
             context: mapping.context,
             scenarios: [],
             settings: {
-                accuracy: 0,
+                confidence: 0,
                 environment: null,
                 time_slot: null
             }
@@ -219,7 +219,7 @@ class ScenarioService {
             });
             rqa.scenarios.push(rqaScenario);
         }
-        rqa.settings.accuracy = accuracy;
+        rqa.settings.confidence = confidence;
         rqa.settings.environment = environment;
         rqa.settings.time_slot = timeSlot;
 

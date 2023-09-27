@@ -48,7 +48,7 @@ export default function EditScenarioTestMenu(props) {
     const [loadDesign, setLoadDesign] = useState(props.rqa.runtime_quality_analysis.artifacts[0].load_design);
     const [resilienceDesign, setResilienceDesign] = useState(props.rqa.runtime_quality_analysis.artifacts[0].resilience_design);
     const [responseMeasures, setResponseMeasures] = useState(props.rqa.runtime_quality_analysis.artifacts[0].response_measures);
-    const [accuracy, setAccuracy] = useState(props.rqa.runtime_quality_analysis.settings.accuracy);
+    const [confidence, setConfidence] = useState(props.rqa.runtime_quality_analysis.settings.confidence);
     const [environment, setEnvironment] = useState(props.rqa.runtime_quality_analysis.settings.environment);
     const [timeSlot, setTimeSlot] = useState(props.rqa.runtime_quality_analysis.settings.timeSlot);
 
@@ -150,8 +150,8 @@ export default function EditScenarioTestMenu(props) {
         setResponseMeasures(newResponseMeasures);
     }
 
-    const handleAccuracyChange = (e) => {
-        setAccuracy(e.target.value);
+    const handleConfidenceChange = (e) => {
+        setConfidence(e.target.value);
     }
 
     const handleEnvironmentChange = (e) => {
@@ -182,7 +182,7 @@ export default function EditScenarioTestMenu(props) {
         rqa.runtime_quality_analysis.artifacts[selectedActivity] = copyActivity;
 
         // set the settings config
-        rqa.runtime_quality_analysis.settings.accuracy = accuracy;
+        rqa.runtime_quality_analysis.settings.confidence = confidence;
         rqa.runtime_quality_analysis.settings.environment = environment;
         rqa.runtime_quality_analysis.settings.timeSlot = timeSlot;
 
@@ -410,14 +410,14 @@ export default function EditScenarioTestMenu(props) {
                     <div className="actvity-container">
                         <label className="label">
                             <span className="label-text">
-                                Accuracy
-                                <span className="ml-1 font-normal text-sm" data-tooltip-id="accuracy-tooltip"
+                                Confidence
+                                <span className="ml-1 font-normal text-sm" data-tooltip-id="confidence-tooltip"
                                       data-tooltip-place="right"
-                                      data-tooltip-content='The accuracy defines how long the test will be executed. The higher the accuracy is, the longer the test will be executed. By default, a 100% accuracy is set to a test duration of 1 week. An accuracy of 1% relates to approximately 1 hour. An accuracy value of 0% is not possible. We advise to use at least 60% accuracy to receive meaningful results. With a value of 60% the test will run approximately 60 hours, i.e., two and a half days.'>&#9432;</span>
+                                      data-tooltip-content='The confidence defines how long the test will be executed. The higher the confidence is, the longer the test will be executed. By default, a 100% confidence is set to a test duration of 1 week. An accuracy of 1% relates to approximately 1 hour. An accuracy value of 0% is not possible. We advise to use at least 60% accuracy to receive meaningful results. With a value of 60% the test will run approximately 60 hours, i.e., two and a half days.'>&#9432;</span>
                             </span>
                         </label>
-                        <Tooltip id="accuracy-tooltip" style={{maxWidth: '256px'}}/>
-                        <input type="range" value={accuracy} onChange={handleAccuracyChange} name="" id=""
+                        <Tooltip id="confidence-tooltip" style={{maxWidth: '256px'}}/>
+                        <input type="range" value={confidence} onChange={handleConfidenceChange} name="" id=""
                                className="range range-primary"/>
                     </div>
 

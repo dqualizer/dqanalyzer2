@@ -61,7 +61,7 @@ A filled form could look like this:
 ![README_Img_2.png](rsc%2FREADME_Img_2.png)
 
 8. After specifying all the required scenarios, you can click "Next" to get to the Settings View, where you can specify
-   the duration of the entire test under "Accuracy". Furthermore, the user can decide whether the test should take place
+   the duration of the entire test under "Confidence". Furthermore, the user can decide whether the test should take place
    in the productive or in a test system.
    If you chose a test environment, you can finally define a time slot for the environment that describes the load
    profile of the test environment.
@@ -121,7 +121,7 @@ A filled form could look like this:
       }
     ],
     "settings": {
-      "accuracy": 66,
+      "confidence": 66,
       "environment": "Test",
       "time_slot": {
         "representation": "After work from 16:00 PM to 12:00 AM",

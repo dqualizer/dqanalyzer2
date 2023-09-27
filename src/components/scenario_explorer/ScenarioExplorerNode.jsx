@@ -42,7 +42,7 @@ export default function ExpandableScenarioNode({ paramName, data, expandable = t
                 runtime_quality_analysis: {
                     artifacts: [],
                     settings: {
-                        accuracy: 0, environment: null, timeSlot: null
+                        confidence: 0, environment: null, timeSlot: null
                     }
                 }
             }).then((response => {
