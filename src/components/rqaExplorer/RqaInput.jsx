@@ -4,7 +4,10 @@ import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import { useRef } from "react";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { createRqa } from "../../queries/rqa";
+import { useMatch } from "react-router-dom";
+
 export default function RqaInput({ setInputOpen }) {
+  const match = useMatch("/analyzer/:domainId");
   const [value, setValue] = useState();
   const queryClient = useQueryClient();
 
@@ -36,7 +39,7 @@ export default function RqaInput({ setInputOpen }) {
     if (e.key == "Enter" || e.type == "blur") {
       createRqaMutation.mutate({
         name: value,
-        domain_id: 1,
+        domain_id: match.params.domainId,
         environment: "TEST",
         context: "Werkstatt",
       });

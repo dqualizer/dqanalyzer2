@@ -5,30 +5,20 @@ export default function RqaDefinition({ data, loadtestSpecifier }) {
   console.log(data);
   const handleExecute = () => {
     var data_copy = data; // The other components call the system_id and activity_id "object" and "activity"
-    data_copy.runtime_quality_analysis.loadtests.forEach((loadtest) => {
-      delete loadtest.name;
-      loadtest.artifact.object = loadtest.artifact.system_id;
-      delete loadtest.artifact.system_id;
-    });
     const call = axios
       .post(`http://localhost:8080/translate/${data_copy.id}`)
       .then((res) => console.log(res.data));
   };
   return (
     <ul>
-      {Object.keys(data).map((key, index) => {
-        if (typeof data[key] == "object") {
-          return (
-            <li>
-              <Loadtests
-                data={data.runtime_quality_analysis.loadtests}
-                rqaId={data.id}
-                loadtestSpecifier={loadtestSpecifier}
-              />
-            </li>
-          );
-        }
-      })}
+      <li>
+        <Loadtests
+          data={data.runtime_quality_analysis.loadtests}
+          rqaId={data.id}
+          loadtestSpecifier={loadtestSpecifier}
+        />
+      </li>
+
       <li>
         <details>
           <summary>Details</summary>
