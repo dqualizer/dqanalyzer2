@@ -3,7 +3,7 @@ import WerkstattScreenshot from "../assets/werkstatt.png";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { Link, useLoaderData } from "react-router-dom";
 import { getAllDams, createDam } from "../queries/dam";
-import * as werkstattdamDTO from "../data/werkstattdamDTO.json";
+import * as leasingninjadamDto from "../data/leasingninjadamDto.json";
 
 export default function Home() {
   const queryClient = useQueryClient();
@@ -22,7 +22,7 @@ export default function Home() {
   });
 
   const createDomainWerkstatt = () => {
-    createDamMutation.mutate({ dam: werkstattdamDTO });
+    createDamMutation.mutate({ dam: leasingninjadamDto });
   };
 
   return (

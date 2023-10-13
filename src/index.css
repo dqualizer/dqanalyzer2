@@ -135,3 +135,83 @@ body,
 	margin-top: 0.25rem;
 	margin-bottom: 0.25rem;
 }
+
+.root .taskbar-container .change-mode {
+	/*Icon oben anordnen*/
+	position: absolute;
+	top: 0px;
+}
+
+.button-group {
+	margin-top: 30px;
+	justify-content: normal;
+	display: flex;
+}
+
+.button-left {
+	margin-right: 15px;
+}
+
+.searchScenarioInputField {
+	width: 400px;
+	padding: 10px;
+	font-size: 16px;
+	border: #cccccc solid;
+}
+
+.generated-scenarios {
+	width: 400px;
+	max-height: 200px;
+	overflow-y: auto;
+	border: 1px solid #ccc;
+	background-color: #fff;
+	position: relative;
+}
+
+.suggestionItem {
+	padding: 5px 10px;
+	cursor: pointer;
+}
+.suggestionItem:hover {
+	background-color: #f0f0f0;
+}
+
+.description {
+	margin-top: 10px;
+	padding: 10px;
+	background-color: #f0f0f0;
+	border: 1px solid #ccc;
+	border-radius: 5px;
+	width: 400px;
+	font-size: 16px;
+}
+
+.scenario-container {
+	display: flex;
+	flex-direction: column;
+	position: relative;
+	border: 1px solid #cccccc;
+	padding: 2px 2px 2px 2px;
+	margin-bottom: 10px;
+}
+
+.deleting-container-button {
+	position: absolute;
+	top: 5px;
+	right: 5px;
+	cursor: pointer;
+}
+
+.bold-text {
+	font-weight: bold;
+}
+
+.all-activities-button {
+	cursor: pointer;
+	margin: 20px 10px 10px 50px;
+	/*position: absolute;*/
+}
+
+.design-select {
+	margin: 10px 0px 10px 0px;
+}

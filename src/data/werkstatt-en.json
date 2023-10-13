@@ -1,0 +1,125 @@
+{
+    "domainId": "1",
+    "version": 1.0,
+    "context": "Werkstattauftrag",
+    "server_info": [
+        {
+            "host": "http://127.0.0.1:9000",
+            "environment": "TEST"
+        }
+    ],
+    "actors": [
+        {
+            "actor_id": 1,
+            "actor_name": "Employee"
+        },
+        {
+            "actor_id": 2,
+            "actor_name": "Customer"
+        }
+    ],
+    "systems": [
+        {
+            "system_id": "id1",
+            "name": "Order portal",
+            "operation_id": "ddd.autohaus.tacticald.design.app.werkstattauftrag.api.WerkstattauftragController",
+            "type": "service",
+            "implements": [],
+            "objects": [
+                "id2"
+            ],
+            "activities": [
+                {
+                    "activity_id": "id3",
+                    "name": "Reading Order",
+                    "operation_id": "readAuftrag",
+                    "initiator": 2,
+                    "workObject": "Order",
+                    "action": "reads",
+                    "type": "method",
+                    "parameter": [],
+                    "endpoint": {
+                        "field": "/pay/ticket/{ticketId}/",
+                        "operation": "GET",
+                        "path_variables": {
+                            "auftragsnummer": "auftrag/auftragsnummern/angelegt.json"
+                        },
+                        "url_parameter": {},
+                        "request_parameter": {},
+                        "payload": {},
+                        "responses": [
+                            {
+                                "expected_code": 200,
+                                "type": "id8"
+                            }
+                        ]
+                    }
+                },
+                {
+                    "activity_id": "id4",
+                    "name": "Creating Order",
+                    "operation_id": "createAuftrag",
+                    "action": "creates",
+                    "workObject": "Order",
+                    "initiator": 1,
+                    "type": "method",
+                    "parameter": [
+                        "id6"
+                    ],
+                    "endpoint": {
+                        "field": "/auftrag/new",
+                        "operation": "POST",
+                        "path_variables": {},
+                        "url_parameter": {},
+                        "request_parameter": {
+                            "headers": "auftrag/allgemein/headers.json",
+                            "authorization": "auftrag/allgemein/authorization.json"
+                        },
+                        "payload": {
+                            "auftraggeber_2022": "auftrag/auftraggeber/2022/auftraggeber.json",
+                            "auftraggeber_2023": "auftrag/auftraggeber/2023/auftraggeber.json"
+                        },
+                        "responses": [
+                            {
+                                "expected_code": 201,
+                                "type": "id8"
+                            }
+                        ]
+                    }
+                },
+                {
+                    "activity_id": "id5",
+                    "name": "Changing Status",
+                    "operation_id": "updateStatus",
+                    "workObject": "Order status",
+                    "type": "method",
+                    "action": "changes",
+                    "initiator": 1,
+                    "parameter": [
+                        "id7"
+                    ],
+                    "endpoint": {
+                        "field": "/auftrag/{auftragsnummer}",
+                        "operation": "PUT",
+                        "path_variables": {
+                            "auftragsnummer": "auftrag/auftragsnummern/angelegt.json"
+                        },
+                        "url_parameter": {},
+                        "request_parameter": {
+                            "headers": "auftrag/allgemein/headers.json"
+                        },
+                        "payload": {
+                            "auftragsstatus": "auftrag/auftragsstatus/auftragsstatus.json"
+                        },
+                        "responses": [
+                            {
+                                "expected_code": 200,
+                                "type": "string"
+                            }
+                        ]
+                    }
+                }
+            ]
+        }
+    ]
+}

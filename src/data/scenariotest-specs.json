@@ -1,0 +1,217 @@
+{
+  "load_design": [
+    {
+      "name": "None",
+      "variant_placeholder": null,
+      "design_parameters": null
+    },
+    {
+      "name": "Load Peak",
+      "variant_placeholder": "[high] and [time]",
+      "design_parameters": [
+        {
+          "name": "Highest Load",
+          "param_placeholder": "[high]",
+          "values": [
+            {
+              "name": "High",
+              "value": 10,
+              "placeholder_value": "high"
+            },
+            {
+              "name": "Very High",
+              "value": 15,
+              "placeholder_value": "very high"
+            },
+            {
+              "name": "Extremely High",
+              "value": 30,
+              "placeholder_value": "extremely high"
+            }
+          ]
+        },
+        {
+          "name": "Time to Highest load",
+          "param_placeholder": "[time]",
+          "values": [
+            {
+              "name": "Slow",
+              "value": "20s",
+              "placeholder_value": "slow"
+            },
+            {
+              "name": "Fast",
+              "value": "15s",
+              "placeholder_value": "fast"
+            },
+            {
+              "name": "Very Fast",
+              "value": "10s",
+              "placeholder_value": "very fast"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Load Increase",
+      "variant_placeholder": "[type]",
+      "design_parameters": [
+        {
+          "name": "Type of Increase",
+          "param_placeholder": "[type]",
+          "values": [
+            {
+              "name": "Linear",
+              "value": 1,
+              "placeholder_value": "linear"
+            },
+            {
+              "name": "Quadratic",
+              "value": 2,
+              "placeholder_value": "quadratic"
+            },
+            {
+              "name": "Cubic",
+              "value": 3,
+              "placeholder_value": "cubic"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Constant Load",
+      "variant_placeholder": "[base]",
+      "design_parameters": [
+        {
+          "name": "Base Load",
+          "param_placeholder": "[base]",
+          "values": [
+            {
+              "name": "Low",
+              "value": 10,
+              "placeholder_value": "low"
+            },
+            {
+              "name": "Medium",
+              "value": 20,
+              "placeholder_value": "medium"
+            },
+            {
+              "name": "High",
+              "value": 30,
+              "placeholder_value": "high"
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "resilience_design": [
+    {
+      "name": "None",
+      "variant_placeholder": null,
+      "design_parameters": null
+    },
+    {
+      "name": "Failed Request",
+      "variant_placeholder": "[frequency]",
+      "design_parameters": [
+        {
+          "name": "How often does the stimulus occur?",
+          "param_placeholder": "[frequency]",
+          "values": [
+            {
+              "name": "Once",
+              "value": 10,
+              "placeholder_value": "one"
+            },
+            {
+              "name": "More than once",
+              "value": 20,
+              "placeholder_value": "many"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Late Response",
+      "variant_placeholder": "[frequency]",
+      "design_parameters": [
+        {
+          "name": "How often does the stimulus occur?",
+          "param_placeholder": "[frequency]",
+          "values": [
+            {
+              "name": "Once",
+              "value": 10,
+              "placeholder_value": "one"
+            },
+            {
+              "name": "More than once",
+              "value": 20,
+              "placeholder_value": "many"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Unavailable",
+      "variant_placeholder": "[frequency]",
+      "design_parameters": [
+        {
+          "name": "How often does the stimulus occur?",
+          "param_placeholder": "[frequency]",
+          "values": [
+            {
+              "name": "Once",
+              "value": 10,
+              "placeholder_value": "one"
+            },
+            {
+              "name": "More than once",
+              "value": 20,
+              "placeholder_value": "many"
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "mode": [
+    {
+      "name": "What if",
+      "variant_placeholder": "Check your activity under specific conditions"
+    },
+    {
+      "name": "Monitoring",
+      "variant_placeholder": "Monitor your activity in the context of expected behavior"
+    }
+  ],
+  "settings": {
+    "environment": [
+      "Productive",
+      "Test"
+    ],
+    "timeSlot": [
+      {
+        "representation": "Office Hours from 08:00 AM to 04:00 PM",
+        "start_time": "00:00",
+        "end_time": "16:00"
+      },
+      {
+        "representation": "After work from 16:00 PM to 12:00 AM",
+        "start_time": "16:00",
+        "end_time": "00:00"
+      },
+      {
+        "representation": "Night hours from 12:00 AM to 08:00 AM",
+        "start_time": "00:00",
+        "end_time": "08:00"
+      }
+    ]
+  }
+}
