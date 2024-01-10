@@ -4,7 +4,7 @@ import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { Link, useLoaderData } from "react-router-dom";
 import { getAllDams, createDam } from "../queries/dam";
 import * as werkstatt from "../data/werkstattdamDTO.json";
-import * as leasingninja from "../data/leasingninjadamDTO.json";
+import * as leasingninja from "../data/leasingninjadamDto.json";
 
 export default function Home() {
   const queryClient = useQueryClient();
