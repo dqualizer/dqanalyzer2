@@ -4,6 +4,7 @@ import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { Link, useLoaderData } from "react-router-dom";
 import { getAllDams, createDam } from "../queries/dam";
 import * as werkstatt from "../data/werkstattdamDTO.json";
+import * as leasingninja from "../data/leasingninjadamDTO.json";
 
 export default function Home() {
   const queryClient = useQueryClient();
@@ -21,8 +22,8 @@ export default function Home() {
     },
   });
 
-  const createDomainWerkstatt = () => {
-    createDamMutation.mutate({ dam: werkstatt });
+  const createDomain = (domain) => {
+    createDamMutation.mutate({ dam: domain });
   };
 
   return (
@@ -34,10 +35,13 @@ export default function Home() {
           First of all: Choose your Demo-Domain or create it first by using
           dqEdit.
         </p>
-        <p>
-          Hint: You can also use the button as long there´s no dqEdit after some
-          fetching retries ;)
+        <p className="text-xl">
+          Currently there are two Demo-Domains available. Use the
+          Werkstattauftrag-Domain to try the manual mode. The Leasing Ninja
+          shows a more domain-centric view to specify rqas with a generative
+          scenario editor.
         </p>
+        <p>Hint: You can also use the buttons as long there´s no dqEdit</p>
       </div>
       <div className="flex gap-4 mt-5">
         {damsQuery.data?.length ? (
@@ -57,13 +61,37 @@ export default function Home() {
           ))
         ) : damsQuery.isFetching ? (
           <p>Trying to fetch...</p>
-        ) : damsQuery.isError ? (
-          <p>Seems like there is no connection to the backend...</p>
         ) : (
-          <button className="btn btn-sm" onClick={createDomainWerkstatt}>
-            Create Domain
-          </button>
+          damsQuery.isError && (
+            <p>Seems like there is no connection to the backend...</p>
+          )
         )}
+      </div>
+
+      <div className="flex gap-2 mt-5">
+        {damsQuery.isSuccess &&
+          !damsQuery.data?.find(
+            (element) => element.context == "werkstattauftrag"
+          ) && (
+            <button
+              className="btn btn-sm"
+              onClick={() => createDomain(werkstatt)}
+            >
+              Create Werkstattauftrag
+            </button>
+          )}
+
+        {damsQuery.isSuccess &&
+          !damsQuery.data?.find(
+            (element) => element.context == "leasingninja"
+          ) && (
+            <button
+              className="btn btn-sm"
+              onClick={() => createDomain(leasingninja)}
+            >
+              Create Leasing Ninja
+            </button>
+          )}
       </div>
     </div>
   );
