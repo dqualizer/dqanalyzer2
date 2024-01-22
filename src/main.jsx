@@ -1,7 +1,7 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
 
-import App, { damLoader } from "./pages/App";
+import App, { damLoader, offlineDomainstoryLoader } from "./pages/App";
 import "./index.css";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import Home from "./pages/Home";
@@ -21,6 +21,11 @@ const router = createBrowserRouter([
   {
     path: "/",
     element: <Home />,
+  },
+  {
+    path: "/analyzer",
+    element: <App />,
+    loader: offlineDomainstoryLoader,
   },
   {
     path: "/analyzer/:damId",
