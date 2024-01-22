@@ -5,6 +5,7 @@ import { Link, useLoaderData } from "react-router-dom";
 import { getAllDams, createDam } from "../queries/dam";
 import * as werkstatt from "../data/werkstattdamDTO.json";
 import * as leasingninja from "../data/leasingninjadamDto.json";
+import domainstory from "../data/exampleDomainstory";
 
 export default function Home() {
   const queryClient = useQueryClient();
@@ -25,6 +26,7 @@ export default function Home() {
   const createDomain = (domain) => {
     createDamMutation.mutate({ dam: domain });
   };
+  const createOfflineStory = () => {};
 
   return (
     <div className="flex items-center justify-center h-screen flex-col">
@@ -63,7 +65,15 @@ export default function Home() {
           <p>Trying to fetch...</p>
         ) : (
           damsQuery.isError && (
-            <p>Seems like there is no connection to the backend...</p>
+            <>
+              <p>Seems like there is no connection to the backend...</p>
+              <button
+                className="btn btn-sm"
+                onClick={() => createOfflineStory()}
+              >
+                Create Offline
+              </button>
+            </>
           )
         )}
       </div>
