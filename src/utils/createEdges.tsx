@@ -1,67 +1,62 @@
-import { MarkerType } from "reactflow";
-import { DomainStory } from "../models/dam/domainstory/DomainStory";
+import { Edge, MarkerType } from "reactflow";
+import { Activity } from "../models/dam/domainstory/Activity";
 
-export const createSystemWorkobjectEdges = (domain: DomainStory) => {
-  let serviceWorkObjectEdges = [];
-  domainstory.ac.forEach((system) => {
-    system.activities.forEach((activity) => {
-      const newEdge = {
-        id: `system_work_object_${activity.id}`,
-        mappingId: activity.id,
-        source: `system_${system.id}`,
-        system: system.system_id,
-        activity: activity.id,
-        type: "smoothstep",
-        target: `work_object_${activity.id}`,
-        name: activity.name,
-        parametrization: {
-          path_variables: activity.endpoint.path_variables,
-          payload: activity.endpoint.payload,
-          request_parameter: activity.endpoint.request_parameter,
-          url_parameter: activity.endpoint.url_parameter,
-        },
-        markerStart: {
-          type: MarkerType.ArrowClosed,
-          width: 20,
-          height: 20,
-        },
-        selected: false,
-        label: "in",
-      };
-      serviceWorkObjectEdges.push(newEdge);
-    });
-  });
-  return serviceWorkObjectEdges;
-};
 
-export const createWorkobjectActorEdges = (domain) => {
-  let workObjectActorEdges = [];
-  domain.systems.forEach((system) => {
-    system.activities.forEach((activity) => {
-      const newEdge = {
-        id: `work_object_actor_${activity.id}`,
-        mappingId: activity.id,
-        name: activity.name,
-        parametrization: {
-          path_variables: activity.endpoint.path_variables,
-          url_parameter: activity.endpoint.url_parameter,
-          payload: activity.endpoint.payload,
-          request_parameters: activity.endpoint.request_parameter,
-        },
-        source: `work_object_${activity.id}`,
-        target: `actor_${activity.initiator}`,
-        system: system.id,
-        type: "smoothstep",
-        label: activity.action,
-        selected: false,
-        markerStart: {
-          type: MarkerType.ArrowClosed,
-          width: 20,
-          height: 20,
-        },
-      };
-      workObjectActorEdges.push(newEdge);
-    });
-  });
-  return workObjectActorEdges;
+export const createActivityEdges = (activities: Activity[]) => {
+	const edges: Edge[] = [];
+	activities.forEach(activity => {
+		activity.workObjects.forEach(workObject => {
+			// TODO add support for multiple workobjects in an activity
+			// Source Edge
+			const sourceEdge: Edge = {
+				id: activity._id + '_source' || '', // TODO make _id a required property
+				source: workObject, // TODO create edge for each initiator
+				type: "smoothstep",
+				target: activity.initiators[0], // TODO create edge for each target
+				markerStart: {
+					type: MarkerType.ArrowClosed,
+					width: 20,
+					height: 20,
+				},
+				selected: false,
+				label: activity.action,
+			};
+			edges.push(sourceEdge);
+
+			// Target Edge
+			const targetEdge: Edge = {
+				id: activity._id + '_target' || '', // TODO make _id a required property
+				source: activity.targets[0], // TODO create edge for each initiator
+				type: "smoothstep",
+				target: workObject, // TODO create edge for each target
+				markerStart: {
+					type: MarkerType.ArrowClosed,
+					width: 20,
+					height: 20,
+				},
+				selected: false,
+				label: 'in',
+			};
+			edges.push(targetEdge);
+		})
+	});
+	return edges;
+
+	/* return activities.map(activity => {
+		const edge: Edge = {
+			id: activity._id || '', // TODO make _id a required property
+			source: activity.initiators[0], // TODO create edge for each initiator
+			type: "smoothstep",
+			target: activity.targets[0], // TODO create edge for each target
+			markerStart: {
+				type: MarkerType.ArrowClosed,
+				width: 20,
+				height: 20,
+			},
+			selected: false,
+			label: activity.action,
+		};
+		return edge;
+	}); */
+
 };
