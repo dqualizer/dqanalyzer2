@@ -19,7 +19,6 @@ import { getAllRqas } from "../queries/rqa";
 import { getDamById } from "../queries/dam";
 
 import { string } from "prop-types";
-import loadtestSpecs from "../data/loadtest-specs.json";
 import { useQuery } from "@tanstack/react-query";
 import { domainstory } from "../data/exampleDomainstory";
 
@@ -33,8 +32,6 @@ export function offlineDomainstoryLoader({ params }) {
 
 function App() {
 	const dam = useLoaderData();
-
-	console.log(dam);
 
 	// create the initial nodes and edges from the mapping
 	const [initialNodes, initialEgdes] = createInitialElements(dam);
@@ -78,7 +75,6 @@ function App() {
 					nodes={nodes}
 					edges={edges}
 					domain={dam}
-					loadtestSpecs={loadtestSpecs}
 					rqas={rqaQuery.data}
 				/>
 			</ReactFlowProvider>
