@@ -50,4 +50,4 @@ The biggest issue is the dqTranslator. It does not interact with dqApi, yet so t
 * `docker compose up -d`
 
 ### Deploy to Packages
-* There is a GitHub action set up, that automatically pushes the dqExec image to [Github Container Registry](https://github.com/dqualizer/dqanalyzer2/pkgs/container/dqanalyzer2)
+* There is a GitHub action set up, that automatically pushes the dqanalyzer2 image to [Github Container Registry](https://github.com/dqualizer/dqanalyzer2/pkgs/container/dqanalyzer2)
