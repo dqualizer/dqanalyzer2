@@ -1,5 +1,5 @@
 import { useRef, useState } from "react";
-import RqaExplorer from "./rqaExplorer/RqaExplorer.jsx";
+import { RqaList } from "./rqaExplorer/RqaList";
 import "../language/icon/icons.css";
 import EqualizerIcon from "@mui/icons-material/Equalizer";
 import { Edge, Node, useOnSelectionChange, useReactFlow } from "reactflow";
@@ -174,9 +174,7 @@ export default function Sidebar({ domain, rqas, nodes, edges }: SidebarProps) {
 						/>
 					</div>
 				)}
-				{rqaExplorerShow ? (
-					<RqaExplorer loadtestSpecifier={setLoadTestShow} />
-				) : null}
+				{rqaExplorerShow && (<RqaList loadtestSpecifier={setLoadTestShow} />)}
 			</div>
 		);
 	}

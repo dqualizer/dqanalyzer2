@@ -4,6 +4,7 @@ import { ResponseTime } from "../models/rqa/definition/enums/ResponseTime";
 import { ResultMetrics } from "../models/rqa/definition/enums/ResultMetrics";
 
 export const exampleRQAs: RuntimeQualityAnalysisDefinition[] = [{
+	_id: 'RGVtb1JRQQo=',
 	context: 'DemoContext',
 	domain_id: 'DemoID',
 	environment: Environment.DEV,
@@ -11,7 +12,9 @@ export const exampleRQAs: RuntimeQualityAnalysisDefinition[] = [{
 	runtime_quality_analysis: {
 		loadTestDefinition: [
 			{
-				artifact: {
+				_id: 'RGVtb0xvYWRUZXN0Cg==',
+				artifact:
+				{
 					activity_id: 'DemoActivityId',
 					system_id: 'DemoSystemId',
 				},
