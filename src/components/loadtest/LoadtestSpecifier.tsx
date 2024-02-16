@@ -11,16 +11,16 @@ import { RuntimeQualityAnalysisDefinition } from "../../models/rqa/definition/Ru
 import { getActivitiesForSystem, getSystemsFromDomainStory } from "../../utils/dam.utils";
 import { validateObject } from "../../utils/rqa.utils";
 import { LoadTestDefinition } from "../../models/rqa/definition/loadtest/LoadTestDefinition";
-import loadtestSpecs from "../../data/loadtest-specs.json";
 import { Edge } from "reactflow";
+import loadtestSpecs from "../../data/loadtest-specs.json";
 
-interface LoadtestSpecifierProps {
+interface LoadTestSpecifierProps {
 	domain: DomainStory;
 	rqas: RuntimeQualityAnalysisDefinition[];
 	selectedEdge?: Edge | null;
 }
 
-export function LoadtestSpecifier({ domain, rqas, selectedEdge }: LoadtestSpecifierProps) {
+export function LoadTestSpecifier({ domain, rqas, selectedEdge }: LoadTestSpecifierProps) {
 
 	const queryClient = useQueryClient();
 
@@ -111,7 +111,7 @@ export function LoadtestSpecifier({ domain, rqas, selectedEdge }: LoadtestSpecif
 
 	return (
 		<div className="p-4 prose h-full overflow-auto bg-slate-200 ">
-			<h3>Loadtest Specification</h3>
+			<h3>Load Test Specification</h3>
 			<h4>Domain Story Item</h4>
 			<InputSelect
 				label={"System"}

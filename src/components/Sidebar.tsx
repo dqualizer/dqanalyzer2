@@ -1,19 +1,19 @@
 import { useRef, useState } from "react";
 import { RqaList } from "./rqaExplorer/RqaList";
-import "../language/icon/icons.css";
-import EqualizerIcon from "@mui/icons-material/Equalizer";
 import { Edge, Node, useOnSelectionChange, useReactFlow } from "reactflow";
 import { MarkerType } from "reactflow";
-import "../language/icon/icons.css";
-import ViewportChangeLogger from "../utils/hideComponentOnViewportClick.jsx";
-import { LoadtestSpecifier } from "./loadtest/LoadtestSpecifier.jsx";
-import CloudQueueIcon from "@mui/icons-material/CloudQueue";
-import CloudOffIcon from "@mui/icons-material/CloudOff";
-import ContentPasteSearchIcon from "@mui/icons-material/ContentPasteSearch";
+import { hideComponentOnViewportClick } from "../utils/hideComponentOnViewportClick";
+import { LoadTestSpecifier } from "./loadtest/LoadTestSpecifier";
 import ScenarioTestController from "./scenariotest/ScenarioTestController.jsx";
 import ScenarioExplorer from "./scenario_explorer/ScenarioExplorer.jsx";
 import { DomainStory } from "../models/dam/domainstory/DomainStory.js";
-import { RuntimeQualityAnalysisDefinition } from "../models/rqa/definition/RuntimeQualityAnalysisDefinition.js";
+import { RuntimeQualityAnalysisDefinition } from "../models/rqa/definition/RuntimeQualityAnalysisDefinition";
+import "../language/icon/icons.css";
+import CloudQueueIcon from "@mui/icons-material/CloudQueue";
+import CloudOffIcon from "@mui/icons-material/CloudOff";
+import ContentPasteSearchIcon from "@mui/icons-material/ContentPasteSearch";
+import EqualizerIcon from "@mui/icons-material/Equalizer";
+
 
 interface SidebarProps {
 	domain: DomainStory;
@@ -37,7 +37,7 @@ export default function Sidebar({ domain, rqas, nodes, edges }: SidebarProps) {
 	const [editScenarioTestShow, setEditScenarioTestShow] = useState<boolean>();
 	const [editRqa, setEditRqa] = useState(null);
 
-	ViewportChangeLogger(loadtestRef, setLoadTestShow);
+	hideComponentOnViewportClick(loadtestRef, setLoadTestShow);
 
 	const selectionChange = useOnSelectionChange({
 		onChange: ({ edges }) => {
@@ -167,11 +167,7 @@ export default function Sidebar({ domain, rqas, nodes, edges }: SidebarProps) {
 				</div>
 				{loadTestShow && (
 					<div ref={loadtestRef}>
-						<LoadtestSpecifier
-							domain={domain}
-							rqas={rqas}
-							selectedEdge={selectedEdge}
-						/>
+						<LoadTestSpecifier domain={domain} rqas={rqas} selectedEdge={selectedEdge} />
 					</div>
 				)}
 				{rqaExplorerShow && (<RqaList loadtestSpecifier={setLoadTestShow} />)}

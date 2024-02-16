@@ -2,34 +2,35 @@ import React, { useState } from 'react'
 import { Panel } from 'reactflow'
 
 export default function NamePanel() {
-    const [name, setName] = useState("< Name of the Domain Story >");
-    const [description, setDescription] = useState("")
-    const [changeFieldOpen, setChangeFieldOpen] = useState(false)
+	// TODO check if required
+	const [name, setName] = useState("< Name of the Domain Story >");
+	const [description, setDescription] = useState("")
+	const [changeFieldOpen, setChangeFieldOpen] = useState(false)
 
-    const onChangeName = (event) => {
-        setName(event.target.value)
-    }
+	const onChangeName = (event) => {
+		setName(event.target.value)
+	}
 
-    const onChangeDescription = (event) => {
-        setDescription(event.target.value)
-    }
+	const onChangeDescription = (event) => {
+		setDescription(event.target.value)
+	}
 
-    const onClickName = () => {
-        setChangeFieldOpen(prevHidden => !prevHidden)
-    }
+	const onClickName = () => {
+		setChangeFieldOpen(prevHidden => !prevHidden)
+	}
 
-    return (
-        <Panel position="top-right">
-            <h3 onClick={onClickName}>{name}</h3>
-            <p>{description}</p>
-            {
-                changeFieldOpen ?
+	return (
+		<Panel position="top-right">
+			<h3 onClick={onClickName}>{name}</h3>
+			<p>{description}</p>
+			{
+				changeFieldOpen ?
 
-                    <div style={{ backgroundColor: 'white', padding: '1rem', margin: '1rem', display: "flex", flexDirection: 'column' }}>
-                        <input type="text" value={name} onChange={onChangeName} />
-                        <textarea name="" id="" cols="30" rows="10" value={description} onChange={onChangeDescription}></textarea>
-                    </div>
-                    : null}
-        </Panel >
-    )
+					<div style={{ backgroundColor: 'white', padding: '1rem', margin: '1rem', display: "flex", flexDirection: 'column' }}>
+						<input type="text" value={name} onChange={onChangeName} />
+						<textarea name="" id="" cols="30" rows="10" value={description} onChange={onChangeDescription}></textarea>
+					</div>
+					: null}
+		</Panel >
+	)
 }
