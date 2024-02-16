@@ -1,6 +1,6 @@
 import { ChangeEvent } from "react";
 
-interface LoadtestRadiosProps<T> {
+interface InputRadioProps<T> {
 	label: string;
 	name: string;
 	value: any;
@@ -10,7 +10,7 @@ interface LoadtestRadiosProps<T> {
 	onChange: (e: ChangeEvent<HTMLInputElement>, selectedOption: T) => void;
 }
 
-export function LoadtestRadios<T>({ label, name, value, options, onChange, optionName, optionValue }: LoadtestRadiosProps<T>) {
+export function InputRadio<T>({ label, name, value, options, onChange, optionName, optionValue }: InputRadioProps<T>) {
 	return (
 		<div className="form-control w-full">
 			<label className="label">

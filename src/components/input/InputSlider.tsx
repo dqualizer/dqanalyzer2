@@ -1,13 +1,13 @@
 import { ChangeEvent } from "react";
 
-interface LoadtestSliderProps {
+interface InputSliderProps {
 	label: string;
 	name: string;
 	value?: number | null;
 	onChange: (e: ChangeEvent<HTMLInputElement>, data: any) => void;
 }
 
-export function LoadtestSlider({ label, name, value, onChange }: LoadtestSliderProps) {
+export function InputSlider({ label, name, value, onChange }: InputSliderProps) {
 	return (
 		<div className="form-control w-full">
 			<label className="label">

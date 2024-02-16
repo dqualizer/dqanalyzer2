@@ -1,6 +1,6 @@
 import { ChangeEvent } from "react";
 
-interface LoadtestCheckProps<T> {
+interface InputCheckboxProps<T> {
 	label: string;
 	name: string;
 	value: T;
@@ -8,7 +8,7 @@ interface LoadtestCheckProps<T> {
 	onChange: (e: ChangeEvent<HTMLInputElement>, selectedOption: T) => void;
 }
 
-export function LoadtestCheck<T>({ label, name, value, checked, onChange }: LoadtestCheckProps<T>) {
+export function InputCheckbox<T>({ label, name, value, checked, onChange }: InputCheckboxProps<T>) {
 	return (
 		<div className="form-control w-full">
 			<label className="label cursor-pointer">

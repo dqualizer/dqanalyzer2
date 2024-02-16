@@ -1,8 +1,8 @@
 import { ChangeEvent, useEffect, useState } from "react";
-import { LoadtestSelect } from "./LoadtestSelect";
-import { LoadtestSlider } from "./LoadtestSlider";
-import { LoadtestRadios } from "./LoadtestRadios";
-import { LoadtestCheck } from "./LoadtestCheck";
+import { InputSelect } from "../input/InputSelect";
+import { InputSlider } from "../input/InputSlider";
+import { InputRadio } from "../input/InputRadio";
+import { InputCheckbox } from "../input/InputCheckbox";
 import { DropdownLeft } from "../DropdownLeft";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { addLoadtestToRqa } from "../../queries/rqa";
@@ -113,7 +113,7 @@ export function LoadtestSpecifier({ domain, rqas, selectedEdge }: LoadtestSpecif
 		<div className="p-4 prose h-full overflow-auto bg-slate-200 ">
 			<h3>Loadtest Specification</h3>
 			<h4>Domain Story Item</h4>
-			<LoadtestSelect
+			<InputSelect
 				label={"System"}
 				name={"artifact.system_id"}
 				value={loadTest.artifact?.system_id}
@@ -122,7 +122,7 @@ export function LoadtestSpecifier({ domain, rqas, selectedEdge }: LoadtestSpecif
 				optionValue={"_id"}
 				onChange={handleChange}
 			/>
-			<LoadtestSelect
+			<InputSelect
 				label={"Activity"}
 				name={"artifact.activity_id"}
 				value={loadTest.artifact?.activity_id}
@@ -133,7 +133,7 @@ export function LoadtestSpecifier({ domain, rqas, selectedEdge }: LoadtestSpecif
 			/>
 			<div className="divider" />
 			<h3>Load Design</h3>
-			<LoadtestSelect
+			<InputSelect
 				label={"Load Profile"}
 				name={"stimulus.workload.load_profile.type"}
 				value={loadTest.stimulus?.workload?.load_profile?.type}
@@ -145,7 +145,7 @@ export function LoadtestSpecifier({ domain, rqas, selectedEdge }: LoadtestSpecif
 			{
 				getLoadProfileParameters(loadTest.stimulus?.workload?.load_profile?.type)?.map(parameter => {
 					return (
-						<LoadtestRadios
+						<InputRadio
 							key={parameter.type}
 							label={parameter.name}
 							name={'stimulus.workload.load_profile.' + parameter.type}
@@ -157,7 +157,7 @@ export function LoadtestSpecifier({ domain, rqas, selectedEdge }: LoadtestSpecif
 					);
 				})
 			}
-			<LoadtestSlider
+			<InputSlider
 				label={"Accuracy"}
 				name={"stimulus.accuracy"}
 				value={loadTest.stimulus?.accuracy}
@@ -167,7 +167,7 @@ export function LoadtestSpecifier({ domain, rqas, selectedEdge }: LoadtestSpecif
 			<h3>Response Measures</h3>
 			{loadtestSpecs.response_measures.map(responseMeasure => {
 				return (
-					<LoadtestRadios
+					<InputRadio
 						key={responseMeasure.type}
 						label={responseMeasure.name}
 						name={"response_measure"}
@@ -183,7 +183,7 @@ export function LoadtestSpecifier({ domain, rqas, selectedEdge }: LoadtestSpecif
 			<h3>Result Metrics</h3>
 			{loadtestSpecs.result_metrics.map(option => {
 				return (
-					<LoadtestCheck
+					<InputCheckbox
 						key={option.value}
 						label={option.name}
 						name="result_metrics"
@@ -226,7 +226,7 @@ export function LoadtestSpecifier({ domain, rqas, selectedEdge }: LoadtestSpecif
                 let variableName = path_variable.name;
                 console.log();
                 return (
-                  <LoadtestSelect
+                  <InputSelect
                     label={path_variable.name}
                     onChange={handlePathVariableChange}
                     value={

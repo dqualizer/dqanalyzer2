@@ -1,6 +1,6 @@
 import { ChangeEvent } from "react";
 
-interface LoadtestSelectProps<T> {
+interface InputSelectProps<T> {
 	label: string;
 	name?: string;
 	value: any;
@@ -10,7 +10,7 @@ interface LoadtestSelectProps<T> {
 	onChange: (e: ChangeEvent<HTMLSelectElement>, selectedOption: T) => void;
 }
 
-export function LoadtestSelect<T>({ label, name, value, options, optionName, optionValue, onChange }: LoadtestSelectProps<T>) {
+export function InputSelect<T>({ label, name, value, options, optionName, optionValue, onChange }: InputSelectProps<T>) {
 	return (
 		<div className="form-control w-full">
 			<label className="label">
