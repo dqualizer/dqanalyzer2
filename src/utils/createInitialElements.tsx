@@ -1,12 +1,14 @@
 import { createWorkObjects, createActorNodes } from "./createNodes";
 import { createActivityEdges } from "./createEdges";
-import { DomainStory } from "../models/dam/domainstory/DomainStory";
+import { DomainStory } from "../types/dam/domainstory/DomainStory";
 import { Edge, Node } from "reactflow";
 
-export const createInitialElements = (domainStory: DomainStory) => {
-	const actorNodes = createActorNodes(domainStory.actors);
-	const workObjectNodes = createWorkObjects(domainStory.work_objects);
-	const initialNodes: Node[] = [...actorNodes, ...workObjectNodes];
-	const initialEgdes: Edge[] = createActivityEdges(domainStory.activities);
-	return [initialNodes, initialEgdes];
-}
+export const createInitialElements = (
+  domainStory: DomainStory
+): [Node[], Edge[]] => {
+  const actorNodes = createActorNodes(domainStory.actors);
+  const workObjectNodes = createWorkObjects(domainStory.work_objects);
+  const initialNodes: Node[] = [...actorNodes, ...workObjectNodes];
+  const initialEgdes: Edge[] = createActivityEdges(domainStory.activities);
+  return [initialNodes, initialEgdes];
+};
