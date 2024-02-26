@@ -4,13 +4,15 @@ import { ResponseTime } from "../models/rqa/definition/enums/ResponseTime";
 import { ResultMetrics } from "../models/rqa/definition/enums/ResultMetrics";
 
 export const exampleRQAs: RuntimeQualityAnalysisDefinition[] = [{
-	_id: 'RGVtb1JRQQo=',
-	context: 'DemoContext',
-	domain_id: 'DemoID',
+	_id: '659c2b13f32e263b1a3c80dd',
+	context: 'testContext',
+	domain_id: '65b757d3fe8ea06856910970',
 	environment: Environment.DEV,
-	name: 'DemoRQA',
+	name: 'TestContextRQA',
 	runtime_quality_analysis: {
-		loadTestDefinition: [
+		loadTestDefinition: [],
+		resilienceDefinition: [],
+		/* loadTestDefinition: [
 			{
 				_id: 'RGVtb0xvYWRUZXN0Cg==',
 				artifact:
@@ -42,7 +44,7 @@ export const exampleRQAs: RuntimeQualityAnalysisDefinition[] = [{
 					ResultMetrics.NINETY_FIVE_PERCENTILE,
 				]
 			}
-		]
+		], */
 	},
-	version: 'DemoVersion',
+	version: '1',
 }]

@@ -13,7 +13,7 @@ export function LoadTestList({ loadTestDefinition, rqaId, loadtestSpecifier }: L
 	return (
 		<details ref={detailsRef}>
 			<summary>
-				<span>Loadtests</span>
+				<span>Load Tests</span>
 			</summary>
 			<ul>
 				{loadTestDefinition.map((loadtest) => {

@@ -67,8 +67,8 @@ export function LoadTestSpecifier({ domain, rqas, selectedEdge }: LoadTestSpecif
 		setShowSubmitBtn(validateObject(loadTest));
 	}, [loadTest]);
 
-	const addToRqa = (rqaId?: string) => {
-		rqaMutation.mutate({ rqaId, inputs: loadTest });
+	const addToRqa = (rqaId: string) => {
+		rqaMutation.mutate({ rqaId, loadTest });
 	};
 
 	const rqaMutation = useMutation({

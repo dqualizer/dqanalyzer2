@@ -25,7 +25,7 @@ export function DeleteRqaButton({ rqa, parentMenuRef, action }: DeleteRqaButtonP
 	const handleDelete = (ev: MouseEvent<HTMLButtonElement>) => {
 		ev.preventDefault();
 		deleteLoadtestMutation.mutate({
-			rqaId: rqa._id,
+			rqaId: rqa._id!,
 		});
 	};
 

@@ -2,6 +2,8 @@ import { ChangeEvent, Dispatch, FocusEvent, KeyboardEvent, SetStateAction, useSt
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { createRqa } from "../../queries/rqa";
 import { useMatch } from "react-router-dom";
+import { RuntimeQualityAnalysisDefinition } from "../../models/rqa/definition/RuntimeQualityAnalysisDefinition";
+import { Environment } from "../../models/rqa/definition/enums/Environment";
 import KeyboardArrowRightIcon from "@mui/icons-material/KeyboardArrowRight";
 
 interface RqaInputProps {
@@ -40,13 +42,32 @@ export function RqaInput({ setInputOpen }: RqaInputProps) {
 	function handleSave(ev: KeyboardEvent<HTMLInputElement> | FocusEvent<HTMLInputElement>) {
 		// TODO hardcoded environment & context
 		if (('key' in ev && ev.key == "Enter") || ev.type == "blur") {
+			const rqa: RuntimeQualityAnalysisDefinition = {
+				name: value!,
+				// TODO hardcoded domain_id
+				//domain_id: match.params.domainId,
+				domain_id: "65b757d3fe8ea06856910970",
+				// TODO hardcoded version
+				version: "1",
+				environment: Environment.TEST,
+				// TODO hardcoded context
+				context: "testContext",
+				runtime_quality_analysis: {
+					loadTestDefinition: [],
+					resilienceDefinition: [],
+				}
+			}
+			createRqaMutation.mutate(rqa);
+		}
+
+		/* if (('key' in ev && ev.key == "Enter") || ev.type == "blur") {
 			createRqaMutation.mutate({
 				name: value,
 				domain_id: match?.params.domainId,
 				environment: "TEST",
 				context: "Werkstatt",
 			});
-		}
+		} */
 	}
 
 	return (

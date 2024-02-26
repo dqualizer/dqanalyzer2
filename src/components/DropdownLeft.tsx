@@ -2,7 +2,7 @@ import { RuntimeQualityAnalysisDefinition } from "../models/rqa/definition/Runti
 
 interface DropdownLeftProps {
 	rqas: RuntimeQualityAnalysisDefinition[];
-	onClick: (rqaId?: string) => void;
+	onClick: (rqaId: string) => void;
 }
 
 export function DropdownLeft({ rqas, onClick }: DropdownLeftProps) {
@@ -18,7 +18,7 @@ export function DropdownLeft({ rqas, onClick }: DropdownLeftProps) {
 				{rqas?.map((rqa, i) => {
 					return (
 						<li key={i}>
-							<button className="no-underline" onClick={e => onClick(rqa._id)}>{rqa.name}</button>
+							<button className="no-underline" onClick={e => onClick(rqa._id!)}>{rqa.name}</button>
 						</li>
 					);
 				})}

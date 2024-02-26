@@ -13,6 +13,7 @@ import CloudQueueIcon from "@mui/icons-material/CloudQueue";
 import CloudOffIcon from "@mui/icons-material/CloudOff";
 import ContentPasteSearchIcon from "@mui/icons-material/ContentPasteSearch";
 import EqualizerIcon from "@mui/icons-material/Equalizer";
+import { ResilienceTestSpecifier } from "./resilience-test-specifier/ResilienceTestSpecifier";
 
 
 interface SidebarProps {
@@ -26,7 +27,8 @@ export default function Sidebar({ domain, rqas, nodes, edges }: SidebarProps) {
 	const [edgeSelected, setEgdeSelected] = useState(false);
 	const [selectedEdge, setSelectedEdge] = useState(null);
 	const [rqaExplorerShow, setRqaExplorerShow] = useState<boolean>();
-	const [loadTestShow, setLoadTestShow] = useState<boolean>();
+	const [showLoadTestSpecifier, setShowLoadTestSpecifier] = useState<boolean>();
+	const [showResilienceTestSpecifier, setShowResilienceTestSpecifier] = useState<boolean>();
 	const [rqaPlayShow, setRqaPlayShow] = useState(false);
 	const reactFlowInstance = useReactFlow();
 	const loadtestRef = useRef(null);
@@ -37,7 +39,7 @@ export default function Sidebar({ domain, rqas, nodes, edges }: SidebarProps) {
 	const [editScenarioTestShow, setEditScenarioTestShow] = useState<boolean>();
 	const [editRqa, setEditRqa] = useState(null);
 
-	hideComponentOnViewportClick(loadtestRef, setLoadTestShow);
+	hideComponentOnViewportClick(loadtestRef, setShowLoadTestSpecifier);
 
 	const selectionChange = useOnSelectionChange({
 		onChange: ({ edges }) => {
@@ -101,7 +103,8 @@ export default function Sidebar({ domain, rqas, nodes, edges }: SidebarProps) {
 		setScenarioExplorerShow(false);
 		setScenarioTestShow(false);
 		setRqaExplorerShow(false);
-		setLoadTestShow(false);
+		setShowLoadTestSpecifier(false);
+		setShowResilienceTestSpecifier(false);
 	};
 
 	const onScenarioExplorerClick = () => setScenarioExplorerShow(prevState => !prevState);
@@ -115,7 +118,9 @@ export default function Sidebar({ domain, rqas, nodes, edges }: SidebarProps) {
 
 	const onRqaExplorerClick = () => setRqaExplorerShow(prevState => !prevState);
 
-	const onLoadtestClick = () => setLoadTestShow(prevState => !prevState);
+	const onClickShowLoadTestSpecifier = () => setShowLoadTestSpecifier(prevState => !prevState);
+
+	const onClickShowResilienceTestSpecifier = () => setShowResilienceTestSpecifier(prevState => !prevState);
 
 	if (scenarioMode) {
 		return (
@@ -155,22 +160,27 @@ export default function Sidebar({ domain, rqas, nodes, edges }: SidebarProps) {
 							<EqualizerIcon />
 						</div>
 					</button>
-					<button onClick={onLoadtestClick}>
+					<button onClick={onClickShowLoadTestSpecifier}>
 						<div className="icon-domain-story-loadtest"></div>
 					</button>
 					<button>
 						<div className="icon-domain-story-monitoring"></div>
 					</button>
-					<button>
+					<button onClick={onClickShowResilienceTestSpecifier}>
 						<div className="icon-domain-story-chaosexperiment"></div>
 					</button>
 				</div>
-				{loadTestShow && (
+				{showLoadTestSpecifier && (
 					<div ref={loadtestRef}>
 						<LoadTestSpecifier domain={domain} rqas={rqas} selectedEdge={selectedEdge} />
 					</div>
 				)}
-				{rqaExplorerShow && (<RqaList loadtestSpecifier={setLoadTestShow} />)}
+				{showResilienceTestSpecifier && (
+					<div ref={loadtestRef}>
+						<ResilienceTestSpecifier domain={domain} rqas={rqas} selectedEdge={selectedEdge} />
+					</div>
+				)}
+				{rqaExplorerShow && (<RqaList loadtestSpecifier={setShowLoadTestSpecifier} />)}
 			</div>
 		);
 	}

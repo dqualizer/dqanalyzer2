@@ -58,3 +58,92 @@ export const domainstory: DomainStory = {
 		}
 	]
 }
+
+export const domainstoryResilience: DomainStory = {
+	actors: [
+		{
+			_id: "a_1",
+			_class: "io.github.dqualizer.dqlang.types.dam.domainstory.Person",
+			name: "Customer"
+		},
+		{
+			_id: "a_2",
+			_class: "io.github.dqualizer.dqlang.types.dam.domainstory.System",
+			name: "Comparison Portal"
+		},
+		{
+			_id: "a_3",
+			_class: "io.github.dqualizer.dqlang.types.dam.domainstory.System",
+			name: "Offer Calculator"
+		}
+	],
+	work_objects: [
+		{
+			_id: "w_1",
+			name: "Quotation Request",
+			type: WorkObjectType.MESSAGE,
+		},
+		{
+			_id: "w_2",
+			name: "Quotation Request",
+			type: WorkObjectType.MESSAGE
+		},
+		{
+			_id: "w_3",
+			name: "Insurance Quotation",
+			type: WorkObjectType.DOCUMENT,
+		},
+		{
+			_id: "w_4",
+			name: "Insurance Quotation",
+			type: WorkObjectType.DOCUMENT,
+		},
+		{
+			_id: "w_5",
+			name: "Insurance Quotation",
+			type: WorkObjectType.DOCUMENT,
+		}
+	],
+	activities: [
+		{
+			_id: "c_1",
+			action: "sends",
+			initiators: ["a_1"],
+			number: 1,
+			targets: ["a_2"],
+			workObjects: ["w_1"]
+		},
+		{
+			_id: "c_2",
+			action: "sends",
+			initiators: ["a_2"],
+			number: 2,
+			targets: ["a_3"],
+			workObjects: ["w_2"]
+		},
+		{
+			_id: "c_3",
+			action: "calculates",
+			initiators: ["a_3"],
+			number: 3,
+			targets: [],
+			workObjects: ["w_3"]
+		},
+		{
+			_id: "c_4",
+			action: "sends",
+			initiators: ["a_3"],
+			number: 4,
+			targets: ["a_2"],
+			workObjects: ["w_4"]
+		},
+		{
+			_id: "c_5",
+			action: "sends",
+			initiators: ["a_2"],
+			number: 5,
+			targets: ["a_1"],
+			workObjects: ["w_5"]
+		}
+	]
+}

@@ -20,14 +20,14 @@ import { getDamById } from "../queries/dam";
 
 import { string } from "prop-types";
 import { useQuery } from "@tanstack/react-query";
-import { domainstory } from "../data/exampleDomainstory";
+import { domainstory, domainstoryResilience } from "../data/exampleDomainstory";
 
 export function damLoader({ params }) {
 	return getDamById(params.damId);
 }
 
 export function offlineDomainstoryLoader({ params }) {
-	return domainstory;
+	return domainstoryResilience;
 }
 
 function App() {
