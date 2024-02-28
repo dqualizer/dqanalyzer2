@@ -34,7 +34,6 @@ export function ResilienceTestSpecifier({
       name: "ResilienceTest " + new Date().toLocaleString(),
       description: "ResilienceTestDescription",
       system_id: "",
-      activity_id: undefined,
       stimulus_type: "",
       accuracy: 0,
       recovery_time: undefined,
@@ -100,7 +99,7 @@ export function ResilienceTestSpecifier({
         onChange={handleChange}
       />
       <InputSelect
-        label={"Activity"}
+        label={"Activity (optional)"}
         name={"activity_id"}
         value={resilienceTestDto.activity_id}
         options={getActivitiesForSystem(domain, resilienceTestDto.system_id)}

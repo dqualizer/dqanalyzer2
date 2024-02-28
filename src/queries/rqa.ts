@@ -8,19 +8,33 @@ import { CreateResilienceTestDto } from "../models/dtos/CreateResilienceTestDto"
 const backend = new URL("/api/v1", getBackendUrl());
 
 export const getAllRqas = async () => {
-  //return exampleRQAs;
+  // return exampleRQAs;
   // TODO set endpoint
   return axios.get(`${backend}/rqa-definition`).then((res) => {
-    const data = res.data;
-    return data.map((rqa: any) => {
-      // TODO remove when dqlang3.0 is fully implemented
+    const data = res.data as RuntimeQualityAnalysisDefinition[];
+    console.log("RQAs", data);
+    const rqaDefinitions = data.map((rqa: any) => {
+      // TODO remove following statements when dqlang3.0 is fully implemented
       if (!rqa._id) {
         rqa._id = rqa.id;
-        console.log("Set Missing RqaId");
       }
-      return rqa;
+      if (
+        !rqa.runtime_quality_analysis?.loadTestDefinition &&
+        rqa.runtime_quality_analysis?.loadtests
+      ) {
+        rqa.runtime_quality_analysis.loadTestDefinition =
+          rqa.runtime_quality_analysis.loadtests;
+      }
+      if (
+        !rqa.runtime_quality_analysis?.resilienceTestDefinition &&
+        rqa.runtime_quality_analysis?.resilienceTests
+      ) {
+        rqa.runtime_quality_analysis.resilienceTestDefinition =
+          rqa.runtime_quality_analysis.resilienceTests;
+      }
+      return rqa as RuntimeQualityAnalysisDefinition;
     });
-    //return res.data;
+    return rqaDefinitions;
   });
 };
 
