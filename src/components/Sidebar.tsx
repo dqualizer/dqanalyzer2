@@ -15,11 +15,13 @@ import CloudQueueIcon from "@mui/icons-material/CloudQueue";
 import CloudOffIcon from "@mui/icons-material/CloudOff";
 import ContentPasteSearchIcon from "@mui/icons-material/ContentPasteSearch";
 import EqualizerIcon from "@mui/icons-material/Equalizer";
+import { ResilienceTestSpecifier } from "./resilience-test-specifier/ResilienceTestSpecifier";
+
 import EditScenarioTestMenu from "./EditScenarioTestMenu";
 
 interface SidebarProps {
   domainstory: DomainStory;
-  rqas?: RuntimeQualityAnalysisDefinition[];
+  rqas: RuntimeQualityAnalysisDefinition[];
   nodes: Node[];
   edges: Edge[];
 }
@@ -33,7 +35,9 @@ export default function Sidebar({
   const [edgeSelected, setEgdeSelected] = useState(false);
   const [selectedEdge, setSelectedEdge] = useState<Edge | null>(null);
   const [rqaExplorerShow, setRqaExplorerShow] = useState<boolean>();
-  const [loadTestShow, setLoadTestShow] = useState<boolean>();
+  const [showLoadTestSpecifier, setShowLoadTestSpecifier] = useState<boolean>();
+  const [showResilienceTestSpecifier, setShowResilienceTestSpecifier] =
+    useState<boolean>();
   const [rqaPlayShow, setRqaPlayShow] = useState(false);
   const reactFlowInstance = useReactFlow();
   const loadtestRef = useRef(null);
@@ -45,7 +49,62 @@ export default function Sidebar({
   const [editRqa, setEditRqa] =
     useState<RuntimeQualityAnalysisDefinition | null>(null);
 
-  hideComponentOnViewportClick(loadtestRef, setLoadTestShow);
+  hideComponentOnViewportClick(loadtestRef, setShowLoadTestSpecifier);
+
+  const selectionChange = useOnSelectionChange({
+    onChange: ({ edges }) => {
+      if (edges[0]) {
+        setSelectedEdge(edges[0]);
+
+        let relatedEdgesArray = reactFlowInstance
+          .getEdges()
+          .filter((edge) => edge.name == edges[0].name);
+        let unrelatedEdgesArray = reactFlowInstance
+          .getEdges()
+          .filter((edge) => edge.name != edges[0].name);
+
+        let newEdgeArray = [];
+
+        unrelatedEdgesArray.forEach((edge) => {
+          edge.animated = false;
+          edge.style = {};
+          edge.markerStart = {
+            type: MarkerType.ArrowClosed,
+            width: 20,
+            height: 20,
+          };
+        });
+
+        relatedEdgesArray.forEach((edge) => {
+          edge.selected = true;
+          edge.animated = true;
+          edge.style = {
+            stroke: "#570FF2",
+          };
+          edge.markerStart = {
+            type: MarkerType.ArrowClosed,
+            width: 20,
+            height: 20,
+            color: "#570FF2",
+          };
+        });
+
+        newEdgeArray = newEdgeArray.concat(
+          unrelatedEdgesArray,
+          relatedEdgesArray
+        );
+        reactFlowInstance.setEdges(newEdgeArray);
+      } else {
+        setSelectedEdge();
+        let updatedEdgesArray = reactFlowInstance.getEdges();
+        updatedEdgesArray.forEach((edge) => {
+          edge.animated = false;
+          edge.style = {};
+        });
+        reactFlowInstance.setEdges(updatedEdgesArray);
+      }
+    },
+  });
 
   const onChangeModeClick = () => {
     setScenarioMode((prevState) => !prevState);
@@ -54,7 +113,8 @@ export default function Sidebar({
     setScenarioExplorerShow(false);
     setScenarioTestShow(false);
     setRqaExplorerShow(false);
-    setLoadTestShow(false);
+    setShowLoadTestSpecifier(false);
+    setShowResilienceTestSpecifier(false);
   };
 
   const onScenarioExplorerClick = () =>
@@ -71,7 +131,11 @@ export default function Sidebar({
   const onRqaExplorerClick = () =>
     setRqaExplorerShow((prevState) => !prevState);
 
-  const onLoadtestClick = () => setLoadTestShow((prevState) => !prevState);
+  const onClickShowLoadTestSpecifier = () =>
+    setShowLoadTestSpecifier((prevState) => !prevState);
+
+  const onClickShowResilienceTestSpecifier = () =>
+    setShowResilienceTestSpecifier((prevState) => !prevState);
 
   if (scenarioMode) {
     return (
@@ -140,17 +204,17 @@ export default function Sidebar({
               <EqualizerIcon />
             </div>
           </button>
-          <button onClick={onLoadtestClick}>
+          <button onClick={onClickShowLoadTestSpecifier}>
             <div className="icon-domain-story-loadtest"></div>
           </button>
           <button>
             <div className="icon-domain-story-monitoring"></div>
           </button>
-          <button>
+          <button onClick={onClickShowResilienceTestSpecifier}>
             <div className="icon-domain-story-chaosexperiment"></div>
           </button>
         </div>
-        {loadTestShow && (
+        {showLoadTestSpecifier && (
           <div ref={loadtestRef}>
             <LoadTestSpecifier
               domainstory={domainstory}
@@ -159,7 +223,18 @@ export default function Sidebar({
             />
           </div>
         )}
-        {rqaExplorerShow && <RqaList loadtestSpecifier={setLoadTestShow} />}
+        {showResilienceTestSpecifier && (
+          <div ref={loadtestRef}>
+            <ResilienceTestSpecifier
+              domain={domainstory}
+              rqas={rqas}
+              selectedEdge={selectedEdge}
+            />
+          </div>
+        )}
+        {rqaExplorerShow && (
+          <RqaList loadtestSpecifier={setShowLoadTestSpecifier} />
+        )}
       </div>
     );
   }

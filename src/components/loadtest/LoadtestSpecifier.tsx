@@ -19,7 +19,7 @@ import loadtestSpecs from "../../data/loadtest-specs.json";
 
 interface LoadTestSpecifierProps {
   domainstory: DomainStory;
-  rqas?: RuntimeQualityAnalysisDefinition[];
+  rqas: RuntimeQualityAnalysisDefinition[];
   selectedEdge?: Edge | null;
 }
 
@@ -73,10 +73,6 @@ export default function LoadTestSpecifier({
     setShowSubmitBtn(validateObject(loadTest));
   }, [loadTest]);
 
-  const addToRqa = (rqaId?: string) => {
-    rqaMutation.mutate({ rqaId, inputs: loadTest });
-  };
-
   const rqaMutation = useMutation({
     mutationFn: addLoadtestToRqa,
     onSuccess: (data) => {
@@ -84,6 +80,9 @@ export default function LoadTestSpecifier({
       queryClient.invalidateQueries(["rqas"]);
     },
   });
+  const addToRqa = (rqaId: string) => {
+    rqaMutation.mutate({ rqaId, loadTest });
+  };
 
   const getLoadProfileParameters = (loadProfileType?: string) => {
     return loadtestSpecs.loadProfiles.find(

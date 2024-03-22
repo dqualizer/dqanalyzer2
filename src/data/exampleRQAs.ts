@@ -11,6 +11,7 @@ export const exampleRQAs: RuntimeQualityAnalysisDefinition[] = [
     environment: Environment.DEV,
     name: "DemoRQA",
     runtime_quality_analysis: {
+      resilienceDefinition: [],
       loadTestDefinition: [
         {
           _id: "RGVtb0xvYWRUZXN0Cg==",

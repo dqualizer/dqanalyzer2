@@ -1,0 +1,32 @@
+{
+	"stimulus_types": {
+		"name": "Stimulus",
+		"type": "stimulus_type",
+		"options": [
+			{
+				"name": "Unavailability",
+				"value": "UNAVAILABILITY"
+			}
+		]
+	},
+	"response_measures": [
+		{
+			"name": "Recovery Time",
+			"type": "recovery_time",
+			"options": [
+				{
+					"name": "Satisfied",
+					"value": "SATISFIED"
+				},
+				{
+					"name": "Tolerated",
+					"value": "TOLERATED"
+				},
+				{
+					"name": "Frustrated",
+					"value": "FRUSTRATED"
+				}
+			]
+		}
+	]
+}
