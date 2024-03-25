@@ -15,6 +15,7 @@ import { validateObject } from "../../utils/rqa.utils";
 import { Edge } from "reactflow";
 import resiliencetestSpecs from "../../data/resiliencetest-specs.json";
 import { CreateResilienceTestDto } from "../../models/dtos/CreateResilienceTestDto";
+import { InputNumber } from "../input/InputNumber";
 
 interface ResilienceTestSpecifierProps {
   domain: DomainStory;
@@ -34,8 +35,13 @@ export function ResilienceTestSpecifier({
       name: "ResilienceTest " + new Date().toLocaleString(),
       description: "ResilienceTestDescription",
       system_id: "",
-      stimulus_type: "",
+      stimulus_type: "" as any,
       accuracy: 0,
+      pause_before_triggering_seconds: 15,
+      experiment_duration_seconds: 32,
+      delay_min_milliseconds: 100,
+      delay_max_milliseconds: 200,
+      injection_frequency: 1,
       recovery_time: undefined,
     });
 
@@ -62,7 +68,35 @@ export function ResilienceTestSpecifier({
   }, [resilienceTestDto]);
 
   const addToRqa = (rqaId: string) => {
-    rqaMutation.mutate({ rqaId, resilienceTestDto });
+    const resilienceTestDtoRemovedUnusedProperties =
+      removeUnusedPropertiesForStimulus();
+
+    rqaMutation.mutate({
+      rqaId,
+      resilienceTestDto: resilienceTestDtoRemovedUnusedProperties,
+    });
+  };
+
+  const removeUnusedPropertiesForStimulus = () => {
+    const resilienceTestDtoRemovedUnusedProperties = {
+      ...resilienceTestDto,
+    };
+    if (
+      resilienceTestDtoRemovedUnusedProperties.stimulus_type !==
+      "LATE_RESPONSES"
+    ) {
+      delete resilienceTestDtoRemovedUnusedProperties.delay_min_milliseconds;
+      delete resilienceTestDtoRemovedUnusedProperties.delay_max_milliseconds;
+    }
+    if (
+      resilienceTestDtoRemovedUnusedProperties.stimulus_type !==
+        "LATE_RESPONSES" &&
+      resilienceTestDtoRemovedUnusedProperties.stimulus_type !==
+        "FAILED_REQUESTS"
+    ) {
+      delete resilienceTestDtoRemovedUnusedProperties.injection_frequency;
+    }
+    return resilienceTestDtoRemovedUnusedProperties;
   };
 
   const rqaMutation = useMutation({
@@ -74,13 +108,14 @@ export function ResilienceTestSpecifier({
   });
 
   const handleChange = (
-    ev: ChangeEvent<HTMLInputElement | HTMLSelectElement>
+    ev: ChangeEvent<HTMLInputElement | HTMLSelectElement>,
+    val: any
   ) => {
     setResilienceTestDto((prev) => {
       ev.target.name;
       return {
         ...prev,
-        [ev.target.name]: ev.target.value,
+        [ev.target.name]: val,
       };
     });
   };
@@ -124,6 +159,49 @@ export function ResilienceTestSpecifier({
         value={resilienceTestDto.accuracy}
         onChange={handleChange}
       />
+      <InputNumber
+        label={"Pause before triggering (in seconds)"}
+        name={"pause_before_triggering_seconds"}
+        value={resilienceTestDto.pause_before_triggering_seconds}
+        min={0}
+        onChange={handleChange}
+      />
+      <InputNumber
+        label={"Experiment duration (in seconds)"}
+        name={"experiment_duration_seconds"}
+        value={resilienceTestDto.experiment_duration_seconds}
+        min={0}
+        onChange={handleChange}
+      />
+      {(resilienceTestDto.stimulus_type === "LATE_RESPONSES" ||
+        resilienceTestDto.stimulus_type === "FAILED_REQUESTS") && (
+        <InputNumber
+          label={"Influence every nth request"}
+          name={"injection_frequency"}
+          value={resilienceTestDto.injection_frequency}
+          min={0}
+          onChange={handleChange}
+        />
+      )}
+      {resilienceTestDto.stimulus_type === "LATE_RESPONSES" && (
+        <>
+          <h3>Delay</h3>
+          <InputNumber
+            label={"Delay-Minimum (in ms)"}
+            name={"delay_min_milliseconds"}
+            value={resilienceTestDto.delay_min_milliseconds}
+            min={0}
+            onChange={handleChange}
+          />
+          <InputNumber
+            label={"Delay-Maximum (in ms)"}
+            name={"delay_max_milliseconds"}
+            value={resilienceTestDto.delay_max_milliseconds}
+            min={0}
+            onChange={handleChange}
+          />
+        </>
+      )}
       <div className="divider" />
       <h3>Response Measures</h3>
       {resiliencetestSpecs.response_measures.map((responseMeasure) => {

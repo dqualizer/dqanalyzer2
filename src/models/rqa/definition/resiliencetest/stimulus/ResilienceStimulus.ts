@@ -1,3 +1,5 @@
 export interface ResilienceStimulus {
-	accuracy: number;
+  accuracy?: number;
+  pauseBeforeTriggeringSeconds?: number;
+  experimentDurationSeconds?: number;
 }
