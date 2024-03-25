@@ -6,7 +6,6 @@ export interface CreateResilienceTestDto {
   system_id: string;
   activity_id?: string;
   stimulus_type: "UNAVAILABILITY" | "LATE_RESPONSES" | "FAILED_REQUESTS";
-  accuracy: number;
   pause_before_triggering_seconds: number;
   experiment_duration_seconds: number;
   delay_min_milliseconds?: number;

@@ -1,6 +1,5 @@
 import { ChangeEvent, useEffect, useState } from "react";
 import { InputSelect } from "../input/InputSelect";
-import { InputSlider } from "../input/InputSlider";
 import { InputRadio } from "../input/InputRadio";
 import { DropdownLeft } from "../DropdownLeft";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
@@ -34,9 +33,8 @@ export function ResilienceTestSpecifier({
     useState<CreateResilienceTestDto>({
       name: "ResilienceTest " + new Date().toLocaleString(),
       description: "ResilienceTestDescription",
-      system_id: "",
+      system_id: undefined as any,
       stimulus_type: "" as any,
-      accuracy: 0,
       pause_before_triggering_seconds: 15,
       experiment_duration_seconds: 32,
       delay_min_milliseconds: 100,
@@ -151,12 +149,6 @@ export function ResilienceTestSpecifier({
         options={resiliencetestSpecs.stimulus_types.options}
         optionName={"name"}
         optionValue={"value"}
-        onChange={handleChange}
-      />
-      <InputSlider
-        label={"Accuracy"}
-        name={"accuracy"}
-        value={resilienceTestDto.accuracy}
         onChange={handleChange}
       />
       <InputNumber
