@@ -1,5 +1,5 @@
-import { Satisfaction } from "../enums/Satisfaction";
+import { Satisfaction } from "../../../../types/rqa/definition/enums/Satisfaction";
 
 export interface ResilienceResponseMeasures {
-	recovery_time: Satisfaction;
+  recovery_time: Satisfaction;
 }

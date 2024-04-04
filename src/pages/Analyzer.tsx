@@ -78,7 +78,7 @@ function Analyzer() {
           nodes={nodes}
           edges={edges}
           domainstory={domainstory}
-          rqas={rqaQuery.data}
+          rqas={rqaQuery.data ? rqaQuery.data : []}
         />
       </ReactFlowProvider>
     </div>

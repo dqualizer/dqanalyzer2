@@ -58,12 +58,12 @@ export default function Sidebar({
 
         let relatedEdgesArray = reactFlowInstance
           .getEdges()
-          .filter((edge) => edge.name == edges[0].name);
+          .filter((edge) => edge.data.name == edges[0].data.name);
         let unrelatedEdgesArray = reactFlowInstance
           .getEdges()
-          .filter((edge) => edge.name != edges[0].name);
+          .filter((edge) => edge.data.name != edges[0].data.name);
 
-        let newEdgeArray = [];
+        let newEdgeArray: Edge[] = [];
 
         unrelatedEdgesArray.forEach((edge) => {
           edge.animated = false;
@@ -95,7 +95,7 @@ export default function Sidebar({
         );
         reactFlowInstance.setEdges(newEdgeArray);
       } else {
-        setSelectedEdge();
+        setSelectedEdge(null);
         let updatedEdgesArray = reactFlowInstance.getEdges();
         updatedEdgesArray.forEach((edge) => {
           edge.animated = false;
