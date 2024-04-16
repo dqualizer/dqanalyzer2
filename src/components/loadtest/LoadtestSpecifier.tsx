@@ -6,202 +6,216 @@ import { InputCheckbox } from "../input/InputCheckbox";
 import { DropdownLeft } from "../DropdownLeft";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { addLoadtestToRqa } from "../../queries/rqa";
-import { DomainStory } from "../../models/dam/domainstory/DomainStory";
-import { RuntimeQualityAnalysisDefinition } from "../../models/rqa/definition/RuntimeQualityAnalysisDefinition";
-import { getActivitiesForSystem, getSystemsFromDomainStory } from "../../utils/dam.utils";
+import { DomainStory } from "../../types/dam/domainstory/DomainStory";
+import { RuntimeQualityAnalysisDefinition } from "../../types/rqa/definition/RuntimeQualityAnalysisDefinition";
+import {
+  getActivitiesForSystem,
+  getSystemsFromDomainStory,
+} from "../../utils/dam.utils";
 import { validateObject } from "../../utils/rqa.utils";
-import { LoadTestDefinition } from "../../models/rqa/definition/loadtest/LoadTestDefinition";
+import { LoadTestDefinition } from "../../types/rqa/definition/loadtest/LoadTestDefinition";
 import { Edge } from "reactflow";
 import loadtestSpecs from "../../data/loadtest-specs.json";
 
 interface LoadTestSpecifierProps {
-	domain: DomainStory;
-	rqas: RuntimeQualityAnalysisDefinition[];
-	selectedEdge?: Edge | null;
+  domainstory: DomainStory;
+  rqas: RuntimeQualityAnalysisDefinition[];
+  selectedEdge?: Edge | null;
 }
 
-export function LoadTestSpecifier({ domain, rqas, selectedEdge }: LoadTestSpecifierProps) {
+export default function LoadTestSpecifier({
+  domainstory,
+  rqas,
+  selectedEdge,
+}: LoadTestSpecifierProps) {
+  const queryClient = useQueryClient();
 
-	const queryClient = useQueryClient();
+  const [loadTest, setLoadTest] = useState<LoadTestDefinition>({
+    name: "LoadTest",
+    artifact: {
+      system_id: null,
+      activity_id: null,
+    },
+    stimulus: {
+      accuracy: 0,
+      workload: {
+        load_profile: null,
+        //type: null,
+      },
+    },
+    response_measure: {
+      response_time: null,
+    },
+    result_metrics: [],
+  });
 
-	const [loadTest, setLoadTest] = useState<LoadTestDefinition>({
-		name: "LoadTest",
-		artifact: {
-			system_id: null,
-			activity_id: null,
-		},
-		stimulus: {
-			accuracy: 0,
-			workload: {
-				load_profile: null,
-				//type: null,
-			}
-		},
-		response_measure: {
-			response_time: null,
-		},
-		result_metrics: [],
-	});
+  const [showSubmitBtn, setShowSubmitBtn] = useState<boolean>();
 
-	const [showSubmitBtn, setShowSubmitBtn] = useState<boolean>();
+  // Set System and Actvitivity, when selected edge changes
+  useEffect(() => {
+    if (domainstory && selectedEdge) {
+      const activityId = selectedEdge.id;
+      const systemId = selectedEdge.target;
+      if (!activityId || !systemId) return;
+      setLoadTest((prev) => {
+        return {
+          ...prev,
+          artifact: {
+            activity_id: activityId,
+            system_id: systemId,
+          },
+        };
+      });
+    }
+  }, [selectedEdge, domainstory]);
 
-	// Set System and Actvitivity, when selected edge changes
-	useEffect(() => {
-		if (domain && selectedEdge) {
-			const activityId = selectedEdge.id;
-			const systemId = selectedEdge.target;
-			if (!activityId || !systemId) return;
-			setLoadTest(prev => {
-				return {
-					...prev,
-					artifact: {
-						activity_id: activityId,
-						system_id: systemId,
-					}
-				}
-			});
-		}
-	}, [selectedEdge, domain]);
+  useEffect(() => {
+    setShowSubmitBtn(validateObject(loadTest));
+  }, [loadTest]);
 
-	useEffect(() => {
-		setShowSubmitBtn(validateObject(loadTest));
-	}, [loadTest]);
+  const rqaMutation = useMutation({
+    mutationFn: addLoadtestToRqa,
+    onSuccess: (data) => {
+      //queryClient.setQueryData(["rqas", data.id], data);
+      queryClient.invalidateQueries(["rqas"]);
+    },
+  });
+  const addToRqa = (rqaId: string) => {
+    rqaMutation.mutate({ rqaId, loadTest });
+  };
 
-	const addToRqa = (rqaId: string) => {
-		rqaMutation.mutate({ rqaId, loadTest });
-	};
+  const getLoadProfileParameters = (loadProfileType?: string) => {
+    return loadtestSpecs.loadProfiles.find(
+      (loadProfile) => loadProfile.type === loadProfileType
+    )?.parameters;
+  };
 
-	const rqaMutation = useMutation({
-		mutationFn: addLoadtestToRqa,
-		onSuccess: (data) => {
-			//queryClient.setQueryData(["rqas", data.id], data);
-			queryClient.invalidateQueries(["rqas"]);
-		},
-	});
+  const handleChange = (
+    ev: ChangeEvent<HTMLInputElement | HTMLSelectElement>,
+    data?: any
+  ) => {
+    setLoadTest((prev) => {
+      const { name, type } = ev.target;
+      const nextState = { ...prev };
+      let currentObj: any = nextState;
+      const keys = name.split(".");
 
-	const getLoadProfileParameters = (loadProfileType?: string) => {
-		return loadtestSpecs.loadProfiles.find(loadProfile => loadProfile.type === loadProfileType)?.parameters;
-	}
+      for (let i = 0; i < keys.length - 1; i++) {
+        const key = keys[i];
+        if (!currentObj[key]) {
+          currentObj[key] = {};
+        }
+        currentObj = currentObj[key];
+      }
+      const lastKey = keys[keys.length - 1];
 
-	const handleChange = (ev: ChangeEvent<HTMLInputElement | HTMLSelectElement>, data?: any) => {
-		setLoadTest(prev => {
-			const { name, type } = ev.target;
-			const nextState = { ...prev };
-			let currentObj: any = nextState;
-			const keys = name.split('.');
+      if (type === "checkbox") {
+        currentObj[lastKey] = (ev.target as HTMLInputElement).checked
+          ? [...currentObj[lastKey], data]
+          : currentObj[lastKey].filter((val: any) => val !== data);
+      } else {
+        currentObj[lastKey] = data;
+      }
 
-			for (let i = 0; i < keys.length - 1; i++) {
-				const key = keys[i];
-				if (!currentObj[key]) {
-					currentObj[key] = {};
-				}
-				currentObj = currentObj[key];
-			}
-			const lastKey = keys[keys.length - 1];
+      return nextState;
+    });
+  };
 
-			if (type === 'checkbox') {
-				currentObj[lastKey] = (ev.target as HTMLInputElement).checked ? [...currentObj[lastKey], data] : currentObj[lastKey].filter((val: any) => val !== data);
-			} else {
-				currentObj[lastKey] = data;
-			}
+  return (
+    <div className="p-4 prose h-full overflow-auto bg-slate-200 ">
+      <h3>Load Test Specification</h3>
+      <h4>Domain Story Item</h4>
+      <InputSelect
+        label={"System"}
+        name={"artifact.system_id"}
+        value={loadTest.artifact?.system_id}
+        options={getSystemsFromDomainStory(domainstory)}
+        optionName={"name"}
+        optionValue={"_id"}
+        onChange={handleChange}
+      />
+      <InputSelect
+        label={"Activity"}
+        name={"artifact.activity_id"}
+        value={loadTest.artifact?.activity_id}
+        options={getActivitiesForSystem(
+          domainstory,
+          loadTest.artifact?.system_id
+        )}
+        optionName={"action"}
+        optionValue={"_id"}
+        onChange={handleChange}
+      />
+      <div className="divider" />
+      <h3>Load Design</h3>
+      <InputSelect
+        label={"Load Profile"}
+        name={"stimulus.workload.load_profile.type"}
+        value={loadTest.stimulus?.workload?.load_profile?.type}
+        options={loadtestSpecs.loadProfiles}
+        optionName={"name"}
+        optionValue={"type"}
+        onChange={handleChange}
+      />
+      {getLoadProfileParameters(
+        loadTest.stimulus?.workload?.load_profile?.type
+      )?.map((parameter) => {
+        return (
+          <InputRadio
+            key={parameter.type}
+            label={parameter.name}
+            name={"stimulus.workload.load_profile." + parameter.type}
+            value={loadTest.stimulus?.workload?.load_profile?.type}
+            options={parameter.options}
+            optionName={"name"}
+            onChange={handleChange}
+          />
+        );
+      })}
+      <InputSlider
+        label={"Accuracy"}
+        name={"stimulus.accuracy"}
+        value={loadTest.stimulus?.accuracy}
+        onChange={handleChange}
+      />
+      <div className="divider" />
+      <h3>Response Measures</h3>
+      {loadtestSpecs.response_measures.map((responseMeasure) => {
+        return (
+          <InputRadio
+            key={responseMeasure.type}
+            label={responseMeasure.name}
+            name={"response_measure"}
+            value={loadTest.response_measure}
+            options={responseMeasure.options}
+            optionName={"name"}
+            optionValue={"value"}
+            onChange={handleChange}
+          />
+        );
+      })}
+      <div className="divider"></div>
+      <h3>Result Metrics</h3>
+      {loadtestSpecs.result_metrics.map((option) => {
+        return (
+          <InputCheckbox
+            key={option.value}
+            label={option.name}
+            name="result_metrics"
+            value={option.value}
+            checked={!!loadTest.result_metrics?.includes(option.value)}
+            onChange={handleChange}
+          />
+        );
+      })}
 
-			return nextState;
-		});
-	};
-
-	return (
-		<div className="p-4 prose h-full overflow-auto bg-slate-200 ">
-			<h3>Load Test Specification</h3>
-			<h4>Domain Story Item</h4>
-			<InputSelect
-				label={"System"}
-				name={"artifact.system_id"}
-				value={loadTest.artifact?.system_id}
-				options={getSystemsFromDomainStory(domain)}
-				optionName={"name"}
-				optionValue={"_id"}
-				onChange={handleChange}
-			/>
-			<InputSelect
-				label={"Activity"}
-				name={"artifact.activity_id"}
-				value={loadTest.artifact?.activity_id}
-				options={getActivitiesForSystem(domain, loadTest.artifact?.system_id)}
-				optionName={"action"}
-				optionValue={"_id"}
-				onChange={handleChange}
-			/>
-			<div className="divider" />
-			<h3>Load Design</h3>
-			<InputSelect
-				label={"Load Profile"}
-				name={"stimulus.workload.load_profile.type"}
-				value={loadTest.stimulus?.workload?.load_profile?.type}
-				options={loadtestSpecs.loadProfiles}
-				optionName={"name"}
-				optionValue={"type"}
-				onChange={handleChange}
-			/>
-			{
-				getLoadProfileParameters(loadTest.stimulus?.workload?.load_profile?.type)?.map(parameter => {
-					return (
-						<InputRadio
-							key={parameter.type}
-							label={parameter.name}
-							name={'stimulus.workload.load_profile.' + parameter.type}
-							value={loadTest.stimulus?.workload?.load_profile?.type}
-							options={parameter.options}
-							optionName={"name"}
-							onChange={handleChange}
-						/>
-					);
-				})
-			}
-			<InputSlider
-				label={"Accuracy"}
-				name={"stimulus.accuracy"}
-				value={loadTest.stimulus?.accuracy}
-				onChange={handleChange}
-			/>
-			<div className="divider" />
-			<h3>Response Measures</h3>
-			{loadtestSpecs.response_measures.map(responseMeasure => {
-				return (
-					<InputRadio
-						key={responseMeasure.type}
-						label={responseMeasure.name}
-						name={"response_measure"}
-						value={loadTest.response_measure}
-						options={responseMeasure.options}
-						optionName={"name"}
-						optionValue={"value"}
-						onChange={handleChange}
-					/>
-				);
-			})}
-			<div className="divider"></div>
-			<h3>Result Metrics</h3>
-			{loadtestSpecs.result_metrics.map(option => {
-				return (
-					<InputCheckbox
-						key={option.value}
-						label={option.name}
-						name="result_metrics"
-						value={option.value}
-						checked={!!loadTest.result_metrics?.includes(option.value)}
-						onChange={handleChange}
-					/>
-				);
-			})}
-
-			{showSubmitBtn && <DropdownLeft rqas={rqas} onClick={addToRqa} />}
-		</div>
-	);
+      {showSubmitBtn && <DropdownLeft rqas={rqas} onClick={addToRqa} />}
+    </div>
+  );
 }
 
-
-
-{/*  	// Path Variables not implemented yet!
+{
+  /*  	// Path Variables not implemented yet!
 	const handlePathVariableChange = (event) => {
 		const name = event.target.name;
 		const value = event.target.value;
@@ -213,10 +227,14 @@ export function LoadTestSpecifier({ domain, rqas, selectedEdge }: LoadTestSpecif
 			path_variables: path_variables_copy,
 		}));
 	};
- */}
+ */
+}
 
-{/* Tryed to implement Parametrization. Not Part of Q3 */ }
-{/* {endpoint && (
+{
+  /* Tryed to implement Parametrization. Not Part of Q3 */
+}
+{
+  /* {endpoint && (
         <div>
           <h3>Parametrization Details</h3>
           {endpoint.path_variables && (
@@ -243,8 +261,8 @@ export function LoadTestSpecifier({ domain, rqas, selectedEdge }: LoadTestSpecif
             </div>
           )}
         </div>
-      )} */}
-
+      )} */
+}
 
 /*
 	// We need to extract the Endpoint from the DAM to get the Parametrization

@@ -4,8 +4,8 @@ import { InputRadio } from "../input/InputRadio";
 import { DropdownLeft } from "../DropdownLeft";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { addResilienceTestToRqa } from "../../queries/rqa";
-import { DomainStory } from "../../models/dam/domainstory/DomainStory";
-import { RuntimeQualityAnalysisDefinition } from "../../models/rqa/definition/RuntimeQualityAnalysisDefinition";
+import { DomainStory } from "../../types/dam/domainstory/DomainStory";
+import { RuntimeQualityAnalysisDefinition } from "../../types/rqa/definition/RuntimeQualityAnalysisDefinition";
 import {
   getActivitiesForSystem,
   getSystemsFromDomainStory,
@@ -13,7 +13,7 @@ import {
 import { validateObject } from "../../utils/rqa.utils";
 import { Edge } from "reactflow";
 import resiliencetestSpecs from "../../data/resiliencetest-specs.json";
-import { CreateResilienceTestDto } from "../../models/dtos/CreateResilienceTestDto";
+import { CreateResilienceTestDto } from "../../types/dtos/CreateResilienceTestDto";
 import { InputNumber } from "../input/InputNumber";
 
 interface ResilienceTestSpecifierProps {

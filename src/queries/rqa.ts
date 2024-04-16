@@ -1,9 +1,10 @@
 import axios from "axios";
-import { getBackendUrl } from "./dam";
+import { getBackendUrl } from "./domainstory";
 import { exampleRQAs } from "../data/exampleRQAs";
-import { LoadTestDefinition } from "../models/rqa/definition/loadtest/LoadTestDefinition";
-import { RuntimeQualityAnalysisDefinition } from "../models/rqa/definition/RuntimeQualityAnalysisDefinition";
-import { CreateResilienceTestDto } from "../models/dtos/CreateResilienceTestDto";
+import { CreateRqaDto } from "../types/dtos/CreateRqaDto";
+import { LoadTestDefinition } from "../types/rqa/definition/loadtest/LoadTestDefinition";
+import { RuntimeQualityAnalysisDefinition } from "../types/rqa/definition/RuntimeQualityAnalysisDefinition";
+import { CreateResilienceTestDto } from "../types/dtos/CreateResilienceTestDto";
 
 const backend = new URL("/api/v1", getBackendUrl());
 
@@ -42,7 +43,7 @@ export const getRqaById = (id: string) => {
   return axios.get(`${backend}/rqa-definition/${id}`).then((res) => res.data);
 };
 
-export const createRqa = (createRqaDto: RuntimeQualityAnalysisDefinition) => {
+export const createRqa = (createRqaDto: CreateRqaDto) => {
   return axios
     .post(`${backend}/rqa-definition`, createRqaDto)
     .then((res) => res.data);
@@ -54,12 +55,15 @@ export const deleteRqa = ({ rqaId }: { rqaId: string }) => {
     .then((res) => res.data);
 };
 
-export const deleteLoadtest = (deleteLoadtestPath) => {
-  // TODO delete LoadTest by ID
+export const deleteLoadtest = ({
+  rqaId,
+  loadtestId,
+}: {
+  rqaId: String;
+  loadtestId: String;
+}) => {
   return axios
-    .delete(
-      `${backend}/rqa-definition/${deleteLoadtestPath.rqaId}/loadtest/${deleteLoadtestPath.loadtestName}`
-    )
+    .delete(`${backend}/rqa-definition/${rqaId}/loadtest/${loadtestId}`)
     .then((res) => res.data);
 };
 
