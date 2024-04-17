@@ -104,7 +104,7 @@ export const exampleDomainStoryResilience: DomainStory = {
   activities: [
     {
       _id: "c_1",
-      action: "tells wish for",
+      action: "1: tells wish for",
       initiators: ["customer"],
       number: 1,
       targets: ["comparisonPortal"],
@@ -116,6 +116,24 @@ export const exampleDomainStoryResilience: DomainStory = {
       initiators: ["comparisonPortal"],
       number: 2,
       targets: ["leasingNinja"],
+      workObjects: ["contractRequest"],
+    },
+
+    {
+      _id: "c_12",
+      action: "sends",
+      initiators: ["comparisonPortal"],
+      number: 0,
+      targets: ["leasingCompetitionX"],
+      workObjects: ["contractRequest"],
+    },
+
+    {
+      _id: "c_13",
+      action: "sends",
+      initiators: ["comparisonPortal"],
+      number: 0,
+      targets: ["leasingCompetitionY"],
       workObjects: ["contractRequest"],
     },
     {
