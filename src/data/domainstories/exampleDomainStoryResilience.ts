@@ -43,7 +43,7 @@ export const exampleDomainStoryResilience: DomainStory = {
     {
       _id: "contractRequest",
       name: "Contract Request",
-      type: WorkObjectType.MESSAGE,
+      type: WorkObjectType.CONVERSATION,
     },
     {
       _id: "contractOffer",
@@ -63,17 +63,17 @@ export const exampleDomainStoryResilience: DomainStory = {
     {
       _id: "creditRating",
       name: "Credit Rating",
-      type: WorkObjectType.SHIELD,
+      type: WorkObjectType.SECURITY,
     },
     {
       _id: "resaleValue",
       name: "Resale Value",
-      type: WorkObjectType.HAMMER,
+      type: WorkObjectType.GAVEL,
     },
     {
       _id: "voteResult",
       name: "Vote Result",
-      type: WorkObjectType.RATING,
+      type: WorkObjectType.THUMB_UP_DOWN,
     },
     {
       _id: "contractOffer3",
