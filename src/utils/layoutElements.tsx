@@ -1,6 +1,7 @@
 import { Edge, Node } from "reactflow";
-import dagre from "dagre";
-const dagreGraph = new dagre.graphlib.Graph();
+import { graphlib, layout } from "@dagrejs/dagre";
+
+const dagreGraph = new graphlib.Graph();
 dagreGraph.setDefaultEdgeLabel(() => ({}));
 
 const nodeWidth = 172;
@@ -22,7 +23,7 @@ export const getLayoutedElements = (
     dagreGraph.setEdge(edge.source, edge.target);
   });
 
-  dagre.layout(dagreGraph);
+  layout(dagreGraph);
 
   nodes.forEach((node) => {
     const nodeWithPosition = dagreGraph.node(node.id);

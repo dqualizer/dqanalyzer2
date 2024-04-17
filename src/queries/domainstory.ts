@@ -1,7 +1,12 @@
 import axios from "axios";
 import { DomainStory } from "../types/dam/domainstory/DomainStory";
-import { exampleDomainstory } from "../data/domainstories/exampleDomainstory";
+import {
+  exampleDomainStoryResilience,
+  exampleSimpleDomainStoryResilience,
+  exampleSimpleDomainStoryResilience2,
+} from "../data/domainstories/exampleDomainStoryResilience";
 import { exampleDomainstories } from "../data/domainstories/exampleDomainStories";
+import { domainstoryResilience } from "../data/exampleDomainstory";
 
 export const getBackendUrl = () => {
   if (import.meta.env.DEV && import.meta.env.VITE_BACKEND_URL === "")
@@ -33,7 +38,10 @@ export const getDomainstoryByIdMock = async (id: String) => {
   return new Promise<DomainStory>((resolve) => {
     // Simulate a delay and an ID assignment as it might happen on a real backend
     setTimeout(() => {
-      resolve(exampleDomainstory); // Resolve the promise with the new domain story
+      resolve(exampleDomainStoryResilience);
+      //resolve(exampleSimpleDomainStoryResilience2);
+
+      // resolve(exampleDomainstory); // Resolve the promise with the new domain story
     }, 1000); // Simulate async operation with 1 second delay
   });
 };

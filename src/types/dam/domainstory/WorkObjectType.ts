@@ -1,8 +1,15 @@
 export enum WorkObjectType {
-    MISC,
-    DOCUMENT,
-    FOLDER,
-    CALL,
-    MESSAGE,
-    DATA
+  CALL = "Call",
+  CAR = "Car",
+  DATA = "Data",
+  DOCUMENT = "Document",
+  EURO = "Euro",
+  FOLDER = "Folder",
+  HAMMER = "Hammer",
+  MESSAGE = "Mesage",
+  MISC = "Misc",
+  PERSON = "Person",
+  RATING = "Rating",
+  SHIELD = "Shield",
+  SYSTEM = "System",
 }

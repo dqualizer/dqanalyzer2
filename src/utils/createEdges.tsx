@@ -4,10 +4,30 @@ import { Activity } from "../types/dam/domainstory/Activity";
 export const createActivityEdges = (activities: Activity[]) => {
   const edges: Edge[] = [];
   activities.forEach((activity) => {
-    activity.workObjects.forEach((workObject) => {
+    activity.workObjects.forEach((workObject, index) => {
       // TODO add support for multiple workobjects in an activity
       // Source Edge
-      const sourceEdge: Edge = {
+      let source;
+      let target;
+      if (index === 0) {
+        source = workObject;
+        target = activity.initiators[0];
+        const edge = createEdge(source, target, activity.action);
+        edges.push(edge);
+      }
+      if (index + 1 === activity.workObjects.length) {
+        source = activity.targets[0];
+        target = workObject;
+        const edge = createEdge(source, target, "to");
+        edges.push(edge);
+      } else {
+        source = activity.workObjects[index + 1];
+        target = workObject;
+        const edge = createEdge(source, target, "for");
+        edges.push(edge);
+      }
+
+      /* const sourceEdge: Edge = {
         id: activity._id + "_source" || "", // TODO make _id a required property
         source: workObject, // TODO create edge for each initiator
         type: "smoothstep",
@@ -34,9 +54,9 @@ export const createActivityEdges = (activities: Activity[]) => {
           height: 20,
         },
         selected: false,
-        label: "in",
+        label: "in/to",
       };
-      edges.push(targetEdge);
+      edges.push(targetEdge); */
     });
   });
   return edges;
@@ -57,4 +77,21 @@ export const createActivityEdges = (activities: Activity[]) => {
 		};
 		return edge;
 	}); */
+};
+
+const createEdge = (source: string, target: string, label: string) => {
+  const edge: Edge = {
+    id: `edge_${source}_${target}`, // TODO make _id a required property
+    source,
+    type: "straight",
+    target,
+    markerStart: {
+      type: MarkerType.ArrowClosed,
+      width: 20,
+      height: 20,
+    },
+    selected: false,
+    label,
+  };
+  return edge;
 };

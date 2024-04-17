@@ -24,6 +24,7 @@ import {
 
 import { useQuery } from "@tanstack/react-query";
 import { DomainStory } from "../types/dam/domainstory/DomainStory";
+import { DomainStoryGraph } from "./DomainStoryGraph";
 
 export function domainstoryLoader({ params }: LoaderFunctionArgs) {
   //Will be changed to actual getAllDomainstories
@@ -74,6 +75,7 @@ function Analyzer() {
             <Controls />
           </ReactFlow>
         </div>
+        {/* <DomainStoryGraph edges={edges} nodes={nodes}></DomainStoryGraph> */}
         <Sidebar
           nodes={nodes}
           edges={edges}
