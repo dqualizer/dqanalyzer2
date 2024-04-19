@@ -31,6 +31,8 @@ export function domainstoryLoader({ params }: LoaderFunctionArgs) {
   if (!params.damId) throw new Error("No Domainstory found.");
   return getDomainstoryByIdMock(params.damId);
 }
+// Add the custom node-type IconNode
+const nodeTypes: NodeTypes = { iconNode: IconNode };
 
 function Analyzer() {
   const domainstory: DomainStory = useLoaderData() as DomainStory;
@@ -38,9 +40,6 @@ function Analyzer() {
   // create the initial nodes and edges from the mapping
   const [initialNodes, initialEgdes]: [Node[], Edge[]] =
     createInitialElements(domainstory);
-
-  // Add the custom node-type IconNode
-  const nodeTypes: NodeTypes = { iconNode: IconNode };
   const [reactFlowInstance, setReactFlowInstance] = useState(null);
 
   // Use dagre.js to layout the elements, to render a nice graph
