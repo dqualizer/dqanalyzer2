@@ -5,7 +5,7 @@ import { InputRadio } from "../input/InputRadio";
 import { InputCheckbox } from "../input/InputCheckbox";
 import { DropdownLeft } from "../DropdownLeft";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { addLoadtestToRqa } from "../../queries/rqa";
+import { addLoadTestToRqa2, addLoadtestToRqa } from "../../queries/rqa";
 import { DomainStory } from "../../types/dam/domainstory/DomainStory";
 import { RuntimeQualityAnalysisDefinition } from "../../types/rqa/definition/RuntimeQualityAnalysisDefinition";
 import {
@@ -16,6 +16,9 @@ import { validateObject } from "../../utils/rqa.utils";
 import { LoadTestDefinition } from "../../types/rqa/definition/loadtest/LoadTestDefinition";
 import { Edge } from "reactflow";
 import loadtestSpecs from "../../data/loadtest-specs.json";
+import { CreateLoadTestDto } from "../../types/dtos/CreateLoadTestDto";
+import { ResultMetrics } from "../../types/rqa/definition/enums/ResultMetrics";
+import { ResponseTime } from "../../types/rqa/definition/enums/ResponseTime";
 
 interface LoadTestSpecifierProps {
   domainstory: DomainStory;
@@ -49,6 +52,45 @@ export default function LoadTestSpecifier({
     result_metrics: [],
   });
 
+  const [loadTestDto, setLoadTestDto] = useState<CreateLoadTestDto>({
+    name: "LoadTest" + new Date().getTime(),
+
+    system: "comparisonPortal" as any,
+    activity: "c_13" as any,
+    accuracy: 20,
+    load_profile: {
+      base_load: {
+        name: "",
+        type: "CONSTANT_LOAD",
+      },
+    },
+    response_time: ResponseTime.SATISFIED,
+    result_metrics: ["RESPONSE_TIME" as any],
+
+    /* system: undefined as any,
+    activity: undefined as any,
+    accuracy: undefined as any,
+    loadProfile: undefined as any,
+    responseTime: undefined as any,
+    resultMetrics: undefined as any, */
+
+    /* artifact: {
+      system_id: null,
+      activity_id: null,
+    },
+    stimulus: {
+      accuracy: 0,
+      workload: {
+        load_profile: null,
+        //type: null,
+      },
+    },
+    response_measure: {
+      response_time: null,
+    },
+    result_metrics: [], */
+  });
+
   const [showSubmitBtn, setShowSubmitBtn] = useState<boolean>();
 
   // Set System and Actvitivity, when selected edge changes
@@ -70,18 +112,19 @@ export default function LoadTestSpecifier({
   }, [selectedEdge, domainstory]);
 
   useEffect(() => {
-    setShowSubmitBtn(validateObject(loadTest));
+    setShowSubmitBtn(true || validateObject(loadTest));
   }, [loadTest]);
 
   const rqaMutation = useMutation({
-    mutationFn: addLoadtestToRqa,
+    mutationFn: addLoadTestToRqa2,
     onSuccess: (data) => {
       //queryClient.setQueryData(["rqas", data.id], data);
       queryClient.invalidateQueries(["rqas"]);
     },
   });
+
   const addToRqa = (rqaId: string) => {
-    rqaMutation.mutate({ rqaId, loadTest });
+    rqaMutation.mutate({ rqaId, loadTestDto });
   };
 
   const getLoadProfileParameters = (loadProfileType?: string) => {
@@ -121,30 +164,52 @@ export default function LoadTestSpecifier({
     });
   };
 
+  const handleChange2 = (
+    ev: ChangeEvent<HTMLInputElement | HTMLSelectElement>,
+    val: any
+  ) => {
+    setLoadTestDto((prev) => {
+      ev.target.name;
+      return {
+        ...prev,
+        [ev.target.name]: val,
+      };
+    });
+  };
+
   return (
     <div className="p-4 prose h-full overflow-auto bg-slate-200 ">
+      <p>{loadTest.stimulus?.workload?.type}</p>
+      <p>{loadTest.stimulus?.workload?.load_profile?.base_load?.name}</p>
+      <p>{loadTest.stimulus?.workload?.load_profile?.base_load?.type}</p>
+      <p>{loadTest.stimulus?.workload?.load_profile?.type}</p>
+
+      <p>{loadTestDto.system}</p>
+      <p>{loadTestDto.activity}</p>
+      <p>{loadTestDto.accuracy}</p>
+      <p>{loadTestDto.response_time}</p>
+      <p>{loadTestDto.name}</p>
+      <p>{loadTestDto.result_metrics}</p>
+
       <h3>Load Test Specification</h3>
       <h4>Domain Story Item</h4>
       <InputSelect
         label={"System"}
-        name={"artifact.system_id"}
-        value={loadTest.artifact?.system_id}
+        name={"system"}
+        value={loadTestDto.system}
         options={getSystemsFromDomainStory(domainstory)}
         optionName={"name"}
         optionValue={"_id"}
-        onChange={handleChange}
+        onChange={handleChange2}
       />
       <InputSelect
         label={"Activity"}
-        name={"artifact.activity_id"}
-        value={loadTest.artifact?.activity_id}
-        options={getActivitiesForSystem(
-          domainstory,
-          loadTest.artifact?.system_id
-        )}
+        name={"activity"}
+        value={loadTestDto.activity}
+        options={getActivitiesForSystem(domainstory, loadTestDto.system)}
         optionName={"action"}
         optionValue={"_id"}
-        onChange={handleChange}
+        onChange={handleChange2}
       />
       <div className="divider" />
       <h3>Load Design</h3>
@@ -174,9 +239,9 @@ export default function LoadTestSpecifier({
       })}
       <InputSlider
         label={"Accuracy"}
-        name={"stimulus.accuracy"}
-        value={loadTest.stimulus?.accuracy}
-        onChange={handleChange}
+        name={"accuracy"}
+        value={loadTestDto.accuracy}
+        onChange={handleChange2}
       />
       <div className="divider" />
       <h3>Response Measures</h3>
@@ -185,12 +250,12 @@ export default function LoadTestSpecifier({
           <InputRadio
             key={responseMeasure.type}
             label={responseMeasure.name}
-            name={"response_measure"}
-            value={loadTest.response_measure}
+            name={"response_time"}
+            value={loadTestDto.response_time}
             options={responseMeasure.options}
             optionName={"name"}
             optionValue={"value"}
-            onChange={handleChange}
+            onChange={handleChange2}
           />
         );
       })}

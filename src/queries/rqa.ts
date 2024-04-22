@@ -5,6 +5,7 @@ import { CreateRqaDto } from "../types/dtos/CreateRqaDto";
 import { LoadTestDefinition } from "../types/rqa/definition/loadtest/LoadTestDefinition";
 import { RuntimeQualityAnalysisDefinition } from "../types/rqa/definition/RuntimeQualityAnalysisDefinition";
 import { CreateResilienceTestDto } from "../types/dtos/CreateResilienceTestDto";
+import { CreateLoadTestDto } from "../types/dtos/CreateLoadTestDto";
 
 const backend = new URL("/api/v1", getBackendUrl());
 
@@ -76,6 +77,19 @@ export const addLoadtestToRqa = ({
 }) => {
   return axios
     .put(`${backend}/rqa-definition/${rqaId}/loadtest`, loadTest)
+    .then((res) => res.data);
+};
+
+export const addLoadTestToRqa2 = ({
+  rqaId,
+  loadTestDto,
+}: {
+  rqaId: string;
+  loadTestDto: CreateLoadTestDto;
+}) => {
+  console.log("SUBMIT", loadTestDto);
+  return axios
+    .put(`${backend}/rqa-definition/${rqaId}/loadtest`, loadTestDto)
     .then((res) => res.data);
 };
 
