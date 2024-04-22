@@ -112,7 +112,7 @@ export const exampleDomainStoryResilience: DomainStory = {
     },
     {
       _id: "c_2",
-      action: "sends",
+      action: "2: sends",
       initiators: ["comparisonPortal"],
       number: 2,
       targets: ["leasingNinja"],
@@ -121,7 +121,7 @@ export const exampleDomainStoryResilience: DomainStory = {
 
     {
       _id: "c_12",
-      action: "sends",
+      action: "2: sends",
       initiators: ["comparisonPortal"],
       number: 0,
       targets: ["leasingCompetitionX"],
@@ -130,7 +130,7 @@ export const exampleDomainStoryResilience: DomainStory = {
 
     {
       _id: "c_13",
-      action: "sends",
+      action: "2: sends",
       initiators: ["comparisonPortal"],
       number: 0,
       targets: ["leasingCompetitionY"],
@@ -138,7 +138,7 @@ export const exampleDomainStoryResilience: DomainStory = {
     },
     {
       _id: "c_3",
-      action: "creates",
+      action: "3: creates",
       initiators: ["leasingNinja"],
       number: 3,
       targets: [],
@@ -146,7 +146,7 @@ export const exampleDomainStoryResilience: DomainStory = {
     },
     {
       _id: "c_4",
-      action: "calculates",
+      action: "4: calculates",
       initiators: ["leasingNinja"],
       number: 4,
       targets: [],
@@ -154,7 +154,7 @@ export const exampleDomainStoryResilience: DomainStory = {
     },
     {
       _id: "c_5",
-      action: "checks",
+      action: "5: checks",
       initiators: ["riskApi"],
       number: 5,
       targets: [],
@@ -162,7 +162,7 @@ export const exampleDomainStoryResilience: DomainStory = {
     },
     {
       _id: "c_6",
-      action: "calculates",
+      action: "6: calculates",
       initiators: ["riskApi"],
       number: 6,
       targets: [],
@@ -170,7 +170,7 @@ export const exampleDomainStoryResilience: DomainStory = {
     },
     {
       _id: "c_7",
-      action: "calculates",
+      action: "7: calculates",
       initiators: ["riskApi"],
       number: 7,
       targets: ["leasingNinja"],
@@ -178,7 +178,7 @@ export const exampleDomainStoryResilience: DomainStory = {
     },
     {
       _id: "c_8",
-      action: "persists",
+      action: "8: persists",
       initiators: ["leasingNinja"],
       number: 8,
       targets: [],
@@ -186,7 +186,7 @@ export const exampleDomainStoryResilience: DomainStory = {
     },
     {
       _id: "c_9",
-      action: "sends",
+      action: "9: sends",
       initiators: ["leasingNinja"],
       number: 9,
       targets: ["comparisonPortal"],
@@ -194,7 +194,7 @@ export const exampleDomainStoryResilience: DomainStory = {
     },
     {
       _id: "c_10",
-      action: "sends",
+      action: "10: sends",
       initiators: ["comparisonPortal"],
       number: 10,
       targets: ["customer"],
@@ -202,7 +202,7 @@ export const exampleDomainStoryResilience: DomainStory = {
     },
     {
       _id: "c_11",
-      action: "signs",
+      action: "11: signs",
       initiators: ["customer"],
       number: 11,
       targets: ["leasingNinja"],
