@@ -81,12 +81,12 @@ export const domainstoryResilience: DomainStory = {
     {
       _id: "w_1",
       name: "Quotation Request",
-      type: WorkObjectType.MESSAGE,
+      type: WorkObjectType.CONVERSATION,
     },
     {
       _id: "w_2",
       name: "Quotation Request",
-      type: WorkObjectType.MESSAGE,
+      type: WorkObjectType.CONVERSATION,
     },
     {
       _id: "w_3",
