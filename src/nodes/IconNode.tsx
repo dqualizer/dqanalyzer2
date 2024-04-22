@@ -61,7 +61,10 @@ export default function IconNode({ data, id }: NodeProps<NodeData>) {
           </button>
         </div>
       </NodeToolbar>
-      <Icon name={data.icon as any} className="iconNode" />
+      <Icon
+        name={data.icon as any}
+        className="iconNode dark:bg-white dark:rounded-sm"
+      />
       <p>{data.label}</p>
       {/* {
 				openInput ? <TextInput className="nodeNameInput" onInputChange={handleInputChange} onEnterPress={handleEnterPress} /> :
