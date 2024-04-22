@@ -36,11 +36,7 @@ export function LoadTestDetail({
       <ul>
         <li>{<StimulusDetail stimulus={loadTestDefinition.stimulus} />}</li>
         <li>
-          {
-            <ParametrizationDetail
-              parametrization={loadTestDefinition.parametrization}
-            />
-          }
+
         </li>
         <li>
           {
