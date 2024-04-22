@@ -27,10 +27,10 @@ export const getAllRqas = async () => {
           rqa.runtime_quality_analysis.loadtests;
       }
       if (
-        !rqa.runtime_quality_analysis?.resilienceTestDefinition &&
+        !rqa.runtime_quality_analysis?.resilienceDefinition &&
         rqa.runtime_quality_analysis?.resilienceTests
       ) {
-        rqa.runtime_quality_analysis.resilienceTestDefinition =
+        rqa.runtime_quality_analysis.resilienceDefinition =
           rqa.runtime_quality_analysis.resilienceTests;
       }
       return rqa as RuntimeQualityAnalysisDefinition;
@@ -89,5 +89,19 @@ export const addResilienceTestToRqa = ({
   console.log("addResiliencetestToRqa", "rqaId: " + rqaId, resilienceTestDto);
   return axios
     .put(`${backend}/rqa-definition/${rqaId}/resilienceTest`, resilienceTestDto)
+    .then((res) => res.data);
+};
+
+export const deleteResilienceTest = ({
+  rqaId,
+  resilienceTestId,
+}: {
+  rqaId: String;
+  resilienceTestId: String;
+}) => {
+  return axios
+    .delete(
+      `${backend}/rqa-definition/${rqaId}/resilienceTest/${resilienceTestId}`
+    )
     .then((res) => res.data);
 };

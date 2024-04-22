@@ -2,22 +2,22 @@ import { useRef } from "react";
 import { LoadTestDetail } from "./LoadTestDetail";
 import { LoadTestDefinition } from "../../../types/rqa/definition/loadtest/LoadTestDefinition";
 
-interface LoadtestsProps {
+interface LoadTestListProps {
   loadTestDefinition: LoadTestDefinition[];
   rqaId?: string;
-  loadtestSpecifier: any;
+  loadTestSpecifier: any;
 }
 
 export function LoadTestList({
   loadTestDefinition,
   rqaId,
-  loadtestSpecifier,
-}: LoadtestsProps) {
+  loadTestSpecifier,
+}: LoadTestListProps) {
   const detailsRef = useRef(null);
   return (
     <details ref={detailsRef}>
       <summary>
-        <span>Loadtests</span>
+        <span>Load Tests</span>
       </summary>
       <ul>
         {loadTestDefinition.map((loadtest) => {
@@ -27,7 +27,7 @@ export function LoadTestList({
                 loadTestDefinition={loadtest}
                 parentMenuRef={detailsRef}
                 rqaId={rqaId}
-                loadtestSpecifier={loadtestSpecifier}
+                loadTestSpecifier={loadTestSpecifier}
               />
             </li>
           );

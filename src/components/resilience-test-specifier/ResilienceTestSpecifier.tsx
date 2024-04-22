@@ -31,7 +31,7 @@ export function ResilienceTestSpecifier({
 
   const [resilienceTestDto, setResilienceTestDto] =
     useState<CreateResilienceTestDto>({
-      name: "ResilienceTest " + new Date().toLocaleString(),
+      name: "ResilienceTest" + new Date().getTime(),
       description: "ResilienceTestDescription",
       system_id: undefined as any,
       stimulus_type: "" as any,

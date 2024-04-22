@@ -14,8 +14,5 @@ export const createInitialElements = (
   const initialNodes: Node[] = [...actorNodes, ...workObjectNodes];
   const initialEgdes: Edge[] = createActivityEdges(domainStory.activities);
 
-  console.log(initialNodes);
-  console.log(initialEgdes);
-
   return [initialNodes, initialEgdes];
 };

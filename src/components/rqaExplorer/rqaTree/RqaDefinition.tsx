@@ -1,13 +1,19 @@
 import { LoadTestList } from "./LoadTestList";
 import { RuntimeQualityAnalysisDefinition } from "../../../types/rqa/definition/RuntimeQualityAnalysisDefinition";
 import axios from "axios";
+import { ResilienceTestList } from "./ResilienceTestList";
 
 interface RqaDefinitionProps {
   rqa: RuntimeQualityAnalysisDefinition;
-  loadtestSpecifier: any;
+  loadTestSpecifier: any;
+  resilienceTestSpecifier: any;
 }
 
-export function RqaDefinition({ rqa, loadtestSpecifier }: RqaDefinitionProps) {
+export function RqaDefinition({
+  rqa,
+  loadTestSpecifier,
+  resilienceTestSpecifier,
+}: RqaDefinitionProps) {
   const handleExecute = () => {
     var data_copy = rqa; // The other components call the system_id and activity_id "object" and "activity"
     const call = axios
@@ -20,7 +26,16 @@ export function RqaDefinition({ rqa, loadtestSpecifier }: RqaDefinitionProps) {
         <LoadTestList
           loadTestDefinition={rqa.runtime_quality_analysis.loadTestDefinition}
           rqaId={rqa._id}
-          loadtestSpecifier={loadtestSpecifier}
+          loadTestSpecifier={loadTestSpecifier}
+        />
+      </li>
+      <li>
+        <ResilienceTestList
+          resilienceTestDefinition={
+            rqa.runtime_quality_analysis.resilienceDefinition
+          }
+          rqaId={rqa._id}
+          resilienceTestSpecifier={resilienceTestSpecifier}
         />
       </li>
       <li>

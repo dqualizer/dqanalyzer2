@@ -6,19 +6,19 @@ import { DeleteLoadTestButton } from "../Buttons/DeleteLoadTestButton";
 import { EditLoadTestButton } from "./EditLoadTestButton";
 import { LoadTestDefinition } from "../../../types/rqa/definition/loadtest/LoadTestDefinition";
 
-interface LoadtestProps {
+interface LoadTestDetailProps {
   loadTestDefinition: LoadTestDefinition;
   rqaId?: string;
-  loadtestSpecifier: any;
+  loadTestSpecifier: any;
   parentMenuRef: any;
 }
 
 export function LoadTestDetail({
   loadTestDefinition,
   rqaId,
-  loadtestSpecifier,
+  loadTestSpecifier,
   parentMenuRef,
-}: LoadtestProps) {
+}: LoadTestDetailProps) {
   return (
     <details>
       <summary className="flex justify-between items-center">
@@ -29,7 +29,7 @@ export function LoadTestDetail({
           parentMenuRef={parentMenuRef}
         />
         <EditLoadTestButton
-          loadtestSpecifier={loadtestSpecifier}
+          loadTestSpecifier={loadTestSpecifier}
           parentMenuRef={parentMenuRef}
         />
       </summary>

@@ -233,7 +233,10 @@ export default function Sidebar({
           </div>
         )}
         {rqaExplorerShow && (
-          <RqaList loadtestSpecifier={setShowLoadTestSpecifier} />
+          <RqaList
+            loadTestSpecifier={setShowLoadTestSpecifier}
+            resilienceTestSpecifier={setShowResilienceTestSpecifier}
+          />
         )}
       </div>
     );

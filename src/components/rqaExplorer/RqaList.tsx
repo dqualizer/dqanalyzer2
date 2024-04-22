@@ -7,10 +7,14 @@ import { RqaListItem } from "./RqaListItem";
 import { RqaInput } from "./RqaInput";
 
 interface RqaListProps {
-  loadtestSpecifier: any;
+  loadTestSpecifier: any;
+  resilienceTestSpecifier: any;
 }
 
-export function RqaList({ loadtestSpecifier }: RqaListProps) {
+export function RqaList({
+  loadTestSpecifier,
+  resilienceTestSpecifier,
+}: RqaListProps) {
   const rqaQuery = useQuery({
     queryKey: ["rqas"],
     queryFn: getAllRqas,
@@ -36,7 +40,8 @@ export function RqaList({ loadtestSpecifier }: RqaListProps) {
             <RqaListItem
               key={rqa._id}
               rqa={rqa}
-              loadtestSpecifier={loadtestSpecifier}
+              loadTestSpecifier={loadTestSpecifier}
+              resilienceTestSpecifier={resilienceTestSpecifier}
             />
           ))}
         {inputOpen && <RqaInput setInputOpen={setInputOpen} />}

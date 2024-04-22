@@ -6,10 +6,15 @@ import { RuntimeQualityAnalysisDefinition } from "../../types/rqa/definition/Run
 
 interface RqaListItemProps {
   rqa: RuntimeQualityAnalysisDefinition;
-  loadtestSpecifier: any;
+  loadTestSpecifier: any;
+  resilienceTestSpecifier: any;
 }
 
-export function RqaListItem({ rqa, loadtestSpecifier }: RqaListItemProps) {
+export function RqaListItem({
+  rqa,
+  loadTestSpecifier,
+  resilienceTestSpecifier,
+}: RqaListItemProps) {
   const detailsRef = useRef(null);
   return (
     <ul className="menu rounded-box px-0 text-base py-0 my-4">
@@ -23,7 +28,11 @@ export function RqaListItem({ rqa, loadtestSpecifier }: RqaListItemProps) {
               action={deleteRqa}
             />
           </summary>
-          <RqaDefinition rqa={rqa} loadtestSpecifier={loadtestSpecifier} />
+          <RqaDefinition
+            rqa={rqa}
+            loadTestSpecifier={loadTestSpecifier}
+            resilienceTestSpecifier={resilienceTestSpecifier}
+          />
         </details>
       </li>
     </ul>
