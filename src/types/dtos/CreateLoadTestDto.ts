@@ -6,9 +6,9 @@ export interface CreateLoadTestDto {
   name: string;
   system: string;
   activity: string;
-  load_profile: LoadProfile;
+  load_profile: string;
   accuracy: number;
-  design_Prameters?: any;
+  design_parameters?: any;
   response_time: ResponseTime;
   result_metrics: ResultMetrics[];
 }

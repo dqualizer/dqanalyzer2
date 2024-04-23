@@ -1,266 +1,140 @@
 {
-	"loadProfiles": [
-		{
-			"name": "Load Peak",
-			"type": "peak",
-			"parameters": [
-				{
-					"name": "Base Load",
-					"type": "base_load",
-					"options": [
-						{
-							"type": "integer",
-							"name": "None",
-							"value": 0
-						},
-						{
-							"type": "integer",
-							"name": "Low",
-							"value": 2
-						},
-						{
-							"type": "integer",
-							"name": "Medium",
-							"value": 5
-						}
-					]
-				},
-				{
-					"name": "Peak Load",
-					"type": "peak_load",
-					"options": [
-						{
-							"type": "integer",
-							"name": "High",
-							"value": 10
-						},
-						{
-							"type": "integer",
-							"name": "Very High",
-							"value": 15
-						},
-						{
-							"type": "integer",
-							"name": "Extremly High",
-							"value": 30
-						}
-					]
-				},
-				{
-					"name": "Duration",
-					"type": "duration",
-					"options": [
-						{
-							"type": "integer",
-							"name": "Slow",
-							"value": 20
-						},
-						{
-							"type": "integer",
-							"name": "Fast",
-							"value": 15
-						},
-						{
-							"type": "integer",
-							"name": "Very Fast",
-							"value": 10
-						}
-					]
-				}
-			]
-		},
-		{
-			"name": "Load Increase",
-			"type": "increase",
-			"parameters": [
-				{
-					"name": "Base Load",
-					"type": "base_load",
-					"options": [
-						{
-							"type": "integer",
-							"name": "None",
-							"value": 0
-						},
-						{
-							"type": "integer",
-							"name": "Low",
-							"value": 2
-						},
-						{
-							"type": "integer",
-							"name": "Medium",
-							"value": 5
-						}
-					]
-				},
-				{
-					"name": "Highest Load",
-					"type": "highest_load",
-					"options": [
-						{
-							"type": "integer",
-							"name": "High",
-							"value": 10
-						},
-						{
-							"type": "integer",
-							"name": "Very High",
-							"value": 15
-						},
-						{
-							"type": "integer",
-							"name": "Extremly High",
-							"value": 30
-						}
-					]
-				},
-				{
-					"name": "Time to Highest Load",
-					"type": "time_to_highest_load",
-					"options": [
-						{
-							"type": "integer",
-							"name": "Slow",
-							"value": 20
-						},
-						{
-							"type": "integer",
-							"name": "Fast",
-							"value": 15
-						},
-						{
-							"type": "integer",
-							"name": "Very Fast",
-							"value": 10
-						}
-					]
-				},
-				{
-					"name": "Constant Duration",
-					"type": "constant_duration",
-					"options": [
-						{
-							"type": "integer",
-							"name": "Slow",
-							"value": 20
-						},
-						{
-							"type": "integer",
-							"name": "Fast",
-							"value": 15
-						},
-						{
-							"type": "integer",
-							"name": "Very Fast",
-							"value": 10
-						}
-					]
-				}
-			]
-		},
-		{
-			"name": "Constant Load",
-			"type": "constant",
-			"parameters": [
-				{
-					"name": "Base Load",
-					"type": "base_load",
-					"options": [
-						{
-							"type": "integer",
-							"name": "Low",
-							"value": 10
-						},
-						{
-							"type": "integer",
-							"name": "Medium",
-							"value": 20
-						},
-						{
-							"type": "integer",
-							"name": "High",
-							"value": 30
-						}
-					]
-				},
-				{
-					"name": "Target Load",
-					"type": "target_load",
-					"options": [
-						{
-							"type": "integer",
-							"name": "High",
-							"value": 30
-						},
-						{
-							"type": "integer",
-							"name": "Very High",
-							"value": 40
-						},
-						{
-							"type": "integer",
-							"name": "Extremly High",
-							"value": 50
-						}
-					]
-				},
-				{
-					"name": "Duration",
-					"type": "duration",
-					"options": [
-						{
-							"type": "integer",
-							"name": "Slow",
-							"value": 20
-						},
-						{
-							"type": "integer",
-							"name": "Fast",
-							"value": 15
-						},
-						{
-							"type": "integer",
-							"name": "Very Fast",
-							"value": 10
-						}
-					]
-				}
-			]
-		}
-	],
-	"response_measures": [
-		{
-			"name": "Response Time",
-			"type": "response_time",
-			"options": [
-				{
-					"name": "Satisfied",
-					"value": 0
-				},
-				{
-					"name": "Tolerated",
-					"value": 1
-				},
-				{
-					"name": "Frustrated",
-					"value": 2
-				}
-			]
-		}
-	],
-	"result_metrics": [
-		{
-			"name": "Response Time",
-			"value": 0
-		},
-		{
-			"name": "90th Percentile",
-			"value": 1
-		},
-		{
-			"name": "95th Percentile",
-			"value": 2
-		}
-	]
+  "loadProfiles": [
+    {
+      "name": "Load Peak",
+      "type": "LOAD_PEAK",
+      "parameters": [
+        {
+          "name": "Highest Load",
+          "type": "highest_load",
+          "options": [
+            {
+              "type": "integer",
+              "name": "High",
+              "value": "HIGH"
+            },
+            {
+              "type": "integer",
+              "name": "Very High",
+              "value": "VERY_HIGH"
+            },
+            {
+              "type": "integer",
+              "name": "Extremly High",
+              "value": "EXTREMLY_HIGH"
+            }
+          ]
+        },
+        {
+          "name": "Time to Highest Load",
+          "type": "time_to_highest_load",
+          "options": [
+            {
+              "type": "integer",
+              "name": "Slow",
+              "value": "SLOW"
+            },
+            {
+              "type": "integer",
+              "name": "Fast",
+              "value": "FAST"
+            },
+            {
+              "type": "integer",
+              "name": "Very Fast",
+              "value": "VERY_FAST"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Load Increase",
+      "type": "LOAD_INCREASE",
+      "parameters": [
+        {
+          "name": "Type of Increase",
+          "type": "type_of_increase",
+          "options": [
+            {
+              "type": "integer",
+              "name": "Linear",
+              "value": "LINEAR"
+            },
+            {
+              "type": "integer",
+              "name": "Quadratic",
+              "value": "QUADRATIC"
+            },
+            {
+              "type": "integer",
+              "name": "Cubic",
+              "value": "CUBIC"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Constant Load",
+      "type": "CONSTANT_LOAD",
+      "parameters": [
+        {
+          "name": "Base Load",
+          "type": "base_load",
+          "options": [
+            {
+              "type": "integer",
+              "name": "Low",
+              "value": "LOW"
+            },
+            {
+              "type": "integer",
+              "name": "Medium",
+              "value": "MEDIUM"
+            },
+            {
+              "type": "integer",
+              "name": "High",
+              "value": "HIGH"
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "response_measures": [
+    {
+      "name": "Response Time",
+      "type": "response_time",
+      "options": [
+        {
+          "name": "Satisfied",
+          "value": 0
+        },
+        {
+          "name": "Tolerated",
+          "value": 1
+        },
+        {
+          "name": "Frustrated",
+          "value": 2
+        }
+      ]
+    }
+  ],
+  "result_metrics": [
+    {
+      "name": "Response Time",
+      "value": "RESPONSE_TIME"
+    },
+    {
+      "name": "90th Percentile",
+      "value": "NINETY_PERCENTILE"
+    },
+    {
+      "name": "95th Percentile",
+      "value": "NINETY_FIVE_PERCENTILE"
+    }
+  ]
 }

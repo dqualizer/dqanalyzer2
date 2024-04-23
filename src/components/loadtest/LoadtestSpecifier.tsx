@@ -5,7 +5,7 @@ import { InputRadio } from "../input/InputRadio";
 import { InputCheckbox } from "../input/InputCheckbox";
 import { DropdownLeft } from "../DropdownLeft";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { addLoadTestToRqa2, addLoadtestToRqa } from "../../queries/rqa";
+import { addLoadTestToRqa } from "../../queries/rqa";
 import { DomainStory } from "../../types/dam/domainstory/DomainStory";
 import { RuntimeQualityAnalysisDefinition } from "../../types/rqa/definition/RuntimeQualityAnalysisDefinition";
 import {
@@ -13,12 +13,9 @@ import {
   getSystemsFromDomainStory,
 } from "../../utils/dam.utils";
 import { validateObject } from "../../utils/rqa.utils";
-import { LoadTestDefinition } from "../../types/rqa/definition/loadtest/LoadTestDefinition";
 import { Edge } from "reactflow";
 import loadtestSpecs from "../../data/loadtest-specs.json";
 import { CreateLoadTestDto } from "../../types/dtos/CreateLoadTestDto";
-import { ResultMetrics } from "../../types/rqa/definition/enums/ResultMetrics";
-import { ResponseTime } from "../../types/rqa/definition/enums/ResponseTime";
 
 interface LoadTestSpecifierProps {
   domainstory: DomainStory;
@@ -33,62 +30,15 @@ export default function LoadTestSpecifier({
 }: LoadTestSpecifierProps) {
   const queryClient = useQueryClient();
 
-  const [loadTest, setLoadTest] = useState<LoadTestDefinition>({
-    name: "LoadTest",
-    artifact: {
-      system_id: null,
-      activity_id: null,
-    },
-    stimulus: {
-      accuracy: 0,
-      workload: {
-        load_profile: null,
-        //type: null,
-      },
-    },
-    response_measure: {
-      response_time: null,
-    },
-    result_metrics: [],
-  });
-
   const [loadTestDto, setLoadTestDto] = useState<CreateLoadTestDto>({
     name: "LoadTest" + new Date().getTime(),
-
-    system: "comparisonPortal" as any,
-    activity: "c_13" as any,
-    accuracy: 20,
-    load_profile: {
-      base_load: {
-        name: "",
-        type: "CONSTANT_LOAD",
-      },
-    },
-    response_time: ResponseTime.SATISFIED,
-    result_metrics: ["RESPONSE_TIME" as any],
-
-    /* system: undefined as any,
+    system: undefined as any,
     activity: undefined as any,
     accuracy: undefined as any,
-    loadProfile: undefined as any,
-    responseTime: undefined as any,
-    resultMetrics: undefined as any, */
-
-    /* artifact: {
-      system_id: null,
-      activity_id: null,
-    },
-    stimulus: {
-      accuracy: 0,
-      workload: {
-        load_profile: null,
-        //type: null,
-      },
-    },
-    response_measure: {
-      response_time: null,
-    },
-    result_metrics: [], */
+    load_profile: undefined as any,
+    design_parameters: {},
+    response_time: undefined as any,
+    result_metrics: [],
   });
 
   const [showSubmitBtn, setShowSubmitBtn] = useState<boolean>();
@@ -99,26 +49,23 @@ export default function LoadTestSpecifier({
       const activityId = selectedEdge.id;
       const systemId = selectedEdge.target;
       if (!activityId || !systemId) return;
-      setLoadTest((prev) => {
+      setLoadTestDto((prev) => {
         return {
           ...prev,
-          artifact: {
-            activity_id: activityId,
-            system_id: systemId,
-          },
+          system: systemId,
+          activity: activityId,
         };
       });
     }
   }, [selectedEdge, domainstory]);
 
   useEffect(() => {
-    setShowSubmitBtn(true || validateObject(loadTest));
-  }, [loadTest]);
+    setShowSubmitBtn(validateObject(loadTestDto));
+  }, [loadTestDto]);
 
   const rqaMutation = useMutation({
-    mutationFn: addLoadTestToRqa2,
+    mutationFn: addLoadTestToRqa,
     onSuccess: (data) => {
-      //queryClient.setQueryData(["rqas", data.id], data);
       queryClient.invalidateQueries(["rqas"]);
     },
   });
@@ -135,41 +82,9 @@ export default function LoadTestSpecifier({
 
   const handleChange = (
     ev: ChangeEvent<HTMLInputElement | HTMLSelectElement>,
-    data?: any
-  ) => {
-    setLoadTest((prev) => {
-      const { name, type } = ev.target;
-      const nextState = { ...prev };
-      let currentObj: any = nextState;
-      const keys = name.split(".");
-
-      for (let i = 0; i < keys.length - 1; i++) {
-        const key = keys[i];
-        if (!currentObj[key]) {
-          currentObj[key] = {};
-        }
-        currentObj = currentObj[key];
-      }
-      const lastKey = keys[keys.length - 1];
-
-      if (type === "checkbox") {
-        currentObj[lastKey] = (ev.target as HTMLInputElement).checked
-          ? [...currentObj[lastKey], data]
-          : currentObj[lastKey].filter((val: any) => val !== data);
-      } else {
-        currentObj[lastKey] = data;
-      }
-
-      return nextState;
-    });
-  };
-
-  const handleChange2 = (
-    ev: ChangeEvent<HTMLInputElement | HTMLSelectElement>,
     val: any
   ) => {
     setLoadTestDto((prev) => {
-      ev.target.name;
       return {
         ...prev,
         [ev.target.name]: val,
@@ -177,20 +92,42 @@ export default function LoadTestSpecifier({
     });
   };
 
+  const handleChangeForLoadProfileParameters = (
+    ev: ChangeEvent<HTMLInputElement>,
+    val: any
+  ) => {
+    setLoadTestDto((prev) => {
+      const key = ev.target.name as string;
+      const designParameters = {
+        ...prev.design_parameters,
+        [key]: val.value,
+      };
+      return {
+        ...prev,
+        design_parameters: designParameters,
+      };
+    });
+  };
+
+  const handleChangeForCheckbox = (
+    ev: ChangeEvent<HTMLInputElement>,
+    data?: any
+  ) => {
+    setLoadTestDto((prev: any) => {
+      const key = ev.target.name as string;
+      const checked = (ev.target as HTMLInputElement).checked;
+      const value = checked
+        ? [...prev[key], data]
+        : prev[key].filter((val: any) => val !== data);
+      return {
+        ...prev,
+        [ev.target.name]: value,
+      };
+    });
+  };
+
   return (
     <div className="p-4 prose h-full overflow-auto bg-slate-200 ">
-      <p>{loadTest.stimulus?.workload?.type}</p>
-      <p>{loadTest.stimulus?.workload?.load_profile?.base_load?.name}</p>
-      <p>{loadTest.stimulus?.workload?.load_profile?.base_load?.type}</p>
-      <p>{loadTest.stimulus?.workload?.load_profile?.type}</p>
-
-      <p>{loadTestDto.system}</p>
-      <p>{loadTestDto.activity}</p>
-      <p>{loadTestDto.accuracy}</p>
-      <p>{loadTestDto.response_time}</p>
-      <p>{loadTestDto.name}</p>
-      <p>{loadTestDto.result_metrics}</p>
-
       <h3>Load Test Specification</h3>
       <h4>Domain Story Item</h4>
       <InputSelect
@@ -200,7 +137,7 @@ export default function LoadTestSpecifier({
         options={getSystemsFromDomainStory(domainstory)}
         optionName={"name"}
         optionValue={"_id"}
-        onChange={handleChange2}
+        onChange={handleChange}
       />
       <InputSelect
         label={"Activity"}
@@ -209,31 +146,29 @@ export default function LoadTestSpecifier({
         options={getActivitiesForSystem(domainstory, loadTestDto.system)}
         optionName={"action"}
         optionValue={"_id"}
-        onChange={handleChange2}
+        onChange={handleChange}
       />
       <div className="divider" />
       <h3>Load Design</h3>
       <InputSelect
         label={"Load Profile"}
-        name={"stimulus.workload.load_profile.type"}
-        value={loadTest.stimulus?.workload?.load_profile?.type}
+        name={"load_profile"}
+        value={loadTestDto.load_profile}
         options={loadtestSpecs.loadProfiles}
         optionName={"name"}
         optionValue={"type"}
         onChange={handleChange}
       />
-      {getLoadProfileParameters(
-        loadTest.stimulus?.workload?.load_profile?.type
-      )?.map((parameter) => {
+      {getLoadProfileParameters(loadTestDto.load_profile)?.map((parameter) => {
         return (
           <InputRadio
             key={parameter.type}
             label={parameter.name}
-            name={"stimulus.workload.load_profile." + parameter.type}
-            value={loadTest.stimulus?.workload?.load_profile?.type}
+            name={parameter.type}
+            value={loadTestDto.load_profile}
             options={parameter.options}
             optionName={"name"}
-            onChange={handleChange}
+            onChange={handleChangeForLoadProfileParameters}
           />
         );
       })}
@@ -241,7 +176,7 @@ export default function LoadTestSpecifier({
         label={"Accuracy"}
         name={"accuracy"}
         value={loadTestDto.accuracy}
-        onChange={handleChange2}
+        onChange={handleChange}
       />
       <div className="divider" />
       <h3>Response Measures</h3>
@@ -255,7 +190,7 @@ export default function LoadTestSpecifier({
             options={responseMeasure.options}
             optionName={"name"}
             optionValue={"value"}
-            onChange={handleChange2}
+            onChange={handleChange}
           />
         );
       })}
@@ -268,8 +203,10 @@ export default function LoadTestSpecifier({
             label={option.name}
             name="result_metrics"
             value={option.value}
-            checked={!!loadTest.result_metrics?.includes(option.value)}
-            onChange={handleChange}
+            checked={
+              !!loadTestDto.result_metrics?.includes(option.value as any)
+            }
+            onChange={handleChangeForCheckbox}
           />
         );
       })}

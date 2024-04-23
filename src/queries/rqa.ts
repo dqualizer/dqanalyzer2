@@ -68,26 +68,13 @@ export const deleteLoadtest = ({
     .then((res) => res.data);
 };
 
-export const addLoadtestToRqa = ({
-  rqaId,
-  loadTest,
-}: {
-  rqaId: string;
-  loadTest: LoadTestDefinition;
-}) => {
-  return axios
-    .put(`${backend}/rqa-definition/${rqaId}/loadtest`, loadTest)
-    .then((res) => res.data);
-};
-
-export const addLoadTestToRqa2 = ({
+export const addLoadTestToRqa = ({
   rqaId,
   loadTestDto,
 }: {
   rqaId: string;
   loadTestDto: CreateLoadTestDto;
 }) => {
-  console.log("SUBMIT", loadTestDto);
   return axios
     .put(`${backend}/rqa-definition/${rqaId}/loadtest`, loadTestDto)
     .then((res) => res.data);
