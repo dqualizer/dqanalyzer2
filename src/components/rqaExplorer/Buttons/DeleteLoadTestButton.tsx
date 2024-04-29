@@ -28,10 +28,11 @@ export function DeleteLoadTestButton({
 
   const handleDelete = (e: MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
-    if (rqaId && loadTestDefinition._id) {
+    // TODO change to delete LoadTests via their ID, when implemented in API
+    if (rqaId && loadTestDefinition.name) {
       deleteLoadtestMutation.mutate({
         rqaId: rqaId,
-        loadtestId: loadTestDefinition._id,
+        loadtestId: loadTestDefinition.name,
       });
     }
   };
