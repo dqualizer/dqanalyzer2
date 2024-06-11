@@ -1,6 +1,6 @@
 export enum Environment {
-	PROD,
-	TEST,
-	DEV,
-	INT,
+	PROD = 0,
+	TEST = 1,
+	DEV = 2,
+	INT = 3,
 }

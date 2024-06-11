@@ -1,5 +1,17 @@
-node_modules /
-    dist
-test.json
+node_modules/
+old/
+.github/
+.devenv/
+.direnv/
+.next/
+doc/
+screenshots/
+.envrc
+.gitignore
+.templatesyncignore
+docker-compose.yml
 Dockerfile
-npm - debug.log
+flake.lock
+flake.nix
+LICENSE
+*.md

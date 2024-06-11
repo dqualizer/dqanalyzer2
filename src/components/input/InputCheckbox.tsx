@@ -1,4 +1,4 @@
-import { ChangeEvent } from "react";
+import type { ChangeEvent } from "react";
 
 interface InputCheckboxProps<T> {
 	label: string;
@@ -8,7 +8,13 @@ interface InputCheckboxProps<T> {
 	onChange: (e: ChangeEvent<HTMLInputElement>, selectedOption: T) => void;
 }
 
-export function InputCheckbox<T>({ label, name, value, checked, onChange }: InputCheckboxProps<T>) {
+export function InputCheckbox<T>({
+	label,
+	name,
+	value,
+	checked,
+	onChange,
+}: InputCheckboxProps<T>) {
 	return (
 		<div className="form-control w-full">
 			<label className="label cursor-pointer">
@@ -19,7 +25,7 @@ export function InputCheckbox<T>({ label, name, value, checked, onChange }: Inpu
 					name={name}
 					value={value as any}
 					checked={checked}
-					onChange={e => onChange(e, value)}
+					onChange={(e) => onChange(e, value)}
 				/>
 			</label>
 		</div>

@@ -1,0 +1,217 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+html,
+body,
+#root {
+	width: 100%;
+	height: 100%;
+	margin: 0;
+	padding: 0;
+	box-sizing: border-box;
+	font-family: sans-serif;
+}
+
+.root {
+	display: flex;
+	flex-direction: row-reverse;
+	flex-grow: 1;
+	height: 100%;
+}
+
+.root .reactflow-wrapper {
+	flex-grow: 1;
+}
+
+.root aside {
+	border-right: 1px solid #eee;
+	padding: 15px 10px;
+	font-size: 12px;
+	background: #fcfcfc;
+	width: 5%;
+}
+
+.root .react-flow__node-personNode {
+	width: 80px;
+	padding: 4px;
+	border: 1px solid #1a192b;
+	border-radius: 2px;
+	margin-bottom: 10px;
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+	font-size: 11px;
+	cursor: grab;
+}
+
+.root .iconNode svg {
+	width: 30px;
+}
+
+.root .iconNode div {
+	display: flex;
+	justify-content: center;
+	width: 40px;
+	height: 30px;
+}
+
+.root .iconNode div svg {
+	width: 100%;
+	height: 30px;
+	padding: 5px
+}
+
+.root .react-flow__node-iconNode {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	font-size: smaller;
+}
+
+.root .react-flow p {
+	margin: 0;
+}
+
+
+.root .react-flow input {
+	width: 80px
+}
+
+.root .react-flow__node-personNode.input {
+	border-color: #0041d0;
+}
+
+
+.root.react-flow__node-personNode.output {
+	border-color: #ff0072;
+}
+
+.root .react-flow__node-toolbar button {
+	width: 40px;
+	height: 30px;
+	background-color: white;
+	border: none;
+	cursor: pointer;
+}
+
+.root .react-flow__node-toolbar button img {
+	width: 100%;
+  height: inherit;
+}
+
+.root .node-toolbar-box {
+	display: flex;
+	border: 2px solid grey;
+}
+
+.react-flow__panel.left {
+	margin-left: 0px;
+	margin-top: 0px;
+}
+
+.root .sidebar {
+	display: flex;
+}
+
+.root .taskbar-container {
+	background-color: whitesmoke;
+	padding: 0.5rem;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+	height: 100vh;
+	margin-left: 0px;
+}
+
+
+.root .react-flow__controls {
+	margin-left: 15px;
+}
+
+.root .taskbar-container button {
+	margin-top: 0.25rem;
+	margin-bottom: 0.25rem;
+}
+
+.root .taskbar-container .change-mode {
+	/*Icon oben anordnen*/
+	position: absolute;
+	top: 0px;
+}
+
+.button-group {
+	margin-top: 30px;
+	justify-content: normal;
+	display: flex;
+}
+
+.button-left {
+	margin-right: 15px;
+}
+
+.searchScenarioInputField {
+	width: 400px;
+	padding: 10px;
+	font-size: 16px;
+	border: #cccccc solid;
+}
+
+.generated-scenarios {
+	width: 400px;
+	max-height: 200px;
+	overflow-y: auto;
+	border: 1px solid #ccc;
+	background-color: #fff;
+	position: relative;
+}
+
+.suggestionItem {
+	padding: 5px 10px;
+	cursor: pointer;
+}
+.suggestionItem:hover {
+	background-color: #f0f0f0;
+}
+
+.description {
+	margin-top: 10px;
+	padding: 10px;
+	background-color: #f0f0f0;
+	border: 1px solid #ccc;
+	border-radius: 5px;
+	width: 400px;
+	font-size: 16px;
+}
+
+.scenario-container {
+	display: flex;
+	flex-direction: column;
+	position: relative;
+	border: 1px solid #cccccc;
+	padding: 2px 2px 2px 2px;
+	margin-bottom: 10px;
+}
+
+.deleting-container-button {
+	position: absolute;
+	top: 5px;
+	right: 5px;
+	cursor: pointer;
+}
+
+.bold-text {
+	font-weight: bold;
+}
+
+.all-activities-button {
+	cursor: pointer;
+	margin: 20px 10px 10px 50px;
+	/*position: absolute;*/
+}
+
+.design-select {
+	margin: 10px 0px 10px 0px;
+}

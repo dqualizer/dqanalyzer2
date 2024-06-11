@@ -1,107 +1,100 @@
-import axios from "axios";
-import { getBackendUrl } from "./domainstory";
-import { exampleRQAs } from "../data/exampleRQAs";
-import { CreateRqaDto } from "../types/dtos/CreateRqaDto";
-import { LoadTestDefinition } from "../types/rqa/definition/loadtest/LoadTestDefinition";
-import { RuntimeQualityAnalysisDefinition } from "../types/rqa/definition/RuntimeQualityAnalysisDefinition";
-import { CreateResilienceTestDto } from "../types/dtos/CreateResilienceTestDto";
+"use server";
 
-const backend = new URL("/api/v1", getBackendUrl());
+import type { CreateResilienceTestDto } from "@/types/dtos/CreateResilienceTestDto";
+import type { CreateRqa } from "@/types/dtos/CreateRqa";
+import type { RuntimeQualityAnalysisDefinition } from "@/types/rqa/definition/RuntimeQualityAnalysisDefinition";
+import type { LoadTestDefinition } from "@/types/rqa/definition/loadtest/LoadTestDefinition";
+
+const backendUrl = new URL(
+	"/api/v2/rqa",
+	`http://${process.env.DQAPI_HOST}` || "http://localhost:8099",
+);
 
 export const getAllRqas = async () => {
-  // return exampleRQAs;
-  // TODO set endpoint
-  return axios.get(`${backend}/rqa-definition`).then((res) => {
-    const data = res.data as RuntimeQualityAnalysisDefinition[];
-    console.log("RQAs", data);
-    const rqaDefinitions = data.map((rqa: any) => {
-      // TODO remove following statements when dqlang3.0 is fully implemented
-      if (!rqa._id) {
-        rqa._id = rqa.id;
-      }
-      if (
-        !rqa.runtime_quality_analysis?.loadTestDefinition &&
-        rqa.runtime_quality_analysis?.loadtests
-      ) {
-        rqa.runtime_quality_analysis.loadTestDefinition =
-          rqa.runtime_quality_analysis.loadtests;
-      }
-      if (
-        !rqa.runtime_quality_analysis?.resilienceDefinition &&
-        rqa.runtime_quality_analysis?.resilienceTests
-      ) {
-        rqa.runtime_quality_analysis.resilienceDefinition =
-          rqa.runtime_quality_analysis.resilienceTests;
-      }
-      return rqa as RuntimeQualityAnalysisDefinition;
-    });
-    return rqaDefinitions;
-  });
+	const res = await fetch(backendUrl);
+	const data: RuntimeQualityAnalysisDefinition[] = await res.json();
+	return data;
 };
 
-export const getRqaById = (id: string) => {
-  return axios.get(`${backend}/rqa-definition/${id}`).then((res) => res.data);
+export const getRqaById = async (id: string) => {
+	const res = await fetch(`${backendUrl}/${id}`);
+	const data: RuntimeQualityAnalysisDefinition = await res.json();
+	return data;
 };
 
-export const createRqa = (createRqaDto: CreateRqaDto) => {
-  return axios
-    .post(`${backend}/rqa-definition`, createRqaDto)
-    .then((res) => res.data);
+export const createRqa = async (
+	dto: CreateRqa,
+): Promise<[RuntimeQualityAnalysisDefinition, string | null]> => {
+	const res = await fetch(`${backendUrl}`, {
+		method: "POST",
+		body: JSON.stringify(dto),
+		headers: {
+			"Content-Type": "application/json",
+		},
+	});
+	return [await res.json(), res.headers.get("Location")];
 };
 
-export const deleteRqa = ({ rqaId }: { rqaId: string }) => {
-  return axios
-    .delete(`${backend}/rqa-definition/${rqaId}`)
-    .then((res) => res.data);
+export const deleteRqa = async ({
+	rqaId,
+}: { rqaId: string }): Promise<RuntimeQualityAnalysisDefinition> => {
+	const res = await fetch(`${backendUrl}/${rqaId}`, {
+		method: "DELETE",
+	});
+	return res.json();
 };
 
-export const deleteLoadtest = ({
-  rqaId,
-  loadtestId,
+export const deleteLoadtest = async ({
+	rqaId,
+	loadtestId,
 }: {
-  rqaId: String;
-  loadtestId: String;
-}) => {
-  return axios
-    .delete(`${backend}/rqa-definition/${rqaId}/loadtest/${loadtestId}`)
-    .then((res) => res.data);
+	rqaId: string;
+	loadtestId: string;
+}): Promise<RuntimeQualityAnalysisDefinition> => {
+	const res = await fetch(`${backendUrl}/${rqaId}/loadtest/${loadtestId}`, {
+		method: "DELETE",
+	});
+	return res.json();
 };
 
-export const addLoadtestToRqa = ({
-  rqaId,
-  loadTest,
+export const addLoadtestToRqa = async ({
+	rqaId,
+	loadTest,
 }: {
-  rqaId: string;
-  loadTest: LoadTestDefinition;
-}) => {
-  return axios
-    .put(`${backend}/rqa-definition/${rqaId}/loadtest`, loadTest)
-    .then((res) => res.data);
+	rqaId: string;
+	loadTest: LoadTestDefinition;
+}): Promise<RuntimeQualityAnalysisDefinition> => {
+	const res = await fetch(`${backendUrl}/${rqaId}/loadtest`, {
+		method: "PUT",
+		body: JSON.stringify(loadTest),
+	});
+	return res.json();
 };
 
-export const addResilienceTestToRqa = ({
-  rqaId,
-  resilienceTestDto,
+export const addResilienceTestToRqa = async ({
+	rqaId,
+	resilienceTestDto,
 }: {
-  rqaId: string;
-  resilienceTestDto: CreateResilienceTestDto;
-}) => {
-  console.log("addResiliencetestToRqa", "rqaId: " + rqaId, resilienceTestDto);
-  return axios
-    .put(`${backend}/rqa-definition/${rqaId}/resilienceTest`, resilienceTestDto)
-    .then((res) => res.data);
+	rqaId: string;
+	resilienceTestDto: CreateResilienceTestDto;
+}): Promise<RuntimeQualityAnalysisDefinition> => {
+	const res = await fetch(`${backendUrl}/${rqaId}/resilienceTest`, {
+		method: "PUT",
+		body: JSON.stringify(resilienceTestDto),
+	});
+	return res.json();
 };
 
-export const deleteResilienceTest = ({
-  rqaId,
-  resilienceTestId,
+export const deleteResilienceTest = async ({
+	rqaId,
+	resilienceTestId,
 }: {
-  rqaId: String;
-  resilienceTestId: String;
-}) => {
-  return axios
-    .delete(
-      `${backend}/rqa-definition/${rqaId}/resilienceTest/${resilienceTestId}`
-    )
-    .then((res) => res.data);
+	rqaId: string;
+	resilienceTestId: string;
+}): Promise<RuntimeQualityAnalysisDefinition> => {
+	const res = await fetch(
+		`${backendUrl}/${rqaId}/resilienceTest/${resilienceTestId}`,
+		{ method: "DELETE" },
+	);
+	return res.json();
 };

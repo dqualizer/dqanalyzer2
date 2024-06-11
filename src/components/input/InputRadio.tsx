@@ -1,4 +1,4 @@
-import { ChangeEvent } from "react";
+import type { ChangeEvent } from "react";
 
 interface InputRadioProps<T> {
 	label: string;
@@ -10,7 +10,15 @@ interface InputRadioProps<T> {
 	onChange: (e: ChangeEvent<HTMLInputElement>, selectedOption: T) => void;
 }
 
-export function InputRadio<T>({ label, name, value, options, onChange, optionName, optionValue }: InputRadioProps<T>) {
+export function InputRadio<T>({
+	label,
+	name,
+	value,
+	options,
+	onChange,
+	optionName,
+	optionValue,
+}: InputRadioProps<T>) {
 	return (
 		<div className="form-control w-full">
 			<label className="label">
@@ -25,8 +33,10 @@ export function InputRadio<T>({ label, name, value, options, onChange, optionNam
 							type="radio"
 							name={name}
 							aria-label={option[optionName] as any}
-							value={optionValue ? option[optionValue] : option as any}
-							onChange={e => onChange(e, optionValue ? option[optionValue] : option as any)}
+							value={optionValue ? option[optionValue] : (option as any)}
+							onChange={(e) =>
+								onChange(e, optionValue ? option[optionValue] : (option as any))
+							}
 						/>
 					);
 				})}

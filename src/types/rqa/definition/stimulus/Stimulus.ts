@@ -1,4 +1,4 @@
-import { Workload } from "./Workload";
+import type { Workload } from "./Workload";
 
 export interface Stimulus {
 	workload?: Workload | null;

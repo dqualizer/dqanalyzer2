@@ -1,5 +1,7 @@
-import { Identifiable } from "../../Identifiable";
+import type { Identifiable } from "@/types/Identifiable";
+import type { WorkObjectType } from "./WorkObjectType";
 
-export interface DSTElement extends Identifiable{
-    name?: string;
+export interface DSTElement extends Identifiable {
+	name: string;
+	"@type": WorkObjectType;
 }

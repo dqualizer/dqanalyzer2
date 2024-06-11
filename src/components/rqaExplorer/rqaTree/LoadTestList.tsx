@@ -1,38 +1,38 @@
+import { LoadTestDetail } from "@/components/rqaExplorer/rqaTree/LoadTestDetail";
+import type { LoadTestDefinition } from "@/types/rqa/definition/loadtest/LoadTestDefinition";
 import { useRef } from "react";
-import { LoadTestDetail } from "./LoadTestDetail";
-import { LoadTestDefinition } from "../../../types/rqa/definition/loadtest/LoadTestDefinition";
 
 interface LoadTestListProps {
-  loadTestDefinition: LoadTestDefinition[];
-  rqaId?: string;
-  loadTestSpecifier: any;
+	loadTestDefinition: LoadTestDefinition[];
+	rqaId?: string;
+	loadTestSpecifier: any;
 }
 
 export function LoadTestList({
-  loadTestDefinition,
-  rqaId,
-  loadTestSpecifier,
+	loadTestDefinition,
+	rqaId,
+	loadTestSpecifier,
 }: LoadTestListProps) {
-  const detailsRef = useRef(null);
-  return (
-    <details ref={detailsRef}>
-      <summary>
-        <span>Load Tests</span>
-      </summary>
-      <ul>
-        {loadTestDefinition.map((loadtest) => {
-          return (
-            <li key={loadtest._id}>
-              <LoadTestDetail
-                loadTestDefinition={loadtest}
-                parentMenuRef={detailsRef}
-                rqaId={rqaId}
-                loadTestSpecifier={loadTestSpecifier}
-              />
-            </li>
-          );
-        })}
-      </ul>
-    </details>
-  );
+	const detailsRef = useRef(null);
+	return (
+		<details ref={detailsRef}>
+			<summary>
+				<span>Load Tests</span>
+			</summary>
+			<ul>
+				{loadTestDefinition.map((loadtest) => {
+					return (
+						<li key={loadtest.id}>
+							<LoadTestDetail
+								loadTestDefinition={loadtest}
+								parentMenuRef={detailsRef}
+								rqaId={rqaId}
+								loadTestSpecifier={loadTestSpecifier}
+							/>
+						</li>
+					);
+				})}
+			</ul>
+		</details>
+	);
 }

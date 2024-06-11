@@ -1,62 +1,62 @@
-import { StimulusDetail } from "./StimulusDetail";
+import type { LoadTestDefinition } from "@/types/rqa/definition/loadtest/LoadTestDefinition";
+import { DeleteLoadTestButton } from "../Buttons/DeleteLoadTestButton";
+import { EditLoadTestButton } from "./EditLoadTestButton";
 import { ParametrizationDetail } from "./ParametrizationDetail";
 import { ResponseMeasureDetail } from "./ResponseMeasureDetail";
 import { ResultMetricsDetail } from "./ResultMetricsDetail";
-import { DeleteLoadTestButton } from "../Buttons/DeleteLoadTestButton";
-import { EditLoadTestButton } from "./EditLoadTestButton";
-import { LoadTestDefinition } from "../../../types/rqa/definition/loadtest/LoadTestDefinition";
+import { StimulusDetail } from "./StimulusDetail";
 
 interface LoadTestDetailProps {
-  loadTestDefinition: LoadTestDefinition;
-  rqaId?: string;
-  loadTestSpecifier: any;
-  parentMenuRef: any;
+	loadTestDefinition: LoadTestDefinition;
+	rqaId?: string;
+	loadTestSpecifier: any;
+	parentMenuRef: any;
 }
 
 export function LoadTestDetail({
-  loadTestDefinition,
-  rqaId,
-  loadTestSpecifier,
-  parentMenuRef,
+	loadTestDefinition,
+	rqaId,
+	loadTestSpecifier,
+	parentMenuRef,
 }: LoadTestDetailProps) {
-  return (
-    <details>
-      <summary className="flex justify-between items-center">
-        <span>{loadTestDefinition.name}</span>
-        <DeleteLoadTestButton
-          loadTestDefinition={loadTestDefinition}
-          rqaId={rqaId}
-          parentMenuRef={parentMenuRef}
-        />
-        <EditLoadTestButton
-          loadTestSpecifier={loadTestSpecifier}
-          parentMenuRef={parentMenuRef}
-        />
-      </summary>
-      <ul>
-        <li>{<StimulusDetail stimulus={loadTestDefinition.stimulus} />}</li>
-        <li>
-          {
-            <ParametrizationDetail
-              parametrization={loadTestDefinition.parametrization}
-            />
-          }
-        </li>
-        <li>
-          {
-            <ResponseMeasureDetail
-              responseMeasure={loadTestDefinition.response_measure}
-            />
-          }
-        </li>
-        <li>
-          {
-            <ResultMetricsDetail
-              resultMetrics={loadTestDefinition.result_metrics}
-            />
-          }
-        </li>
-      </ul>
-    </details>
-  );
+	return (
+		<details>
+			<summary className="flex justify-between items-center">
+				<span>{loadTestDefinition.name}</span>
+				<DeleteLoadTestButton
+					loadTestDefinition={loadTestDefinition}
+					rqaId={rqaId}
+					parentMenuRef={parentMenuRef}
+				/>
+				<EditLoadTestButton
+					loadTestSpecifier={loadTestSpecifier}
+					parentMenuRef={parentMenuRef}
+				/>
+			</summary>
+			<ul>
+				<li>{<StimulusDetail stimulus={loadTestDefinition.stimulus} />}</li>
+				<li>
+					{
+						<ParametrizationDetail
+							parametrization={loadTestDefinition.parametrization}
+						/>
+					}
+				</li>
+				<li>
+					{
+						<ResponseMeasureDetail
+							responseMeasure={loadTestDefinition.response_measure}
+						/>
+					}
+				</li>
+				<li>
+					{
+						<ResultMetricsDetail
+							resultMetrics={loadTestDefinition.result_metrics}
+						/>
+					}
+				</li>
+			</ul>
+		</details>
+	);
 }

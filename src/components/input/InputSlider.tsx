@@ -1,13 +1,20 @@
-import { ChangeEvent } from "react";
+import type { ChangeEvent } from "react";
 
 interface InputSliderProps {
 	label: string;
 	name: string;
 	value?: number | null;
+	// @ts-ignore noExplicitAny
+	// biome-ignore lint/suspicious/noExplicitAny: <explanation>
 	onChange: (e: ChangeEvent<HTMLInputElement>, data: any) => void;
 }
 
-export function InputSlider({ label, name, value, onChange }: InputSliderProps) {
+export function InputSlider({
+	label,
+	name,
+	value,
+	onChange,
+}: InputSliderProps) {
 	return (
 		<div className="form-control w-full">
 			<label className="label">
@@ -19,7 +26,7 @@ export function InputSlider({ label, name, value, onChange }: InputSliderProps) 
 				max={100}
 				name={name}
 				value={value || 0}
-				onChange={e => onChange(e, +e.target.value)}
+				onChange={(e) => onChange(e, +e.target.value)}
 				className="range"
 				step={10}
 			/>

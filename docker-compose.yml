@@ -1,8 +1,21 @@
-version: "3.9"
 services:
-  dqanalyzer-react:
+  dqanalyzer:
     build: .
     ports:
-      - "9090:80"
+      - "9090:3000"
     environment:
-      - VITE_BACKEND_URL=http://localhost:8099
+      - DQAPI_HOST
+      - DQTRANSLATOR_HOST
+
+  # dqanalyzer-dev:
+  #   build:
+  #     context: .
+  #     dockerfile: Dockerfile
+  #     target: dev
+  #   ports:
+  #     - "9090:3000"
+  #   environment:
+  #     - DQAPI_HOST
+  #     - DQTRANSLATOR_HOST
+  #   volumes:
+  #     - ./:/app

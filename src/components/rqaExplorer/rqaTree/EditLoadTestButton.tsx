@@ -1,36 +1,36 @@
-import { MouseEvent } from "react";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { deleteLoadtest } from "../../../queries/rqa";
 import EditIcon from "@mui/icons-material/Edit";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import type { MouseEvent } from "react";
+import { deleteLoadtest } from "../../../queries/rqa";
 
 interface EditLoadTestButtonProps {
-  loadTestSpecifier: any;
-  parentMenuRef: any;
+	loadTestSpecifier: any;
+	parentMenuRef: any;
 }
 
 export function EditLoadTestButton({
-  loadTestSpecifier,
-  parentMenuRef,
+	loadTestSpecifier,
+	parentMenuRef,
 }: EditLoadTestButtonProps) {
-  const queryClient = useQueryClient();
+	const queryClient = useQueryClient();
 
-  const deleteLoadtestMutation = useMutation({
-    mutationFn: deleteLoadtest,
-    onSuccess: (data) => {
-      //queryClient.setQueryData(["rqas", data.id], data);
-      queryClient.invalidateQueries(["rqas"]);
-      parentMenuRef.current.open = false;
-    },
-  });
+	const deleteLoadtestMutation = useMutation({
+		mutationFn: deleteLoadtest,
+		onSuccess: (data) => {
+			//queryClient.setQueryData(["rqas", data.id], data);
+			queryClient.invalidateQueries({ queryKey: ["rqas"] });
+			parentMenuRef.current.open = false;
+		},
+	});
 
-  const handleDelete = (e: MouseEvent<HTMLButtonElement>) => {
-    console.log(loadTestSpecifier);
-    loadTestSpecifier(true);
-  };
+	const handleDelete = (e: MouseEvent<HTMLButtonElement>) => {
+		console.log(loadTestSpecifier);
+		loadTestSpecifier(true);
+	};
 
-  return (
-    <button className="btn btn-xs w-fit btn-ghost" onClick={handleDelete}>
-      <EditIcon />
-    </button>
-  );
+	return (
+		<button className="btn btn-xs w-fit btn-ghost" onClick={handleDelete}>
+			<EditIcon />
+		</button>
+	);
 }

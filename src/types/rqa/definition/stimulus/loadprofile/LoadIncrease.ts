@@ -1,10 +1,10 @@
-import { SymbolicValue } from "../symbolic/SymbolicValue";
-import { LoadProfile } from "./LoadProfile";
+import type { SymbolicValue } from "../symbolic/SymbolicValue";
+import type { LoadProfile } from "./LoadProfile";
 
 export interface LoadIncrease extends LoadProfile {
-	base_load?: SymbolicValue | null;
-	highest_load?: SymbolicValue | null;
-	time_to_highest_load?: SymbolicValue | null;
-	constant_duration?: SymbolicValue | null;
-	type: 'increase';
+	base_load?: SymbolicValue;
+	highest_load?: SymbolicValue;
+	time_to_highest_load?: SymbolicValue;
+	constant_duration?: SymbolicValue;
+	type: "increase";
 }

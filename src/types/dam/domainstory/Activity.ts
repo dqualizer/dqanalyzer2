@@ -1,9 +1,9 @@
-import { DSTElement } from "./DSTElement";
+import type { DSTElement } from "./DSTElement";
 
 export interface Activity extends DSTElement {
-    action: string;
-    number: number;
-    initiators: string[];
-    targets: string[];
-    workObjects: string[];
+	action: string;
+	number: number;
+	initiators: string[];
+	targets: string[];
+	work_objects: string[];
 }

@@ -1,9 +1,9 @@
-import { WorkloadType } from "./WorkloadType";
-import { ConstantLoad } from "./loadprofile/ConstantLoad";
-import { LoadIncrease } from "./loadprofile/LoadIncrease";
-import { LoadPeak } from "./loadprofile/LoadPeak";
+import type { WorkloadType } from "./WorkloadType";
+import type { ConstantLoad } from "./loadprofile/ConstantLoad";
+import type { LoadIncrease } from "./loadprofile/LoadIncrease";
+import type { LoadPeak } from "./loadprofile/LoadPeak";
 
 export interface Workload {
-	type?: WorkloadType | null;
-	load_profile?: ConstantLoad | LoadIncrease | LoadPeak | null;
+	type?: WorkloadType;
+	load_profile?: ConstantLoad | LoadIncrease | LoadPeak;
 }

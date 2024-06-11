@@ -1,9 +1,9 @@
-import { SymbolicValue } from "../symbolic/SymbolicValue";
-import { LoadProfile } from "./LoadProfile";
+import type { SymbolicValue } from "../symbolic/SymbolicValue";
+import type { LoadProfile } from "./LoadProfile";
 
 export interface ConstantLoad extends LoadProfile {
-	base_load?: SymbolicValue | null;
-	target_load?: SymbolicValue | null;
-	duration?: SymbolicValue | null;
-	type: 'constant';
+	base_load?: SymbolicValue;
+	target_load?: SymbolicValue;
+	duration?: SymbolicValue;
+	type: "constant";
 }
