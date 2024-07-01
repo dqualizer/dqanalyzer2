@@ -1,7 +1,7 @@
+import { DeleteLoadTestButton } from "@/components/rqaExplorer/Buttons/DeleteLoadTestButton";
 import type { LoadTestDefinition } from "@/types/rqa/definition/loadtest/LoadTestDefinition";
-import { DeleteLoadTestButton } from "../Buttons/DeleteLoadTestButton";
 import { EditLoadTestButton } from "./EditLoadTestButton";
-import { ParametrizationDetail } from "./ParametrizationDetail";
+import ParametrizationDetail from "./ParametrizationDetail";
 import { ResponseMeasureDetail } from "./ResponseMeasureDetail";
 import { ResultMetricsDetail } from "./ResultMetricsDetail";
 import { StimulusDetail } from "./StimulusDetail";

@@ -17,7 +17,6 @@ export function ResilienceTestDetail({
 	resilienceTestSpecifier,
 	parentMenuRef,
 }: ResilienceTestDetailProps) {
-	console.log(resilienceTestDefinition);
 	return (
 		<details>
 			<summary className="flex justify-between items-center">

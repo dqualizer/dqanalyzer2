@@ -1,29 +1,14 @@
-// @ts-nocheck
-import { useState } from "react";
-import type { Parametrization } from "../../../../../src/types/rqa/definition/loadtest/parametrization/Parametrization";
-import { changeCasing } from "../../../utils/formatting";
+import type { Parametrization } from "@/types/rqa/definition/loadtest/parametrization/Parametrization";
+import { changeCasing } from "@/utils/formatting";
 
 interface ParametrizationDetailProps {
 	parametrization?: Parametrization | null;
 }
 
-export function ParametrizationDetail({
+export default function ParametrizationDetail({
 	parametrization,
 }: ParametrizationDetailProps) {
-	const [expand, setExpand] = useState(false);
-	const [expandKeys, setExpandKeys] = useState({});
-
-	// Convert path_variables, request_body...
-
 	const formattedData = changeCasing(parametrization, true, false);
-
-	const handleExpandKeys = (Param) => {
-		setExpandKeys((prevState) => {
-			const updatedParams = { ...prevState };
-			updatedParams[Param] = !prevState[Param] || false;
-			return updatedParams;
-		});
-	};
 
 	return (
 		<details>
@@ -31,7 +16,7 @@ export function ParametrizationDetail({
 				<span>Parametrization</span>
 			</summary>
 			<ul>
-				{Object.keys(formattedData).map((param, i) => {
+				{/* {Object.keys(formattedData).map((param, i) => {
 					return (
 						<li key={i}>
 							<details>
@@ -40,7 +25,7 @@ export function ParametrizationDetail({
 								</summary>
 								<ul>
 									<li>Not Implemented yet!!</li>
-									{/* {formattedData[param]?.map((object) => {
+									{formattedData[param]?.map((object) => {
                     return (
                       <li>
                         <span>
@@ -48,12 +33,12 @@ export function ParametrizationDetail({
                         </span>
                       </li>
                     );
-                  })} */}
+                  })}
 								</ul>
 							</details>
 						</li>
 					);
-				})}
+				})} */}
 			</ul>
 		</details>
 	);

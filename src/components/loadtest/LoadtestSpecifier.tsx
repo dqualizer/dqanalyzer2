@@ -1,36 +1,27 @@
+import { DqContext } from "@/app/providers/DqContext";
 import { InputCheckbox } from "@/components/input/InputCheckbox";
 import { InputRadio } from "@/components/input/InputRadio";
 import { InputSelect } from "@/components/input/InputSelect";
 import { InputSlider } from "@/components/input/InputSlider";
 import loadtestSpecs from "@/data/loadtest-specs.json";
-import type { DomainStory } from "@/types/dam/domainstory/DomainStory";
-import type { RuntimeQualityAnalysisDefinition } from "@/types/rqa/definition/RuntimeQualityAnalysisDefinition";
-import type { LoadTestDefinition } from "@/types/rqa/definition/loadtest/LoadTestDefinition";
+import type { CreateLoadTestDefinitionDTO } from "@/types/rqa/definition/loadtest/LoadTestDefinition";
 import {
 	getActivitiesForSystem,
 	getSystemsFromDomainStory,
 } from "@/utils/dam.utils";
-import { validateObject } from "@/utils/rqa.utils";
-import { useEffect, useState, type ChangeEvent } from "react";
+import { useContext, useEffect, useState, type ChangeEvent } from "react";
 import type { Edge } from "reactflow";
-import { v4 as uuid } from "uuid";
 import { DropdownLeft } from "../DropdownLeft";
-
-const addToRqa = () => {};
-
-interface LoadTestSpecifierProps {
-	domainstory: DomainStory;
-	rqas: RuntimeQualityAnalysisDefinition[];
-	selectedEdge?: Edge | null;
-}
+import { updateRqaLoadTest } from "./action";
 
 export default function LoadTestSpecifier({
-	domainstory,
-	rqas,
 	selectedEdge,
-}: LoadTestSpecifierProps) {
-	const [loadTest, setLoadTest] = useState<LoadTestDefinition>({
-		id: uuid(),
+}: {
+	selectedEdge?: Edge | null;
+}) {
+	const { domainstory, rqas } = useContext(DqContext);
+
+	const [loadTest, setLoadTest] = useState<CreateLoadTestDefinitionDTO>({
 		name: "LoadTest",
 		artifact: {
 			system_id: undefined,
@@ -40,7 +31,6 @@ export default function LoadTestSpecifier({
 			accuracy: 0,
 			workload: {
 				load_profile: undefined,
-				//type: null,
 			},
 		},
 		response_measure: {
@@ -49,7 +39,7 @@ export default function LoadTestSpecifier({
 		result_metrics: [],
 	});
 
-	const [showSubmitBtn, setShowSubmitBtn] = useState<boolean>();
+	const [showSubmitBtn, setShowSubmitBtn] = useState(false);
 
 	// Set System and Actvitivity, when selected edge changes
 	useEffect(() => {
@@ -70,8 +60,8 @@ export default function LoadTestSpecifier({
 	}, [selectedEdge, domainstory]);
 
 	useEffect(() => {
-		setShowSubmitBtn(validateObject(loadTest));
-	}, [loadTest]);
+		setShowSubmitBtn(true);
+	}, []);
 
 	const getLoadProfileParameters = (loadProfileType?: string) => {
 		return loadtestSpecs.loadProfiles.find(
@@ -176,7 +166,7 @@ export default function LoadTestSpecifier({
 					<InputRadio
 						key={responseMeasure.type}
 						label={responseMeasure.name}
-						name={"response_measure"}
+						name={`response_measures.${responseMeasure.type}`}
 						value={loadTest.response_measure}
 						options={responseMeasure.options}
 						optionName={"name"}
@@ -200,7 +190,14 @@ export default function LoadTestSpecifier({
 				);
 			})}
 
-			{showSubmitBtn && <DropdownLeft rqas={rqas} onClick={addToRqa} />}
+			{showSubmitBtn && (
+				<DropdownLeft
+					rqas={rqas}
+					onClick={async (rqa_id) => {
+						updateRqaLoadTest(rqa_id, loadTest);
+					}}
+				/>
+			)}
 		</div>
 	);
 }

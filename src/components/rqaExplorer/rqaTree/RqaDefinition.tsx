@@ -2,41 +2,39 @@ import type { RuntimeQualityAnalysisDefinition } from "@/types/rqa/definition/Ru
 import { useState } from "react";
 import { LoadTestList } from "./LoadTestList";
 import { ResilienceTestList } from "./ResilienceTestList";
+import { startRQA } from "./action";
 
 interface RqaDefinitionProps {
 	rqa: RuntimeQualityAnalysisDefinition;
+	// biome-ignore lint/suspicious/noExplicitAny: <explanation>
 	loadTestSpecifier: any;
+	// biome-ignore lint/suspicious/noExplicitAny: <explanation>
 	resilienceTestSpecifier: any;
 }
 
-export async function RqaDefinition({
+export function RqaDefinition({
 	rqa,
 	loadTestSpecifier,
 	resilienceTestSpecifier,
 }: RqaDefinitionProps) {
 	const [data, setData] = useState(null);
-
-	const handleExecute = async () => {
-		const res = await fetch(`http://localhost:8080/translate/${rqa.id}`);
-		const data = await res.json();
-		setData(data);
-	};
+	const startRQAWithRQA = startRQA.bind(null, rqa);
 
 	return (
 		<ul>
 			<li>
 				<LoadTestList
-					loadTestDefinition={rqa.runtime_quality_analysis.loadTestDefinition}
-					rqaId={rqa._id}
+					loadTestDefinition={rqa.runtime_quality_analysis.load_test_definition}
+					rqaId={rqa.id}
 					loadTestSpecifier={loadTestSpecifier}
 				/>
 			</li>
 			<li>
 				<ResilienceTestList
 					resilienceTestDefinition={
-						rqa.runtime_quality_analysis.resilienceDefinition
+						rqa.runtime_quality_analysis.resilience_definition
 					}
-					rqaId={rqa._id}
+					rqaId={rqa.id}
 					resilienceTestSpecifier={resilienceTestSpecifier}
 				/>
 			</li>
@@ -50,6 +48,7 @@ export async function RqaDefinition({
 								typeof rqa[key] === "string" &&
 								key !== "name" &&
 								key !== "id" && (
+									// biome-ignore lint/suspicious/noArrayIndexKey: <explanation>
 									<li key={i}>
 										<span>
 											{key}: {rqa[key]}
@@ -62,14 +61,12 @@ export async function RqaDefinition({
 				</details>
 			</li>
 			<li>
-				<button
-					type="button"
-					className="btn btn-sm btn-primary"
-					onClick={handleExecute}
-				>
-					{data ? "Re-Execute" : "Execute"}
-				</button>
-				{data && <pre className="mt-2">{JSON.stringify(data, null, 2)}</pre>}
+				<form action={startRQAWithRQA}>
+					<button type="submit" className="btn btn-sm btn-primary">
+						{data ? "Re-Execute" : "Execute"}
+					</button>
+					{data && <pre className="mt-2">{JSON.stringify(data, null, 2)}</pre>}
+				</form>
 			</li>
 		</ul>
 	);

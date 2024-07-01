@@ -1,7 +1,6 @@
 "use server";
 
 import type { CreateResilienceTestDto } from "@/types/dtos/CreateResilienceTestDto";
-import type { CreateRqa } from "@/types/dtos/CreateRqa";
 import type { RuntimeQualityAnalysisDefinition } from "@/types/rqa/definition/RuntimeQualityAnalysisDefinition";
 import type { LoadTestDefinition } from "@/types/rqa/definition/loadtest/LoadTestDefinition";
 
@@ -20,19 +19,6 @@ export const getRqaById = async (id: string) => {
 	const res = await fetch(`${backendUrl}/${id}`);
 	const data: RuntimeQualityAnalysisDefinition = await res.json();
 	return data;
-};
-
-export const createRqa = async (
-	dto: CreateRqa,
-): Promise<[RuntimeQualityAnalysisDefinition, string | null]> => {
-	const res = await fetch(`${backendUrl}`, {
-		method: "POST",
-		body: JSON.stringify(dto),
-		headers: {
-			"Content-Type": "application/json",
-		},
-	});
-	return [await res.json(), res.headers.get("Location")];
 };
 
 export const deleteRqa = async ({

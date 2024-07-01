@@ -1,7 +1,5 @@
-import type { DomainArchitectureMapping } from "@/types/dam/dam";
-import type { DomainStory } from "@/types/dam/domainstory/DomainStory";
-import type { RuntimeQualityAnalysisDefinition } from "@/types/rqa/definition/RuntimeQualityAnalysisDefinition";
-import { useState } from "react";
+import { DqContext } from "@/app/providers/DqContext";
+import { useContext, useState } from "react";
 import ResizeBar from "../ResizeBar";
 import { RqaInput } from "./RqaInput";
 import { RqaListHeader } from "./RqaListHeader";
@@ -12,18 +10,14 @@ interface RqaListProps {
 	loadTestSpecifier: any;
 	// biome-ignore lint/suspicious/noExplicitAny: <explanation>
 	resilienceTestSpecifier: any;
-	rqas: RuntimeQualityAnalysisDefinition[];
-	domainStory: DomainStory;
-	dam: DomainArchitectureMapping;
 }
 
 export function RqaList({
 	loadTestSpecifier,
 	resilienceTestSpecifier,
-	rqas,
-	domainStory,
-	dam,
 }: RqaListProps) {
+	const { rqas, dam, domainstory } = useContext(DqContext);
+
 	// Resize States
 	const [isResizing, setIsResizing] = useState(false);
 	const [sidebarWidth, setSidebarWidth] = useState(300); // Initial width of the sidebar
@@ -31,24 +25,25 @@ export function RqaList({
 	// Pressing the + opens an input field.
 	const [inputOpen, setInputOpen] = useState(false);
 
-	const handleAddClick = () => {
-		setInputOpen(true);
-	};
-
 	return (
 		<>
 			<div className="py-4 px-4 bg-slate-200">
-				<RqaListHeader handleAddClick={handleAddClick} />
+				<RqaListHeader
+					handleAddClick={() => {
+						setInputOpen(true);
+					}}
+				/>
 				{rqas.map((rqa) => (
-					<RqaListItem
-						key={rqa.id}
-						rqa={rqa}
-						domainStory={domainStory}
-						loadTestSpecifier={loadTestSpecifier}
-						resilienceTestSpecifier={resilienceTestSpecifier}
-					/>
+					<ul className="menu rounded-box px-0 text-base py-0 my-4">
+						<RqaListItem
+							key={rqa.id}
+							rqa={rqa}
+							loadTestSpecifier={loadTestSpecifier}
+							resilienceTestSpecifier={resilienceTestSpecifier}
+						/>
+					</ul>
 				))}
-				{inputOpen && <RqaInput setInputOpen={setInputOpen} dam={dam} />}
+				{inputOpen && <RqaInput dam={dam} />}
 			</div>
 			<ResizeBar
 				setSidebarWidth={setSidebarWidth}

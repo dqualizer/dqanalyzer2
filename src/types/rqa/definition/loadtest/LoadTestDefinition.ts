@@ -14,3 +14,13 @@ export interface LoadTestDefinition extends Identifiable {
 	response_measure?: ResponseMeasures;
 	result_metrics?: ResultMetrics[];
 }
+
+export interface CreateLoadTestDefinitionDTO {
+	name?: string;
+	artifact?: Artifact;
+	description?: string;
+	stimulus?: Stimulus;
+	parametrization?: Parametrization;
+	response_measure?: ResponseMeasures;
+	result_metrics?: ResultMetrics[];
+}

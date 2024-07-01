@@ -75,11 +75,14 @@
 // 	);
 // }
 
+import { DqContextProvider } from "@/app/providers/DqContext";
 import Graph from "@/components/analyzer/graph";
 import "reactflow/dist/style.css";
-import { readDamByDomainStoryId } from "./dam";
-import { readDomainstoryById } from "./domainStoryQueries";
-import { readAllRqas } from "./rqaQueries";
+import {
+	readAllRqas,
+	readDamByDomainStoryId,
+	readDomainstoryById,
+} from "./fetch";
 
 export default async function Analyzer({
 	params,
@@ -88,5 +91,9 @@ export default async function Analyzer({
 	const rqas = await readAllRqas();
 	const dam = await readDamByDomainStoryId(domainstory.id);
 
-	return <Graph domainstory={domainstory} rqas={rqas} dam={dam} />;
+	return (
+		<DqContextProvider value={{ dam, domainstory, rqas }}>
+			<Graph />;
+		</DqContextProvider>
+	);
 }

@@ -236,15 +236,15 @@
 			"options": [
 				{
 					"name": "Satisfied",
-					"value": 0
+					"value": "SATISFIED"
 				},
 				{
 					"name": "Tolerated",
-					"value": 1
+					"value": "TOLERATED"
 				},
 				{
 					"name": "Frustrated",
-					"value": 2
+					"value": "FRUSTRATED"
 				}
 			]
 		}

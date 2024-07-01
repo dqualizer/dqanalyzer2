@@ -1,32 +1,27 @@
+import { DqContext } from "@/app/providers/DqContext";
 import { DropdownLeft } from "@/components/DropdownLeft";
 import { InputNumber } from "@/components/input/InputNumber";
 import { InputRadio } from "@/components/input/InputRadio";
 import { InputSelect } from "@/components/input/InputSelect";
 import resiliencetestSpecs from "@/data/resiliencetest-specs.json";
 import { addResilienceTestToRqa } from "@/queries/rqa";
-import type { DomainStory } from "@/types/dam/domainstory/DomainStory";
 import type { CreateResilienceTestDto } from "@/types/dtos/CreateResilienceTestDto";
-import type { RuntimeQualityAnalysisDefinition } from "@/types/rqa/definition/RuntimeQualityAnalysisDefinition";
 import {
 	getActivitiesForSystem,
 	getSystemsFromDomainStory,
 } from "@/utils/dam.utils";
 import { validateObject } from "@/utils/rqa.utils";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { useEffect, useState, type ChangeEvent } from "react";
+import { useContext, useEffect, useState, type ChangeEvent } from "react";
 import type { Edge } from "reactflow";
 
-interface ResilienceTestSpecifierProps {
-	domain: DomainStory;
-	rqas: RuntimeQualityAnalysisDefinition[];
-	selectedEdge?: Edge | null;
-}
-
 export function ResilienceTestSpecifier({
-	domain,
-	rqas,
 	selectedEdge,
-}: ResilienceTestSpecifierProps) {
+}: {
+	selectedEdge?: Edge | null;
+}) {
+	const { rqas, domainstory } = useContext(DqContext);
+
 	const queryClient = useQueryClient();
 	const [resilienceTestDto, setResilienceTestDto] =
 		useState<CreateResilienceTestDto>({
@@ -46,7 +41,7 @@ export function ResilienceTestSpecifier({
 
 	// Set System and Actvitivity, when selected edge changes
 	useEffect(() => {
-		if (domain && selectedEdge) {
+		if (domainstory && selectedEdge) {
 			const activityId = selectedEdge.id;
 			const systemId = selectedEdge.target;
 			if (!activityId || !systemId) return;
@@ -58,7 +53,7 @@ export function ResilienceTestSpecifier({
 				};
 			});
 		}
-	}, [selectedEdge, domain]);
+	}, [selectedEdge, domainstory]);
 
 	useEffect(() => {
 		setShowSubmitBtn(validateObject(resilienceTestDto));
@@ -127,7 +122,7 @@ export function ResilienceTestSpecifier({
 				label={"System"}
 				name={"system_id"}
 				value={resilienceTestDto.system_id}
-				options={getSystemsFromDomainStory(domain)}
+				options={getSystemsFromDomainStory(domainstory)}
 				optionName={"name"}
 				optionValue={"id"}
 				onChange={handleChange}
@@ -136,7 +131,10 @@ export function ResilienceTestSpecifier({
 				label={"Activity (optional)"}
 				name={"activity_id"}
 				value={resilienceTestDto.activity_id}
-				options={getActivitiesForSystem(domain, resilienceTestDto.system_id)}
+				options={getActivitiesForSystem(
+					domainstory,
+					resilienceTestDto.system_id,
+				)}
 				optionName={"action"}
 				optionValue={"id"}
 				onChange={handleChange}
