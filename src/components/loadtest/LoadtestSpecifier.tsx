@@ -34,7 +34,7 @@ export default function LoadTestSpecifier({
 			},
 		},
 		response_measure: {
-			response_time: null,
+			response_time: undefined,
 		},
 		result_metrics: [],
 	});
@@ -97,6 +97,8 @@ export default function LoadTestSpecifier({
 			} else {
 				currentObj[lastKey] = data;
 			}
+
+			console.log(nextState);
 
 			return nextState;
 		});
@@ -166,7 +168,7 @@ export default function LoadTestSpecifier({
 					<InputRadio
 						key={responseMeasure.type}
 						label={responseMeasure.name}
-						name={`response_measures.${responseMeasure.type}`}
+						name={`response_measure.${responseMeasure.type}`}
 						value={loadTest.response_measure}
 						options={responseMeasure.options}
 						optionName={"name"}

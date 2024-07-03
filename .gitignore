@@ -39,3 +39,7 @@ next-env.d.ts
 .devenv
 
 old/
+
+.idea/
+
+**/.DS_Store

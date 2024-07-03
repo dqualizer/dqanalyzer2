@@ -1,5 +1,6 @@
 "use server";
 
+import type { RuntimeQualityAnalysisDefinition } from "@/types/rqa/definition/RuntimeQualityAnalysisDefinition";
 import type { CreateLoadTestDefinitionDTO } from "@/types/rqa/definition/loadtest/LoadTestDefinition";
 
 const backendUrl = new URL(
@@ -19,9 +20,6 @@ export const updateRqaLoadTest = async (
 		},
 	});
 
-	console.debug(res);
-
-	const data = await res.json();
-
-	console.log(data);
+	const data: RuntimeQualityAnalysisDefinition = await res.json();
+	return data;
 };

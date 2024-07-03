@@ -8,8 +8,13 @@ const backendUrl = new URL(
 );
 
 export const startRQA = async (rqa: RuntimeQualityAnalysisDefinition) => {
-	console.log(backendUrl);
-	const res = await fetch(`${backendUrl}/${rqa.id}`);
+	const res = await fetch(`${backendUrl}/${rqa.id}`, {
+		method: "POST",
+		body: JSON.stringify(rqa),
+		headers: {
+			"Content-Type": "application/json",
+		},
+	});
 	const data = await res.json();
 
 	console.log(data);

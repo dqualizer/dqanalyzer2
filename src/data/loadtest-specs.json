@@ -10,17 +10,17 @@
 					"options": [
 						{
 							"type": "integer",
-							"name": "None",
+							"name": "NONE",
 							"value": 0
 						},
 						{
 							"type": "integer",
-							"name": "Low",
+							"name": "LOW",
 							"value": 2
 						},
 						{
 							"type": "integer",
-							"name": "Medium",
+							"name": "MEDIUM",
 							"value": 5
 						}
 					]
@@ -31,17 +31,17 @@
 					"options": [
 						{
 							"type": "integer",
-							"name": "High",
+							"name": "HIGH",
 							"value": 10
 						},
 						{
 							"type": "integer",
-							"name": "Very High",
+							"name": "VERY HIGH",
 							"value": 15
 						},
 						{
 							"type": "integer",
-							"name": "Extremly High",
+							"name": "EXTREMLY HIGH",
 							"value": 30
 						}
 					]
@@ -52,17 +52,17 @@
 					"options": [
 						{
 							"type": "integer",
-							"name": "Slow",
+							"name": "SLOW",
 							"value": 20
 						},
 						{
 							"type": "integer",
-							"name": "Fast",
+							"name": "FAST",
 							"value": 15
 						},
 						{
 							"type": "integer",
-							"name": "Very Fast",
+							"name": "VERY FAST",
 							"value": 10
 						}
 					]
@@ -79,17 +79,17 @@
 					"options": [
 						{
 							"type": "integer",
-							"name": "None",
+							"name": "NONE",
 							"value": 0
 						},
 						{
 							"type": "integer",
-							"name": "Low",
+							"name": "LOW",
 							"value": 2
 						},
 						{
 							"type": "integer",
-							"name": "Medium",
+							"name": "MEDIUM",
 							"value": 5
 						}
 					]
@@ -100,17 +100,17 @@
 					"options": [
 						{
 							"type": "integer",
-							"name": "High",
+							"name": "HIGH",
 							"value": 10
 						},
 						{
 							"type": "integer",
-							"name": "Very High",
+							"name": "VERY HIGH",
 							"value": 15
 						},
 						{
 							"type": "integer",
-							"name": "Extremly High",
+							"name": "EXTREMLY HIGH",
 							"value": 30
 						}
 					]
@@ -121,17 +121,17 @@
 					"options": [
 						{
 							"type": "integer",
-							"name": "Slow",
+							"name": "SLOW",
 							"value": 20
 						},
 						{
 							"type": "integer",
-							"name": "Fast",
+							"name": "FAST",
 							"value": 15
 						},
 						{
 							"type": "integer",
-							"name": "Very Fast",
+							"name": "VERY FAST",
 							"value": 10
 						}
 					]
@@ -142,17 +142,17 @@
 					"options": [
 						{
 							"type": "integer",
-							"name": "Slow",
+							"name": "SLOW",
 							"value": 20
 						},
 						{
 							"type": "integer",
-							"name": "Fast",
+							"name": "FAST",
 							"value": 15
 						},
 						{
 							"type": "integer",
-							"name": "Very Fast",
+							"name": "VERY FAST",
 							"value": 10
 						}
 					]
@@ -169,17 +169,17 @@
 					"options": [
 						{
 							"type": "integer",
-							"name": "Low",
+							"name": "LOW",
 							"value": 10
 						},
 						{
 							"type": "integer",
-							"name": "Medium",
+							"name": "MEDIUM",
 							"value": 20
 						},
 						{
 							"type": "integer",
-							"name": "High",
+							"name": "HIGH",
 							"value": 30
 						}
 					]
@@ -190,17 +190,17 @@
 					"options": [
 						{
 							"type": "integer",
-							"name": "High",
+							"name": "HIGH",
 							"value": 30
 						},
 						{
 							"type": "integer",
-							"name": "Very High",
+							"name": "VERY HIGH",
 							"value": 40
 						},
 						{
 							"type": "integer",
-							"name": "Extremly High",
+							"name": "EXTREMLY HIGH",
 							"value": 50
 						}
 					]
@@ -211,17 +211,17 @@
 					"options": [
 						{
 							"type": "integer",
-							"name": "Slow",
+							"name": "SLOW",
 							"value": 20
 						},
 						{
 							"type": "integer",
-							"name": "Fast",
+							"name": "FAST",
 							"value": 15
 						},
 						{
 							"type": "integer",
-							"name": "Very Fast",
+							"name": "VERY FAST",
 							"value": 10
 						}
 					]
@@ -235,15 +235,15 @@
 			"type": "response_time",
 			"options": [
 				{
-					"name": "Satisfied",
+					"name": "SATISFIED",
 					"value": "SATISFIED"
 				},
 				{
-					"name": "Tolerated",
+					"name": "TOLERATED",
 					"value": "TOLERATED"
 				},
 				{
-					"name": "Frustrated",
+					"name": "FRUSTRATED",
 					"value": "FRUSTRATED"
 				}
 			]

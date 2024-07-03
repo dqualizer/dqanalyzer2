@@ -11,7 +11,7 @@ RUN \
   else echo "Lockfile not found." && exit 1; \
   fi
 
-FROM base as dev
+FROM base AS dev
 WORKDIR /app
 
 RUN npm install -g pnpm

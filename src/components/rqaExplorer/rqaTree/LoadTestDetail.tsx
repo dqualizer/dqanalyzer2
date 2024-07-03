@@ -34,27 +34,23 @@ export function LoadTestDetail({
 				/>
 			</summary>
 			<ul>
-				<li>{<StimulusDetail stimulus={loadTestDefinition.stimulus} />}</li>
 				<li>
-					{
-						<ParametrizationDetail
-							parametrization={loadTestDefinition.parametrization}
-						/>
-					}
+					<StimulusDetail stimulus={loadTestDefinition.stimulus} />
 				</li>
 				<li>
-					{
-						<ResponseMeasureDetail
-							responseMeasure={loadTestDefinition.response_measure}
-						/>
-					}
+					<ParametrizationDetail
+						parametrization={loadTestDefinition.parametrization}
+					/>
 				</li>
 				<li>
-					{
-						<ResultMetricsDetail
-							resultMetrics={loadTestDefinition.result_metrics}
-						/>
-					}
+					<ResponseMeasureDetail
+						responseMeasure={loadTestDefinition.response_measure}
+					/>
+				</li>
+				<li>
+					<ResultMetricsDetail
+						resultMetrics={loadTestDefinition.result_metrics}
+					/>
 				</li>
 			</ul>
 		</details>
