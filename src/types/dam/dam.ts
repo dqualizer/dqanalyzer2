@@ -1,4 +1,3 @@
-import type { Environment } from "../rqa/definition/enums/Environment";
 import type { DomainStory } from "./domainstory/DomainStory";
 
 export interface DomainArchitectureMapping {
@@ -10,7 +9,7 @@ export interface DomainArchitectureMapping {
 
 export interface SoftwareSystem {
 	name: string;
-	environment: Environment;
+	environment: string;
 	services: Service[];
 }
 

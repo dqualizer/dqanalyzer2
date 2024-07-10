@@ -1,6 +1,7 @@
-import { DSTElement } from "./DSTElement";
-import { WorkObjectType } from "./WorkObjectType";
+import type { DSTElement } from "./DSTElement";
 
 export interface WorkObject extends DSTElement {
-    type: WorkObjectType;
+	"@type": string;
+	type: string;
+	value_objects: string[];
 }

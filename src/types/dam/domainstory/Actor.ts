@@ -1,6 +1,8 @@
 import type { DSTElement } from "@/types/dam/domainstory/DSTElement";
 
-export interface Actor extends DSTElement {}
+export interface Actor extends DSTElement {
+	"@type": string;
+}
 
 export interface Person extends Actor {
 	personName: string;

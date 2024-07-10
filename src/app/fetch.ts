@@ -6,6 +6,8 @@ const backendUrl = new URL(
 );
 
 export const readAllDomainStoryIds = async () => {
+	console.debug(`Backend URL: ${backendUrl}`);
+
 	const res = await fetch(`${backendUrl}/ids`);
 	const data: string[] = await res.json();
 
