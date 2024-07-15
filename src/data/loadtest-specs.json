@@ -41,7 +41,7 @@
 						},
 						{
 							"type": "integer",
-							"name": "EXTREMLY HIGH",
+							"name": "EXTREMELY HIGH",
 							"value": 30
 						}
 					]
@@ -110,7 +110,7 @@
 						},
 						{
 							"type": "integer",
-							"name": "EXTREMLY HIGH",
+							"name": "EXTREMELY HIGH",
 							"value": 30
 						}
 					]
@@ -200,7 +200,7 @@
 						},
 						{
 							"type": "integer",
-							"name": "EXTREMLY HIGH",
+							"name": "EXTREMELY HIGH",
 							"value": 50
 						}
 					]
