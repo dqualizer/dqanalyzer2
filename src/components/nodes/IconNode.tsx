@@ -1,20 +1,19 @@
 import { Icon } from "@/components/nodes/nodeComponents/Icon";
-import type { WorkObjectType } from "@/types/dam/domainstory/WorkObjectType";
 import Image from "next/image";
 import {
-	Handle,
-	NodeToolbar,
-	Position,
-	useReactFlow,
-	type HandleProps,
-	type NodeProps,
+  Handle,
+  type HandleProps,
+  type NodeProps,
+  NodeToolbar,
+  Position,
+  useReactFlow,
 } from "reactflow";
 
 export type NodeData = {
 	id: string;
 	left_handle?: HandleProps;
 	right_handle?: HandleProps;
-	icon: WorkObjectType;
+	icon: string;
 	label: string;
 };
 

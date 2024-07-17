@@ -54,7 +54,7 @@ export function changeCasing(obj, changeKeys, changeValues) {
 
   const result = Array.isArray(obj) ? [] : {};
 
-  for (let key in obj) {
+  for (const key in obj) {
     if (Object.prototype.hasOwnProperty.call(obj, key)) {
       const value = obj[key];
       let newKey;

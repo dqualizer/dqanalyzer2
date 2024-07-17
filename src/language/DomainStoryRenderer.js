@@ -167,7 +167,7 @@ export default function DomainStoryRenderer(
 				y: position.y,
 			};
 
-			if (semantic.name && semantic.name.length) {
+			if (semantic.name?.length) {
 				return renderLabel(
 					parentGfx,
 					semantic.name,
@@ -189,7 +189,7 @@ export default function DomainStoryRenderer(
 
 	// render the number associated with an activity
 	function renderExternalNumber(parentGfx, element) {
-		if (element && element.source) {
+		if (element?.source) {
 			const semantic = element.businessObject;
 
 			const box = numberBoxDefinitions(element);
@@ -204,7 +204,7 @@ export default function DomainStoryRenderer(
 
 			// render the bacground for the number
 			if (
-				semantic.number != "" &&
+				semantic.number !== "" &&
 				semantic.number != null &&
 				element.source.type.includes(ACTOR)
 			) {

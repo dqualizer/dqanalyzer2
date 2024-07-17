@@ -8,9 +8,7 @@ import { RqaDefinition } from "./rqaTree/RqaDefinition";
 
 interface RqaListItemProps {
 	rqa: RuntimeQualityAnalysisDefinition;
-	// biome-ignore lint/suspicious/noExplicitAny: <explanation>
 	loadTestSpecifier: any;
-	// biome-ignore lint/suspicious/noExplicitAny: <explanation>
 	resilienceTestSpecifier: any;
 }
 

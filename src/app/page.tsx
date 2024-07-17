@@ -6,6 +6,7 @@ import { readAllDomainStoryIds } from "./fetch";
 export default async function Home() {
 	try {
 		const data = await readAllDomainStoryIds();
+
 		return (
 			<main className="flex items-center justify-center h-screen flex-col">
 				<DqualizerBanner />

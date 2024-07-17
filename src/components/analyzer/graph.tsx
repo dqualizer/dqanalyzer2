@@ -5,12 +5,12 @@ import Sidebar from "@/components/Sidebar";
 import IconNode from "@/components/nodes/IconNode";
 import { useContext, useRef } from "react";
 import {
-	Background,
-	Controls,
-	MiniMap,
-	ReactFlow,
-	useEdgesState,
-	useNodesState,
+  Background,
+  Controls,
+  MiniMap,
+  ReactFlow,
+  useEdgesState,
+  useNodesState,
 } from "reactflow";
 import "reactflow/dist/style.css";
 import { createInitialElements, getLayoutedElements } from "./createGraph";

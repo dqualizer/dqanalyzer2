@@ -1,4 +1,4 @@
-import { SymbolicValue } from "./SymbolicValue";
+import type { SymbolicValue } from "./SymbolicValue";
 
 export interface SymbolicDoubleValue extends SymbolicValue {
 	type: 'double';

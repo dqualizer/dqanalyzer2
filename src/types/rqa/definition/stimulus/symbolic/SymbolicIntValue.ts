@@ -1,4 +1,4 @@
-import { SymbolicValue } from "./SymbolicValue";
+import type { SymbolicValue } from "./SymbolicValue";
 
 export interface SymbolicIntValue extends SymbolicValue {
 	type: 'integer';

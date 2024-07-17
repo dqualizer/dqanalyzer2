@@ -1,7 +1,7 @@
-import { PathVariable } from "./PathVariable";
-import { Payload } from "./Payload";
-import { RequestParameter } from "./RequestParameter";
-import { UrlParameter } from "./UrlParameter";
+import type { PathVariable } from "./PathVariable";
+import type { Payload } from "./Payload";
+import type { RequestParameter } from "./RequestParameter";
+import type { UrlParameter } from "./UrlParameter";
 
 export interface Parametrization {
 	path_variables?: Set<PathVariable> | null;

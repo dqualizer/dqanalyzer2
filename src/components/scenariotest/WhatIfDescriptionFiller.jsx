@@ -10,9 +10,9 @@ export default function WhatIfDescriptionFiller(whatIfVariant, whatIfDesign) {
     const placeholderRegex = /\[(.*?)\]/g;
 
     resultDescription = resultDescription.replace(placeholderRegex, (match, placeholder) => {
-            for (let index in whatIfVariant.design_parameters) {
+            for (const index in whatIfVariant.design_parameters) {
                 if(whatIfVariant.design_parameters[index].param_placeholder === match) {
-                    let value = whatIfVariant.design_parameters[index].values.find(value => value.name === whatIfDesign.design_parameters[index].value?.name);
+                    const value = whatIfVariant.design_parameters[index].values.find(value => value.name === whatIfDesign.design_parameters[index].value?.name);
                     if(value === undefined) {
                         return match;
                     }

@@ -15,7 +15,8 @@ export const startRQA = async (rqa: RuntimeQualityAnalysisDefinition) => {
 			"Content-Type": "application/json",
 		},
 	});
-	const data = await res.json();
 
-	console.log(data);
+	if (!res.ok) {
+		throw new Error("Failed to start RQA");
+	}
 };

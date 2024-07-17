@@ -1,4 +1,4 @@
-import { Scenario } from "./Scenario";
+import type { Scenario } from "./Scenario";
 
 export interface RequestParameter {
 	name?: string | null;

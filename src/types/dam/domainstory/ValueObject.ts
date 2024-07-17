@@ -1,4 +1,4 @@
-import { DSTElement } from "./DSTElement";
+import type { DSTElement } from "./DSTElement";
 
 export interface ValueObject extends DSTElement {
 }

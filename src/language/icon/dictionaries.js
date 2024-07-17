@@ -7,8 +7,8 @@ import { Dict } from '../classes/collection';
 import { getAppendedIconDictionary } from '../../features/iconSetCustomization/dictionaries';
 
 const prefix = 'icon-domain-story-';
-let actorIconDictionary = new Dict();
-let workObjectDictionary = new Dict();
+const actorIconDictionary = new Dict();
+const workObjectDictionary = new Dict();
 
 export function allInTypeDictionary(type, elements) {
   let collection;
@@ -39,7 +39,7 @@ export function registerIcons(type, elements) {
     collection = workObjectDictionary;
   }
 
-  let allTypes = new Dict();
+  const allTypes = new Dict();
   allTypes.addEach(all_icons);
   allTypes.appendDict(appendedIcons);
 
@@ -84,7 +84,7 @@ export function initTypeDictionaries(actors, workObjetcs) {
     workObjetcs = default_conf.workObjects;
   }
 
-  let allTypes=new Dict();
+  const allTypes=new Dict();
   allTypes.addEach(all_icons);
   allTypes.appendDict(getAppendedIconDictionary());
 
@@ -94,7 +94,7 @@ export function initTypeDictionaries(actors, workObjetcs) {
   }
 
   actorIconDictionary.keysArray().forEach(actor => {
-    let name = getNameFromType(actor);
+    const name = getNameFromType(actor);
     registerIcon(actor, 'icon-domain-story-' + name.toLowerCase());
   });
 
@@ -104,7 +104,7 @@ export function initTypeDictionaries(actors, workObjetcs) {
   }
 
   workObjectDictionary.keysArray().forEach(workObject => {
-    let name = getNameFromType(workObject);
+    const name = getNameFromType(workObject);
     registerIcon(workObject, 'icon-domain-story-' + name.toLowerCase());
   });
 }

@@ -37,8 +37,19 @@
             inherit inputs pkgs;
             modules = [
               {
-                languages.javascript.enable = true;
-                languages.typescript.enable = true;
+                dotenv.disableHint = true;
+
+                languages = with pkgs; {
+                  javascript = {
+                    enable = true;
+                    package = nodePackages_latest.nodejs;
+                    corepack.enable = false;
+                    npm.enable = true;
+                    pnpm.enable = true;
+                  };
+
+                  typescript.enable = true;
+                };
                 # https://devenv.sh/reference/options/
                 packages = with pkgs; [
                   nil

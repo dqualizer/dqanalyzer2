@@ -204,7 +204,7 @@ export const all_icons = {
 
 
 export function getAllStandardIconKeys() {
-	let allIcons = new Dict();
+	const allIcons = new Dict();
 
 	allIcons.addEach(all_icons);
 

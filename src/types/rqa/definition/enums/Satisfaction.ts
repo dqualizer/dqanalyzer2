@@ -1,5 +1,5 @@
 export enum Satisfaction {
-	SATISFIED,
-	TOLERATED,
-	FRUSTRATED,
+	SATISFIED = 0,
+	TOLERATED = 1,
+	FRUSTRATED = 2,
 }

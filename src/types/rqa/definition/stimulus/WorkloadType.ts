@@ -1,4 +1,4 @@
 export enum WorkloadType {
-	OPEN,
-	CLOSED,
+	OPEN = 0,
+	CLOSED = 1,
 }

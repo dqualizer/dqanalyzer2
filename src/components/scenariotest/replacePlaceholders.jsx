@@ -25,9 +25,7 @@ export default function replacePlaceholders(sentencePart, words, part, expected)
     }
 
     const toTitleCase = (str) => {
-        return str.toLowerCase().replace(/(?:^|\s|-)\w/g, function (match) {
-            return match.toUpperCase();
-        });
+        return str.toLowerCase().replace(/(?:^|\s|-)\w/g, (match) => match.toUpperCase());
     }
 
     const placeholderRegex = /\[(.*?)\]/g;
@@ -36,8 +34,8 @@ export default function replacePlaceholders(sentencePart, words, part, expected)
     // optional: change the form of the verbs in the sentence description
     let result = sentencePart.description.replace(placeholderRegex, (match, placeholder) => {
         if(placeholder === 'are' || placeholder === 'do' || placeholder === 'have' || placeholder === 'fail' || placeholder === 'recover') {
-            let allPlaceholders = sentencePart.description.match(placeholderRegex).map(match => match.replace(/^\[|\]$/g, ''));
-            let noun = allPlaceholders.find(element => element !== placeholder);
+            const allPlaceholders = sentencePart.description.match(placeholderRegex).map(match => match.replace(/^\[|\]$/g, ''));
+            const noun = allPlaceholders.find(element => element !== placeholder);
             let allFittingElement;
             if(noun === "actor") {
                 allFittingElement = words.filter(word => word.type === "person" || word.type === "system");
@@ -49,7 +47,7 @@ export default function replacePlaceholders(sentencePart, words, part, expected)
                 allFittingElement = words.filter(word => word.type === noun);
             }
             let isElementPlural = false;
-            for (let element of allFittingElement) {
+            for (const element of allFittingElement) {
                 if(element.number === "plural") {
                     isElementPlural = true;
                 }
@@ -87,8 +85,8 @@ export default function replacePlaceholders(sentencePart, words, part, expected)
             if (part === "speakers") {
                 const examiningElements = words;
                 if (areValidElementsForDescription(examiningElements, sentencePart.number_actor)) {
-                    let replacingStringList = [];
-                    for (let examiningElement of examiningElements) {
+                    const replacingStringList = [];
+                    for (const examiningElement of examiningElements) {
                         let elementName = examiningElement.name;
                         if (examiningElement.is_proper_noun === true) {
                             elementName = toTitleCase(elementName);
@@ -103,17 +101,17 @@ export default function replacePlaceholders(sentencePart, words, part, expected)
                 }
             } else if (part === "message") {
                 if (placeholder === "verb") {
-                    let verb = words[0];
+                    const verb = words[0];
                     if (sentencePart.form_verb === "infinitive") {
                         return compromise(verb.name).verbs().toInfinitive().out("text");
                     } else if (sentencePart.form_verb === "gerund") {
                         return compromise(verb.name).verbs().toGerund().out("text").replace(/^(is |am |are |was |were )?/, '');
                     }
                 } else if (placeholder === "work object") {
-                    let examiningElements = words.slice(1);
+                    const examiningElements = words.slice(1);
                     if (areValidElementsForDescription(examiningElements, sentencePart.number_work_object)) {
-                        let replacingStringList = [];
-                        for (let examiningElement of examiningElements) {
+                        const replacingStringList = [];
+                        for (const examiningElement of examiningElements) {
                             let elementName = examiningElement.name;
                             if (examiningElement.is_proper_noun === true) {
                                 elementName = toTitleCase(elementName);
@@ -134,10 +132,10 @@ export default function replacePlaceholders(sentencePart, words, part, expected)
                 if (placeholder === "preposition") {
                     return words[0].name;
                 } else if (placeholder === "actor" || placeholder === "system") {
-                    let examiningElements = words.slice(1);
+                    const examiningElements = words.slice(1);
                     if (areValidElementsForDescription(examiningElements, sentencePart.number_actor)) {
-                        let replacingStringList = [];
-                        for (let examiningElement of examiningElements) {
+                        const replacingStringList = [];
+                        for (const examiningElement of examiningElements) {
                             let elementName = examiningElement.name;
                             if (examiningElement.is_proper_noun === true) {
                                 elementName = toTitleCase(elementName);
@@ -155,10 +153,10 @@ export default function replacePlaceholders(sentencePart, words, part, expected)
                 }
             } else if (part === "load" || part === "resilience") {
                 if (placeholder === "system") {
-                    let examiningElements = words.slice(1);
+                    const examiningElements = words.slice(1);
                     if (areValidElementsForDescription(examiningElements, sentencePart.number_actor)) {
-                        let replacingStringList = [];
-                        for (let examiningElement of examiningElements) {
+                        const replacingStringList = [];
+                        for (const examiningElement of examiningElements) {
                             let elementName = examiningElement.name;
                             if (examiningElement.is_proper_noun === true) {
                                 elementName = toTitleCase(elementName);

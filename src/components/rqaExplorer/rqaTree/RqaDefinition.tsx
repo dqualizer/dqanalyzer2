@@ -6,9 +6,7 @@ import { startRQA } from "./action";
 
 interface RqaDefinitionProps {
 	rqa: RuntimeQualityAnalysisDefinition;
-	// biome-ignore lint/suspicious/noExplicitAny: <explanation>
 	loadTestSpecifier: any;
-	// biome-ignore lint/suspicious/noExplicitAny: <explanation>
 	resilienceTestSpecifier: any;
 }
 

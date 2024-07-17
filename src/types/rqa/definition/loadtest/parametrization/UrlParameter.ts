@@ -1,4 +1,4 @@
-import { Scenario } from "./Scenario";
+import type { Scenario } from "./Scenario";
 
 export interface UrlParameter {
 	name?: string | null;
