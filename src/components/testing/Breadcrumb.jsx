@@ -2,9 +2,9 @@ import React from "react";
 import { useMatches } from "react-router-dom";
 
 export default function Breadcrumb() {
-  let matches = useMatches();
+  const matches = useMatches();
   console.log(matches);
-  let crumbs = matches
+  const crumbs = matches
     // first get rid of any matches that don't have handle and crumb
     .filter((match) => Boolean(match.handle?.crumb))
     // now map them into an array of elements, passing the loader

@@ -29,8 +29,8 @@ export function appendSRCFile(
     workObjects,
     workObjectsDict
 ) {
-  let newAppendedIcons = {};
-  let allIcons = getAllIconDictioary();
+  const newAppendedIcons = {};
+  const allIcons = getAllIconDictioary();
 
   actors.forEach(name => {
     if (!allIcons.has(name)) {
@@ -43,7 +43,7 @@ export function appendSRCFile(
       newAppendedIcons[name] = workObjectsDict.get(name);
     }
   });
-  let appen = new Dict();
+  const appen = new Dict();
   Object.keys(newAppendedIcons).forEach(key => {
     appen.set(key, newAppendedIcons[key]);
   });
@@ -53,21 +53,21 @@ export function appendSRCFile(
 
 function createCustomConf(includeNecessary) {
   if (domExists()) {
-    let domainName = localStorage.getItem(customConfigNameTag) || 'default';
-    let domainNameInput = document.getElementById('domainNameInput');
-    let currentDomainName = document.getElementById('currentDomainName');
+    const domainName = localStorage.getItem(customConfigNameTag) || 'default';
+    const domainNameInput = document.getElementById('domainNameInput');
+    const currentDomainName = document.getElementById('currentDomainName');
     domainNameInput.value = domainName;
     currentDomainName.innerHTML = domainName;
   }
 
-  let customConfig = localStorage.getItem(customConfigTag);
-  let customConfigJSON = JSON.parse(customConfig);
+  const customConfig = localStorage.getItem(customConfigTag);
+  const customConfigJSON = JSON.parse(customConfig);
 
   let actors = customConfigJSON.actors;
   let workObjects = customConfigJSON.workObjects;
 
-  let actorDict = new Dict();
-  let workObjectDict = new Dict();
+  const actorDict = new Dict();
+  const workObjectDict = new Dict();
 
   actorDict.addEach(actors);
   workObjectDict.addEach(workObjects);

@@ -1,0 +1,5 @@
+export enum ResponseTime {
+	SATISFIED = "SATISFIED",
+	TOLERATED = "TOLERATED",
+	FRUSTRATED = "FRUSTRATED",
+}

@@ -1,8 +1,6 @@
 class CaseService {
     toTitleCase(str) {
-        return str.toLowerCase().replace(/(?:^|\s|-)\w/g, function (match) {
-            return match.toUpperCase();
-        });
+        return str.toLowerCase().replace(/(?:^|\s|-)\w/g, (match) => match.toUpperCase());
     }
 
     capitalizeFirstLetter(str) {

@@ -1,212 +1,208 @@
 {
- "version": 1,
- "context": "leasingninja",
- "server_info": [
-  {
-   "host": "http://127.0.0.1:9000",
-   "environment": "TEST"
-  }
- ],
- "actors": [
-  {
-   "_id": "1",
-   "actor_name": "Petra"
-
-  },
-  {
-   "_id": "2",
-   "actor_name": "Risk Manager"
-
-  }
- ],
- "systems": [
-  {
-
-   "name": "Sales Portal",
-   "operation_id": "ddd.autohaus.tacticald.design.app.werkstattauftrag.api.WerkstattauftragController",
-   "type": "service",
-   "implements": [],
-   "objects": [
-    "id1"
-   ],
-   "activities": [
+  "version": 1,
+  "context": "leasingninja",
+  "server_info": [
     {
-     "name": "Creating Contract",
-     "operation_id": "createContract",
-     "initiator": "Petra",
-     "workObject": "Car Contract",
-     "action": "creates",
-     "type": "method",
-     "parameter": [],
-     "endpoint": {
-      "field": "/auftrag/{auftragsnummer}",
-      "operation": "GET",
-      "path_variables": [
-       {
-        "name": "auftragsnummer",
-        "szenarios": [
-         {
-          "path": "auftrag/auftragsnummern/nicht_angelegt.json"
-         }
-        ]
-       },
-       {
-        "name": "Petra",
-        "szenarios": [
-         {
-          "name": "Valid Petra",
-          "path": "auftrag/auftragsnummern/angelegt.json"
-         }
-        ]
-       }
-      ],
-      "url_parameter": [],
-      "request_parameter": [],
-      "payload": [],
-      "responses": [
-       {
-        "expected_code": 200,
-        "type": "id8"
-       }
-      ]
-     }
+      "host": "http://127.0.0.1:9000",
+      "environment": "TEST"
     }
-   ]
-  },
-   {
-
-     "name": "Risk Management Portal",
-     "operation_id": "ddd.autohaus.tacticald.design.app.werkstattauftrag.api.WerkstattauftragController",
-     "type": "service",
-     "implements": [],
-     "objects": [
-       "id2"
-     ],
-     "activities": [
-       {
-         "name": "Checking Rating",
-         "operation_id": "checkRating",
-         "initiator": "Risk Manager",
-         "workObject": "Client's Credit Rating",
-         "action": "checks",
-         "type": "method",
-         "parameter": [],
-         "endpoint": {
-           "field": "/auftrag/{auftragsnummer}",
-           "operation": "GET",
-           "path_variables": [
-             {
-               "name": "auftragsnummer",
-               "szenarios": [
-                 {
-                   "path": "auftrag/auftragsnummern/nicht_angelegt.json"
-                 }
-               ]
-             },
-             {
-               "name": "Risk Manager",
-               "szenarios": [
-                 {
-                   "name": "Valid Risk Manager",
-                   "path": "auftrag/auftragsnummern/angelegt.json"
-                 }
-               ]
-             }
-           ],
-           "url_parameter": [],
-           "request_parameter": [],
-           "payload": [],
-           "responses": [
-             {
-               "expected_code": 200,
-               "type": "id8"
-             }
-           ]
-         }
-       },
-       {
-         "name": "Calculating Resale Value",
-         "operation_id": "calculateResaleValue",
-         "initiator": "Risk Manager",
-         "workObject": "Resale Value",
-         "action": "calculates",
-         "type": "method",
-         "parameter": [],
-         "endpoint": {
-           "field": "/auftrag/{auftragsnummer}",
-           "operation": "GET",
-           "path_variables": [
-             {
-               "name": "auftragsnummer",
-               "szenarios": [
-                 {
-                   "path": "auftrag/auftragsnummern/nicht_angelegt.json"
-                 }
-               ]
-             },
-             {
-               "name": "Risk Manager",
-               "szenarios": [
-                 {
-                   "name": "Valid Risk Manager",
-                   "path": "auftrag/auftragsnummern/angelegt.json"
-                 }
-               ]
-             }
-           ],
-           "url_parameter": [],
-           "request_parameter": [],
-           "payload": [],
-           "responses": [
-             {
-               "expected_code": 200,
-               "type": "id8"
-             }
-           ]
-         }
-       },
-       {
-         "name": "Voting Contract",
-         "operation_id": "votesCarContract",
-         "initiator": "Risk Manager",
-         "workObject": "Car Contract",
-         "action": "votes",
-         "type": "method",
-         "parameter": [],
-         "endpoint": {
-           "field": "/auftrag/{auftragsnummer}",
-           "operation": "GET",
-           "path_variables": [
-             {
-               "name": "auftragsnummer",
-               "szenarios": [
-                 {
-                   "path": "auftrag/auftragsnummern/nicht_angelegt.json"
-                 }
-               ]
-             },
-             {
-               "name": "Risk Manager",
-               "szenarios": [
-                 {
-                   "name": "Valid Risk Manager",
-                   "path": "auftrag/auftragsnummern/angelegt.json"
-                 }
-               ]
-             }
-           ],
-           "url_parameter": [],
-           "request_parameter": [],
-           "payload": [],
-           "responses": [
-             {
-               "expected_code": 200,
-               "type": "id8"
-             }
-           ]
-         }
-       }
-     ]
-   }
- ]
+  ],
+  "actors": [
+    {
+      "_id": "1",
+      "actor_name": "Petra"
+    },
+    {
+      "_id": "2",
+      "actor_name": "Risk Manager"
+    }
+  ],
+  "systems": [
+    {
+      "name": "Sales Portal",
+      "operation_id": "ddd.autohaus.tacticald.design.app.werkstattauftrag.api.WerkstattauftragController",
+      "type": "service",
+      "implements": [],
+      "objects": [
+        "id1"
+      ],
+      "activities": [
+        {
+          "name": "Creating Contract",
+          "operation_id": "createContract",
+          "initiator": "Petra",
+          "workObject": "Car Contract",
+          "action": "creates",
+          "type": "method",
+          "parameter": [],
+          "endpoint": {
+            "field": "/auftrag/{auftragsnummer}",
+            "operation": "GET",
+            "path_variables": [
+              {
+                "name": "auftragsnummer",
+                "szenarios": [
+                  {
+                    "path": "auftrag/auftragsnummern/nicht_angelegt.json"
+                  }
+                ]
+              },
+              {
+                "name": "Petra",
+                "szenarios": [
+                  {
+                    "name": "Valid Petra",
+                    "path": "auftrag/auftragsnummern/angelegt.json"
+                  }
+                ]
+              }
+            ],
+            "url_parameter": [],
+            "request_parameter": [],
+            "payload": [],
+            "responses": [
+              {
+                "expected_code": 200,
+                "type": "id8"
+              }
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "Risk Management Portal",
+      "operation_id": "ddd.autohaus.tacticald.design.app.werkstattauftrag.api.WerkstattauftragController",
+      "type": "service",
+      "implements": [],
+      "objects": [
+        "id2"
+      ],
+      "activities": [
+        {
+          "name": "Checking Rating",
+          "operation_id": "checkRating",
+          "initiator": "Risk Manager",
+          "workObject": "Client's Credit Rating",
+          "action": "checks",
+          "type": "method",
+          "parameter": [],
+          "endpoint": {
+            "field": "/auftrag/{auftragsnummer}",
+            "operation": "GET",
+            "path_variables": [
+              {
+                "name": "auftragsnummer",
+                "szenarios": [
+                  {
+                    "path": "auftrag/auftragsnummern/nicht_angelegt.json"
+                  }
+                ]
+              },
+              {
+                "name": "Risk Manager",
+                "szenarios": [
+                  {
+                    "name": "Valid Risk Manager",
+                    "path": "auftrag/auftragsnummern/angelegt.json"
+                  }
+                ]
+              }
+            ],
+            "url_parameter": [],
+            "request_parameter": [],
+            "payload": [],
+            "responses": [
+              {
+                "expected_code": 200,
+                "type": "id8"
+              }
+            ]
+          }
+        },
+        {
+          "name": "Calculating Resale Value",
+          "operation_id": "calculateResaleValue",
+          "initiator": "Risk Manager",
+          "workObject": "Resale Value",
+          "action": "calculates",
+          "type": "method",
+          "parameter": [],
+          "endpoint": {
+            "field": "/auftrag/{auftragsnummer}",
+            "operation": "GET",
+            "path_variables": [
+              {
+                "name": "auftragsnummer",
+                "szenarios": [
+                  {
+                    "path": "auftrag/auftragsnummern/nicht_angelegt.json"
+                  }
+                ]
+              },
+              {
+                "name": "Risk Manager",
+                "szenarios": [
+                  {
+                    "name": "Valid Risk Manager",
+                    "path": "auftrag/auftragsnummern/angelegt.json"
+                  }
+                ]
+              }
+            ],
+            "url_parameter": [],
+            "request_parameter": [],
+            "payload": [],
+            "responses": [
+              {
+                "expected_code": 200,
+                "type": "id8"
+              }
+            ]
+          }
+        },
+        {
+          "name": "Voting Contract",
+          "operation_id": "votesCarContract",
+          "initiator": "Risk Manager",
+          "workObject": "Car Contract",
+          "action": "votes",
+          "type": "method",
+          "parameter": [],
+          "endpoint": {
+            "field": "/auftrag/{auftragsnummer}",
+            "operation": "GET",
+            "path_variables": [
+              {
+                "name": "auftragsnummer",
+                "szenarios": [
+                  {
+                    "path": "auftrag/auftragsnummern/nicht_angelegt.json"
+                  }
+                ]
+              },
+              {
+                "name": "Risk Manager",
+                "szenarios": [
+                  {
+                    "name": "Valid Risk Manager",
+                    "path": "auftrag/auftragsnummern/angelegt.json"
+                  }
+                ]
+              }
+            ],
+            "url_parameter": [],
+            "request_parameter": [],
+            "payload": [],
+            "responses": [
+              {
+                "expected_code": 200,
+                "type": "id8"
+              }
+            ]
+          }
+        }
+      ]
+    }
+  ]
 }

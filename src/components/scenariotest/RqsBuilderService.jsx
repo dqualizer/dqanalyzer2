@@ -7,7 +7,7 @@ export default function RqsBuilderService(sentence, mode) {
     const placeholderRegex = /\[(.*?)\]/g;
 
     const getDescription = (description, part) => {
-        let words = PlaceholderWordMapperService(sentence, part);
+        const words = PlaceholderWordMapperService(sentence, part);
         let descriptionOfSentencePart = deepCopy(description);
         if(words === null) {
             descriptionOfSentencePart = null;
@@ -74,9 +74,9 @@ export default function RqsBuilderService(sentence, mode) {
         return CaseService.capitalizeFirstLetter(description);
     }
 
-    let mandatoryDescription = getDescription(sentence.mandatory.description, "Mandatory");
-    let optionalDescription = getDescription(sentence.optional.description, "Optional");
-    let attachmentDescription = getDescription(sentence.attachment, "Attachment");
+    const mandatoryDescription = getDescription(sentence.mandatory.description, "Mandatory");
+    const optionalDescription = getDescription(sentence.optional.description, "Optional");
+    const attachmentDescription = getDescription(sentence.attachment, "Attachment");
 
     let loadDescription = null;
     let resilienceDescription = null;
@@ -90,8 +90,8 @@ export default function RqsBuilderService(sentence, mode) {
         }
     }
 
-    let isMandatoryDescriptionNotEmpty = sentence.mandatory.description !== null;
-    let isQuestion = sentence.all_expected === null;
+    const isMandatoryDescriptionNotEmpty = sentence.mandatory.description !== null;
+    const isQuestion = sentence.all_expected === null;
 
     return combineDescriptionsToSentence(mandatoryDescription, optionalDescription, attachmentDescription, loadDescription, resilienceDescription, isMandatoryDescriptionNotEmpty, isQuestion);
 }

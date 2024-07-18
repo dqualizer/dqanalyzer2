@@ -62,7 +62,7 @@ export default function ActivityParser(nodes, edges, selectedActivity) {
     }
 
     const buildWordArray = (allElements) => {
-        let sentenceArray = [];
+        const sentenceArray = [];
         for (const element of allElements) {
             // if element is not an edge
             if (element.data !== undefined) {
@@ -80,25 +80,25 @@ export default function ActivityParser(nodes, edges, selectedActivity) {
                 else if (element.data.icon === "System") {
                     typeString = "system";
                 }
-                let wordObject = {name: element.data.label.toLowerCase(), type: typeString};
+                const wordObject = {name: element.data.label.toLowerCase(), type: typeString};
                 sentenceArray.push(wordObject);
             }
             // else element is an edge
             else {
-                let name = element.label.endsWith("s") ? element.label.slice(0, -1) : element.label;
+                const name = element.label.endsWith("s") ? element.label.slice(0, -1) : element.label;
                 let typeString = "verb";
                 if (name === "in") {
                     typeString = "preposition"
                 }
-                let wordObject = {name: name.toLowerCase(), type: typeString};
+                const wordObject = {name: name.toLowerCase(), type: typeString};
                 sentenceArray.push(wordObject);
             }
         }
         return sentenceArray;
     }
 
-    let allActiveEdges = edges.filter((edge) => edge.name === selectedActivity.description);
-    let allElements = findAllElements(allActiveEdges);
+    const allActiveEdges = edges.filter((edge) => edge.name === selectedActivity.description);
+    const allElements = findAllElements(allActiveEdges);
 
     if(selectedActivity.description === "Reading Order") {
         return {

@@ -1,49 +1,69 @@
 {
-	"stimuluses": [
+	"loadProfiles": [
 		{
 			"name": "Load Peak",
-			"id": "LOAD_PEAK",
-			"supported": 1,
-			"designParameters": [
+			"type": "peak",
+			"parameters": [
 				{
-					"name": "Highest Load",
-					"id": "HIGHEST_LOAD",
-					"values": [
+					"name": "Base Load",
+					"type": "base_load",
+					"options": [
 						{
-							"name": "High",
-							"id": "HIGH",
+							"type": "integer",
+							"name": "NONE",
+							"value": 0
+						},
+						{
+							"type": "integer",
+							"name": "LOW",
+							"value": 2
+						},
+						{
+							"type": "integer",
+							"name": "MEDIUM",
+							"value": 5
+						}
+					]
+				},
+				{
+					"name": "Peak Load",
+					"type": "peak_load",
+					"options": [
+						{
+							"type": "integer",
+							"name": "HIGH",
 							"value": 10
 						},
 						{
-							"name": "Very High",
-							"id": "VERY_HIGH",
+							"type": "integer",
+							"name": "VERY HIGH",
 							"value": 15
 						},
 						{
-							"name": "Extremly High",
-							"id": "EXTREMLY_HIGH",
+							"type": "integer",
+							"name": "EXTREMELY HIGH",
 							"value": 30
 						}
 					]
 				},
 				{
-					"name": "Time to Highest load",
-					"id": "TIME_TO_HIGHEST_LOAD",
-					"values": [
+					"name": "Duration",
+					"type": "duration",
+					"options": [
 						{
-							"name": "Slow",
-							"id": "SLOW",
-							"value": "20s"
+							"type": "integer",
+							"name": "SLOW",
+							"value": 20
 						},
 						{
-							"name": "Fast",
-							"id": "FAST",
-							"value": "15s"
+							"type": "integer",
+							"name": "FAST",
+							"value": 15
 						},
 						{
-							"name": "Very Fast",
-							"id": "VERY_FAST",
-							"value": "10s"
+							"type": "integer",
+							"name": "VERY FAST",
+							"value": 10
 						}
 					]
 				}
@@ -51,27 +71,89 @@
 		},
 		{
 			"name": "Load Increase",
-			"id": "LOAD_INCREASE",
-			"supported": 1,
-			"designParameters": [
+			"type": "increase",
+			"parameters": [
 				{
-					"name": "Type of Increase",
-					"id": "TYPE_OF_INCREASE",
-					"values": [
+					"name": "Base Load",
+					"type": "base_load",
+					"options": [
 						{
-							"name": "Linear",
-							"id": "LINEAR",
-							"value": 1
+							"type": "integer",
+							"name": "NONE",
+							"value": 0
 						},
 						{
-							"name": "Quadratic",
-							"id": "QUADRATIC",
+							"type": "integer",
+							"name": "LOW",
 							"value": 2
 						},
 						{
-							"name": "Cubic",
-							"id": "CUBIC",
-							"value": 3
+							"type": "integer",
+							"name": "MEDIUM",
+							"value": 5
+						}
+					]
+				},
+				{
+					"name": "Highest Load",
+					"type": "highest_load",
+					"options": [
+						{
+							"type": "integer",
+							"name": "HIGH",
+							"value": 10
+						},
+						{
+							"type": "integer",
+							"name": "VERY HIGH",
+							"value": 15
+						},
+						{
+							"type": "integer",
+							"name": "EXTREMELY HIGH",
+							"value": 30
+						}
+					]
+				},
+				{
+					"name": "Time to Highest Load",
+					"type": "time_to_highest_load",
+					"options": [
+						{
+							"type": "integer",
+							"name": "SLOW",
+							"value": 20
+						},
+						{
+							"type": "integer",
+							"name": "FAST",
+							"value": 15
+						},
+						{
+							"type": "integer",
+							"name": "VERY FAST",
+							"value": 10
+						}
+					]
+				},
+				{
+					"name": "Constant Duration",
+					"type": "constant_duration",
+					"options": [
+						{
+							"type": "integer",
+							"name": "SLOW",
+							"value": 20
+						},
+						{
+							"type": "integer",
+							"name": "FAST",
+							"value": 15
+						},
+						{
+							"type": "integer",
+							"name": "VERY FAST",
+							"value": 10
 						}
 					]
 				}
@@ -79,69 +161,106 @@
 		},
 		{
 			"name": "Constant Load",
-			"id": "CONSTANT_LOAD",
-			"supported": 1,
-			"designParameters": [
+			"type": "constant",
+			"parameters": [
 				{
 					"name": "Base Load",
-					"id": "BASE_LOAD",
-					"values": [
+					"type": "base_load",
+					"options": [
 						{
-							"name": "Low",
-							"id": "LOW",
+							"type": "integer",
+							"name": "LOW",
 							"value": 10
 						},
 						{
-							"name": "Medium",
-							"id": "MEDIUM",
+							"type": "integer",
+							"name": "MEDIUM",
 							"value": 20
 						},
 						{
-							"name": "High",
-							"id": "HIGH",
+							"type": "integer",
+							"name": "HIGH",
 							"value": 30
+						}
+					]
+				},
+				{
+					"name": "Target Load",
+					"type": "target_load",
+					"options": [
+						{
+							"type": "integer",
+							"name": "HIGH",
+							"value": 30
+						},
+						{
+							"type": "integer",
+							"name": "VERY HIGH",
+							"value": 40
+						},
+						{
+							"type": "integer",
+							"name": "EXTREMELY HIGH",
+							"value": 50
+						}
+					]
+				},
+				{
+					"name": "Duration",
+					"type": "duration",
+					"options": [
+						{
+							"type": "integer",
+							"name": "SLOW",
+							"value": 20
+						},
+						{
+							"type": "integer",
+							"name": "FAST",
+							"value": 15
+						},
+						{
+							"type": "integer",
+							"name": "VERY FAST",
+							"value": 10
 						}
 					]
 				}
 			]
 		}
 	],
-	"responseMeasures": [
+	"response_measures": [
 		{
 			"name": "Response Time",
-			"id": "RESPONSE_TIME",
-			"values": [
+			"type": "response_time",
+			"options": [
 				{
-					"name": "Satisfied",
-					"id": "SATISFIED",
-					"value": 1200
+					"name": "SATISFIED",
+					"value": "SATISFIED"
 				},
 				{
-					"name": "Tolerated",
-					"id": "TOLERATED",
-					"value": 2400
+					"name": "TOLERATED",
+					"value": "TOLERATED"
 				},
 				{
-					"name": "Frustrated",
-					"id": "FRUSTRATED",
-					"value": 4800
+					"name": "FRUSTRATED",
+					"value": "FRUSTRATED"
 				}
 			]
 		}
 	],
-	"metrics": [
+	"result_metrics": [
 		{
-			"label":"Response Time",
-			"id": "RESPONSE_TIME" 
-
+			"name": "Response Time",
+			"value": 0
 		},
 		{
-			"id": "NINETY_PERCENTILE",
-			"label":"90th Percentile" 
+			"name": "90th Percentile",
+			"value": 1
 		},
 		{
-			"id": "NINETY_FIVE_PERCENTILE",
-			"label":"95th Percentile" 
+			"name": "95th Percentile",
+			"value": 2
 		}
 	]
 }

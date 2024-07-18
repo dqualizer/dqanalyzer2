@@ -26,7 +26,7 @@ export function correctElementRegitryInit() {
 }
 
 export function getAllActivities() {
-  let activities = [];
+  const activities = [];
 
   getAllCanvasObjects().forEach(element => {
     if (element.type.includes(ACTIVITY)) {
@@ -38,9 +38,9 @@ export function getAllActivities() {
 }
 
 export function getAllConnections() {
-  let connections = [];
+  const connections = [];
   getAllCanvasObjects().forEach(element => {
-    let type = element.type;
+    const type = element.type;
     if (type == CONNECTION) {
       connections.push(element);
     }
@@ -49,9 +49,9 @@ export function getAllConnections() {
 }
 
 export function getAllActors() {
-  let actors = [];
+  const actors = [];
   getAllCanvasObjects().forEach(element => {
-    let type = element.type;
+    const type = element.type;
     if (type == ACTOR) {
       actors.push(element);
     }
@@ -60,9 +60,9 @@ export function getAllActors() {
 }
 
 export function getAllWorkObjects() {
-  let workObjects = [];
+  const workObjects = [];
   getAllCanvasObjects().forEach(element => {
-    let type = element.type;
+    const type = element.type;
     if (type.includes(WORKOBJECT)) {
       workObjects.push(element);
     }
@@ -71,13 +71,13 @@ export function getAllWorkObjects() {
 }
 
 export function getAllCanvasObjects() {
-  let allObjects=[];
-  let groupObjects=[];
+  const allObjects=[];
+  const groupObjects=[];
 
   // check for every child of the canvas wether it is a group or not
   let i=0;
   for (i = 0; i < elementRegistry.length; i++) {
-    let type = elementRegistry[i].type;
+    const type = elementRegistry[i].type;
     if (type.includes(GROUP)) {
 
       // if it is a group, memorize this for later
@@ -93,9 +93,9 @@ export function getAllCanvasObjects() {
   // else add the child to the return-array
   i = groupObjects.length - 1;
   while (groupObjects.length >= 1) {
-    let currentGroup = groupObjects.pop();
+    const currentGroup = groupObjects.pop();
     currentGroup.children.forEach(child => {
-      let type = child.type;
+      const type = child.type;
       if (type.includes(GROUP)) {
         groupObjects.push(child);
       }
@@ -110,13 +110,13 @@ export function getAllCanvasObjects() {
 
 // returns all groups on the canvas and inside other groups
 export function getAllGroups() {
-  let groupObjects=[];
-  let allObjects=[];
+  const groupObjects=[];
+  const allObjects=[];
 
   // check for every child of the canvas wether it is a group or not
   let i=0;
   for (i = 0; i < elementRegistry.length; i++) {
-    let type = elementRegistry[i].type;
+    const type = elementRegistry[i].type;
     if (type.includes(GROUP)) {
 
       // if it is a group, memorize this for later
@@ -127,7 +127,7 @@ export function getAllGroups() {
     }
   }
   for (i=0; i<groupObjects.length;i++) {
-    let currentgroup=groupObjects[i];
+    const currentgroup=groupObjects[i];
     currentgroup.children.forEach(child => {
       if (child.type.includes(GROUP)) {
         groupObjects.push(child);
@@ -139,8 +139,8 @@ export function getAllGroups() {
 
 // get a list of activities, that originate from an actor-type
 export function getActivitesFromActors() {
-  let activiesFromActors = [];
-  let activities = getAllActivities();
+  const activiesFromActors = [];
+  const activities = getAllActivities();
 
   activities.forEach(activity => {
     if (activity.source.type.includes(ACTOR)) {

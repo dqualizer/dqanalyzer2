@@ -30,28 +30,28 @@ export default function PlaceholderWordMapperService(sentence, part) {
         if (sentence.mandatory === null) {
             return null;
         }
-        let mandatoryDetails = sentence.mandatory;
-        let mandatoryDescription = mandatoryDetails.description;
-        let mandatoryWordMap = {};
+        const mandatoryDetails = sentence.mandatory;
+        const mandatoryDescription = mandatoryDetails.description;
+        const mandatoryWordMap = {};
 
         const placeholderRegex = /\[(.*?)\]/g;
 
         let match;
-        let matches = [];
+        const matches = [];
 
         while ((match = placeholderRegex.exec(mandatoryDescription))) {
             // Extract the word without the brackets and push it to the array
             matches.push(match);
         }
 
-        for (let match of matches) {
+        for (const match of matches) {
             if (sentence.words.speakers.some(speaker => fitsIn(speaker.type, match[1]))) {
-                let isPossibleDescription = areValidElementsForDescription(sentence.words.speakers, mandatoryDetails.number_actor);
+                const isPossibleDescription = areValidElementsForDescription(sentence.words.speakers, mandatoryDetails.number_actor);
                 if(!isPossibleDescription) {
                     return null;
                 }
-                let replacingStringList = [];
-                for (let speaker of sentence.words.speakers) {
+                const replacingStringList = [];
+                for (const speaker of sentence.words.speakers) {
                     let elementName = speaker.name;
                     if (speaker.is_proper_noun === true) {
                         elementName = CaseService.toTitleCase(elementName);
@@ -69,8 +69,8 @@ export default function PlaceholderWordMapperService(sentence, part) {
             } else if (sentence.words.message.some(message => fitsIn(message.type, match[1]))) {
                 if (match[1] === "verb") {
                     let description = sentence.words.message[0].name;
-                    let activityWords = description.split(" ");
-                    let verb = activityWords[0];
+                    const activityWords = description.split(" ");
+                    const verb = activityWords[0];
                     let verbForm;
                     if (mandatoryDetails.form_verb === "infinitive") {
                         verbForm = compromise(verb).verbs().toInfinitive().out("text");
@@ -80,9 +80,9 @@ export default function PlaceholderWordMapperService(sentence, part) {
                     description = description.replace(verb, verbForm);
                     mandatoryWordMap[match[0]] = description;
                 } else if (match[1] === "work object") {
-                    let examiningElements = sentence.words.message.slice(1);
-                    let replacingStringList = [];
-                    for (let examiningElement of examiningElements) {
+                    const examiningElements = sentence.words.message.slice(1);
+                    const replacingStringList = [];
+                    for (const examiningElement of examiningElements) {
                         let elementName = examiningElement.name;
                         if (examiningElement.is_proper_noun === true) {
                             elementName = CaseService.toTitleCase(elementName);
@@ -106,32 +106,32 @@ export default function PlaceholderWordMapperService(sentence, part) {
         if (sentence.optional === null) {
             return null;
         }
-        let optionalDetails = sentence.optional;
-        let optionalDescription = optionalDetails.description;
-        let optionalWordMap = {};
+        const optionalDetails = sentence.optional;
+        const optionalDescription = optionalDetails.description;
+        const optionalWordMap = {};
 
         const placeholderRegex = /\[(.*?)\]/g;
 
         let match;
-        let matches = [];
+        const matches = [];
 
         while ((match = placeholderRegex.exec(optionalDescription))) {
             // Extract the word without the brackets and push it to the array
             matches.push(match);
         }
 
-        for (let match of matches) {
+        for (const match of matches) {
             if (sentence.words.audience.some(speaker => fitsIn(speaker.type, match[1]))) {
                 if (match[1] === "preposition") {
                     optionalWordMap[match[0]] = sentence.words.audience[0].name;
                 } else if (match[1] === "actor" || match[1] === "system") {
-                    let examiningElements = sentence.words.audience.slice(1);
-                    let isPossibleDescription = areValidElementsForDescription(examiningElements, optionalDetails.number_actor);
+                    const examiningElements = sentence.words.audience.slice(1);
+                    const isPossibleDescription = areValidElementsForDescription(examiningElements, optionalDetails.number_actor);
                     if(!isPossibleDescription) {
                         return null;
                     }
-                    let replacingStringList = [];
-                    for (let examiningElement of examiningElements) {
+                    const replacingStringList = [];
+                    for (const examiningElement of examiningElements) {
                         let elementName = examiningElement.name;
                         if (examiningElement.is_proper_noun === true) {
                             elementName = CaseService.toTitleCase(elementName);
@@ -156,25 +156,25 @@ export default function PlaceholderWordMapperService(sentence, part) {
         if (sentence.attachment === null) {
             return null;
         }
-        let attachmentDescription = sentence.attachment;
-        let attachmentWordMap = {};
+        const attachmentDescription = sentence.attachment;
+        const attachmentWordMap = {};
 
         const placeholderRegex = /\[(.*?)\]/g;
 
         let match;
-        let matches = [];
+        const matches = [];
 
         while ((match = placeholderRegex.exec(attachmentDescription))) {
             // Extract the word without the brackets and push it to the array
             matches.push(match);
         }
 
-        for (let match of matches) {
+        for (const match of matches) {
             if(match[1] === "options") {
                 attachmentWordMap[match[0]] = sentence.options;
             }
             else if(match[1] === "expected") {
-                let examiningElement = sentence.expected;
+                const examiningElement = sentence.expected;
                 attachmentWordMap[match[0]] = examiningElement.value + " " + examiningElement.unit;
             }
         }
@@ -183,22 +183,22 @@ export default function PlaceholderWordMapperService(sentence, part) {
         if(sentence.load_design === null) {
             return null;
         }
-        let loadDescription = sentence.metric_load.description;
-        let loadWordMap = {};
+        const loadDescription = sentence.metric_load.description;
+        const loadWordMap = {};
 
         const placeholderRegex = /\[(.*?)\]/g;
 
         let match;
-        let matches = [];
+        const matches = [];
 
         while ((match = placeholderRegex.exec(loadDescription))) {
             // Extract the word without the brackets and push it to the array
             matches.push(match);
         }
 
-        for (let match of matches) {
+        for (const match of matches) {
             if (match[1] === "system") {
-                let examiningElements = sentence.words.audience.slice(1);
+                const examiningElements = sentence.words.audience.slice(1);
                 let allSystems = [];
                 // look for all systems
                 for (let index = 0; index < examiningElements.length; index++) {
@@ -216,8 +216,8 @@ export default function PlaceholderWordMapperService(sentence, part) {
                         , ...allSystems.slice(indexToInsert)];
                 }
 
-                let replacingStringList = [];
-                for (let system of allSystems) {
+                const replacingStringList = [];
+                for (const system of allSystems) {
                     let elementName = system.name;
                     if (system.is_proper_noun === true) {
                         elementName = CaseService.toTitleCase(elementName);
@@ -248,22 +248,22 @@ export default function PlaceholderWordMapperService(sentence, part) {
         if(sentence.resilience_design === null) {
             return null;
         }
-        let resilienceDescription = sentence.metric_resilience.description;
-        let resilienceWordMap = {};
+        const resilienceDescription = sentence.metric_resilience.description;
+        const resilienceWordMap = {};
 
         const placeholderRegex = /\[(.*?)\]/g;
 
         let match;
-        let matches = [];
+        const matches = [];
 
         while ((match = placeholderRegex.exec(resilienceDescription))) {
             // Extract the word without the brackets and push it to the array
             matches.push(match);
         }
 
-        for (let match of matches) {
+        for (const match of matches) {
             if (match[1] === "system") {
-                let examiningElements = sentence.words.audience.slice(1);
+                const examiningElements = sentence.words.audience.slice(1);
                 let allSystems = [];
                 // look for all systems
                 for (let index = 0; index < examiningElements.length; index++) {
@@ -281,8 +281,8 @@ export default function PlaceholderWordMapperService(sentence, part) {
                         , ...allSystems.slice(indexToInsert)];
                 }
 
-                let replacingStringList = [];
-                for (let system of allSystems) {
+                const replacingStringList = [];
+                for (const system of allSystems) {
                     let elementName = system.name;
                     if (system.is_proper_noun === true) {
                         elementName = CaseService.toTitleCase(elementName);

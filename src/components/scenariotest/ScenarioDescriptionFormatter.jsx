@@ -5,10 +5,10 @@ export default function ScenarioDescriptionFormatter(scenario) {
 
     const formatRqsDescription = () => {
         let resultString = scenario.description;
-        let optionsToFormat = formatPart("Options");
-        let expectedToFormat = formatPart("Expected");
-        let loadToFormat = formatPart("Load");
-        let resilienceToFormat = formatPart("Resilience");
+        const optionsToFormat = formatPart("Options");
+        const expectedToFormat = formatPart("Expected");
+        const loadToFormat = formatPart("Load");
+        const resilienceToFormat = formatPart("Resilience");
 
         if(optionsToFormat !== null) {
             resultString = resultString.replace(optionsToFormat, `<span class="bold-text">${optionsToFormat}</span>`);
@@ -46,7 +46,7 @@ export default function ScenarioDescriptionFormatter(scenario) {
         return null;
     }
 
-    let formattedRqsDescription = formatRqsDescription();
+    const formattedRqsDescription = formatRqsDescription();
 
     return (
         <p className="description" id="description-format" dangerouslySetInnerHTML={{ __html: formattedRqsDescription }}></p>
