@@ -1,25 +1,25 @@
 import EditIcon from "@mui/icons-material/Edit";
 
 interface EditLoadTestButtonProps {
-	loadTestSpecifier: any;
-	parentMenuRef: any;
+  loadTestSpecifier: any;
+  parentMenuRef: any;
 }
 
 export function EditLoadTestButton({
-	loadTestSpecifier,
-	parentMenuRef,
+  loadTestSpecifier,
+  parentMenuRef,
 }: EditLoadTestButtonProps) {
-	const handleDelete = () => {
-		loadTestSpecifier(true);
-	};
+  const handleDelete = () => {
+    loadTestSpecifier(true);
+  };
 
-	return (
-		<button
-			type="button"
-			className="btn btn-xs w-fit btn-ghost"
-			onClick={handleDelete}
-		>
-			<EditIcon />
-		</button>
-	);
+  return (
+    <button
+      type="button"
+      className="btn btn-xs w-fit btn-ghost"
+      onClick={handleDelete}
+    >
+      <EditIcon />
+    </button>
+  );
 }

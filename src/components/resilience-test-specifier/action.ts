@@ -5,24 +5,24 @@ import type { RuntimeQualityAnalysisDefinition } from "@/types/rqa/definition/Ru
 import { revalidateTag } from "next/cache";
 
 const backendUrl = new URL(
-	"/api/v2/rqa",
-	`http://${process.env.DQAPI_HOST}` || "http://localhost:8099",
+  "/api/v2/rqa",
+  `http://${process.env.DQAPI_HOST}` || "http://localhost:8099",
 );
 
 export const updateRqaResilience = async (
-	rqaId: string,
-	resilienceTest: CreateResilienceTestDto,
+  rqaId: string,
+  resilienceTest: CreateResilienceTestDto,
 ) => {
-	const res = await fetch(`${backendUrl}/${rqaId}/resilience-test`, {
-		method: "PATCH",
-		body: JSON.stringify(resilienceTest),
-		headers: {
-			"Content-Type": "application/json",
-		},
-	});
+  const res = await fetch(`${backendUrl}/${rqaId}/resilience-test`, {
+    method: "PATCH",
+    body: JSON.stringify(resilienceTest),
+    headers: {
+      "Content-Type": "application/json",
+    },
+  });
 
-	revalidateTag("rqas");
+  revalidateTag("rqas");
 
-	const data: RuntimeQualityAnalysisDefinition = await res.json();
-	return data;
+  const data: RuntimeQualityAnalysisDefinition = await res.json();
+  return data;
 };

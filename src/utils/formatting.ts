@@ -6,7 +6,7 @@ export function toSnakeCase(str: string) {
 
 export function changePropValueCasing(
   obj: Object,
-  casing: "lower" | "upper" | "snake_lower" | "snake_upper"
+  casing: "lower" | "upper" | "snake_lower" | "snake_upper",
 ) {
   const newObj = {};
 
@@ -42,7 +42,7 @@ export function changePropValueCasing(
 export function toHumanCasing(str: string) {
   const words = str.split("_");
   const capitalizedWords = words.map(
-    (word) => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase()
+    (word) => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase(),
   );
   return capitalizedWords.join(" ");
 }

@@ -2,12 +2,12 @@ import {
   customConfigTag,
   useCustomConfigTag,
   customConfigNameTag,
-  useNecessaryConfigTag
-} from '../../features/iconSetCustomization/persitence';
-import { overrideAppendedIcons, appendedIcons } from './all_Icons';
-import { getAllIconDictioary } from '../../features/iconSetCustomization/dictionaries';
-import { domExists } from '../testmode';
-import { Dict } from '../classes/collection';
+  useNecessaryConfigTag,
+} from "../../features/iconSetCustomization/persitence";
+import { overrideAppendedIcons, appendedIcons } from "./all_Icons";
+import { getAllIconDictioary } from "../../features/iconSetCustomization/dictionaries";
+import { domExists } from "../testmode";
+import { Dict } from "../classes/collection";
 
 /**
  * Select the Iconset which you want to use
@@ -20,31 +20,30 @@ export function getIconset() {
     return createCustomConf(true);
   }
   return default_conf;
-
 }
 
 export function appendSRCFile(
-    actors,
-    actorsDict,
-    workObjects,
-    workObjectsDict
+  actors,
+  actorsDict,
+  workObjects,
+  workObjectsDict,
 ) {
   const newAppendedIcons = {};
   const allIcons = getAllIconDictioary();
 
-  actors.forEach(name => {
+  actors.forEach((name) => {
     if (!allIcons.has(name)) {
       newAppendedIcons[name] = actorsDict.get(name);
     }
   });
 
-  workObjects.forEach(name => {
+  workObjects.forEach((name) => {
     if (!allIcons.has(name)) {
       newAppendedIcons[name] = workObjectsDict.get(name);
     }
   });
   const appen = new Dict();
-  Object.keys(newAppendedIcons).forEach(key => {
+  Object.keys(newAppendedIcons).forEach((key) => {
     appen.set(key, newAppendedIcons[key]);
   });
 
@@ -53,9 +52,9 @@ export function appendSRCFile(
 
 function createCustomConf(includeNecessary) {
   if (domExists()) {
-    const domainName = localStorage.getItem(customConfigNameTag) || 'default';
-    const domainNameInput = document.getElementById('domainNameInput');
-    const currentDomainName = document.getElementById('currentDomainName');
+    const domainName = localStorage.getItem(customConfigNameTag) || "default";
+    const domainNameInput = document.getElementById("domainNameInput");
+    const currentDomainName = document.getElementById("currentDomainName");
     domainNameInput.value = domainName;
     currentDomainName.innerHTML = domainName;
   }
@@ -76,12 +75,11 @@ function createCustomConf(includeNecessary) {
   workObjects = workObjectDict.keysArray();
 
   if (includeNecessary) {
-
-    default_conf.actors.forEach(actor => {
+    default_conf.actors.forEach((actor) => {
       actors.push(actor);
     });
 
-    default_conf.workObjects.forEach(workObject => {
+    default_conf.workObjects.forEach((workObject) => {
       workObjects.push(workObject);
     });
   }
@@ -90,7 +88,7 @@ function createCustomConf(includeNecessary) {
 
   return {
     actors: actors,
-    workObjects: workObjects
+    workObjects: workObjects,
   };
 }
 
@@ -103,102 +101,102 @@ function createCustomConf(includeNecessary) {
  */
 
 const allIcons_conf = {
-  actors: ['Person', 'Group', 'System', 'Pet'],
+  actors: ["Person", "Group", "System", "Pet"],
   workObjects: [
-    'Place',
-    'Flag',
-    'World',
-    'Water',
-    'Store',
-    'Theater',
-    'Business',
-    'Meeting-room',
-    'Hotel',
-    'Dining',
-    'Courthouse',
-    'Gas-station',
-    'Car',
-    'Bus',
-    'Train',
-    'Truck',
-    'Taxi',
-    'Bike',
-    'Boat',
-    'Motorcycle',
-    'Plane',
-    'Flight-takeoff',
-    'Flight-landing',
-    'Shuttle',
-    'Walking',
-    'Traffic',
-    'Commute',
-    'Document',
-    'Folder',
-    'Call',
-    'Email',
-    'Copyright',
-    'Briefcase',
-    'Attach',
-    'Ruler',
-    'Sum',
-    'Conversation',
-    'Update',
-    'Cellphone',
-    'Speaker-phone',
-    'Signal',
-    'Key',
-    'Pencil',
-    'How-To-Reg',
-    'Settings',
-    'Grid',
-    'Label',
-    'Receipt',
-    'Calendar',
-    'Wrench',
-    'Headset',
-    'Keyboard',
-    'Mouse',
-    'Microphone',
-    'Router',
-    'Scanner',
-    'Printer',
-    'DNS',
-    'Security',
-    'Cloud',
-    'Desktop',
-    'Tablet',
-    'Assessment',
-    'Dashboard',
-    'Pie-chart',
-    'View-List',
-    'Euro',
-    'Dollar',
-    'Info',
-    'Alarm',
-    'Problem',
-    'Circle-Arrows',
-    'Picture-as-PDF',
-    'Credit-Card',
-    'Shopping',
-    'Favorite',
-    'Gavel',
-    'Blind',
-    'Hourglass',
-    'Time',
-    'Search',
-    'Thumb-up',
-    'Thumb-down',
-    'Thumb-up-down',
-    'Couch',
-    'Education',
-    'Watch'
-  ]
+    "Place",
+    "Flag",
+    "World",
+    "Water",
+    "Store",
+    "Theater",
+    "Business",
+    "Meeting-room",
+    "Hotel",
+    "Dining",
+    "Courthouse",
+    "Gas-station",
+    "Car",
+    "Bus",
+    "Train",
+    "Truck",
+    "Taxi",
+    "Bike",
+    "Boat",
+    "Motorcycle",
+    "Plane",
+    "Flight-takeoff",
+    "Flight-landing",
+    "Shuttle",
+    "Walking",
+    "Traffic",
+    "Commute",
+    "Document",
+    "Folder",
+    "Call",
+    "Email",
+    "Copyright",
+    "Briefcase",
+    "Attach",
+    "Ruler",
+    "Sum",
+    "Conversation",
+    "Update",
+    "Cellphone",
+    "Speaker-phone",
+    "Signal",
+    "Key",
+    "Pencil",
+    "How-To-Reg",
+    "Settings",
+    "Grid",
+    "Label",
+    "Receipt",
+    "Calendar",
+    "Wrench",
+    "Headset",
+    "Keyboard",
+    "Mouse",
+    "Microphone",
+    "Router",
+    "Scanner",
+    "Printer",
+    "DNS",
+    "Security",
+    "Cloud",
+    "Desktop",
+    "Tablet",
+    "Assessment",
+    "Dashboard",
+    "Pie-chart",
+    "View-List",
+    "Euro",
+    "Dollar",
+    "Info",
+    "Alarm",
+    "Problem",
+    "Circle-Arrows",
+    "Picture-as-PDF",
+    "Credit-Card",
+    "Shopping",
+    "Favorite",
+    "Gavel",
+    "Blind",
+    "Hourglass",
+    "Time",
+    "Search",
+    "Thumb-up",
+    "Thumb-down",
+    "Thumb-up-down",
+    "Couch",
+    "Education",
+    "Watch",
+  ],
 };
 
 /**
  * Default Iconset
  */
 export const default_conf = {
-  actors: ['Person', 'Group', 'System'],
-  workObjects: ['Document', 'Folder', 'Call', 'Email', 'Conversation', 'Info']
+  actors: ["Person", "Group", "System"],
+  workObjects: ["Document", "Folder", "Call", "Email", "Conversation", "Info"],
 };

@@ -2,21 +2,21 @@ import type { Parametrization } from "@/types/rqa/definition/loadtest/parametriz
 import { changeCasing } from "@/utils/formatting";
 
 interface ParametrizationDetailProps {
-	parametrization?: Parametrization | null;
+  parametrization?: Parametrization | null;
 }
 
 export default function ParametrizationDetail({
-	parametrization,
+  parametrization,
 }: ParametrizationDetailProps) {
-	const formattedData = changeCasing(parametrization, true, false);
+  const formattedData = changeCasing(parametrization, true, false);
 
-	return (
-		<details>
-			<summary>
-				<span>Parametrization</span>
-			</summary>
-			<ul>
-				{/* {Object.keys(formattedData).map((param, i) => {
+  return (
+    <details>
+      <summary>
+        <span>Parametrization</span>
+      </summary>
+      <ul>
+        {/* {Object.keys(formattedData).map((param, i) => {
 					return (
 						<li key={i}>
 							<details>
@@ -39,7 +39,7 @@ export default function ParametrizationDetail({
 						</li>
 					);
 				})} */}
-			</ul>
-		</details>
-	);
+      </ul>
+    </details>
+  );
 }

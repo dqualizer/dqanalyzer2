@@ -5,29 +5,29 @@ import type { RuntimeQualityAnalysis } from "@/types/rqa/definition/RuntimeQuali
 import { revalidateTag } from "next/cache";
 
 const backendUrl = new URL(
-	"/api/v2/rqa",
-	`http://${process.env.DQAPI_HOST}` || "http://localhost:8099",
+  "/api/v2/rqa",
+  `http://${process.env.DQAPI_HOST}` || "http://localhost:8099",
 );
 
 export const createRqa = async (
-	dto: CreateRqa,
+  dto: CreateRqa,
 ): Promise<[RuntimeQualityAnalysis, string]> => {
-	try {
-		const res = await fetch(`${backendUrl}`, {
-			method: "POST",
-			body: JSON.stringify(dto),
-			headers: {
-				"Content-Type": "application/json",
-			},
-		});
+  try {
+    const res = await fetch(`${backendUrl}`, {
+      method: "POST",
+      body: JSON.stringify(dto),
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
 
-		const data = await res.json();
+    const data = await res.json();
 
-		revalidateTag("rqas");
+    revalidateTag("rqas");
 
-		return [data, res.headers.get("Location") || data.id];
-	} catch (error) {
-		console.error(error);
-		throw error;
-	}
+    return [data, res.headers.get("Location") || data.id];
+  } catch (error) {
+    console.error(error);
+    throw error;
+  }
 };

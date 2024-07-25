@@ -10,14 +10,14 @@ import type { Dispatch, SetStateAction } from "react";
 import type { Edge } from "reactflow";
 
 interface EditScenarioTestMenuProps {
-	rqa: RuntimeQualityAnalysisDefinition;
-	edges: Edge[];
-	setScenarioExplorerShow: Dispatch<SetStateAction<boolean | undefined>>;
-	setScenarioTestShow: Dispatch<SetStateAction<boolean | undefined>>;
+  rqa: RuntimeQualityAnalysisDefinition;
+  edges: Edge[];
+  setScenarioExplorerShow: Dispatch<SetStateAction<boolean | undefined>>;
+  setScenarioTestShow: Dispatch<SetStateAction<boolean | undefined>>;
 }
 
 export default function EditScenarioTestMenu(props: EditScenarioTestMenuProps) {
-	return <p>disabled</p>;
+  return <p>disabled</p>;
 }
 // 	// Resize States
 // 	const [isResizing, setIsResizing] = useState(false);

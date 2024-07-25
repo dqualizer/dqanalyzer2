@@ -2,25 +2,25 @@ import type { LoadTestDefinition } from "@/types/rqa/definition/loadtest/LoadTes
 import DeleteIcon from "@mui/icons-material/Delete";
 
 interface DeleteLoadTestButtonProps {
-	loadTestDefinition: LoadTestDefinition;
-	rqaId?: string;
-	parentMenuRef: any;
+  loadTestDefinition: LoadTestDefinition;
+  rqaId?: string;
+  parentMenuRef: any;
 }
 
 export function DeleteLoadTestButton({
-	loadTestDefinition,
-	rqaId,
-	parentMenuRef,
+  loadTestDefinition,
+  rqaId,
+  parentMenuRef,
 }: DeleteLoadTestButtonProps) {
-	const handleDelete = () => {};
+  const handleDelete = () => {};
 
-	return (
-		<button
-			type="button"
-			className="btn btn-xs w-fit btn-ghost"
-			onClick={handleDelete}
-		>
-			<DeleteIcon color="error" />
-		</button>
-	);
+  return (
+    <button
+      type="button"
+      className="btn btn-xs w-fit btn-ghost"
+      onClick={handleDelete}
+    >
+      <DeleteIcon color="error" />
+    </button>
+  );
 }

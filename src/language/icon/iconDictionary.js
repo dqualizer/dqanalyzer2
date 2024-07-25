@@ -1,6 +1,4 @@
-
-
-import { Dict } from '../classes/collection';
+import { Dict } from "../classes/collection";
 
 const icons = new Dict();
 

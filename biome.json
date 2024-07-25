@@ -4,7 +4,12 @@
     "ignore": [
       "node_modules",
       "src/data",
-      ".next"
+      ".next",
+      ".devenv",
+      ".direnv",
+      "doc",
+      "public",
+      "screenshots"
     ]
   },
   "organizeImports": {
@@ -28,6 +33,14 @@
     }
   },
   "formatter": {
-    "enabled": true
+    "enabled": true,
+    "indentStyle": "space",
+    "indentWidth": 2,
+    "lineEnding": "lf"
+  },
+  "json": {
+    "formatter": {
+      "trailingCommas": "none"
+    }
   }
 }

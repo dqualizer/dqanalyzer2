@@ -2,7 +2,7 @@ import type { LoadTestDefinition } from "@/types/rqa/definition/loadtest/LoadTes
 import type { ResilienceTestDefinition } from "@/types/rqa/definition/resiliencetest/ResilienceTestDefinition";
 
 export interface RuntimeQualityAnalysis {
-	load_test_definition: LoadTestDefinition[];
-	// monitoringDefinition: Set<MonitoringDefinition>;
-	resilience_definition: ResilienceTestDefinition[];
+  load_test_definition: LoadTestDefinition[];
+  // monitoringDefinition: Set<MonitoringDefinition>;
+  resilience_definition: ResilienceTestDefinition[];
 }

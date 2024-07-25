@@ -1,13 +1,13 @@
 import DomainstoryCard from "./DomainstoryCard";
 
 export default function DomainStoryCardList({
-	domainstoryIds,
+  domainstoryIds,
 }: { domainstoryIds: string[] }) {
-	return (
-		<div className="flex gap-4 mt-5">
-			{domainstoryIds.map((domainstoryId) => (
-				<DomainstoryCard domainstoryId={domainstoryId} />
-			))}
-		</div>
-	);
+  return (
+    <div className="flex gap-4 mt-5">
+      {domainstoryIds.map((domainstoryId) => (
+        <DomainstoryCard domainstoryId={domainstoryId} />
+      ))}
+    </div>
+  );
 }

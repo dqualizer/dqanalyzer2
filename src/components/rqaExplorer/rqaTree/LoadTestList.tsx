@@ -3,36 +3,36 @@ import type { LoadTestDefinition } from "@/types/rqa/definition/loadtest/LoadTes
 import { useRef } from "react";
 
 interface LoadTestListProps {
-	loadTestDefinition: LoadTestDefinition[];
-	rqaId?: string;
-	loadTestSpecifier: any;
+  loadTestDefinition: LoadTestDefinition[];
+  rqaId?: string;
+  loadTestSpecifier: any;
 }
 
 export function LoadTestList({
-	loadTestDefinition,
-	rqaId,
-	loadTestSpecifier,
+  loadTestDefinition,
+  rqaId,
+  loadTestSpecifier,
 }: LoadTestListProps) {
-	const detailsRef = useRef(null);
-	return (
-		<details ref={detailsRef}>
-			<summary>
-				<span>Load Tests</span>
-			</summary>
-			<ul>
-				{loadTestDefinition.map((loadtest) => {
-					return (
-						<li key={loadtest.id}>
-							<LoadTestDetail
-								loadTestDefinition={loadtest}
-								parentMenuRef={detailsRef}
-								rqaId={rqaId}
-								loadTestSpecifier={loadTestSpecifier}
-							/>
-						</li>
-					);
-				})}
-			</ul>
-		</details>
-	);
+  const detailsRef = useRef(null);
+  return (
+    <details ref={detailsRef}>
+      <summary>
+        <span>Load Tests</span>
+      </summary>
+      <ul>
+        {loadTestDefinition.map((loadtest) => {
+          return (
+            <li key={loadtest.id}>
+              <LoadTestDetail
+                loadTestDefinition={loadtest}
+                parentMenuRef={detailsRef}
+                rqaId={rqaId}
+                loadTestSpecifier={loadTestSpecifier}
+              />
+            </li>
+          );
+        })}
+      </ul>
+    </details>
+  );
 }
