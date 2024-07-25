@@ -6,10 +6,10 @@ import { InputSlider } from "@/components/input/InputSlider";
 import loadtestSpecs from "@/data/loadtest-specs.json";
 import type { CreateLoadTestDefinitionDTO } from "@/types/rqa/definition/loadtest/LoadTestDefinition";
 import {
-	getActivitiesForSystem,
-	getSystemsFromDomainStory,
+  getActivitiesForSystem,
+  getSystemsFromDomainStory,
 } from "@/utils/dam.utils";
-import { useContext, useEffect, useState, type ChangeEvent } from "react";
+import { type ChangeEvent, useContext, useEffect, useState } from "react";
 import type { Edge } from "reactflow";
 import { DropdownLeft } from "../DropdownLeft";
 import { updateRqaLoadTest } from "./action";

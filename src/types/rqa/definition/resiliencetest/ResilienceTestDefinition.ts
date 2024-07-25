@@ -10,3 +10,11 @@ export interface ResilienceTestDefinition {
 	stimulus: ResilienceStimulus | UnavailabilityStimulus;
 	response_measure: ResilienceResponseMeasures;
 }
+
+export interface CreateResilienceTestDefinitionDTO {
+	name: string;
+	artifact: Artifact;
+	description: string;
+	stimulus: ResilienceStimulus | UnavailabilityStimulus;
+	response_measure: ResilienceResponseMeasures;
+}

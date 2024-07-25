@@ -4,16 +4,15 @@ import { InputNumber } from "@/components/input/InputNumber";
 import { InputRadio } from "@/components/input/InputRadio";
 import { InputSelect } from "@/components/input/InputSelect";
 import resiliencetestSpecs from "@/data/resiliencetest-specs.json";
-import { addResilienceTestToRqa } from "@/queries/rqa";
 import type { CreateResilienceTestDto } from "@/types/dtos/CreateResilienceTestDto";
 import {
-	getActivitiesForSystem,
-	getSystemsFromDomainStory,
+  getActivitiesForSystem,
+  getSystemsFromDomainStory,
 } from "@/utils/dam.utils";
 import { validateObject } from "@/utils/rqa.utils";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { useContext, useEffect, useState, type ChangeEvent } from "react";
+import { type ChangeEvent, useContext, useEffect, useState } from "react";
 import type { Edge } from "reactflow";
+import { updateRqaResilience } from "./action";
 
 export function ResilienceTestSpecifier({
 	selectedEdge,
@@ -22,7 +21,6 @@ export function ResilienceTestSpecifier({
 }) {
 	const { rqas, domainstory } = useContext(DqContext);
 
-	const queryClient = useQueryClient();
 	const [resilienceTestDto, setResilienceTestDto] =
 		useState<CreateResilienceTestDto>({
 			name: `ResilienceTest${new Date().getTime()}`,
@@ -63,10 +61,10 @@ export function ResilienceTestSpecifier({
 		const resilienceTestDtoRemovedUnusedProperties =
 			removeUnusedPropertiesForStimulus();
 
-		rqaMutation.mutate({
-			rqaId,
-			resilienceTestDto: resilienceTestDtoRemovedUnusedProperties,
-		});
+		// rqaMutation.mutate({
+		// 	rqaId,
+		// 	resilienceTestDto: resilienceTestDtoRemovedUnusedProperties,
+		// });
 	};
 
 	const removeUnusedPropertiesForStimulus = () => {
@@ -92,14 +90,6 @@ export function ResilienceTestSpecifier({
 		}
 		return resilienceTestDtoRemovedUnusedProperties;
 	};
-
-	const rqaMutation = useMutation({
-		mutationFn: addResilienceTestToRqa,
-		onSuccess: (data) => {
-			//queryClient.setQueryData(["rqas", data.id], data);
-			queryClient.invalidateQueries({ queryKey: ["rqas"] });
-		},
-	});
 
 	const handleChange = (
 		ev: ChangeEvent<HTMLInputElement | HTMLSelectElement>,
@@ -210,7 +200,14 @@ export function ResilienceTestSpecifier({
 				);
 			})}
 			<div className="divider" />
-			{showSubmitBtn && <DropdownLeft rqas={rqas} onClick={addToRqa} />}
+      {showSubmitBtn && (
+				<DropdownLeft
+					rqas={rqas}
+					onClick={async (rqa_id) => {
+						updateRqaResilience(rqa_id, resilienceTestDto);
+					}}
+				/>
+			)}
 		</div>
 	);
 }
