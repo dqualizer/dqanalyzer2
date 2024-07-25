@@ -10,11 +10,11 @@ const backendUrl = new URL(
 
 export const updateRqaMonitoring = async (
   rqa_id: string,
-  loadtest: MonitoringDefinition
+  monitoringDefinition: MonitoringDefinition
 ) => {
   const res = await fetch(`${backendUrl}/${rqa_id}/monitoring`, {
     method: "PATCH",
-    body: JSON.stringify(loadtest),
+    body: JSON.stringify(monitoringDefinition),
     headers: {
       "Content-Type": "application/json",
     },

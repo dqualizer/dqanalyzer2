@@ -5,9 +5,9 @@ export interface MonitoringDefinition {
   target: string;
   // The name of the measurement
   // Motly some business name, like "Time to submit order" or "Executed orders"
-  measurementName: string;
+  measurement_name: string;
   // The unit of the measurement
-  measurementUnit: string;
+  measurement_unit: string;
   // The type of the measurement
-  measurementType: MeasurementType;
+  measurement_type: MeasurementType;
 }

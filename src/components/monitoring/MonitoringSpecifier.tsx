@@ -17,9 +17,9 @@ export default function ShowMonitoringSpecifier() {
   const handleSubmit = (rqa) => {
     const monitoringDefinition: MonitoringDefinition = {
       target: target,
-      measurementName: measurementName,
-      measurementType: measurementType,
-      measurementUnit: measurementUnit,
+      measurement_name: measurementName,
+      measurement_type: measurementType,
+      measurement_unit: measurementUnit,
     };
 
     updateRqaMonitoring(rqa, monitoringDefinition);
