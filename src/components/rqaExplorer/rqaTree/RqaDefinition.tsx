@@ -54,7 +54,6 @@ export function RqaDefinition({
                 typeof rqa[key] === "string" &&
                 key !== "name" &&
                 key !== "id" && (
-                  // biome-ignore lint/suspicious/noArrayIndexKey: <explanation>
                   <li key={i}>
                     <span>
                       {key}: {rqa[key]}

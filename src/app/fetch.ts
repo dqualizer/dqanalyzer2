@@ -3,8 +3,6 @@
 const backendUrl = new URL(
   "/api/v2/domain-story",
   `http://${process.env.DQAPI_HOST}` || "http://localhost:8099",
-  "/api/v2/domain-story",
-  `http://${process.env.DQAPI_HOST}` || "http://localhost:8099",
 );
 
 /**

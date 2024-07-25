@@ -1,9 +1,10 @@
-import pluralize from "pluralize";
 import indefinite from "indefinite";
-import compromise from "compromise";
 import CaseService from "./CaseService.jsx";
-import WhatIfVariantFormatterService from "./WhatIfVariantFormatterService.jsx";
-import VerbConjugationService from "./VerbConjugationService.jsx";
+import compromisee from compromisese;
+";
+import pluralizefrom "ppluralize
+import VerbConjugationService./VerbConVerbConjugationService.jsx
+import WhatIfVariantFormatterServiceService fWhatIfVariantFormatterService.jsxterService.jsx";
 
 export default function PlaceholderWordMapperService(sentence, part) {
   const fitsIn = (wordType, placeholder) => {

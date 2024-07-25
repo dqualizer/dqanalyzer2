@@ -1,6 +1,6 @@
+import CaseService from "./CaseService.jsx";
 import PlaceholderWordMapperService from "./PlaceholderWordMapperService.jsx";
 import deepCopy from "./deepCopy.jsx";
-import CaseService from "./CaseService.jsx";
 
 export default function RqsBuilderService(sentence, mode) {
   const placeholderRegex = /\[(.*?)\]/g;
@@ -15,12 +15,11 @@ export default function RqsBuilderService(sentence, mode) {
       for (const key of keys) {
         if (words[key] === null) {
           return null;
-        } else {
-          descriptionOfSentencePart = descriptionOfSentencePart.replace(
-            key,
-            words[key],
-          );
         }
+        descriptionOfSentencePart = descriptionOfSentencePart.replace(
+          key,
+          words[key],
+        );
       }
     }
     if (
@@ -53,7 +52,7 @@ export default function RqsBuilderService(sentence, mode) {
       if (description === "") {
         description += optional;
       } else {
-        description += " " + optional;
+        description += ` ${optional}`;
       }
     }
 
@@ -62,15 +61,15 @@ export default function RqsBuilderService(sentence, mode) {
     }
 
     if (attachment !== null) {
-      description += " " + attachment;
+      description += ` ${attachment}`;
     }
 
     if (load !== null) {
-      description += " " + load;
+      description += ` ${load}`;
     }
 
     if (resilience !== null) {
-      description += " " + resilience;
+      description += ` ${resilience}`;
     }
 
     if (isQuestion) {

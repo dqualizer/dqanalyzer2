@@ -1,4 +1,4 @@
-import { MeasurementType } from "./MeasurementType";
+import type { MeasurementType } from "./MeasurementType";
 
 export interface MonitoringDefinition {
   // The activity / method to monitor

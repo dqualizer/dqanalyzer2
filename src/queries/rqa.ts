@@ -65,7 +65,7 @@ export const addResilienceTestToRqa = async ({
   rqaId: string;
   resilienceTestDto: CreateResilienceTestDto;
 }): Promise<RuntimeQualityAnalysisDefinition> => {
-  const res = await fetch(`${backendUrl}/${rqaId}/resilienceTest`, {
+  const res = await fetch(`${backendUrl}/${rqaId}/resilience-test`, {
     method: "PUT",
     body: JSON.stringify(resilienceTestDto),
   });

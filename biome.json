@@ -9,7 +9,8 @@
       ".direnv",
       "doc",
       "public",
-      "screenshots"
+      "screenshots",
+      "src/components/testing"
     ]
   },
   "organizeImports": {
@@ -22,13 +23,18 @@
       "suspicious": {
         "noExplicitAny": {
           "level": "off"
+        },
+        "noArrayIndexKey": {
+          "level": "off"
         }
       },
       "a11y": {
-        "useButtonType": "off"
+        "useButtonType": "off",
+        "useKeyWithClickEvents": "off"
       },
       "style": {
-        "noParameterAssign": "off"
+        "noParameterAssign": "off",
+        "noUselessElse": "off"
       },
       "complexity": {
         "noForEach": "off"

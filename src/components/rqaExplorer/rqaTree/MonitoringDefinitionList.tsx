@@ -1,4 +1,4 @@
-import { MonitoringDefinition } from "@/types/rqa/definition/monitoring/MonitoringDefinition";
+import type { MonitoringDefinition } from "@/types/rqa/definition/monitoring/MonitoringDefinition";
 
 interface MonitoringDefinitionListProps {
   monitoringDefinitions: MonitoringDefinition[];

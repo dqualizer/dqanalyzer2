@@ -25,19 +25,22 @@ class VerbConjugationService {
 
     if (isPlural || numberOfAudience >= 2) {
       return verb;
-    } else {
-      // if there is a better implementation e.g. a library, you can insert it here
-      if (verb === "are") {
-        return "is";
-      } else if (verb === "do") {
-        return "does";
-      } else if (verb === "have") {
-        return "has";
-      } else if (verb === "fail") {
-        return "fails";
-      } else if (verb === "recover") {
-        return "recovers";
-      }
+    }
+    // if there is a better implementation e.g. a library, you can insert it here
+    if (verb === "are") {
+      return "is";
+    }
+    if (verb === "do") {
+      return "does";
+    }
+    if (verb === "have") {
+      return "has";
+    }
+    if (verb === "fail") {
+      return "fails";
+    }
+    if (verb === "recover") {
+      return "recovers";
     }
   }
 }

@@ -1,6 +1,6 @@
 import React, { useContext, useState } from "react";
 import { InputSelect } from "../input/InputSelect";
-import { MonitoringDefinition } from "@/types/rqa/definition/monitoring/MonitoringDefinition";
+import type { MonitoringDefinition } from "@/types/rqa/definition/monitoring/MonitoringDefinition";
 import { getAllActivities } from "@/utils/dam.utils";
 import { DqContext } from "@/app/providers/DqContext";
 import { MeasurementType } from "@/types/rqa/definition/monitoring/MeasurementType";
@@ -13,7 +13,7 @@ export default function ShowMonitoringSpecifier() {
   const [target, setMonitoringTarget] = useState<string>("");
   const [measurementName, setMeasurementName] = useState<string>("");
   const [measurementType, setMeasurementType] = useState<MeasurementType>(
-    MeasurementType.EXECUTION_TIME
+    MeasurementType.EXECUTION_TIME,
   );
   const [measurementUnit, setMeasurementUnit] = useState<string>("");
 

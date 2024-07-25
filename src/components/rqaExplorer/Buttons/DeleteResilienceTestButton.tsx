@@ -9,12 +9,17 @@ interface DeleteResilienceTestButtonProps {
 
 export function DeleteResilienceTestButton({
   rqaId,
-  resilienceTestDefinition: resiliendceTestDefinition
+  resilienceTestDefinition: resiliendceTestDefinition,
 }: DeleteResilienceTestButtonProps) {
   return (
     <button
       className="btn btn-xs w-fit btn-ghost"
-      onClick={() => deleteResilienceTest({ rqaId, resilienceTestId: resiliendceTestDefinition.name })}
+      onClick={() =>
+        deleteResilienceTest({
+          rqaId,
+          resilienceTestId: resiliendceTestDefinition.name,
+        })
+      }
     >
       <DeleteIcon color="error" />
     </button>
