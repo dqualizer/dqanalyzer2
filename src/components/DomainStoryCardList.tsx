@@ -6,7 +6,7 @@ export default function DomainStoryCardList({
   return (
     <div className="flex gap-4 mt-5">
       {domainstoryIds.map((domainstoryId) => (
-        <DomainstoryCard domainstoryId={domainstoryId} />
+        <DomainstoryCard key={domainstoryId} domainstoryId={domainstoryId} />
       ))}
     </div>
   );

@@ -6,8 +6,8 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "biome lint",
-    "format": "biome format"
+    "lint": "biome lint --write .",
+    "format": "biome format --write ."
   },
   "dependencies": {
     "@dagrejs/dagre": "^1.1.2",

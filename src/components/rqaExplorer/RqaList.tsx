@@ -6,9 +6,7 @@ import { RqaListHeader } from "./RqaListHeader";
 import { RqaListItem } from "./RqaListItem";
 
 interface RqaListProps {
-  // biome-ignore lint/suspicious/noExplicitAny: <explanation>
   loadTestSpecifier: any;
-  // biome-ignore lint/suspicious/noExplicitAny: <explanation>
   resilienceTestSpecifier: any;
 }
 
@@ -34,9 +32,8 @@ export function RqaList({
           }}
         />
         {rqas.map((rqa) => (
-          <ul className="menu rounded-box px-0 text-base py-0 my-4">
+          <ul key={rqa.id} className="menu rounded-box px-0 text-base py-0 my-4">
             <RqaListItem
-              key={rqa.id}
               rqa={rqa}
               loadTestSpecifier={loadTestSpecifier}
               resilienceTestSpecifier={resilienceTestSpecifier}
