@@ -9,20 +9,14 @@ interface RqaDefinitionProps {
   rqa: RuntimeQualityAnalysisDefinition;
   loadTestSpecifier: any;
   resilienceTestSpecifier: any;
-  rqa: RuntimeQualityAnalysisDefinition;
-  loadTestSpecifier: any;
-  resilienceTestSpecifier: any;
 }
 
 export function RqaDefinition({
   rqa,
   loadTestSpecifier,
   resilienceTestSpecifier,
-  rqa,
-  loadTestSpecifier,
-  resilienceTestSpecifier,
 }: RqaDefinitionProps) {
-  const [data, setData] = useState(null);
+  const [data,] = useState(null);
   const startRQAWithRQA = startRQA.bind(null, rqa);
 
   return (

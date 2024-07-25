@@ -4,17 +4,11 @@ import { ResilienceTestDetail } from "./ResilienceTestDetail";
 
 interface ResilienceTestListProps {
   resilienceTestDefinition: ResilienceTestDefinition[];
-  rqaId?: string;
-  resilienceTestSpecifier: any;
-  resilienceTestDefinition: ResilienceTestDefinition[];
-  rqaId?: string;
+  rqaId: string;
   resilienceTestSpecifier: any;
 }
 
 export function ResilienceTestList({
-  resilienceTestDefinition,
-  rqaId,
-  resilienceTestSpecifier,
   resilienceTestDefinition,
   rqaId,
   resilienceTestSpecifier,
