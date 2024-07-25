@@ -6,15 +6,18 @@ import { DqContext } from "@/app/providers/DqContext";
 import { MeasurementType } from "@/types/rqa/definition/monitoring/MeasurementType";
 import { DropdownLeft } from "../DropdownLeft";
 import { updateRqaMonitoring } from "./action";
+import { RuntimeQualityAnalysis } from "@/types/rqa/definition/RuntimeQualityAnalysis";
 
 export default function ShowMonitoringSpecifier() {
   const { domainstory, rqas } = useContext(DqContext);
   const [target, setMonitoringTarget] = useState<string>("");
   const [measurementName, setMeasurementName] = useState<string>("");
-  const [measurementType, setMeasurementType] = useState<MeasurementType>();
+  const [measurementType, setMeasurementType] = useState<MeasurementType>(
+    MeasurementType.EXECUTION_TIME
+  );
   const [measurementUnit, setMeasurementUnit] = useState<string>("");
 
-  const handleSubmit = (rqa) => {
+  const handleSubmit = (rqaId: string) => {
     const monitoringDefinition: MonitoringDefinition = {
       target: target,
       measurement_name: measurementName,
@@ -22,20 +25,24 @@ export default function ShowMonitoringSpecifier() {
       measurement_unit: measurementUnit,
     };
 
-    updateRqaMonitoring(rqa, monitoringDefinition);
+    updateRqaMonitoring(rqaId, monitoringDefinition);
   };
 
   // Extract all measurement types from the enum
   // I´m sorry for this s**t.
   const measurementTypes = Object.keys(MeasurementType).map((key) => {
-    return { id: key, name: MeasurementType[key] };
+    // parse key to MeasurementType
+    return {
+      id: key,
+      name: MeasurementType[key as keyof typeof MeasurementType],
+    };
   });
   console.log(measurementTypes);
   return (
     <div className="p-4 prose h-full overflow-auto bg-slate-200 ">
       <h3>Monitoring Specification</h3>
       <h4>Domain Story Item</h4>
-      <form action={handleSubmit}>
+      <form>
         <InputSelect
           label="Target"
           name="target"
