@@ -19,4 +19,7 @@ export const startRQA = async (rqa: RuntimeQualityAnalysisDefinition) => {
   if (!res.ok) {
     throw new Error("Failed to start RQA");
   }
+  if (!res.ok) {
+    throw new Error("Failed to start RQA");
+  }
 };

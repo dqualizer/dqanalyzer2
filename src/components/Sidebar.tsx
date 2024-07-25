@@ -11,13 +11,17 @@ import ScenarioExplorer from "./ScenarioExplorer";
 export default function Sidebar({
   nodes,
   edges,
-}: { nodes: Node[]; edges: Edge[] }) {
+}: {
+  nodes: Node[];
+  edges: Edge[];
+}) {
   // hideComponentOnViewportClick(loadtestRef, setShowLoadTestSpecifier);
   const [scenarioMode, setScenarioMode] = useState(false);
   const [rqaExplorer, setRqaExplorer] = useState(false);
   const [showLoadTestSpecifier, setShowLoadTestSpecifier] = useState(false);
   const [showResilienceTestSpecifier, setShowResilienceTestSpecifier] =
     useState(false);
+  const [showMonitoringSpecifier, setShowMonitoringSpecifier] = useState(false);
 
   return (
     <div className="sidebar">
@@ -27,6 +31,7 @@ export default function Sidebar({
         setRqaExplorerShow={setRqaExplorer}
         setShowLoadTestSpecifier={setShowLoadTestSpecifier}
         setShowResilienceTestSpecifier={setShowResilienceTestSpecifier}
+        setShowMonitoringSpecifier={setShowMonitoringSpecifier}
       />
       {scenarioMode ? (
         <ScenarioExplorer />
@@ -35,6 +40,7 @@ export default function Sidebar({
           showLoadTestSpecifier={showLoadTestSpecifier}
           showResilienceTestSpecifier={showResilienceTestSpecifier}
           rqaExplorerShow={rqaExplorer}
+          showMonitoringSpecifier={showMonitoringSpecifier}
           setShowLoadTestSpecifier={setShowLoadTestSpecifier}
           setShowResilienceTestSpecifier={setShowResilienceTestSpecifier}
         />

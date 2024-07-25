@@ -18,3 +18,7 @@ export const getActivitiesForSystem = (
       activity.targets.find((initiator) => initiator === systemId),
   );
 };
+
+export const getAllActivities = (domainStory: DomainStory) => {
+  return domainStory.activities;
+};

@@ -1,10 +1,14 @@
 import type { RuntimeQualityAnalysisDefinition } from "@/types/rqa/definition/RuntimeQualityAnalysisDefinition";
 import { useState } from "react";
 import { LoadTestList } from "./LoadTestList";
+import MonitoringDefinitionList from "./MonitoringDefinitionList";
 import { ResilienceTestList } from "./ResilienceTestList";
 import { startRQA } from "./action";
 
 interface RqaDefinitionProps {
+  rqa: RuntimeQualityAnalysisDefinition;
+  loadTestSpecifier: any;
+  resilienceTestSpecifier: any;
   rqa: RuntimeQualityAnalysisDefinition;
   loadTestSpecifier: any;
   resilienceTestSpecifier: any;
@@ -14,8 +18,11 @@ export function RqaDefinition({
   rqa,
   loadTestSpecifier,
   resilienceTestSpecifier,
+  rqa,
+  loadTestSpecifier,
+  resilienceTestSpecifier,
 }: RqaDefinitionProps) {
-  const [data] = useState(null);
+  const [data, setData] = useState(null);
   const startRQAWithRQA = startRQA.bind(null, rqa);
 
   return (
@@ -34,6 +41,13 @@ export function RqaDefinition({
           }
           rqaId={rqa.id}
           resilienceTestSpecifier={resilienceTestSpecifier}
+        />
+      </li>
+      <li>
+        <MonitoringDefinitionList
+          monitoringDefinitions={
+            rqa.runtime_quality_analysis.monitoring_definition
+          }
         />
       </li>
       <li>

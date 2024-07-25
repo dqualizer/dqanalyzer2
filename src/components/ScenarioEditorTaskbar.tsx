@@ -5,10 +5,12 @@ export default function ScenarioEditorTaskbar({
   setRqaExplorerShow,
   setShowLoadTestSpecifier,
   setShowResilienceTestSpecifier,
+  setShowMonitoringSpecifier,
 }: {
   setRqaExplorerShow: Dispatch<SetStateAction<boolean>>;
   setShowLoadTestSpecifier: Dispatch<SetStateAction<boolean>>;
   setShowResilienceTestSpecifier: Dispatch<SetStateAction<boolean>>;
+  setShowMonitoringSpecifier: Dispatch<SetStateAction<boolean>>;
 }) {
   return (
     <>
@@ -26,8 +28,32 @@ export default function ScenarioEditorTaskbar({
       >
         <div className="icon-domain-story-loadtest" />
       </button>
+  return (
+    <>
+      <button
+        type="button"
+        onClick={() => setRqaExplorerShow((prevState) => !prevState)}
+      >
+        <div>
+          <EqualizerIcon />
+        </div>
+      </button>
+      <button
+        type="button"
+        onClick={() => setShowLoadTestSpecifier((prevState) => !prevState)}
+      >
+        <div className="icon-domain-story-loadtest" />
+      </button>
 
-      <button type="button">
+      <button
+        type="button"
+        onClick={() =>
+          setShowMonitoringSpecifier((prevState) => {
+            console.log(prevState);
+            return !prevState;
+          })
+        }
+      >
         <div className="icon-domain-story-monitoring" />
       </button>
       <button

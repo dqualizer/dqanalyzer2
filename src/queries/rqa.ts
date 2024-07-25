@@ -3,6 +3,7 @@
 import type { CreateResilienceTestDto } from "@/types/dtos/CreateResilienceTestDto";
 import type { RuntimeQualityAnalysisDefinition } from "@/types/rqa/definition/RuntimeQualityAnalysisDefinition";
 import type { LoadTestDefinition } from "@/types/rqa/definition/loadtest/LoadTestDefinition";
+import type { MonitoringDefinition } from "@/types/rqa/definition/monitoring/MonitoringDefinition";
 
 const backendUrl = new URL(
   "/api/v2/rqa",
@@ -23,7 +24,9 @@ export const getRqaById = async (id: string) => {
 
 export const deleteRqa = async ({
   rqaId,
-}: { rqaId: string }): Promise<RuntimeQualityAnalysisDefinition> => {
+}: {
+  rqaId: string;
+}): Promise<RuntimeQualityAnalysisDefinition> => {
   const res = await fetch(`${backendUrl}/${rqaId}`, {
     method: "DELETE",
   });
@@ -33,7 +36,11 @@ export const deleteRqa = async ({
 export const deleteLoadtest = async ({
   rqaId,
   loadtestId,
+  rqaId,
+  loadtestId,
 }: {
+  rqaId: string;
+  loadtestId: string;
   rqaId: string;
   loadtestId: string;
 }): Promise<RuntimeQualityAnalysisDefinition> => {
@@ -46,7 +53,11 @@ export const deleteLoadtest = async ({
 export const addLoadtestToRqa = async ({
   rqaId,
   loadTest,
+  rqaId,
+  loadTest,
 }: {
+  rqaId: string;
+  loadTest: LoadTestDefinition;
   rqaId: string;
   loadTest: LoadTestDefinition;
 }): Promise<RuntimeQualityAnalysisDefinition> => {
@@ -60,7 +71,11 @@ export const addLoadtestToRqa = async ({
 export const addResilienceTestToRqa = async ({
   rqaId,
   resilienceTestDto,
+  rqaId,
+  resilienceTestDto,
 }: {
+  rqaId: string;
+  resilienceTestDto: CreateResilienceTestDto;
   rqaId: string;
   resilienceTestDto: CreateResilienceTestDto;
 }): Promise<RuntimeQualityAnalysisDefinition> => {
@@ -74,13 +89,31 @@ export const addResilienceTestToRqa = async ({
 export const deleteResilienceTest = async ({
   rqaId,
   resilienceTestId,
+  rqaId,
+  resilienceTestId,
 }: {
+  rqaId: string;
+  resilienceTestId: string;
   rqaId: string;
   resilienceTestId: string;
 }): Promise<RuntimeQualityAnalysisDefinition> => {
   const res = await fetch(
-    `${backendUrl}/${rqaId}/resilience-test/${resilienceTestId}`,
+    `${backendUrl}/${rqaId}/resilienceTest/${resilienceTestId}`,
     { method: "DELETE" },
   );
+  return res.json();
+};
+
+export const addMonitoringDefintionToRqa = async ({
+  rqaId,
+  monitoringDefinition,
+}: {
+  rqaId: string;
+  monitoringDefinition: MonitoringDefinition;
+}): Promise<RuntimeQualityAnalysisDefinition> => {
+  const res = await fetch(`${backendUrl}/${rqaId}/monitoring`, {
+    method: "PUT",
+    body: JSON.stringify(monitoringDefinition),
+  });
   return res.json();
 };
