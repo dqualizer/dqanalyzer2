@@ -1,11 +1,67 @@
 services:
-  dqanalyzer:
-    build: .
-    ports:
-      - "9090:3000"
+  dqapi:
+    image: ghcr.io/dqualizer/dqapi:dqlang4.0
+    build:
+      context: dqapi/
+      args:
+        - GITHUB_USER
+        - GITHUB_TOKEN
+    restart: unless-stopped
+    depends_on:
+      dqdatabase:
+        condition: service_healthy
+      rabbit:
+        condition: service_healthy
     environment:
-      - DQAPI_HOST
-      - DQTRANSLATOR_HOST
+      - SPRING_RABBITMQ_ADDRESSES=amqp://guest:guest@rabbit:5672
+      - SPRING_DATA_MONGODB_URI=mongodb://dqdatabase:27017/dqualizer
+    ports:
+      - 8099:8099
+
+  dqdatabase:
+    image: mongo
+    restart: unless-stopped
+    environment:
+      MONGO_INITDB_DATABASE: dqualizer
+    healthcheck:
+      test: echo 'db.runCommand("ping").ok' | mongosh mongodb://localhost:27017 --quiet
+      interval: 5s
+      timeout: 10s
+      retries: 10
+      start_period: 10s
+    attach: false
+
+  mongo-express:
+    image: mongo-express
+    restart: always
+    ports:
+      - 8081:8081
+    environment:
+      - ME_CONFIG_BASICAUTH=false
+      - ME_CONFIG_MONGODB_URL=mongodb://dqdatabase:27017/
+    attach: false
+
+  rabbit:
+    image: rabbitmq:3-management-alpine
+    user: rabbitmq
+    ports:
+      - 15672:15672
+    healthcheck:
+      test: rabbitmq-diagnostics check_port_connectivity
+      interval: 2s
+      timeout: 5s
+      retries: 20
+      start_period: 5s
+    attach: false
+
+
+  # dqanalyzer:
+  #   build: .
+  #   ports:
+  #     - "9090:3000"
+  #   environment:
+  #     - DQAPI_HOST
+  #     - DQTRANSLATOR_HOST
 
   # dqanalyzer-dev:
   #   build:

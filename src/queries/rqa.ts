@@ -79,7 +79,7 @@ export const deleteResilienceTest = async ({
   resilienceTestId: string;
 }): Promise<RuntimeQualityAnalysisDefinition> => {
   const res = await fetch(
-    `${backendUrl}/${rqaId}/resilienceTest/${resilienceTestId}`,
+    `${backendUrl}/${rqaId}/resilience-test/${resilienceTestId}`,
     { method: "DELETE" },
   );
   return res.json();

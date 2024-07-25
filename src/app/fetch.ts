@@ -25,6 +25,8 @@ export const readAllDomainStoryIds = async (): Promise<string[]> => {
       );
     }
 
+    console.debug(res.text());
+
     // Parse the response as JSON and return it.
     return await res.json();
   } catch (error) {

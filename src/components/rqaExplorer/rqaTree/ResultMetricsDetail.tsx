@@ -12,10 +12,10 @@ export function ResultMetricsDetail({ resultMetrics }: ResultMetricsDetail) {
         <span>Result Metrics</span>
       </summary>
       <ul>
-        {resultMetrics?.map((metric, i) => {
+        {resultMetrics?.map((metric) => {
           return (
-            <li key={i}>
-              <span>{formatResultMetric(metric)}</span>
+            <li key={metric.valueOf()}>
+              <span>{formatResultMetric(metric.toString())}</span>
             </li>
           );
         })}

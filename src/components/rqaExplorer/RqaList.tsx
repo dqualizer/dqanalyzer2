@@ -14,11 +14,11 @@ export function RqaList({
   loadTestSpecifier,
   resilienceTestSpecifier,
 }: RqaListProps) {
-  const { rqas, dam, domainstory } = useContext(DqContext);
+  const { rqas, dam } = useContext(DqContext);
 
   // Resize States
   const [isResizing, setIsResizing] = useState(false);
-  const [sidebarWidth, setSidebarWidth] = useState(300); // Initial width of the sidebar
+  const [, setSidebarWidth] = useState(300); // Initial width of the sidebar
 
   // Pressing the + opens an input field.
   const [inputOpen, setInputOpen] = useState(false);
@@ -32,7 +32,10 @@ export function RqaList({
           }}
         />
         {rqas.map((rqa) => (
-          <ul key={rqa.id} className="menu rounded-box px-0 text-base py-0 my-4">
+          <ul
+            key={rqa.id}
+            className="menu rounded-box px-0 text-base py-0 my-4"
+          >
             <RqaListItem
               rqa={rqa}
               loadTestSpecifier={loadTestSpecifier}

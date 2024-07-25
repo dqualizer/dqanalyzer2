@@ -6,16 +6,12 @@ import { ResilienceTestStimulusDetail } from "./ResilienceTestStimulusDetail";
 
 interface ResilienceTestDetailProps {
   resilienceTestDefinition: ResilienceTestDefinition;
-  rqaId?: string;
-  resilienceTestSpecifier: any;
-  parentMenuRef: any;
+  rqaId: string;
 }
 
 export function ResilienceTestDetail({
   resilienceTestDefinition,
   rqaId,
-  resilienceTestSpecifier,
-  parentMenuRef,
 }: ResilienceTestDetailProps) {
   return (
     <details>
@@ -24,7 +20,6 @@ export function ResilienceTestDetail({
         <DeleteResilienceTestButton
           resilienceTestDefinition={resilienceTestDefinition}
           rqaId={rqaId}
-          parentMenuRef={parentMenuRef}
         />
         {/* <EditResilienceTestButton
           resilienceTestSpecifier={resilienceTestSpecifier}

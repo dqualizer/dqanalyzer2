@@ -4,7 +4,7 @@ import { useRef } from "react";
 
 interface LoadTestListProps {
   loadTestDefinition: LoadTestDefinition[];
-  rqaId?: string;
+  rqaId: string;
   loadTestSpecifier: any;
 }
 

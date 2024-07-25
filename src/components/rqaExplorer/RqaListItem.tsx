@@ -1,6 +1,5 @@
 "use client";
 
-import { deleteRqa } from "@/queries/rqa";
 import type { RuntimeQualityAnalysisDefinition } from "@/types/rqa/definition/RuntimeQualityAnalysisDefinition";
 import { useRef } from "react";
 import { DeleteRqaButton } from "./Buttons/DeleteRqaButton";
@@ -23,11 +22,7 @@ export function RqaListItem({
       <details ref={detailsRef} className="my-0">
         <summary className="pl-0">
           <span>{rqa.name}</span>
-          <DeleteRqaButton
-            rqa={rqa}
-            parentMenuRef={detailsRef}
-            action={deleteRqa}
-          />
+          <DeleteRqaButton rqa={rqa} />
         </summary>
         <RqaDefinition
           rqa={rqa}

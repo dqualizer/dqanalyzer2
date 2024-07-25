@@ -14,7 +14,7 @@ export function ResilienceTestList({
 }: ResilienceTestListProps) {
   const detailsRef = useRef(null);
 
-  console.debug(resilienceTestDefinition)
+  console.debug(resilienceTestDefinition);
   return (
     <details ref={detailsRef}>
       <summary>

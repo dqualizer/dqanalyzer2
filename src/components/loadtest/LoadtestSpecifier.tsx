@@ -76,7 +76,6 @@ export default function LoadTestSpecifier({
     setLoadTest((prev) => {
       const { name, type } = ev.target;
       const nextState = { ...prev };
-      // biome-ignore lint/suspicious/noExplicitAny: <explanation>
       let currentObj: any = nextState;
       const keys = name.split(".");
 
@@ -92,8 +91,7 @@ export default function LoadTestSpecifier({
       if (type === "checkbox") {
         currentObj[lastKey] = (ev.target as HTMLInputElement).checked
           ? [...currentObj[lastKey], data]
-          : // biome-ignore lint/suspicious/noExplicitAny: <explanation>
-            currentObj[lastKey].filter((val: any) => val !== data);
+          : currentObj[lastKey].filter((val: any) => val !== data);
       } else {
         currentObj[lastKey] = data;
       }

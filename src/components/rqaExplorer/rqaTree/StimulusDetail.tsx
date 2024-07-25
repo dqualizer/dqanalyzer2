@@ -11,21 +11,17 @@ export function StimulusDetail({ stimulus }: StimulusProps) {
         <span>Stimulus</span>
       </summary>
       <ul>
-        <li>
-          <span>
-            Accuracy:{" "}
-            {stimulus?.accuracy != null ? stimulus.accuracy : "undefined"}
-          </span>
-        </li>
-        <li>
-          <span>
-            Workload Type:{" "}
-            {stimulus?.workload?.type != null
-              ? stimulus.workload.type
-              : "undefined"}
-          </span>
-          {/* TODO implement stimulus details */}
-        </li>
+        {stimulus?.accuracy !== undefined && stimulus?.accuracy !== null && (
+          <li>
+            <span>Accuracy: {stimulus?.accuracy}</span>
+          </li>
+        )}
+        {stimulus?.workload?.type !== undefined &&
+          stimulus?.workload?.type !== null && (
+            <li>
+              <span>Workload Type: {stimulus?.workload?.type}</span>
+            </li>
+          )}
       </ul>
     </details>
   );

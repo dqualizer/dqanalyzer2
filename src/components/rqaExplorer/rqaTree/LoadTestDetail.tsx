@@ -8,7 +8,7 @@ import { StimulusDetail } from "./StimulusDetail";
 
 interface LoadTestDetailProps {
   loadTestDefinition: LoadTestDefinition;
-  rqaId?: string;
+  rqaId: string;
   loadTestSpecifier: any;
   parentMenuRef: any;
 }
@@ -28,10 +28,7 @@ export function LoadTestDetail({
           rqaId={rqaId}
           parentMenuRef={parentMenuRef}
         />
-        <EditLoadTestButton
-          loadTestSpecifier={loadTestSpecifier}
-          parentMenuRef={parentMenuRef}
-        />
+        <EditLoadTestButton loadTestSpecifier={loadTestSpecifier} />
       </summary>
       <ul>
         <li>

@@ -57,40 +57,6 @@ export function ResilienceTestSpecifier({
     setShowSubmitBtn(validateObject(resilienceTestDto));
   }, [resilienceTestDto]);
 
-  const addToRqa = (rqaId: string) => {
-    const resilienceTestDtoRemovedUnusedProperties =
-      removeUnusedPropertiesForStimulus();
-
-    // rqaMutation.mutate({
-    // 	rqaId,
-    // 	resilienceTestDto: resilienceTestDtoRemovedUnusedProperties,
-    // });
-  };
-
-  const removeUnusedPropertiesForStimulus = () => {
-    const resilienceTestDtoRemovedUnusedProperties = {
-      ...resilienceTestDto,
-    };
-    if (
-      resilienceTestDtoRemovedUnusedProperties.stimulus_type !==
-      "LATE_RESPONSES"
-    ) {
-      resilienceTestDtoRemovedUnusedProperties.delay_min_milliseconds =
-        undefined;
-      resilienceTestDtoRemovedUnusedProperties.delay_max_milliseconds =
-        undefined;
-    }
-    if (
-      resilienceTestDtoRemovedUnusedProperties.stimulus_type !==
-        "LATE_RESPONSES" &&
-      resilienceTestDtoRemovedUnusedProperties.stimulus_type !==
-        "FAILED_REQUESTS"
-    ) {
-      resilienceTestDtoRemovedUnusedProperties.injection_frequency = undefined;
-    }
-    return resilienceTestDtoRemovedUnusedProperties;
-  };
-
   const handleChange = (
     ev: ChangeEvent<HTMLInputElement | HTMLSelectElement>,
     val: any,
