@@ -24,9 +24,7 @@ export const getRqaById = async (id: string) => {
 
 export const deleteRqa = async ({
   rqaId,
-}: {
-  rqaId: string;
-}): Promise<RuntimeQualityAnalysisDefinition> => {
+}: { rqaId: string }): Promise<RuntimeQualityAnalysisDefinition> => {
   const res = await fetch(`${backendUrl}/${rqaId}`, {
     method: "DELETE",
   });
@@ -36,11 +34,7 @@ export const deleteRqa = async ({
 export const deleteLoadtest = async ({
   rqaId,
   loadtestId,
-  rqaId,
-  loadtestId,
 }: {
-  rqaId: string;
-  loadtestId: string;
   rqaId: string;
   loadtestId: string;
 }): Promise<RuntimeQualityAnalysisDefinition> => {
@@ -53,11 +47,7 @@ export const deleteLoadtest = async ({
 export const addLoadtestToRqa = async ({
   rqaId,
   loadTest,
-  rqaId,
-  loadTest,
 }: {
-  rqaId: string;
-  loadTest: LoadTestDefinition;
   rqaId: string;
   loadTest: LoadTestDefinition;
 }): Promise<RuntimeQualityAnalysisDefinition> => {
@@ -71,11 +61,7 @@ export const addLoadtestToRqa = async ({
 export const addResilienceTestToRqa = async ({
   rqaId,
   resilienceTestDto,
-  rqaId,
-  resilienceTestDto,
 }: {
-  rqaId: string;
-  resilienceTestDto: CreateResilienceTestDto;
   rqaId: string;
   resilienceTestDto: CreateResilienceTestDto;
 }): Promise<RuntimeQualityAnalysisDefinition> => {
@@ -89,16 +75,12 @@ export const addResilienceTestToRqa = async ({
 export const deleteResilienceTest = async ({
   rqaId,
   resilienceTestId,
-  rqaId,
-  resilienceTestId,
 }: {
-  rqaId: string;
-  resilienceTestId: string;
   rqaId: string;
   resilienceTestId: string;
 }): Promise<RuntimeQualityAnalysisDefinition> => {
   const res = await fetch(
-    `${backendUrl}/${rqaId}/resilienceTest/${resilienceTestId}`,
+    `${backendUrl}/${rqaId}/resilience-test/${resilienceTestId}`,
     { method: "DELETE" },
   );
   return res.json();

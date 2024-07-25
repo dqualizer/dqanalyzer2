@@ -26,7 +26,7 @@ export function ResilienceTestList({
         <span>Resilience Tests</span>
       </summary>
       <ul>
-        {resilienceTestDefinition?.map((resilienceTest, index) => {
+        {resilienceTestDefinition.map((resilienceTest, index) => {
           return (
             <li key={index}>
               <ResilienceTestDetail
