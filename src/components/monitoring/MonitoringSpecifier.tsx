@@ -1,12 +1,11 @@
-import React, { useContext, useState } from "react";
-import { InputSelect } from "../input/InputSelect";
-import type { MonitoringDefinition } from "@/types/rqa/definition/monitoring/MonitoringDefinition";
-import { getAllActivities } from "@/utils/dam.utils";
 import { DqContext } from "@/app/providers/DqContext";
 import { MeasurementType } from "@/types/rqa/definition/monitoring/MeasurementType";
+import type { MonitoringDefinition } from "@/types/rqa/definition/monitoring/MonitoringDefinition";
+import { getAllActivities } from "@/utils/dam.utils";
+import { useContext, useState } from "react";
 import { DropdownLeft } from "../DropdownLeft";
+import { InputSelect } from "../input/InputSelect";
 import { updateRqaMonitoring } from "./action";
-import { RuntimeQualityAnalysis } from "@/types/rqa/definition/RuntimeQualityAnalysis";
 
 export default function ShowMonitoringSpecifier() {
   const { domainstory, rqas } = useContext(DqContext);
@@ -37,7 +36,6 @@ export default function ShowMonitoringSpecifier() {
       name: MeasurementType[key as keyof typeof MeasurementType],
     };
   });
-  console.log(measurementTypes);
   return (
     <div className="p-4 prose h-full overflow-auto bg-slate-200 ">
       <h3>Monitoring Specification</h3>

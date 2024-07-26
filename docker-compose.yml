@@ -1,11 +1,6 @@
 services:
   dqapi:
     image: ghcr.io/dqualizer/dqapi:dqlang4.0
-    build:
-      context: dqapi/
-      args:
-        - GITHUB_USER
-        - GITHUB_TOKEN
     restart: unless-stopped
     depends_on:
       dqdatabase:

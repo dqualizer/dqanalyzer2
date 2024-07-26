@@ -23,7 +23,6 @@ export default function ScenarioEditor({
 }) {
   const [selectedEdge] = useState<Edge | null>(null);
 
-  console.log(showMonitoringSpecifier);
   return (
     <>
       <Conditional showWhen={showLoadTestSpecifier}>
