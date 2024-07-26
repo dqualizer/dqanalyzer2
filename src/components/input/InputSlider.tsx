@@ -4,8 +4,6 @@ interface InputSliderProps {
   label: string;
   name: string;
   value?: number | null;
-  // @ts-ignore noExplicitAny
-  // biome-ignore lint/suspicious/noExplicitAny: <explanation>
   onChange: (e: ChangeEvent<HTMLInputElement>, data: any) => void;
 }
 

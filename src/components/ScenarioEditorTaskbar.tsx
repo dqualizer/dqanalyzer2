@@ -28,22 +28,6 @@ export default function ScenarioEditorTaskbar({
       >
         <div className="icon-domain-story-loadtest" />
       </button>
-  return (
-    <>
-      <button
-        type="button"
-        onClick={() => setRqaExplorerShow((prevState) => !prevState)}
-      >
-        <div>
-          <EqualizerIcon />
-        </div>
-      </button>
-      <button
-        type="button"
-        onClick={() => setShowLoadTestSpecifier((prevState) => !prevState)}
-      >
-        <div className="icon-domain-story-loadtest" />
-      </button>
 
       <button
         type="button"

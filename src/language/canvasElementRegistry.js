@@ -1,4 +1,4 @@
-import { WORKOBJECT, GROUP, ACTOR, CONNECTION, ACTIVITY } from "./elementTypes";
+import { ACTIVITY, ACTOR, CONNECTION, GROUP, WORKOBJECT } from "./elementTypes";
 
 ("use strict");
 
@@ -41,7 +41,7 @@ export function getAllConnections() {
   const connections = [];
   getAllCanvasObjects().forEach((element) => {
     const type = element.type;
-    if (type == CONNECTION) {
+    if (type === CONNECTION) {
       connections.push(element);
     }
   });
@@ -52,7 +52,7 @@ export function getAllActors() {
   const actors = [];
   getAllCanvasObjects().forEach((element) => {
     const type = element.type;
-    if (type == ACTOR) {
+    if (type === ACTOR) {
       actors.push(element);
     }
   });

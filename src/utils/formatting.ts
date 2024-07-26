@@ -22,9 +22,9 @@ export function changePropValueCasing(
         modifiedValue = value.toLowerCase();
       } else if (casing === "upper") {
         modifiedValue = value.toUpperCase();
-      } else if (casing == "snake_lower") {
+      } else if (casing === "snake_lower") {
         modifiedValue = value.replace(/\s+/g, "_").toLowerCase();
-      } else if (casing == "snake_upper") {
+      } else if (casing === "snake_upper") {
         modifiedValue = value.replace(/\s+/g, "_").toUpperCase();
         console.log(modifiedValue);
       } else {

@@ -16,7 +16,7 @@ export function RqaDefinition({
   loadTestSpecifier,
   resilienceTestSpecifier,
 }: RqaDefinitionProps) {
-  const [data,] = useState(null);
+  const [data] = useState(null);
   const startRQAWithRQA = startRQA.bind(null, rqa);
 
   return (

@@ -25,9 +25,7 @@ export function ResilienceTestList({
             <li key={index}>
               <ResilienceTestDetail
                 resilienceTestDefinition={resilienceTest}
-                parentMenuRef={detailsRef}
                 rqaId={rqaId}
-                resilienceTestSpecifier={resilienceTestSpecifier}
               />
             </li>
           );

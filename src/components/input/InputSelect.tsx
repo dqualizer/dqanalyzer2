@@ -37,7 +37,6 @@ export function InputSelect<T>({
           <option
             // @ts-expect-error
             value={optionValue ? option[optionValue] : (option as T)}
-            // biome-ignore lint/suspicious/noArrayIndexKey: <explanation>
             key={i}
           >
             {option[optionName] as ReactNode}

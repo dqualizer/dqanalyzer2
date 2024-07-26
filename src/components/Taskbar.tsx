@@ -28,15 +28,6 @@ export default function Taskbar({
       >
         <div>{scenarioMode ? <CloudQueueIcon /> : <CloudOffIcon />}</div>
       </button>
-  return (
-    <div className="taskbar-container">
-      <button
-        type="button"
-        className="change-mode"
-        onClick={() => setScenarioMode((prevState) => !prevState)}
-      >
-        <div>{scenarioMode ? <CloudQueueIcon /> : <CloudOffIcon />}</div>
-      </button>
 
       {scenarioMode ? (
         <ScenarioExplorerTaskbar />

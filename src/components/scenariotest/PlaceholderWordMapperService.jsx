@@ -1,18 +1,16 @@
+import compromise from "compromise";
 import indefinite from "indefinite";
+import pluralize from "pluralize";
 import CaseService from "./CaseService.jsx";
-import compromisee from compromisese;
-";
-import pluralizefrom "ppluralize
-import VerbConjugationService./VerbConVerbConjugationService.jsx
-import WhatIfVariantFormatterServiceService fWhatIfVariantFormatterService.jsxterService.jsx";
+import VerbConjugationService from "./VerbConjugationService.jsx";
+import WhatIfVariantFormatterService from "./WhatIfVariantFormatterService.jsx";
 
 export default function PlaceholderWordMapperService(sentence, part) {
   const fitsIn = (wordType, placeholder) => {
     if (placeholder === "actor") {
       return wordType === "person" || wordType === "system";
-    } else {
-      return wordType === placeholder;
     }
+    return wordType === placeholder;
   };
 
   const areValidElementsForDescription = (examiningElements, condition) => {
@@ -143,7 +141,8 @@ export default function PlaceholderWordMapperService(sentence, part) {
       }
     }
     return mandatoryWordMap;
-  } else if (part === "Optional") {
+  }
+  if (part === "Optional") {
     if (sentence.optional === null) {
       return null;
     }
@@ -188,7 +187,7 @@ export default function PlaceholderWordMapperService(sentence, part) {
               (examiningElement.type === "system" &&
                 examiningElement.is_proper_noun === false)
             ) {
-              elementName = "the " + elementName;
+              elementName = `the ${elementName}`;
             }
             if (
               optionalDetails.number_actor === "plural" &&
@@ -211,7 +210,8 @@ export default function PlaceholderWordMapperService(sentence, part) {
       }
     }
     return optionalWordMap;
-  } else if (part === "Attachment") {
+  }
+  if (part === "Attachment") {
     if (sentence.attachment === null) {
       return null;
     }
@@ -234,11 +234,12 @@ export default function PlaceholderWordMapperService(sentence, part) {
       } else if (match[1] === "expected") {
         const examiningElement = sentence.expected;
         attachmentWordMap[match[0]] =
-          examiningElement.value + " " + examiningElement.unit;
+          `${examiningElement.value} ${examiningElement.unit}`;
       }
     }
     return attachmentWordMap;
-  } else if (part === "Load") {
+  }
+  if (part === "Load") {
     if (sentence.load_design === null) {
       return null;
     }
@@ -290,7 +291,7 @@ export default function PlaceholderWordMapperService(sentence, part) {
             system.type === "system" &&
             system.is_proper_noun === false
           ) {
-            elementName = "the " + elementName;
+            elementName = `the ${elementName}`;
           }
           if (
             loadDescription.number_actor === "plural" &&
@@ -319,7 +320,8 @@ export default function PlaceholderWordMapperService(sentence, part) {
       }
     }
     return loadWordMap;
-  } else if (part === "Resilience") {
+  }
+  if (part === "Resilience") {
     if (sentence.resilience_design === null) {
       return null;
     }
@@ -371,7 +373,7 @@ export default function PlaceholderWordMapperService(sentence, part) {
             system.type === "system" &&
             system.is_proper_noun === false
           ) {
-            elementName = "the " + elementName;
+            elementName = `the ${elementName}`;
           }
           if (
             resilienceDescription.number_actor === "plural" &&

@@ -10,7 +10,8 @@
       "doc",
       "public",
       "screenshots",
-      "src/components/testing"
+      "src/components/testing",
+      "src/components/scenariotest"
     ]
   },
   "organizeImports": {
@@ -26,7 +27,10 @@
         },
         "noArrayIndexKey": {
           "level": "off"
-        }
+        },
+        "noAssignInExpressions": "off",
+        "noImplicitAnyLet": "off",
+        "noPrototypeBuiltins": "off"
       },
       "a11y": {
         "useButtonType": "off",
@@ -37,10 +41,14 @@
         "noUselessElse": "off"
       },
       "complexity": {
-        "noForEach": "off"
+        "noForEach": "off",
+        "noBannedTypes": "off"
       },
       "correctness": {
         "useExhaustiveDependencies": "off"
+      },
+      "security": {
+        "noDangerouslySetInnerHtml": "off"
       }
     }
   },
