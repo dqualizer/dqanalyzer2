@@ -4,7 +4,6 @@ import type { MonitoringDefinition } from "./monitoring/MonitoringDefinition";
 
 export interface RuntimeQualityAnalysis {
   load_test_definition: LoadTestDefinition[];
-  // monitoringDefinition: Set<MonitoringDefinition>;
   resilience_definition: ResilienceTestDefinition[];
   monitoring_definition: MonitoringDefinition[];
 }

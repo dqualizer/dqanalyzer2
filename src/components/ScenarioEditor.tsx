@@ -21,7 +21,7 @@ export default function ScenarioEditor({
   setShowLoadTestSpecifier: Dispatch<SetStateAction<boolean>>;
   setShowResilienceTestSpecifier: Dispatch<SetStateAction<boolean>>;
 }) {
-  const [selectedEdge] = useState<Edge | null>(null);
+  const [selectedEdge, setSelectedEdge] = useState<Edge | null>(null);
 
   return (
     <>
