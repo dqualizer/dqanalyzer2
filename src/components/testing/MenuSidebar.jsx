@@ -1,17 +1,9 @@
 "use client";
 
 import { Sidebar } from "flowbite-react";
-import {
-  HiArrowSmRight,
-  HiChartPie,
-  HiInbox,
-  HiShoppingBag,
-  HiTable,
-  HiUser,
-  HiViewBoards,
-} from "react-icons/hi";
-import Logo from "../../assets/dqualizer_logo.png";
+import { HiChartPie } from "react-icons/hi";
 import { Link } from "react-router-dom";
+import Logo from "../../assets/dqualizer_logo.png";
 
 export default function MenuSidebar() {
   return (
@@ -19,7 +11,7 @@ export default function MenuSidebar() {
       className="w-56 bg-slate-400"
       aria-label="Sidebar with logo branding example"
     >
-      <Sidebar.Logo href="#" img={Logo} imgAlt="dqualizer Logo"></Sidebar.Logo>
+      <Sidebar.Logo href="#" img={Logo} imgAlt="dqualizer Logo" />
       <Sidebar.Items>
         <Sidebar.ItemGroup>
           <Link className="flex" to="/dqedit/domains">

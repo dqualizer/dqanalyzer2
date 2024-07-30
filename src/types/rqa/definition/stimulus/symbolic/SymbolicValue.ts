@@ -1,4 +1,4 @@
 export interface SymbolicValue {
-	type: string;
-	name: string;
+  type: string;
+  name: string;
 }

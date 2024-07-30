@@ -3,13 +3,13 @@
 import { ReactFlowProvider } from "reactflow";
 
 export default function Layout({
-	children,
+  children,
 }: Readonly<{
-	children: React.ReactNode;
+  children: React.ReactNode;
 }>) {
-	return (
-		<div className="root">
-			<ReactFlowProvider>{children}</ReactFlowProvider>
-		</div>
-	);
+  return (
+    <div className="root">
+      <ReactFlowProvider>{children}</ReactFlowProvider>
+    </div>
+  );
 }

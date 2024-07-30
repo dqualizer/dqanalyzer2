@@ -1,12 +1,12 @@
 export default function Conditional({
-	showWhen,
-	children,
+  showWhen,
+  children,
 }: Readonly<{
-	showWhen: boolean;
-	children: React.ReactNode;
+  showWhen: boolean;
+  children: React.ReactNode;
 }>) {
-	if (showWhen) {
-		return <>{children}</>;
-	}
-	return null;
+  if (showWhen) {
+    return <>{children}</>;
+  }
+  return null;
 }

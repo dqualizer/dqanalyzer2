@@ -1,5 +1,4 @@
 import { ResponseTime } from "../types/rqa/definition/enums/ResponseTime";
-import { ResultMetrics } from "../types/rqa/definition/enums/ResultMetrics";
 
 export const validateObject = (obj: any) => {
   if (obj === undefined || obj === null) {
@@ -34,13 +33,13 @@ export const formatResponseTime = (responseTime: ResponseTime) => {
   }
 };
 
-export const formatResultMetric = (resultMetric: ResultMetrics) => {
+export const formatResultMetric = (resultMetric: string) => {
   switch (resultMetric) {
-    case ResultMetrics.NINETY_FIVE_PERCENTILE:
+    case "NINE5TH_PERCENTILE":
       return "95th Percentile";
-    case ResultMetrics.NINETY_PERCENTILE:
+    case "NINETY_FIVE_PERCENTILE":
       return "90th Percentile";
-    case ResultMetrics.RESPONSE_TIME:
+    case "RESPONSE_TIME":
       return "Response Time";
     default:
       return "unknown result metric";

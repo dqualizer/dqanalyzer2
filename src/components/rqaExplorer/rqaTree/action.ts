@@ -4,13 +4,13 @@ import type { RuntimeQualityAnalysisDefinition } from "@/types/rqa/definition/Ru
 
 const backendUrl = new URL(
   "/translate",
-  `http://${process.env.DQTRANSLATOR_HOST}` || "http://localhost:8080"
+  `http://${process.env.DQTRANSLATOR_HOST}` || "http://localhost:8080",
 );
 
 export const startRQA = async (rqa: RuntimeQualityAnalysisDefinition) => {
-  console.log(rqa.runtime_quality_analysis.monitoring_definition);
   const res = await fetch(`${backendUrl}/${rqa.id}`, {
     method: "POST",
+    body: JSON.stringify(rqa),
     headers: {
       "Content-Type": "application/json",
     },

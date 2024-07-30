@@ -1,3 +1,3 @@
-export interface AppLoaderProps  {
-    domainId: string
+export interface AppLoaderProps {
+  domainId: string;
 }

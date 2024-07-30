@@ -33,7 +33,6 @@ export default function ScenarioEditorTaskbar({
         type="button"
         onClick={() =>
           setShowMonitoringSpecifier((prevState) => {
-            console.log(prevState);
             return !prevState;
           })
         }

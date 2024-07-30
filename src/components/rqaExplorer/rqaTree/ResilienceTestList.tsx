@@ -4,7 +4,7 @@ import { ResilienceTestDetail } from "./ResilienceTestDetail";
 
 interface ResilienceTestListProps {
   resilienceTestDefinition: ResilienceTestDefinition[];
-  rqaId?: string;
+  rqaId: string;
   resilienceTestSpecifier: any;
 }
 
@@ -20,14 +20,12 @@ export function ResilienceTestList({
         <span>Resilience Tests</span>
       </summary>
       <ul>
-        {resilienceTestDefinition?.map((resilienceTest, index) => {
+        {resilienceTestDefinition.map((resilienceTest, index) => {
           return (
             <li key={index}>
               <ResilienceTestDetail
                 resilienceTestDefinition={resilienceTest}
-                parentMenuRef={detailsRef}
                 rqaId={rqaId}
-                resilienceTestSpecifier={resilienceTestSpecifier}
               />
             </li>
           );

@@ -5,69 +5,64 @@ import { ResilienceTestResponseMeasureDetail } from "./ResilienceTestResponseMea
 import { ResilienceTestStimulusDetail } from "./ResilienceTestStimulusDetail";
 
 interface ResilienceTestDetailProps {
-	resilienceTestDefinition: ResilienceTestDefinition;
-	rqaId?: string;
-	resilienceTestSpecifier: any;
-	parentMenuRef: any;
+  resilienceTestDefinition: ResilienceTestDefinition;
+  rqaId: string;
 }
 
 export function ResilienceTestDetail({
-	resilienceTestDefinition,
-	rqaId,
-	resilienceTestSpecifier,
-	parentMenuRef,
+  resilienceTestDefinition,
+  rqaId,
 }: ResilienceTestDetailProps) {
-	return (
-		<details>
-			<summary className="flex justify-between items-center">
-				<span>{resilienceTestDefinition.name}</span>
-				<DeleteResilienceTestButton
-					resilienceTestDefinition={resilienceTestDefinition}
-					rqaId={rqaId}
-					parentMenuRef={parentMenuRef}
-				/>
-				{/* <EditResilienceTestButton
+  return (
+    <details>
+      <summary className="flex justify-between items-center">
+        <span>{resilienceTestDefinition.name}</span>
+        <DeleteResilienceTestButton
+          resilienceTestDefinition={resilienceTestDefinition}
+          rqaId={rqaId}
+        />
+        {/* <EditResilienceTestButton
           resilienceTestSpecifier={resilienceTestSpecifier}
           parentMenuRef={parentMenuRef}
         /> */}
-			</summary>
-			<ul>
-				<li>
-					{
-						<ResilienceTestArtifactDetail
-							artifact={resilienceTestDefinition.artifact}
-						/>
-					}
-				</li>
-				<li>
-					{
-						<ResilienceTestStimulusDetail
-							stimulus={resilienceTestDefinition.stimulus}
-						/>
-					}
-				</li>
-				{/* <li>
+      </summary>
+      <ul>
+        <li>
+          {
+            <ResilienceTestArtifactDetail
+              artifact={resilienceTestDefinition.artifact}
+            />
+          }
+        </li>
+        <li>
+          {
+            <ResilienceTestStimulusDetail
+              stimulus={resilienceTestDefinition.stimulus}
+            />
+          }
+        </li>
+        {/* <li>
           {
             <ParametrizationDetail
               parametrization={loadTestDefinition.parametrization}
             />
           }
         </li> */}
-				<li>
-					{
-						<ResilienceTestResponseMeasureDetail
-							responseMeasure={resilienceTestDefinition.response_measure}
-						/>
-					}
-				</li>
-				{/*  <li>
+        <li>
+          {
+            <ResilienceTestResponseMeasureDetail
+              responseMeasure={resilienceTestDefinition.response_measure}
+            />
+          }
+        </li>
+        {/*  <li>
           {
             <ResultMetricsDetail
               resultMetrics={loadTestDefinition.result_metrics}
             />
           }
         </li> */}
-			</ul>
-		</details>
-	);
+      </ul>
+    </details>
+  );
 }

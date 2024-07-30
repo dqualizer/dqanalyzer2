@@ -4,6 +4,6 @@ import type { LoadIncrease } from "./loadprofile/LoadIncrease";
 import type { LoadPeak } from "./loadprofile/LoadPeak";
 
 export interface Workload {
-	type?: WorkloadType;
-	load_profile?: ConstantLoad | LoadIncrease | LoadPeak;
+  type?: WorkloadType;
+  load_profile?: ConstantLoad | LoadIncrease | LoadPeak;
 }

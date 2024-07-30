@@ -6,31 +6,31 @@ import type { RuntimeQualityAnalysisDefinition } from "@/types/rqa/definition/Ru
 import { createContext } from "react";
 
 export const DqContext = createContext({
-	dam: {} as DomainArchitectureMapping,
-	domainstory: {} as DomainStory,
-	rqas: [] as RuntimeQualityAnalysisDefinition[],
+  dam: {} as DomainArchitectureMapping,
+  domainstory: {} as DomainStory,
+  rqas: [] as RuntimeQualityAnalysisDefinition[],
 });
 
 export function DqContextProvider({
-	children,
-	value,
+  children,
+  value,
 }: {
-	children: React.ReactNode;
-	value: {
-		dam: DomainArchitectureMapping;
-		domainstory: DomainStory;
-		rqas: RuntimeQualityAnalysisDefinition[];
-	};
+  children: React.ReactNode;
+  value: {
+    dam: DomainArchitectureMapping;
+    domainstory: DomainStory;
+    rqas: RuntimeQualityAnalysisDefinition[];
+  };
 }) {
-	return (
-		<DqContext.Provider
-			value={{
-				dam: value.dam,
-				domainstory: value.domainstory,
-				rqas: value.rqas,
-			}}
-		>
-			{children}
-		</DqContext.Provider>
-	);
+  return (
+    <DqContext.Provider
+      value={{
+        dam: value.dam,
+        domainstory: value.domainstory,
+        rqas: value.rqas,
+      }}
+    >
+      {children}
+    </DqContext.Provider>
+  );
 }

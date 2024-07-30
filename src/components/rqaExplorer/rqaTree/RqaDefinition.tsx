@@ -1,9 +1,9 @@
 import type { RuntimeQualityAnalysisDefinition } from "@/types/rqa/definition/RuntimeQualityAnalysisDefinition";
 import { useState } from "react";
 import { LoadTestList } from "./LoadTestList";
+import MonitoringDefinitionList from "./MonitoringDefinitionList";
 import { ResilienceTestList } from "./ResilienceTestList";
 import { startRQA } from "./action";
-import MonitoringDefinitionList from "./MonitoringDefinitionList";
 
 interface RqaDefinitionProps {
   rqa: RuntimeQualityAnalysisDefinition;
@@ -16,7 +16,7 @@ export function RqaDefinition({
   loadTestSpecifier,
   resilienceTestSpecifier,
 }: RqaDefinitionProps) {
-  const [data, setData] = useState(null);
+  const [data] = useState(null);
   const startRQAWithRQA = startRQA.bind(null, rqa);
 
   return (
@@ -54,7 +54,6 @@ export function RqaDefinition({
                 typeof rqa[key] === "string" &&
                 key !== "name" &&
                 key !== "id" && (
-                  // biome-ignore lint/suspicious/noArrayIndexKey: <explanation>
                   <li key={i}>
                     <span>
                       {key}: {rqa[key]}

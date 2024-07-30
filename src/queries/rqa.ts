@@ -7,7 +7,7 @@ import type { MonitoringDefinition } from "@/types/rqa/definition/monitoring/Mon
 
 const backendUrl = new URL(
   "/api/v2/rqa",
-  `http://${process.env.DQAPI_HOST}` || "http://localhost:8099"
+  `http://${process.env.DQAPI_HOST}` || "http://localhost:8099",
 );
 
 export const getAllRqas = async () => {
@@ -24,9 +24,7 @@ export const getRqaById = async (id: string) => {
 
 export const deleteRqa = async ({
   rqaId,
-}: {
-  rqaId: string;
-}): Promise<RuntimeQualityAnalysisDefinition> => {
+}: { rqaId: string }): Promise<RuntimeQualityAnalysisDefinition> => {
   const res = await fetch(`${backendUrl}/${rqaId}`, {
     method: "DELETE",
   });
@@ -67,7 +65,7 @@ export const addResilienceTestToRqa = async ({
   rqaId: string;
   resilienceTestDto: CreateResilienceTestDto;
 }): Promise<RuntimeQualityAnalysisDefinition> => {
-  const res = await fetch(`${backendUrl}/${rqaId}/resilienceTest`, {
+  const res = await fetch(`${backendUrl}/${rqaId}/resilience-test`, {
     method: "PUT",
     body: JSON.stringify(resilienceTestDto),
   });
@@ -82,8 +80,8 @@ export const deleteResilienceTest = async ({
   resilienceTestId: string;
 }): Promise<RuntimeQualityAnalysisDefinition> => {
   const res = await fetch(
-    `${backendUrl}/${rqaId}/resilienceTest/${resilienceTestId}`,
-    { method: "DELETE" }
+    `${backendUrl}/${rqaId}/resilience-test/${resilienceTestId}`,
+    { method: "DELETE" },
   );
   return res.json();
 };

@@ -2,9 +2,17 @@
   "$schema": "https://biomejs.dev/schemas/1.8.3/schema.json",
   "files": {
     "ignore": [
-      "node_modules",
+      "node_modules/",
       "src/data",
-      ".next"
+      ".next/",
+      ".devenv/",
+      ".direnv/",
+      "doc/",
+      "public/",
+      "screenshots/",
+      "src/components/testing/",
+      "src/components/scenariotest/",
+      "/nix/store/*"
     ]
   },
   "organizeImports": {
@@ -17,17 +25,43 @@
       "suspicious": {
         "noExplicitAny": {
           "level": "off"
-        }
+        },
+        "noArrayIndexKey": {
+          "level": "off"
+        },
+        "noAssignInExpressions": "off",
+        "noImplicitAnyLet": "off",
+        "noPrototypeBuiltins": "off"
       },
       "a11y": {
-        "useButtonType": "off"
+        "useButtonType": "off",
+        "useKeyWithClickEvents": "off"
       },
       "style": {
-        "noParameterAssign": "off"
+        "noParameterAssign": "off",
+        "noUselessElse": "off"
+      },
+      "complexity": {
+        "noForEach": "off",
+        "noBannedTypes": "off"
+      },
+      "correctness": {
+        "useExhaustiveDependencies": "off"
+      },
+      "security": {
+        "noDangerouslySetInnerHtml": "off"
       }
     }
   },
   "formatter": {
-    "enabled": true
+    "enabled": true,
+    "indentStyle": "space",
+    "indentWidth": 2,
+    "lineEnding": "lf"
+  },
+  "json": {
+    "formatter": {
+      "trailingCommas": "none"
+    }
   }
 }

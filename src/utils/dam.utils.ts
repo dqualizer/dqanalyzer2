@@ -4,18 +4,18 @@ import { WorkObjectType } from "@/types/dam/domainstory/WorkObjectType";
 
 export const getSystemsFromDomainStory = (domainStory: DomainStory) => {
   return domainStory.actors.filter(
-    (actor) => actor["@type"] === WorkObjectType.SYSTEM
+    (actor) => actor["@type"] === WorkObjectType.SYSTEM,
   ) as System[];
 };
 
 export const getActivitiesForSystem = (
   domainStory: DomainStory,
-  systemId?: string
+  systemId?: string,
 ) => {
   return domainStory.activities.filter(
     (activity) =>
       activity.initiators.find((initiator) => initiator === systemId) ||
-      activity.targets.find((initiator) => initiator === systemId)
+      activity.targets.find((initiator) => initiator === systemId),
   );
 };
 
