@@ -4,6 +4,7 @@ import {
   readDomainstoryById,
 } from "@/app/analyzer/[domainstory_id]/fetch";
 import { DqContextProvider } from "@/app/providers/DqContext";
+import { SelectedEdgeProvider } from "@/app/providers/SelectedEdge";
 import Graph from "@/components/analyzer/graph";
 
 export default async function Analyzer({
@@ -15,7 +16,9 @@ export default async function Analyzer({
 
   return (
     <DqContextProvider value={{ dam, domainstory, rqas }}>
-      <Graph />
+      <SelectedEdgeProvider>
+        <Graph />
+      </SelectedEdgeProvider>
     </DqContextProvider>
   );
 }

@@ -1,9 +1,10 @@
 "use client";
 
 import { DqContext } from "@/app/providers/DqContext";
+import { useSelectedEdgeContext } from "@/app/providers/SelectedEdge";
 import Sidebar from "@/components/Sidebar";
 import IconNode from "@/components/nodes/IconNode";
-import { useContext, useRef } from "react";
+import { useContext } from "react";
 import {
   Background,
   Controls,
@@ -26,26 +27,27 @@ export default function Graph() {
     initialEgdes,
   );
 
-  const reactFlowWrapper = useRef(null);
   const [nodes, , onNodesChange] = useNodesState(layoutedNodes);
   const [edges, , onEdgesChange] = useEdgesState(layoutedEdges);
 
+  const [, setSelectedEdge] = useSelectedEdgeContext();
+
   return (
     <>
-      <div className="reactflow-wrapper" ref={reactFlowWrapper}>
-        <ReactFlow
-          fitView
-          nodes={nodes}
-          edges={edges}
-          onNodesChange={onNodesChange}
-          onEdgesChange={onEdgesChange}
-          nodeTypes={nodeTypes}
-        >
-          <Background />
-          <Controls />
-          <MiniMap />
-        </ReactFlow>
-      </div>
+      <ReactFlow
+        className="flex-1"
+        fitView
+        nodes={nodes}
+        edges={edges}
+        onNodesChange={onNodesChange}
+        onEdgesChange={onEdgesChange}
+        onEdgeClick={(_, edge) => setSelectedEdge(edge)}
+        nodeTypes={nodeTypes}
+      >
+        <Background />
+        <Controls />
+        <MiniMap />
+      </ReactFlow>
       <Sidebar nodes={nodes} edges={edges} />
     </>
   );

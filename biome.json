@@ -2,16 +2,17 @@
   "$schema": "https://biomejs.dev/schemas/1.8.3/schema.json",
   "files": {
     "ignore": [
-      "node_modules",
+      "node_modules/",
       "src/data",
-      ".next",
-      ".devenv",
-      ".direnv",
-      "doc",
-      "public",
-      "screenshots",
-      "src/components/testing",
-      "src/components/scenariotest"
+      ".next/",
+      ".devenv/",
+      ".direnv/",
+      "doc/",
+      "public/",
+      "screenshots/",
+      "src/components/testing/",
+      "src/components/scenariotest/",
+      "/nix/store/*"
     ]
   },
   "organizeImports": {
