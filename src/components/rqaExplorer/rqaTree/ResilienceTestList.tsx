@@ -9,7 +9,7 @@ interface ResilienceTestListProps {
 }
 
 export function ResilienceTestList({
-  resilienceTestDefinition,
+  resilienceTestDefinition = [],
   rqaId,
   resilienceTestSpecifier,
 }: ResilienceTestListProps) {
