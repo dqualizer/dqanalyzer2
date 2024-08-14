@@ -2,6 +2,7 @@ import type { DomainStory } from "./domainstory/DomainStory";
 
 export interface DomainArchitectureMapping {
   id: string;
+  name: string;
   software_system: SoftwareSystem;
   domain_story: DomainStory;
   mappings: Mapping[];

@@ -1,7 +1,10 @@
 "use server";
 
+import {DomainStory} from "@/types/dam/domainstory/DomainStory";
+import {DomainArchitectureMapping} from "@/types/dam/dam";
+
 const backendUrl = new URL(
-  "/api/v2/domain-story",
+  "/api/v2/dam",
   `http://${process.env.DQAPI_HOST}` || "http://localhost:8099",
 );
 
@@ -10,10 +13,10 @@ const backendUrl = new URL(
  *
  * @returns {Promise<string[]>} A promise that resolves to an array of domain story IDs.
  */
-export const readAllDomainStoryIds = async (): Promise<string[]> => {
+export const readAllDAMs = async (): Promise<DomainArchitectureMapping[]> => {
   // Send a GET request to the backend's '/api/v2/domain-story/ids' endpoint.
   // The 'cache' option is set to 'no-store' to prevent caching of the response.
-  const res = await fetch(`${backendUrl}/ids`, {
+  const res = await fetch(`${backendUrl}`, {
     next: { revalidate: 30 },
   });
 

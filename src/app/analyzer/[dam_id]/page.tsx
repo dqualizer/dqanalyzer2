@@ -1,18 +1,17 @@
 import {
   readAllRqas,
-  readDamByDomainStoryId,
-  readDomainstoryById,
-} from "@/app/analyzer/[domainstory_id]/fetch";
+  readDamById,
+} from "@/app/analyzer/[dam_id]/fetch";
 import { DqContextProvider } from "@/app/providers/DqContext";
 import { SelectedEdgeProvider } from "@/app/providers/SelectedEdge";
 import Graph from "@/components/analyzer/graph";
 
 export default async function Analyzer({
   params,
-}: { params: { domainstory_id: string } }) {
-  const domainstory = await readDomainstoryById(params.domainstory_id);
+}: { params: { dam_id: string } }) {
+  const dam = await readDamById(params.dam_id);
   const rqas = await readAllRqas();
-  const dam = await readDamByDomainStoryId(domainstory.id);
+  const domainstory = dam.domain_story
 
   return (
     <DqContextProvider value={{ dam, domainstory, rqas }}>
