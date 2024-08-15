@@ -1,45 +1,30 @@
+import { useSideBarContext } from "@/app/providers/SidebarContext";
 import CloudOffIcon from "@mui/icons-material/CloudOff";
 import CloudQueueIcon from "@mui/icons-material/CloudQueue";
-import type { Dispatch, SetStateAction } from "react";
 import ScenarioEditorTaskbar from "./ScenarioEditorTaskbar";
 import ScenarioExplorerTaskbar from "./ScenarioExporerTaskbar";
 
-export default function Taskbar({
-  scenarioMode,
-  setScenarioMode,
-  setRqaExplorerShow,
-  setShowLoadTestSpecifier,
-  setShowResilienceTestSpecifier,
-  setShowMonitoringSpecifier,
-}: {
-  scenarioMode: boolean;
-  setScenarioMode: Dispatch<SetStateAction<boolean>>;
-  setRqaExplorerShow: Dispatch<SetStateAction<boolean>>;
-  setShowLoadTestSpecifier: Dispatch<SetStateAction<boolean>>;
-  setShowResilienceTestSpecifier: Dispatch<SetStateAction<boolean>>;
-  setShowMonitoringSpecifier: Dispatch<SetStateAction<boolean>>;
-}) {
+export default function Taskbar() {
+  const {
+    scenarioModeState: [showScenarioExplorer, setShowScenarioExplorer],
+  } = useSideBarContext();
+
   return (
     <div className="taskbar-container">
       <button
         type="button"
         className="change-mode"
-        onClick={() => setScenarioMode((prevState) => !prevState)}
+        onClick={() => setShowScenarioExplorer((prevState) => !prevState)}
       >
-        <div>{scenarioMode ? <CloudQueueIcon /> : <CloudOffIcon />}</div>
+        <div>
+          {showScenarioExplorer ? <CloudQueueIcon /> : <CloudOffIcon />}
+        </div>
       </button>
 
-      {scenarioMode ? (
+      {showScenarioExplorer ? (
         <ScenarioExplorerTaskbar />
       ) : (
-        <ScenarioEditorTaskbar
-          {...{
-            setRqaExplorerShow,
-            setShowLoadTestSpecifier,
-            setShowResilienceTestSpecifier,
-            setShowMonitoringSpecifier,
-          }}
-        />
+        <ScenarioEditorTaskbar />
       )}
     </div>
   );

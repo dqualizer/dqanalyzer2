@@ -48,7 +48,7 @@ export default function Graph() {
         <Controls />
         <MiniMap />
       </ReactFlow>
-      <Sidebar nodes={nodes} edges={edges} />
+      <Sidebar />
     </>
   );
 }

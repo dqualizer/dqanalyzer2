@@ -1,17 +1,14 @@
+import { useSideBarContext } from "@/app/providers/SidebarContext";
 import EqualizerIcon from "@mui/icons-material/Equalizer";
-import type { Dispatch, SetStateAction } from "react";
 
-export default function ScenarioEditorTaskbar({
-  setRqaExplorerShow,
-  setShowLoadTestSpecifier,
-  setShowResilienceTestSpecifier,
-  setShowMonitoringSpecifier,
-}: {
-  setRqaExplorerShow: Dispatch<SetStateAction<boolean>>;
-  setShowLoadTestSpecifier: Dispatch<SetStateAction<boolean>>;
-  setShowResilienceTestSpecifier: Dispatch<SetStateAction<boolean>>;
-  setShowMonitoringSpecifier: Dispatch<SetStateAction<boolean>>;
-}) {
+export default function ScenarioEditorTaskbar() {
+  const {
+    rqaExplorerState: [, setRqaExplorerShow],
+    loadTestSpecifierState: [, setShowLoadTestSpecifier],
+    resilienceTestSpecifierState: [, setShowResilienceTestSpecifier],
+    monitoringSpecifierState: [, setShowMonitoringSpecifier],
+  } = useSideBarContext();
+
   return (
     <>
       <button

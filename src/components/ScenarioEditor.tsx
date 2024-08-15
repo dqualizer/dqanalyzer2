@@ -1,26 +1,23 @@
+import { useSideBarContext } from "@/app/providers/SidebarContext";
 import Conditional from "@/components/Conditional";
 import LoadTestSpecifier from "@/components/loadtest/LoadtestSpecifier";
 import { ResilienceTestSpecifier } from "@/components/resilience-test-specifier/ResilienceTestSpecifier";
-import { type Dispatch, type SetStateAction, useState } from "react";
+import { useState } from "react";
 import type { Edge } from "reactflow";
 import MonitoringSpecifier from "./monitoring/MonitoringSpecifier";
 import { RqaList } from "./rqaExplorer/RqaList";
 
-export default function ScenarioEditor({
-  showLoadTestSpecifier,
-  showResilienceTestSpecifier,
-  rqaExplorerShow,
-  showMonitoringSpecifier,
-  setShowLoadTestSpecifier,
-  setShowResilienceTestSpecifier,
-}: {
-  showLoadTestSpecifier: boolean;
-  showResilienceTestSpecifier: boolean;
-  rqaExplorerShow: boolean;
-  showMonitoringSpecifier: boolean;
-  setShowLoadTestSpecifier: Dispatch<SetStateAction<boolean>>;
-  setShowResilienceTestSpecifier: Dispatch<SetStateAction<boolean>>;
-}) {
+export default function ScenarioEditor() {
+  const {
+    rqaExplorerState: [showRqaExplorer],
+    loadTestSpecifierState: [showLoadTestSpecifier, setShowLoadTestSpecifier],
+    resilienceTestSpecifierState: [
+      showResilienceTestSpecifier,
+      setShowResilienceTestSpecifier,
+    ],
+    monitoringSpecifierState: [showMonitoringSpecifier],
+  } = useSideBarContext();
+
   const [selectedEdge, setSelectedEdge] = useState<Edge | null>(null);
 
   return (
@@ -31,7 +28,7 @@ export default function ScenarioEditor({
       <Conditional showWhen={showResilienceTestSpecifier}>
         <ResilienceTestSpecifier selectedEdge={selectedEdge} />
       </Conditional>
-      <Conditional showWhen={rqaExplorerShow}>
+      <Conditional showWhen={showRqaExplorer}>
         <RqaList
           loadTestSpecifier={setShowLoadTestSpecifier}
           resilienceTestSpecifier={setShowResilienceTestSpecifier}
