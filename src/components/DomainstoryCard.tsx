@@ -1,7 +1,7 @@
 import type { Route } from "next";
 import Image from "next/image";
 import Link from "next/link";
-import {DomainArchitectureMapping} from "@/types/dam/dam";
+import type {DomainArchitectureMapping} from "@/types/dam/dam";
 
 const WerkstattScreenshot = "werkstatt.png";
 

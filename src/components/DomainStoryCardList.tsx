@@ -1,5 +1,5 @@
 import DomainstoryCard from "./DomainstoryCard";
-import {DomainArchitectureMapping} from "@/types/dam/dam";
+import type {DomainArchitectureMapping} from "@/types/dam/dam";
 
 export default function DomainStoryCardList({
   dams,

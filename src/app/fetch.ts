@@ -1,7 +1,7 @@
 "use server";
 
 import {DomainStory} from "@/types/dam/domainstory/DomainStory";
-import {DomainArchitectureMapping} from "@/types/dam/dam";
+import type {DomainArchitectureMapping} from "@/types/dam/dam";
 
 const backendUrl = new URL(
   "/api/v2/dam",

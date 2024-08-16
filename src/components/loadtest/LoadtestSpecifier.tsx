@@ -14,7 +14,7 @@ import { InputSlider } from "../input/InputSlider";
 import { updateRqaLoadTest } from "./action";
 
 export function LoadTestSpecifier() {
-  const { rqas, domainstory } = useDqContext();
+  const { domainstory } = useDqContext();
 
   const [loadTestDTO, setLoadTestDTO] = useState<CreateLoadTestDefinitionDTO>({
     name: `LoadTest-${new Date().getTime()}`,
