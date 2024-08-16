@@ -5,13 +5,11 @@ import { ResilienceTestDetail } from "./ResilienceTestDetail";
 interface ResilienceTestListProps {
   resilienceTestDefinition: ResilienceTestDefinition[];
   rqaId: string;
-  resilienceTestSpecifier: any;
 }
 
 export function ResilienceTestList({
   resilienceTestDefinition = [],
   rqaId,
-  resilienceTestSpecifier,
 }: ResilienceTestListProps) {
   const detailsRef = useRef(null);
   return (

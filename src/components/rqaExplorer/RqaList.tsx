@@ -1,20 +1,12 @@
-import { DqContext } from "@/app/providers/DqContext";
-import { useContext, useState } from "react";
+import { useDqContext } from "@/app/providers/DqContext";
+import { useState } from "react";
 import ResizeBar from "../ResizeBar";
 import { RqaInput } from "./RqaInput";
 import { RqaListHeader } from "./RqaListHeader";
 import { RqaListItem } from "./RqaListItem";
 
-interface RqaListProps {
-  loadTestSpecifier: any;
-  resilienceTestSpecifier: any;
-}
-
-export function RqaList({
-  loadTestSpecifier,
-  resilienceTestSpecifier,
-}: RqaListProps) {
-  const { rqas, dam } = useContext(DqContext);
+export function RqaList() {
+  const { rqas, dam } = useDqContext();
 
   // Resize States
   const [isResizing, setIsResizing] = useState(false);
@@ -36,11 +28,7 @@ export function RqaList({
             key={rqa.id}
             className="menu rounded-box px-0 text-base py-0 my-4"
           >
-            <RqaListItem
-              rqa={rqa}
-              loadTestSpecifier={loadTestSpecifier}
-              resilienceTestSpecifier={resilienceTestSpecifier}
-            />
+            <RqaListItem rqa={rqa} />
           </ul>
         ))}
         {inputOpen && <RqaInput dam={dam} />}

@@ -1,4 +1,5 @@
-import { DqContext } from "@/app/providers/DqContext";
+import { useDqContext } from "@/app/providers/DqContext";
+import { useSelectedEdgeContext } from "@/app/providers/SelectedEdge";
 import { DropdownLeft } from "@/components/DropdownLeft";
 import { InputNumber } from "@/components/input/InputNumber";
 import { InputRadio } from "@/components/input/InputRadio";
@@ -10,16 +11,12 @@ import {
   getSystemsFromDomainStory,
 } from "@/utils/dam.utils";
 import { validateObject } from "@/utils/rqa.utils";
-import { type ChangeEvent, useContext, useEffect, useState } from "react";
-import type { Edge } from "reactflow";
+import { type ChangeEvent, useEffect, useState } from "react";
 import { updateRqaResilience } from "./action";
 
-export function ResilienceTestSpecifier({
-  selectedEdge,
-}: {
-  selectedEdge?: Edge | null;
-}) {
-  const { rqas, domainstory } = useContext(DqContext);
+export function ResilienceTestSpecifier() {
+  const { rqas, domainstory } = useDqContext();
+  const [selectedEdge] = useSelectedEdgeContext();
 
   const [resilienceTestDto, setResilienceTestDto] =
     useState<CreateResilienceTestDto>({
@@ -168,7 +165,6 @@ export function ResilienceTestSpecifier({
       <div className="divider" />
       {showSubmitBtn && (
         <DropdownLeft
-          rqas={rqas}
           onClick={async (rqa_id) => {
             updateRqaResilience(rqa_id, resilienceTestDto);
           }}

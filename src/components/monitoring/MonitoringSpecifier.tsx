@@ -1,14 +1,14 @@
-import { DqContext } from "@/app/providers/DqContext";
+import { useDqContext } from "@/app/providers/DqContext";
 import { MeasurementType } from "@/types/rqa/definition/monitoring/MeasurementType";
 import type { MonitoringDefinition } from "@/types/rqa/definition/monitoring/MonitoringDefinition";
 import { getAllActivities } from "@/utils/dam.utils";
-import { useContext, useState } from "react";
+import { useState } from "react";
 import { DropdownLeft } from "../DropdownLeft";
 import { InputSelect } from "../input/InputSelect";
 import { updateRqaMonitoring } from "./action";
 
 export default function ShowMonitoringSpecifier() {
-  const { domainstory, rqas } = useContext(DqContext);
+  const { domainstory, rqas } = useDqContext();
   const [target, setMonitoringTarget] = useState<string>("");
   const [measurementName, setMeasurementName] = useState<string>("");
   const [measurementType, setMeasurementType] = useState<MeasurementType>(
@@ -85,7 +85,6 @@ export default function ShowMonitoringSpecifier() {
         </div>
 
         <DropdownLeft
-          rqas={rqas}
           onClick={async (rqa_id) => {
             handleSubmit(rqa_id);
           }}

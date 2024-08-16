@@ -1,11 +1,12 @@
-import type { RuntimeQualityAnalysisDefinition } from "@/types/rqa/definition/RuntimeQualityAnalysisDefinition";
+import { useDqContext } from "@/app/providers/DqContext";
 
 interface DropdownLeftProps {
-  rqas: RuntimeQualityAnalysisDefinition[];
   onClick: (rqaId: string) => void;
 }
 
-export function DropdownLeft({ rqas, onClick }: DropdownLeftProps) {
+export function DropdownLeft({ onClick }: DropdownLeftProps) {
+  const { rqas } = useDqContext();
+
   return (
     <div className="dropdown">
       <div tabIndex={0} role="button" className="btn m-1">

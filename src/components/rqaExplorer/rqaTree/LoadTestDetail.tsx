@@ -9,14 +9,12 @@ import { StimulusDetail } from "./StimulusDetail";
 interface LoadTestDetailProps {
   loadTestDefinition: LoadTestDefinition;
   rqaId: string;
-  loadTestSpecifier: any;
   parentMenuRef: any;
 }
 
 export function LoadTestDetail({
   loadTestDefinition,
   rqaId,
-  loadTestSpecifier,
   parentMenuRef,
 }: LoadTestDetailProps) {
   return (
@@ -28,7 +26,7 @@ export function LoadTestDetail({
           rqaId={rqaId}
           parentMenuRef={parentMenuRef}
         />
-        <EditLoadTestButton loadTestSpecifier={loadTestSpecifier} />
+        <EditLoadTestButton />
       </summary>
       <ul>
         <li>

@@ -3,9 +3,15 @@
 import type { DomainArchitectureMapping } from "@/types/dam/dam";
 import type { DomainStory } from "@/types/dam/domainstory/DomainStory";
 import type { RuntimeQualityAnalysisDefinition } from "@/types/rqa/definition/RuntimeQualityAnalysisDefinition";
-import { createContext } from "react";
+import { createContext, useContext } from "react";
 
-export const DqContext = createContext({
+type ContextType = {
+  dam: DomainArchitectureMapping;
+  domainstory: DomainStory;
+  rqas: RuntimeQualityAnalysisDefinition[];
+};
+
+const DqContext = createContext<ContextType>({
   dam: {} as DomainArchitectureMapping,
   domainstory: {} as DomainStory,
   rqas: [] as RuntimeQualityAnalysisDefinition[],
@@ -16,11 +22,7 @@ export function DqContextProvider({
   value,
 }: {
   children: React.ReactNode;
-  value: {
-    dam: DomainArchitectureMapping;
-    domainstory: DomainStory;
-    rqas: RuntimeQualityAnalysisDefinition[];
-  };
+  value: ContextType;
 }) {
   return (
     <DqContext.Provider
@@ -34,3 +36,7 @@ export function DqContextProvider({
     </DqContext.Provider>
   );
 }
+
+export const useDqContext = () => {
+  return useContext(DqContext);
+};

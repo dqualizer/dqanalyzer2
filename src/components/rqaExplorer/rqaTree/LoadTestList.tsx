@@ -5,14 +5,9 @@ import { useRef } from "react";
 interface LoadTestListProps {
   loadTestDefinition: LoadTestDefinition[];
   rqaId: string;
-  loadTestSpecifier: any;
 }
 
-export function LoadTestList({
-  loadTestDefinition,
-  rqaId,
-  loadTestSpecifier,
-}: LoadTestListProps) {
+export function LoadTestList({ loadTestDefinition, rqaId }: LoadTestListProps) {
   const detailsRef = useRef(null);
   return (
     <details ref={detailsRef}>
@@ -27,7 +22,6 @@ export function LoadTestList({
                 loadTestDefinition={loadtest}
                 parentMenuRef={detailsRef}
                 rqaId={rqaId}
-                loadTestSpecifier={loadTestSpecifier}
               />
             </li>
           );

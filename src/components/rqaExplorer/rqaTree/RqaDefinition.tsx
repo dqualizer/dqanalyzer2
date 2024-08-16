@@ -7,15 +7,9 @@ import { startRQA } from "./action";
 
 interface RqaDefinitionProps {
   rqa: RuntimeQualityAnalysisDefinition;
-  loadTestSpecifier: any;
-  resilienceTestSpecifier: any;
 }
 
-export function RqaDefinition({
-  rqa,
-  loadTestSpecifier,
-  resilienceTestSpecifier,
-}: RqaDefinitionProps) {
+export function RqaDefinition({ rqa }: RqaDefinitionProps) {
   const [data] = useState(null);
   const startRQAWithRQA = startRQA.bind(null, rqa);
 
@@ -25,7 +19,6 @@ export function RqaDefinition({
         <LoadTestList
           loadTestDefinition={rqa.runtime_quality_analysis.load_test_definition}
           rqaId={rqa.id}
-          loadTestSpecifier={loadTestSpecifier}
         />
       </li>
       <li>
@@ -34,7 +27,6 @@ export function RqaDefinition({
             rqa.runtime_quality_analysis.resilience_definition
           }
           rqaId={rqa.id}
-          resilienceTestSpecifier={resilienceTestSpecifier}
         />
       </li>
       <li>

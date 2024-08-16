@@ -1,10 +1,9 @@
 "use client";
 
-import { DqContext } from "@/app/providers/DqContext";
+import { useDqContext } from "@/app/providers/DqContext";
 import { useSelectedEdgeContext } from "@/app/providers/SelectedEdge";
 import Sidebar from "@/components/Sidebar";
 import IconNode from "@/components/nodes/IconNode";
-import { useContext } from "react";
 import {
   Background,
   Controls,
@@ -19,7 +18,7 @@ import { createInitialElements, getLayoutedElements } from "./createGraph";
 const nodeTypes = { iconNode: IconNode };
 
 export default function Graph() {
-  const { domainstory } = useContext(DqContext);
+  const { domainstory } = useDqContext();
 
   const [initialNodes, initialEgdes] = createInitialElements(domainstory);
   const [layoutedNodes, layoutedEdges] = getLayoutedElements(

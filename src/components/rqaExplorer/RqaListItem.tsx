@@ -7,15 +7,9 @@ import { RqaDefinition } from "./rqaTree/RqaDefinition";
 
 interface RqaListItemProps {
   rqa: RuntimeQualityAnalysisDefinition;
-  loadTestSpecifier: any;
-  resilienceTestSpecifier: any;
 }
 
-export function RqaListItem({
-  rqa,
-  loadTestSpecifier,
-  resilienceTestSpecifier,
-}: RqaListItemProps) {
+export function RqaListItem({ rqa }: RqaListItemProps) {
   const detailsRef = useRef(null);
   return (
     <li>
@@ -24,11 +18,7 @@ export function RqaListItem({
           <span>{rqa.name}</span>
           <DeleteRqaButton rqa={rqa} />
         </summary>
-        <RqaDefinition
-          rqa={rqa}
-          loadTestSpecifier={loadTestSpecifier}
-          resilienceTestSpecifier={resilienceTestSpecifier}
-        />
+        <RqaDefinition rqa={rqa} />
       </details>
     </li>
   );

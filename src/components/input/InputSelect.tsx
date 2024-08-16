@@ -3,11 +3,11 @@ import type { ChangeEvent, ReactNode } from "react";
 interface InputSelectProps<T> {
   label: string;
   name?: string;
-  value?: string;
+  value: any;
   options: T[];
   optionName: keyof T;
   optionValue?: keyof T;
-  onChange: (e: ChangeEvent<HTMLSelectElement>, selectedOption: T) => void;
+  onChange: (e: ChangeEvent<HTMLSelectElement>, selectedOption: string) => void;
 }
 
 export function InputSelect<T>({
@@ -27,7 +27,7 @@ export function InputSelect<T>({
       <select
         value={value || ""}
         name={name}
-        onChange={(e) => onChange(e, e.target.value as T)}
+        onChange={(e) => onChange(e, e.target.value)}
         className="select select-bordered"
       >
         <option value="" disabled>
@@ -35,8 +35,7 @@ export function InputSelect<T>({
         </option>
         {options.map((option, i) => (
           <option
-            // @ts-expect-error
-            value={optionValue ? option[optionValue] : (option as T)}
+            value={optionValue ? option[optionValue] : (option as any)}
             key={i}
           >
             {option[optionName] as ReactNode}

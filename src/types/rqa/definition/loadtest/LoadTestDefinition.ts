@@ -16,8 +16,8 @@ export interface LoadTestDefinition extends Identifiable {
 }
 
 export interface CreateLoadTestDefinitionDTO {
-  name?: string;
-  artifact?: Artifact;
+  name: string;
+  artifact: Artifact;
   description?: string;
   stimulus?: Stimulus;
   parametrization?: Parametrization;
