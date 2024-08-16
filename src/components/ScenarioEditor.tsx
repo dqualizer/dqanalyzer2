@@ -1,7 +1,7 @@
 import { useSideBarContext } from "@/app/providers/SidebarContext";
 import Conditional from "@/components/Conditional";
-import { LoadTestSpecifier } from "@/components/loadtest/LoadTestSpecifier";
 import { ResilienceTestSpecifier } from "@/components/resilience-test-specifier/ResilienceTestSpecifier";
+import { LoadTestSpecifier } from "./loadtest/LoadtestSpecifier";
 import MonitoringSpecifier from "./monitoring/MonitoringSpecifier";
 import { RqaList } from "./rqaExplorer/RqaList";
 
